@@ -1,0 +1,13 @@
+
+package:
+   name: tblink-rpc-core
+   version: 0.0.1
+   
+   dev-deps:
+   - name: json
+     url: https://github.com/nlohmann/json/archive/v3.9.1.tar.gz
+   - name: json-rpc
+     src: pypi
+   - name: googletest
+     url: https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+     
