@@ -6,6 +6,7 @@
  */
 
 #include "JsonParamValMap.h"
+#include "nlohmann/json.hpp"
 
 namespace tblink_rpc_core {
 
@@ -28,7 +29,7 @@ bool JsonParamValMap::hasKey(const std::string &key) {
 
 IParamValSP JsonParamValMap::getVal(
 		const std::string		&key) {
-	std::map<std::string,IParamValSP>::const_iterator it;
+	std::map<std::string,JsonParamValSP>::const_iterator it;
 
 	if ((it=m_map.find(key)) != m_map.end()) {
 		return it->second;
@@ -40,16 +41,33 @@ IParamValSP JsonParamValMap::getVal(
 void JsonParamValMap::setVal(
 		const std::string		&key,
 		IParamValSP				val) {
-	std::map<std::string,IParamValSP>::const_iterator it;
+	std::map<std::string,JsonParamValSP>::const_iterator it;
+	JsonParamValSP jval = std::dynamic_pointer_cast<JsonParamVal>(val);
 	m_keys.insert(key);
 
 	if ((it=m_map.find(key)) != m_map.end()) {
 		m_map.erase(it);
 	}
-	m_map.insert({key, val});
+	m_map.insert({key, jval});
+}
+
+nlohmann::json JsonParamValMap::dump() {
+	nlohmann::json ret;
+
+	for (std::map<std::string,JsonParamValSP>::const_iterator
+			it=m_map.begin();
+			it!=m_map.end(); it++) {
+		ret[it->first] = it->second->dump();
+	}
+
+	return ret;
 }
 
 JsonParamValMapSP JsonParamValMap::mk() {
+	return JsonParamValMapSP(new JsonParamValMap());
+}
+
+JsonParamValMapSP JsonParamValMap::mk(const nlohmann::json &msg) {
 	return JsonParamValMapSP(new JsonParamValMap());
 }
 

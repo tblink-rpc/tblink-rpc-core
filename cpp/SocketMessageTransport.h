@@ -23,8 +23,6 @@ public:
 			const recv_req_f		&req_f,
 			const recv_rsp_f		&rsp_f) override;
 
-	virtual int32_t process(int32_t timeout_ms=-1);
-
 	virtual intptr_t send_req(
 			const std::string	&method,
 			IParamValMapSP		params) override;

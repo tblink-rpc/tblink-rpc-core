@@ -6,7 +6,9 @@
  */
 
 #pragma once
-
+#include <map>
+#include <stdint.h>
+#include "tblink_rpc/IParamVal.h"
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/ITransport.h"
 
@@ -48,8 +50,11 @@ private:
 			IParamValSP				result,
 			IParamValSP				error);
 
+	std::pair<IParamValSP,IParamValSP> wait_rsp(intptr_t id);
+
 private:
 	ITransport						*m_transport;
+	std::map<intptr_t, std::pair<IParamValSP,IParamValSP>>	m_rsp_m;
 
 };
 

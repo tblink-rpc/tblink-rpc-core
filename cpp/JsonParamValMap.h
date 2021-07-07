@@ -30,10 +30,14 @@ public:
 			const std::string		&key,
 			IParamValSP				val) override;
 
+	virtual nlohmann::json dump();
+
 	static JsonParamValMapSP mk();
 
+	static JsonParamValMapSP mk(const nlohmann::json &msg);
+
 private:
-	std::map<std::string, IParamValSP>		m_map;
+	std::map<std::string, JsonParamValSP>	m_map;
 	std::set<std::string>					m_keys;
 
 };

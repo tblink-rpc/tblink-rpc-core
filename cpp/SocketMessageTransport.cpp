@@ -48,7 +48,7 @@ void SocketMessageTransport::init(
 	m_rsp_f = rsp_f;
 }
 
-int32_t SocketMessageTransport::process(int timeout_ms) {
+int32_t SocketMessageTransport::poll(int timeout_ms) {
 	char tmp[1024];
 	int32_t sz;
 	int32_t ret = 0;
@@ -108,6 +108,7 @@ int32_t SocketMessageTransport::process(int timeout_ms) {
 
 		// Process data
 		for (uint32_t i=0; i<sz; i++) {
+			fprintf(stdout, "[%d] Process char %c\n", m_msg_state, tmp[i]);
 			switch (m_msg_state) {
 			case 0: { // Waiting for a header
 				if (tmp[i] == HEADER_PREFIX.at(m_msgbuf_idx)) {
@@ -145,6 +146,7 @@ int32_t SocketMessageTransport::process(int timeout_ms) {
 					// Skip leading whitespace
 				} else {
 					msgbuf_append(tmp[i]);
+					fprintf(stdout, "m_msgbuf_idx=%d m_msg_length=%d\n", m_msgbuf_idx, m_msg_length);
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
 						fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
@@ -152,11 +154,25 @@ int32_t SocketMessageTransport::process(int timeout_ms) {
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
 
+							JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
 							// Is this a request or a response?
 							if (msg.contains("method")) {
 								// TODO: Request
+								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
+								fprintf(stdout, "--> m_req_f\n");
+								fflush(stdout);
+								m_req_f(msg["method"], id->val_s(), params);
+								fprintf(stdout, "<-- m_req_f\n");
+								fflush(stdout);
 							} else {
 								// TODO: Response
+								IParamValSP result;
+								IParamValSP error;
+								fprintf(stdout, "--> m_rsp_f\n");
+								fflush(stdout);
+								m_rsp_f(id->val_s(), result, error);
+								fprintf(stdout, "<-- m_rsp_f\n");
+								fflush(stdout);
 							}
 						} catch (const std::exception &e) {
 							fprintf(stdout, "Failed to parse msg \"%s\" %s\n",
@@ -254,10 +270,6 @@ int32_t SocketMessageTransport::send_rsp(
 
 	fprintf(stdout, "<-- SocketMessageTransport::send_rsp\n");
 	return ret;
-}
-
-int32_t SocketMessageTransport::poll(int32_t timeout_ms) {
-
 }
 
 IParamValBoolSP SocketMessageTransport::mkValBool(bool val) {
