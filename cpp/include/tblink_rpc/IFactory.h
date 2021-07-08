@@ -7,6 +7,7 @@
 
 #pragma once
 #include "tblink_rpc/IEndpoint.h"
+#include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/ITransport.h"
 
 namespace tblink_rpc_core {
@@ -16,7 +17,9 @@ public:
 
 	virtual ~IFactory() { }
 
-	virtual IEndpoint *mkJsonRpcEndpoint(ITransport *t) = 0;
+	virtual IEndpoint *mkJsonRpcEndpoint(
+			ITransport 			*transport,
+			IEndpointServices	*services) = 0;
 
 	virtual ITransport *mkSocketTransport(int32_t socket) = 0;
 

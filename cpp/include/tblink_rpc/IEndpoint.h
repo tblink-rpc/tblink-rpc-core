@@ -27,6 +27,19 @@ public:
 
 	virtual bool connect_complete() = 0;
 
+	virtual bool shutdown() = 0;
+
+	virtual intptr_t add_time_callback(
+			uint64_t						time,
+			const std::function<void()>		&cb_f) = 0;
+
+	virtual void cancel_callback(intptr_t	id) = 0;
+
+	/** Called by the environment to notify that
+	 *  a callback has occurred
+	 */
+	virtual void notify_callback(intptr_t   id) = 0;
+
 	virtual const std::string &last_error() = 0;
 
 	/*

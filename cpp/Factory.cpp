@@ -20,8 +20,10 @@ Factory::~Factory() {
 	// TODO Auto-generated destructor stub
 }
 
-IEndpoint *Factory::mkJsonRpcEndpoint(ITransport *t) {
-	return new JsonRpcEndpoint(t);
+IEndpoint *Factory::mkJsonRpcEndpoint(
+		ITransport 			*transport,
+		IEndpointServices	*services) {
+	return new JsonRpcEndpoint(transport, services);
 }
 
 ITransport *Factory::mkSocketTransport(int32_t fd) {

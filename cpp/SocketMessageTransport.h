@@ -33,8 +33,8 @@ public:
 
 	virtual int32_t send_rsp(
 			intptr_t			id,
-			IParamValSP			result,
-			IParamValSP			error) override;
+			IParamValMapSP		result,
+			IParamValMapSP		error) override;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) override;
 

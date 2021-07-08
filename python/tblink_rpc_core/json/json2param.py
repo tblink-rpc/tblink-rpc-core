@@ -19,17 +19,20 @@ class Json2Param(object):
 
     def _map(self, m):
         ret = ParamValMap()
-        
-        for key in m.keys():
-            v = m[key]
+
+        if m is not None:        
+            for key in m.keys():
+                v = m[key]
             
-            print("v: " + str(type(v)))
-            if type(v) == int:
-                ret[key] = ParamValInt(v)
-            elif type(v) == str:
-                ret[key] = ParamValStr(v)
-            elif isinstance(v, dict):
-                ret[key] = self._map(v)
-            else:
-                raise Exception("unknown elem type " + str(type(v)))
+                print("v: " + str(type(v)))
+                if type(v) == int:
+                    ret[key] = ParamValInt(v)
+                elif type(v) == str:
+                    ret[key] = ParamValStr(v)
+                elif isinstance(v, dict):
+                    ret[key] = self._map(v)
+                else:
+                    raise Exception("unknown elem type " + str(type(v)))
+                
+        return ret
                 

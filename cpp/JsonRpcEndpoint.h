@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include "tblink_rpc/IParamVal.h"
 #include "tblink_rpc/IEndpoint.h"
+#include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/ITransport.h"
 
 namespace tblink_rpc_core {
@@ -17,13 +18,27 @@ namespace tblink_rpc_core {
 class JsonRpcEndpoint : public virtual IEndpoint {
 public:
 	JsonRpcEndpoint(
-			ITransport		*transport);
+			ITransport			*transport,
+			IEndpointServices	*services);
 
 	virtual ~JsonRpcEndpoint();
 
 	virtual bool build_complete() override;
 
 	virtual bool connect_complete() override;
+
+	virtual bool shutdown() override;
+
+	virtual intptr_t add_time_callback(
+			uint64_t						time,
+			const std::function<void()>		&cb_f) override;
+
+	virtual void cancel_callback(intptr_t	id) override;
+
+	/** Called by the environment to notify that
+	 *  a callback has occurred
+	 */
+	virtual void notify_callback(intptr_t   id) override;
 
 	virtual const std::string &last_error() override { }
 
@@ -47,14 +62,21 @@ private:
 
 	int32_t recv_rsp(
 			intptr_t				id,
-			IParamValSP				result,
-			IParamValSP				error);
+			IParamValMapSP			result,
+			IParamValMapSP			error);
 
-	std::pair<IParamValSP,IParamValSP> wait_rsp(intptr_t id);
+	std::pair<IParamValMapSP,IParamValMapSP> wait_rsp(intptr_t id);
 
 private:
 	ITransport						*m_transport;
-	std::map<intptr_t, std::pair<IParamValSP,IParamValSP>>	m_rsp_m;
+	IEndpointServices				*m_services;
+
+	std::map<intptr_t, std::pair<IParamValMapSP,IParamValMapSP>>	m_rsp_m;
+
+	bool															m_build_complete;
+	bool															m_connect_complete;
+	std::map<intptr_t, std::function<void()>>						m_callback_m;
+	intptr_t														m_callback_id;
 
 };
 

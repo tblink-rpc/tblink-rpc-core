@@ -108,7 +108,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 
 		// Process data
 		for (uint32_t i=0; i<sz; i++) {
-			fprintf(stdout, "[%d] Process char %c\n", m_msg_state, tmp[i]);
+//			fprintf(stdout, "[%d] Process char %c\n", m_msg_state, tmp[i]);
 			switch (m_msg_state) {
 			case 0: { // Waiting for a header
 				if (tmp[i] == HEADER_PREFIX.at(m_msgbuf_idx)) {
@@ -146,7 +146,6 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 					// Skip leading whitespace
 				} else {
 					msgbuf_append(tmp[i]);
-					fprintf(stdout, "m_msgbuf_idx=%d m_msg_length=%d\n", m_msgbuf_idx, m_msg_length);
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
 						fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
@@ -154,20 +153,26 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
 
-							JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
 							// Is this a request or a response?
 							if (msg.contains("method")) {
-								// TODO: Request
+								// TODO: Request or notify
 								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
+								intptr_t id = -1;
+
+								if (params->hasKey("id")) {
+									id = params->getValT<IParamValInt>("id")->val_s();
+								}
+
 								fprintf(stdout, "--> m_req_f\n");
 								fflush(stdout);
-								m_req_f(msg["method"], id->val_s(), params);
+								m_req_f(msg["method"], id, params);
 								fprintf(stdout, "<-- m_req_f\n");
 								fflush(stdout);
 							} else {
 								// TODO: Response
-								IParamValSP result;
-								IParamValSP error;
+								IParamValMapSP result;
+								IParamValMapSP error;
+								JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
 								fprintf(stdout, "--> m_rsp_f\n");
 								fflush(stdout);
 								m_rsp_f(id->val_s(), result, error);
@@ -246,8 +251,8 @@ int32_t SocketMessageTransport::send_notify(
 
 int32_t SocketMessageTransport::send_rsp(
 		intptr_t				id,
-		IParamValSP				result,
-		IParamValSP				error) {
+		IParamValMapSP			result,
+		IParamValMapSP			error) {
 	fprintf(stdout, "--> SocketMessageTransport::send_rsp\n");
 	char tmp[64];
 	nlohmann::json msg;

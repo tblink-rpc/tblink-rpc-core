@@ -3,11 +3,14 @@ Created on Jul 2, 2021
 
 @author: mballance
 '''
-from enum import Enum, IntEnum
-from tblink_rpc_core.msgs.build_complete import BuildComplete
-from tblink_rpc_core.transport import Transport
-from tblink_rpc_core.param_val_map import ParamValMap
 from asyncio.locks import Lock, Event
+from enum import Enum, IntEnum
+import sys
+
+from tblink_rpc_core.msgs.build_complete import BuildComplete
+from tblink_rpc_core.param_val_map import ParamValMap
+from tblink_rpc_core.transport import Transport
+
 
 class TimeUnit(IntEnum):
     ps = -12
@@ -33,6 +36,8 @@ class Endpoint(object):
         self.have_connect_complete = False
         self.have_connect_complete_ev = Event()
         
+        self.cb_id_m = {}
+        
 #    def req_f(self, ):
     
     async def notify_init(self):
@@ -50,32 +55,60 @@ class Endpoint(object):
         
         print("result,error=%s,%s" % (str(result), str(error)))
         
-        pass
-    
-#    async def wait_build_complete(self):
-#        pass
-    
+        while not self.have_build_complete:
+            await self.have_build_complete_ev.wait()
+            self.have_build_complete_ev.clear()
+        
     async def connect_complete(self):
-        pass
+        id = await self.transport.send_req("tblink.connect-complete", ParamValMap())
+        result, error = await self._wait_rsp(id)
+
+        while not self.have_connect_complete:
+            await self.have_connect_complete_ev.wait()
+            self.have_connect_complete_ev.clear()
+
+    async def add_time_callback(self, time, cb_f) -> int:
+        params = ParamValMap()
+        params["time"] = time
+        id = await self.transport.send_req("tblink.add-time-callback", params)
+        result, error = await self._wait_rsp(id)
+        
+        callback_id = result["callback-id"].val
+        self.cb_id_m[callback_id] = cb_f
+        
+        return callback_id
+        
     
     async def wait_time(self, time, units=None):
         pass
     
     async def _req_f(self, method, id, params):
         print("REQ_F: %d %s" % (id, method))
-        if method == "tblink.build-complete":
-            self.have_build_complete = True
-            self.have_build_complete_ev.set()
-            await self.transport.send_rsp(id, ParamValMap(), None)
-        elif method == "tblink.connect-complete":
-            self.have_connect_complete = True
-            self.have_connect_complete_ev.set()
-            await self.transport.send_rsp(id, ParamValMap(), None)
+        
+        if id != -1:
+            if method == "tblink.build-complete":
+                self.have_build_complete = True
+                self.have_build_complete_ev.set()
+                await self.transport.send_rsp(id, ParamValMap(), None)
+            elif method == "tblink.connect-complete":
+                self.have_connect_complete = True
+                self.have_connect_complete_ev.set()
+                await self.transport.send_rsp(id, ParamValMap(), None)
+            else:
+                print("TODO: %s" % method)
         else:
-            print("TODO:")
+            if method == "tblink.notify-callback":
+                callback_id = params["callback-id"].val
+                self.cb_id_m[callback_id]()
+                del self.cb_id_m[callback_id]
+            else:
+                print("TODO: %s" % method)
         pass
     
     async def _rsp_f(self, id, result, error):
+        print("--> _rsp_f %d" % id)
+        sys.stdout.flush()
+        
         await self.rsp_m_lock.acquire()
         if id in self.rsp_m.keys():
             ev = self.rsp_m[id][0]
@@ -83,9 +116,13 @@ class Endpoint(object):
             ev.set()
         else:
             self.rsp_m[id] = (None, (result, error))
-        await self.rsp_m_lock.release()
+        self.rsp_m_lock.release()
+        
+        print("<-- _rsp_f %d" % id)
+        sys.stdout.flush()
     
     async def _wait_rsp(self, id):
+        print("--> wait_rsp %d" % id)
         await self.rsp_m_lock.acquire()
         if id in self.rsp_m.keys():
             # Already have a message waiting
@@ -93,12 +130,15 @@ class Endpoint(object):
         else:
             ev = Event()
             self.rsp_m[id] = (ev, None)
+            self.rsp_m_lock.release()
             await ev.wait()
             
+        await self.rsp_m_lock.acquire()
         ret = self.rsp_m[id][1]
         del self.rsp_m[id]
         
         self.rsp_m_lock.release()
 
+        print("<-- wait_rsp %d" % id)
         return ret
         

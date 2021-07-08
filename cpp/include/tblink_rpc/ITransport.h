@@ -20,8 +20,8 @@ typedef std::function<int32_t(
 
 typedef std::function<int32_t(
 		intptr_t				id,
-		IParamValSP				result,
-		IParamValSP				error)> recv_rsp_f;
+		IParamValMapSP			result,
+		IParamValMapSP			error)> recv_rsp_f;
 
 class ITransport : public virtual IParamValFactory {
 public:
@@ -42,8 +42,8 @@ public:
 
 	virtual int32_t send_rsp(
 			intptr_t			id,
-			IParamValSP			result,
-			IParamValSP			error) = 0;
+			IParamValMapSP		result,
+			IParamValMapSP		error) = 0;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) = 0;
 
