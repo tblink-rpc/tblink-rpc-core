@@ -6,20 +6,16 @@
 
 cmake_minimum_required(VERSION 3.11)
 
-project(pyboolector)
+project(tblink-rpc-core)
 
 include (ExternalProject)
 
-if (NOT PACKAGES_DIR)
-  set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
-endif()
-
-message("PSSParser: PACKAGES_DIR=${PACKAGES_DIR}")
 
 
 if(NOT WIN32)
-  list(APPEND CMAKE_C_FLAGS -fPIC)
-  list(APPEND CMAKE_CXX_FLAGS -fPIC)
+	add_compile_options(-fPIC)
+#  list(APPEND CMAKE_C_FLAGS -fPIC)
+#  list(APPEND CMAKE_CXX_FLAGS -fPIC)
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
@@ -33,10 +29,14 @@ endforeach()
 file(GLOB tblink_rpc_core_SRC
   cpp/*.cpp
   cpp/*.h)
+
+if (NOT PACKAGES_DIR)
+  set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
+
+  # TODO: this should only be if tblink-rpc-core is a toplevel project 
+  enable_testing()
  
- enable_testing()
- 
- ExternalProject_Add(googletest
+  ExternalProject_Add(googletest
         PREFIX googletest
         SOURCE_DIR "${PACKAGES_DIR}/googletest"
         CMAKE_CACHE_ARGS
@@ -45,12 +45,18 @@ file(GLOB tblink_rpc_core_SRC
           -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
     )
 
+  add_subdirectory(tests)
+endif()
+
 add_library(tblink_rpc_core ${tblink_rpc_core_SRC})
 
 target_include_directories(tblink_rpc_core PRIVATE
 	${PACKAGES_DIR}/json/include
 	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include)
 
-add_subdirectory(tests)
+install(TARGETS tblink_rpc_core
+    DESTINATION lib
+    EXPORT tblink_rpc_core-targets)
 
+message("PSSParser: PACKAGES_DIR=${PACKAGES_DIR}")
 
