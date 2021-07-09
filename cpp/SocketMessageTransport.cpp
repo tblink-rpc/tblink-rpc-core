@@ -159,8 +159,8 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
 								intptr_t id = -1;
 
-								if (params->hasKey("id")) {
-									id = params->getValT<IParamValInt>("id")->val_s();
+								if (msg.contains("id")) {
+									id = msg["id"];
 								}
 
 								fprintf(stdout, "--> m_req_f\n");
@@ -254,6 +254,7 @@ int32_t SocketMessageTransport::send_rsp(
 		IParamValMapSP			result,
 		IParamValMapSP			error) {
 	fprintf(stdout, "--> SocketMessageTransport::send_rsp\n");
+	fflush(stdout);
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
@@ -274,6 +275,7 @@ int32_t SocketMessageTransport::send_rsp(
 	ret = ::send(m_socket, body.c_str(), body.size(), 0);
 
 	fprintf(stdout, "<-- SocketMessageTransport::send_rsp\n");
+	fflush(stdout);
 	return ret;
 }
 

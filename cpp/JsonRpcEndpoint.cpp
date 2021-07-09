@@ -124,7 +124,7 @@ int32_t JsonRpcEndpoint::recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMapSP			params) {
-	fprintf(stdout, "--> recv_req: %s\n", method.c_str());
+	fprintf(stdout, "--> recv_req: %s id=%d\n", method.c_str(), (int)id);
 	fflush(stdout);
 
 	if (id != -1) {

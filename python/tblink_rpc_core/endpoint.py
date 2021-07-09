@@ -10,6 +10,7 @@ import sys
 from tblink_rpc_core.msgs.build_complete import BuildComplete
 from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.transport import Transport
+from tblink_rpc_core.param_val_int import ParamValInt
 
 
 class TimeUnit(IntEnum):
@@ -51,13 +52,14 @@ class Endpoint(object):
         # Wait for a response
         # Return True/False based on response
         id = await self.transport.send_req("tblink.build-complete", ParamValMap())
-        result, error = await self._wait_rsp(id)
         
+        result, error = await self._wait_rsp(id)
         print("result,error=%s,%s" % (str(result), str(error)))
         
         while not self.have_build_complete:
             await self.have_build_complete_ev.wait()
             self.have_build_complete_ev.clear()
+            
         
     async def connect_complete(self):
         id = await self.transport.send_req("tblink.connect-complete", ParamValMap())
@@ -66,10 +68,11 @@ class Endpoint(object):
         while not self.have_connect_complete:
             await self.have_connect_complete_ev.wait()
             self.have_connect_complete_ev.clear()
+            
 
     async def add_time_callback(self, time, cb_f) -> int:
         params = ParamValMap()
-        params["time"] = time
+        params["time"] = ParamValInt(time)
         id = await self.transport.send_req("tblink.add-time-callback", params)
         result, error = await self._wait_rsp(id)
         
@@ -83,7 +86,7 @@ class Endpoint(object):
         pass
     
     async def _req_f(self, method, id, params):
-        print("REQ_F: %d %s" % (id, method))
+        print("Python: REQ_F: %d %s" % (id, method))
         
         if id != -1:
             if method == "tblink.build-complete":
@@ -106,7 +109,7 @@ class Endpoint(object):
         pass
     
     async def _rsp_f(self, id, result, error):
-        print("--> _rsp_f %d" % id)
+        print("--> Python: _rsp_f %d" % id)
         sys.stdout.flush()
         
         await self.rsp_m_lock.acquire()
@@ -118,11 +121,13 @@ class Endpoint(object):
             self.rsp_m[id] = (None, (result, error))
         self.rsp_m_lock.release()
         
-        print("<-- _rsp_f %d" % id)
+        print("<-- Python: _rsp_f %d" % id)
         sys.stdout.flush()
     
     async def _wait_rsp(self, id):
-        print("--> wait_rsp %d" % id)
+        print("--> Python: wait_rsp %d" % id)
+        sys.stdout.flush()
+        
         await self.rsp_m_lock.acquire()
         if id in self.rsp_m.keys():
             # Already have a message waiting
@@ -139,6 +144,7 @@ class Endpoint(object):
         
         self.rsp_m_lock.release()
 
-        print("<-- wait_rsp %d" % id)
+        print("<-- Python: wait_rsp %d" % id)
+        sys.stdout.flush()
         return ret
         
