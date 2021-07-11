@@ -15,13 +15,13 @@ class Transport(object):
         self.req_f = req_f
         self.rsp_f = rsp_f
         
-    async def send_req(self, method, params) -> int:
+    def send_req(self, method, params) -> int:
         raise NotImplementedError("send_req not implemented by " + str(type(self)))
     
-    async def send_notify(self, method, params):
+    def send_notify(self, method, params):
         raise NotImplementedError("send_notify not implemented by " + str(type(self)))
     
-    async def send_rsp(self, id, result, error):
+    def send_rsp(self, id, result, error):
         raise NotImplementedError("send_rsp not implemented by " + str(type(self)))
     
     async def run(self):

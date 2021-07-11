@@ -20,14 +20,32 @@ class IEndpoint;
 typedef std::unique_ptr<IEndpoint> IEndpointUP;
 class IEndpoint {
 public:
+	enum State {
+		Init,
+		Built,
+		Connected,
+		Running,
+		Shutdown
+	};
+
+public:
 
 	virtual ~IEndpoint() { }
+
+	virtual State state() = 0;
 
 	virtual bool build_complete() = 0;
 
 	virtual bool connect_complete() = 0;
 
 	virtual bool shutdown() = 0;
+
+	/**
+	 * Yield control to enable message processing.
+	 * Returns 'true' if activity was processed and
+	 * false when idle.
+	 */
+	virtual int32_t yield() = 0;
 
 	virtual intptr_t add_time_callback(
 			uint64_t						time,

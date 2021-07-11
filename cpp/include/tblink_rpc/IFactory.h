@@ -21,7 +21,9 @@ public:
 			ITransport 			*transport,
 			IEndpointServices	*services) = 0;
 
-	virtual ITransport *mkSocketTransport(int32_t socket) = 0;
+	virtual ITransport *mkSocketTransport(
+			pid_t			pid,
+			int32_t 		socket) = 0;
 
 };
 

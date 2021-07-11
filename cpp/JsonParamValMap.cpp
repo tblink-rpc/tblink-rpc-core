@@ -5,14 +5,45 @@
  *      Author: mballance
  */
 
-#include "JsonParamValMap.h"
 #include "nlohmann/json.hpp"
+#include "JsonParamValInt.h"
+#include "JsonParamValMap.h"
+#include "JsonParamValStr.h"
 
 namespace tblink_rpc_core {
 
 JsonParamValMap::JsonParamValMap() {
 	// TODO Auto-generated constructor stub
 
+}
+
+JsonParamValMap::JsonParamValMap(const nlohmann::json &msg) {
+	for (nlohmann::json::const_iterator
+			it=msg.begin();
+			it!=msg.end(); it++) {
+		switch (it->type()) {
+		case nlohmann::json::value_t::number_integer:
+			fprintf(stdout, "number_integer\n");
+			setVal(it.key(),
+					JsonParamValSP(new JsonParamValInt(it.value().get<int64_t>())));
+			break;
+		case nlohmann::json::value_t::number_unsigned:
+			fprintf(stdout, "number_unsigned\n");
+			setVal(it.key(),
+					JsonParamValSP(new JsonParamValInt(it.value().get<uint64_t>())));
+			break;
+		case nlohmann::json::value_t::object:
+			setVal(it.key(),
+					IParamValSP(new JsonParamValMap(it.value().get<nlohmann::json>())));
+			break;
+		case nlohmann::json::value_t::string:
+			setVal(it.key(),
+					JsonParamValSP(new JsonParamValStr(it.value().get<std::string>())));
+			break;
+		default:
+			fprintf(stdout, "Error: unhandled parameter type %s\n", it->type_name());
+		}
+	}
 }
 
 JsonParamValMap::~JsonParamValMap() {
@@ -68,7 +99,7 @@ JsonParamValMapSP JsonParamValMap::mk() {
 }
 
 JsonParamValMapSP JsonParamValMap::mk(const nlohmann::json &msg) {
-	return JsonParamValMapSP(new JsonParamValMap());
+	return JsonParamValMapSP(new JsonParamValMap(msg));
 }
 
 } /* namespace tblink_rpc_core */

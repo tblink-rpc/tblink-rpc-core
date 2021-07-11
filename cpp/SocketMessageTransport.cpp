@@ -11,8 +11,11 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <signal.h>
+#include <unistd.h>
 #ifndef _WIN32
 #include <sys/select.h>
+#include <sys/wait.h>
 #endif
 #include "nlohmann/json.hpp"
 
@@ -22,12 +25,40 @@
 #include "JsonParamValStr.h"
 #include "JsonParamValVectorBase.h"
 
+#undef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+
+#ifdef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+#define DEBUG_ENTER(fmt, ...) \
+	fprintf(stdout, "--> SocketMessageTransport::"); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#define DEBUG_LEAVE(fmt, ...) \
+	fprintf(stdout, "<-- SocketMessageTransport::"); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#define DEBUG(fmt, ...) \
+	fprintf(stdout, "SocketMessageTransport: "); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#else
+#define DEBUG(fmt, ...)
+#define DEBUG_ENTER(fmt, ...)
+#define DEBUG_LEAVE(fmt, ...)
+#endif
+
 namespace tblink_rpc_core {
 
-SocketMessageTransport::SocketMessageTransport(int32_t socket) :
+SocketMessageTransport::SocketMessageTransport(
+		pid_t		pid,
+		int32_t 	socket) :
 	m_msgbuf(0), m_msg_state(0), m_msg_length(0),
-	m_socket(socket) {
+	m_pid(pid), m_socket(socket) {
 	m_id = 0;
+
+	m_outstanding = 0;
 
 	// TODO Auto-generated constructor stub
 	m_msgbuf_idx = 0;
@@ -48,6 +79,44 @@ void SocketMessageTransport::init(
 	m_rsp_f = rsp_f;
 }
 
+void SocketMessageTransport::shutdown() {
+	DEBUG_ENTER("shutdown");
+	if (m_pid > 0) {
+		int status = -1;
+		for (uint32_t i=0; i<5; i++) {
+			int ret = ::waitpid(m_pid, &status, WNOHANG);
+
+			if (ret == 0) {
+				DEBUG("Sleeping...");
+				::sleep(1);
+			} else if (ret == m_pid) {
+				DEBUG("ended");
+				m_pid = 0;
+				break;
+			}
+		}
+
+		if (m_pid > 0) {
+			fprintf(stdout, "TODO: terminate process\n");
+
+			for (uint32_t i=0; i<5; i++) {
+				int ret = ::kill(m_pid, (i<3)?SIGTERM:SIGKILL);
+
+				ret = ::waitpid(m_pid, &status, WNOHANG);
+
+				fprintf(stdout, "ret=%d\n", ret);
+
+				if (ret == m_pid) {
+					break;
+				} else {
+					DEBUG("Sleeping...");
+					::sleep(1);
+				}
+			}
+		}
+	}
+}
+
 int32_t SocketMessageTransport::poll(int timeout_ms) {
 	char tmp[1024];
 	int32_t sz;
@@ -55,7 +124,9 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 
 	// Poll for data
 
-	while (true) {
+	do {
+
+		DEBUG("poll -- timeout=%d", timeout_ms);
 
 		if (timeout_ms > 0) {
 			// Select to wait on data
@@ -79,19 +150,22 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 				break;
 			} else if (retval == 0) {
 				// No data
-				fprintf(stdout, "Note: no data\n");
+				DEBUG("Note: no data");
+				timeout_ms = 0;
 				break;
 			} else {
 				timeout_ms = 0;
 			}
 		}
 
+		DEBUG_ENTER("poll recv");
 		sz = ::recv(m_socket, tmp, 1024, 0);
+		DEBUG_LEAVE("poll recv");
 
-		fprintf(stdout, "sz=%d\n", sz);
+		DEBUG("sz=%d", sz);
 
 		if (sz <= 0) {
-			fprintf(stdout, "sz=%d errno=%d\n", sz, errno);
+			DEBUG("sz=%d errno=%d", sz, errno);
 
 			if (errno == EAGAIN) {
 				// Just nothing to see here
@@ -104,7 +178,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 			ret = 1;
 		}
 
-		fprintf(stdout, "received %d bytes\n", sz);
+		DEBUG("received %d bytes", sz);
 
 		// Process data
 		for (uint32_t i=0; i<sz; i++) {
@@ -126,13 +200,13 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 				if (m_msgbuf_idx == 0 && isspace(tmp[i])) {
 					// Skip leading whitespace
 				} else {
-					fprintf(stdout, "State 1: append %c\n", tmp[i]);
+					DEBUG("State 1: append %c", tmp[i]);
 					msgbuf_append(tmp[i]);
 					if (isspace(tmp[i])) {
 						msgbuf_append(0);
-						fprintf(stdout, "header=%s\n", m_msgbuf);
+						DEBUG("header=%s", m_msgbuf);
 						m_msg_length = strtoul(m_msgbuf, 0, 10);
-						fprintf(stdout, "len=%d\n", m_msg_length);
+						DEBUG("len=%d", m_msg_length);
 						// Reset the buffer to collect the payload
 						m_msgbuf_idx = 0;
 						m_msg_state = 2;
@@ -148,7 +222,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 					msgbuf_append(tmp[i]);
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
-						fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
+						DEBUG("Received message: \"%s\"", m_msgbuf);
 						nlohmann::json msg;
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
@@ -163,21 +237,19 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 									id = msg["id"];
 								}
 
-								fprintf(stdout, "--> m_req_f\n");
-								fflush(stdout);
+								DEBUG_ENTER("m_req_f");
+								m_outstanding += 1;
 								m_req_f(msg["method"], id, params);
-								fprintf(stdout, "<-- m_req_f\n");
-								fflush(stdout);
+								DEBUG_LEAVE("m_req_f");
 							} else {
 								// TODO: Response
 								IParamValMapSP result;
 								IParamValMapSP error;
 								JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
-								fprintf(stdout, "--> m_rsp_f\n");
-								fflush(stdout);
+								DEBUG_ENTER("m_rsp_f");
 								m_rsp_f(id->val_s(), result, error);
-								fprintf(stdout, "<-- m_rsp_f\n");
-								fflush(stdout);
+								m_outstanding -= 1;
+								DEBUG_LEAVE("m_rsp_f");
 							}
 						} catch (const std::exception &e) {
 							fprintf(stdout, "Failed to parse msg \"%s\" %s\n",
@@ -195,16 +267,16 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 			}
 			}
 		}
-	}
+	} while (ret == 0 || timeout_ms > 0);
 
-	fprintf(stdout, "return ret=%d\n", ret);
-	return ret;
+	DEBUG_LEAVE("poll return ret=%d,%d", ret, m_outstanding);
+	return (ret || m_outstanding > 0);
 }
 
 intptr_t SocketMessageTransport::send_req(
 		const std::string		&method,
 		IParamValMapSP			params) {
-	fprintf(stdout, "--> SocketMessageTransport::send\n");
+	DEBUG_ENTER("send_req");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
@@ -216,20 +288,22 @@ intptr_t SocketMessageTransport::send_req(
 	m_id++;
 
 	std::string body = msg.dump();
-	fprintf(stdout, "body=\"%s\" len=%d\n", body.c_str(), body.size());
+	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
+
+	m_outstanding += 1;
 
 	::send(m_socket, tmp, strlen(tmp), 0);
 	::send(m_socket, body.c_str(), body.size(), 0);
 
-	fprintf(stdout, "<-- SocketMessageTransport::send\n");
+	DEBUG_LEAVE("send_req");
 	return ret;
 }
 
 int32_t SocketMessageTransport::send_notify(
 		const std::string		&method,
 		IParamValMapSP			params) {
-	fprintf(stdout, "--> SocketMessageTransport::send\n");
+	DEBUG_ENTER("send_notify\n");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
@@ -239,13 +313,13 @@ int32_t SocketMessageTransport::send_notify(
 	int32_t ret = 0;
 
 	std::string body = msg.dump();
-	fprintf(stdout, "body=\"%s\" len=%d\n", body.c_str(), body.size());
+	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	::send(m_socket, tmp, strlen(tmp), 0);
 	::send(m_socket, body.c_str(), body.size(), 0);
 
-	fprintf(stdout, "<-- SocketMessageTransport::send\n");
+	DEBUG_LEAVE("send_notify");
 	return ret;
 }
 
@@ -253,8 +327,7 @@ int32_t SocketMessageTransport::send_rsp(
 		intptr_t				id,
 		IParamValMapSP			result,
 		IParamValMapSP			error) {
-	fprintf(stdout, "--> SocketMessageTransport::send_rsp\n");
-	fflush(stdout);
+	DEBUG_ENTER("send_rsp");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
@@ -266,7 +339,7 @@ int32_t SocketMessageTransport::send_rsp(
 	}
 
 	std::string body = msg.dump();
-	fprintf(stdout, "body=\"%s\" len=%d\n", body.c_str(), body.size());
+	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	int32_t ret = 0;
@@ -274,8 +347,9 @@ int32_t SocketMessageTransport::send_rsp(
 	ret = ::send(m_socket, tmp, strlen(tmp), 0);
 	ret = ::send(m_socket, body.c_str(), body.size(), 0);
 
-	fprintf(stdout, "<-- SocketMessageTransport::send_rsp\n");
-	fflush(stdout);
+	m_outstanding -= 1;
+
+	DEBUG_LEAVE("send_rsp");
 	return ret;
 }
 

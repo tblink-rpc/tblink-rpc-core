@@ -24,7 +24,6 @@ class Json2Param(object):
             for key in m.keys():
                 v = m[key]
             
-                print("v: " + str(type(v)))
                 if type(v) == int:
                     ret[key] = ParamValInt(v)
                 elif type(v) == str:

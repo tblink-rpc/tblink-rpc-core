@@ -32,6 +32,8 @@ public:
 			const recv_req_f &req_f,
 			const recv_rsp_f &rsp_f) = 0;
 
+	virtual void shutdown() = 0;
+
 	virtual intptr_t send_req(
 			const std::string		&method,
 			IParamValMapSP			params) = 0;
@@ -46,6 +48,11 @@ public:
 			IParamValMapSP		error) = 0;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) = 0;
+
+	/**
+	 * Returns number of mismatched req/rsp pairs
+	 */
+	virtual int32_t outstanding() = 0;
 
 };
 

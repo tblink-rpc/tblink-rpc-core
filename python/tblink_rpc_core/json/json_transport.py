@@ -12,19 +12,24 @@ from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.param_val_str import ParamValStr
 from tblink_rpc_core.transport import Transport
 from tblink_rpc_core.json.json2param import Json2Param
+import asyncio
 
 
 class JsonTransport(Transport):
+    DEBUG_EN = False
     
     def __init__(self, reader, writer):
         super().__init__()
         self.reader = reader
         self.writer = writer
         self.id = 0
+        self.outstanding = 0
+        self.drain_pending = False
         
-    async def send_req(self, method, params) -> int:
-        print("--> Python: send_req method=%s" % method)
-        sys.stdout.flush()
+    def send_req(self, method, params) -> int:
+        if JsonTransport.DEBUG_EN:
+            print("--> Python: send_req method=%s" % method)
+            sys.stdout.flush()
         
         msg = ParamValMap()
         msg["method"] = ParamValStr(method)
@@ -35,24 +40,33 @@ class JsonTransport(Transport):
         
         data = Param2Json().json(msg)
         
-        print("data: %s" % data)
+        if JsonTransport.DEBUG_EN:
+            print("data: %s" % data)
         
         header = ("Content-Length: %d\r\n\r\n" % len(data)).encode()
         self.writer.write(header)
         self.writer.write(data.encode())        
-        await self.writer.drain()
+        if not self.drain_pending:
+            asyncio.ensure_future(self._drain())
+            self.drain_pending = True
+#        await self.writer.drain()
+
+        # Track outstanding activity
+        self.outstanding += 1
         
-        print("<-- Python: send_req method=%s" % method)
-        sys.stdout.flush()
+        if JsonTransport.DEBUG_EN:
+            print("<-- Python: send_req method=%s" % method)
+            sys.stdout.flush()
         
         return id
     
-    async def send_notify(self, method, params):
+    def send_notify(self, method, params):
         raise NotImplementedError("send_notify not implemented by " + str(type(self)))
     
-    async def send_rsp(self, id, result, error):
-        print("--> Python: send_rsp id=%d" % id)
-        sys.stdout.flush()
+    def send_rsp(self, id, result, error):
+        if JsonTransport.DEBUG_EN:
+            print("--> Python: send_rsp id=%d" % id)
+            sys.stdout.flush()
         
         msg = ParamValMap()
         msg["id"] = ParamValInt(id)
@@ -65,18 +79,23 @@ class JsonTransport(Transport):
         
         data = Param2Json().json(msg)
         
-        print("data: %s" % data)
+        if JsonTransport.DEBUG_EN:
+            print("data: %s" % data)
         
         header = ("Content-Length: %d\r\n\r\n" % len(data)).encode()
         self.writer.write(header)
-        self.writer.write(data.encode())        
-        await self.writer.drain()
+        self.writer.write(data.encode())
+#        await self.writer.drain()
+
+        self.outstanding -= 1
         
-        print("<-- Python: send_rsp id=%d" % id)
-        sys.stdout.flush()
+        if JsonTransport.DEBUG_EN:
+            print("<-- Python: send_rsp id=%d" % id)
+            sys.stdout.flush()
     
     async def run(self):
-        print("==> msgloop")
+        if JsonTransport.DEBUG_EN:
+            print("==> msgloop")
         while True:
             #********************************************************
             #* Read header
@@ -95,8 +114,9 @@ class JsonTransport(Transport):
                 break
            
             hdr_s = hdr.decode()
-            print("hdr=" + hdr_s)
-            sys.stdout.flush()
+            if JsonTransport.DEBUG_EN:
+                print("hdr=" + hdr_s)
+                sys.stdout.flush()
             
             if hdr_s != "Content-Length: ":
                 print("Error: unknown header \"%s\"" % hdr_s)
@@ -109,15 +129,17 @@ class JsonTransport(Transport):
             while True:
                 c = await self.reader.read(1)
                 
-                print("c=" + str(c))
+                if JsonTransport.DEBUG_EN:
+                    print("c=" + str(c))
                 
                 if c[0] == 0xa:
                     break
                 else:
                     size_s += "%c" % c[0]
                     
-            print("size_s=%s" % size_s)
-            sys.stdout.flush()
+            if JsonTransport.DEBUG_EN:
+                print("size_s=%s" % size_s)
+                sys.stdout.flush()
             
             size = int(size_s.strip())
             
@@ -129,13 +151,15 @@ class JsonTransport(Transport):
                 #                 
                 body_s += tmp.decode().strip()
 
-            print("Python: body=" + body_s + " len=" + str(len(body_s)))
-            sys.stdout.flush()
+            if JsonTransport.DEBUG_EN:
+                print("Python: body=" + body_s + " len=" + str(len(body_s)))
+                sys.stdout.flush()
             
             msg = json.loads(body_s)
             
-            print("Python: msg=" + str(msg))
-            sys.stdout.flush()
+            if JsonTransport.DEBUG_EN:
+                print("Python: msg=" + str(msg))
+                sys.stdout.flush()
             
             if "method" in msg.keys():
                 # Request
@@ -145,7 +169,10 @@ class JsonTransport(Transport):
                     params = Json2Param().param(msg["params"])
                 else:
                     params = ParamValMap()
-                print("id=%s" % (str(type(id))))
+                    
+                if JsonTransport.DEBUG_EN:
+                    print("id=%s" % (str(type(id))))
+                self.outstanding += 1
                 await self.req_f(method, id, params)
                 pass
             else:
@@ -160,9 +187,16 @@ class JsonTransport(Transport):
                 else:
                     raise Exception("Unknown response format: %s" % (str(msg)))
                 await self.rsp_f(id, result, error)
+                self.outstanding -= 1
             
 
         # Halt the event loop
 #        asyncio.get_event_loop().stop()            
-        print("<== msgloop")
-        sys.stdout.flush()
+        if JsonTransport.DEBUG_EN:
+            print("<== msgloop")
+            sys.stdout.flush()
+        
+    async def _drain(self):
+        await self.writer.drain()
+        self.drain_pending = False
+        

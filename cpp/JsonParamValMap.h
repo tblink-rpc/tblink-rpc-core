@@ -17,6 +17,8 @@ class JsonParamValMap : public JsonParamVal, public virtual IParamValMap {
 public:
 	JsonParamValMap();
 
+	JsonParamValMap(const nlohmann::json &msg);
+
 	virtual ~JsonParamValMap();
 
 	virtual const std::set<std::string> &keys() override;

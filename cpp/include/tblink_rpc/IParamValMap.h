@@ -13,7 +13,7 @@ namespace tblink_rpc_core {
 
 class IParamValMap;
 typedef std::shared_ptr<IParamValMap> IParamValMapSP;
-class IParamValMap : public IParamVal {
+class IParamValMap : public virtual IParamVal {
 public:
 
 	virtual ~IParamValMap() { }

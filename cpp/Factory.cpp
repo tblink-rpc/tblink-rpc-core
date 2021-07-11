@@ -26,8 +26,10 @@ IEndpoint *Factory::mkJsonRpcEndpoint(
 	return new JsonRpcEndpoint(transport, services);
 }
 
-ITransport *Factory::mkSocketTransport(int32_t fd) {
-	return new SocketMessageTransport(fd);
+ITransport *Factory::mkSocketTransport(
+		pid_t			pid,
+		int32_t 		fd) {
+	return new SocketMessageTransport(pid, fd);
 }
 
 static Factory prvFactory;

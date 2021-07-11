@@ -7,6 +7,30 @@
 
 #include "JsonRpcEndpoint.h"
 
+#undef EN_DEBUG_JSON_RPC_ENDPOINT
+
+#ifdef EN_DEBUG_JSON_RPC_ENDPOINT
+#define DEBUG_ENTER(fmt, ...) \
+	fprintf(stdout, "--> JsonRpcEndpoint::"); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#define DEBUG_LEAVE(fmt, ...) \
+	fprintf(stdout, "<-- JsonRpcEndpoint::"); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#define DEBUG(fmt, ...) \
+	fprintf(stdout, "JsonRpcEndpoint: "); \
+	fprintf(stdout, fmt, #__VA_ARGS__); \
+	fprintf(stdout, "\n"); \
+	fflush(stdout)
+#else
+#define DEBUG(fmt, ...)
+#define DEBUG_ENTER(fmt, ...)
+#define DEBUG_LEAVE(fmt, ...)
+#endif
+
 namespace tblink_rpc_core {
 
 JsonRpcEndpoint::JsonRpcEndpoint(
@@ -14,6 +38,8 @@ JsonRpcEndpoint::JsonRpcEndpoint(
 		IEndpointServices		*services) {
 	m_transport = transport;
 	m_services  = services;
+
+	m_state = IEndpoint::Init;
 
 	m_transport->init(
 			std::bind(
@@ -29,6 +55,7 @@ JsonRpcEndpoint::JsonRpcEndpoint(
 					std::placeholders::_2,
 					std::placeholders::_3)
 					);
+	m_services->init(this);
 
 	m_build_complete = false;
 	m_connect_complete = false;
@@ -54,6 +81,8 @@ bool JsonRpcEndpoint::build_complete() {
 		}
 	}
 
+	m_state = IEndpoint::Built;
+
 	return true;
 }
 
@@ -71,16 +100,40 @@ bool JsonRpcEndpoint::connect_complete() {
 		}
 	}
 
+	m_state = IEndpoint::Connected;
+
 	return true;
 }
 
 bool JsonRpcEndpoint::shutdown() {
-	IParamValMapSP params = m_transport->mkValMap();
+	if (m_state != IEndpoint::Shutdown) {
+		IParamValMapSP params = m_transport->mkValMap();
 
-	intptr_t id = m_transport->send_req("tblink.shutdown", params);
-	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
+		intptr_t id = m_transport->send_req("tblink.shutdown", params);
+
+		// TODO: only wait a little bit for a response...
+		//	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
+
+		m_transport->shutdown();
+
+		m_state = IEndpoint::Shutdown;
+	}
 
 	return true;
+}
+
+int32_t JsonRpcEndpoint::yield() {
+	DEBUG_ENTER("yield");
+	int32_t ret = m_transport->poll(
+			m_transport->outstanding()?1000:0);
+
+	if (ret == -1) {
+		DEBUG_LEAVE("yield -1");
+		return ret;
+	} else {
+		DEBUG_LEAVE("yield %d,%d", ret, m_transport->outstanding());
+		return (ret || m_transport->outstanding());
+	}
 }
 
 intptr_t JsonRpcEndpoint::add_time_callback(
@@ -117,15 +170,19 @@ void JsonRpcEndpoint::notify_callback(intptr_t   callback_id) {
 
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
 
-	m_transport->send_notify("tblink.notify-callback", params);
+	intptr_t id = m_transport->send_req("tblink.notify-callback", params);
+
+	// TODO: We don't really care about the response directly. Can
+	// we let the system know to expect a response, but clear it out
+	// once received?
+	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
 }
 
 int32_t JsonRpcEndpoint::recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMapSP			params) {
-	fprintf(stdout, "--> recv_req: %s id=%d\n", method.c_str(), (int)id);
-	fflush(stdout);
+	DEBUG_ENTER("recv_req: %s id=%d", method.c_str(), (int)id);
 
 	if (id != -1) {
 		if (method == "tblink.build-complete") {
@@ -144,9 +201,10 @@ int32_t JsonRpcEndpoint::recv_req(
 					id,
 					result,
 					error);
-		} else if (method == "tblink.time-callback") {
+		} else if (method == "tblink.add-time-callback") {
 			intptr_t callback_id = m_services->add_time_cb(
-					params->getValT<IParamValInt>("time")->val_s());
+					params->getValT<IParamValInt>("time")->val_s(),
+					params->getValT<IParamValInt>("callback-id")->val_s());
 
 			IParamValMapSP result = m_transport->mkValMap();
 			result->setVal("callback-id",
@@ -156,6 +214,20 @@ int32_t JsonRpcEndpoint::recv_req(
 					id,
 					result,
 					error);
+		} else if (method == "tblink.shutdown") {
+			// TODO: should receive some sort of status
+
+			// Avoid recursive efforts to shutdown
+			m_state = IEndpoint::Shutdown;
+
+			IParamValMapSP result = m_transport->mkValMap();
+			IParamValMapSP error;
+			m_transport->send_rsp(
+					id,
+					result,
+					error);
+
+			m_services->shutdown();
 		} else {
 			fprintf(stdout, "Error: unhandled message\n");
 		}
@@ -163,8 +235,7 @@ int32_t JsonRpcEndpoint::recv_req(
 		// Notifies
 	}
 
-	fprintf(stdout, "<-- recv_req: %s\n", method.c_str());
-	fflush(stdout);
+	DEBUG_LEAVE("recv_req: %s", method.c_str());
 
 	return 0;
 }
@@ -173,12 +244,10 @@ int32_t JsonRpcEndpoint::recv_rsp(
 		intptr_t				id,
 		IParamValMapSP			result,
 		IParamValMapSP			error) {
-	fprintf(stdout, "--> recv_rsp\n");
-	fflush(stdout);
+	DEBUG_ENTER("recv_rsp");
 	m_rsp_m.insert({id, {result, error}});
 
-	fprintf(stdout, "<-- recv_rsp\n");
-	fflush(stdout);
+	DEBUG_LEAVE("recv_rsp");
 	return 0;
 }
 
@@ -186,15 +255,14 @@ std::pair<IParamValMapSP,IParamValMapSP> JsonRpcEndpoint::wait_rsp(intptr_t id) 
 	std::map<intptr_t,std::pair<IParamValMapSP,IParamValMapSP>>::iterator it;
 	std::pair<IParamValMapSP,IParamValMapSP> rsp;
 
-	fprintf(stdout, "--> wait_rsp\n");
-	fflush(stdout);
+	DEBUG_ENTER("wait_rsp");
 
 	// Poll waiting
 	while ((it=m_rsp_m.find(id)) == m_rsp_m.end()) {
 
-		fprintf(stdout, "--> poll\n");
+		DEBUG_ENTER("wait_rsp --> poll");
 		int32_t ret = m_transport->poll(1000);
-		fprintf(stdout, "<-- poll %d\n", ret);
+		DEBUG_LEAVE("wait_rsp poll %d", ret);
 
 		if (ret == -1) {
 			// Failure
@@ -207,8 +275,7 @@ std::pair<IParamValMapSP,IParamValMapSP> JsonRpcEndpoint::wait_rsp(intptr_t id) 
 		m_rsp_m.erase(it);
 	}
 
-	fprintf(stdout, "<-- wait_rsp\n");
-	fflush(stdout);
+	DEBUG_LEAVE("wait_rsp");
 
 	return rsp;
 }

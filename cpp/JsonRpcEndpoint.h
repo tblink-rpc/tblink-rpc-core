@@ -23,11 +23,15 @@ public:
 
 	virtual ~JsonRpcEndpoint();
 
+	virtual State state() override { return m_state; }
+
 	virtual bool build_complete() override;
 
 	virtual bool connect_complete() override;
 
 	virtual bool shutdown() override;
+
+	virtual int32_t yield() override;
 
 	virtual intptr_t add_time_callback(
 			uint64_t						time,
@@ -77,6 +81,8 @@ private:
 	bool															m_connect_complete;
 	std::map<intptr_t, std::function<void()>>						m_callback_m;
 	intptr_t														m_callback_id;
+
+	State															m_state;
 
 };
 

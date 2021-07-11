@@ -21,7 +21,9 @@ public:
 			ITransport 			*transport,
 			IEndpointServices	*services) override;
 
-	virtual ITransport *mkSocketTransport(int32_t socket) override;
+	virtual ITransport *mkSocketTransport(
+			pid_t		pid,
+			int32_t 	socket) override;
 };
 
 } /* namespace tblink_rpc_core */

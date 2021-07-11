@@ -15,6 +15,7 @@ namespace tblink_rpc_core {
 class SocketMessageTransport : public virtual ITransport {
 public:
 	SocketMessageTransport(
+			pid_t			pid,
 			int32_t			socket);
 
 	virtual ~SocketMessageTransport();
@@ -22,6 +23,8 @@ public:
 	virtual void init(
 			const recv_req_f		&req_f,
 			const recv_rsp_f		&rsp_f) override;
+
+	virtual void shutdown() override;
 
 	virtual intptr_t send_req(
 			const std::string	&method,
@@ -37,6 +40,8 @@ public:
 			IParamValMapSP		error) override;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) override;
+
+	virtual int32_t outstanding() override { return m_outstanding; }
 
 	virtual IParamValBoolSP mkValBool(bool val) override;
 
@@ -68,10 +73,14 @@ private:
 	uint32_t					m_msgbuf_max;
 	uint32_t					m_msg_state;
 	uint32_t					m_msg_length;
+	pid_t						m_pid;
 	int32_t						m_socket;
+	int32_t						m_outstanding;
 
 	recv_req_f					m_req_f;
 	recv_rsp_f					m_rsp_f;
+
+
 
 	static const std::string	HEADER_PREFIX;
 
