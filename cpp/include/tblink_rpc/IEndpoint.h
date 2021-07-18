@@ -60,6 +60,9 @@ public:
 
 	virtual const std::string &last_error() = 0;
 
+	virtual IInterfaceType *findInterfaceType(
+			const std::string		&name) = 0;
+
 	/*
 	virtual ITypeBuilderSP mk_type_builder(
 			const std::string		&name) = 0;

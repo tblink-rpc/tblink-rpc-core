@@ -4,6 +4,7 @@
  *  Created on: Jul 4, 2021
  *      Author: mballance
  */
+#pragma once
 #include "IMethodType.h"
 
 namespace tblink_rpc_core {

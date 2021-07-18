@@ -6,6 +6,8 @@
  */
 
 #include "JsonRpcEndpoint.h"
+#include "JsonInterfaceType.h"
+#include "JsonInterfaceTypeBuilder.h"
 
 #undef EN_DEBUG_JSON_RPC_ENDPOINT
 
@@ -176,6 +178,39 @@ void JsonRpcEndpoint::notify_callback(intptr_t   callback_id) {
 	// we let the system know to expect a response, but clear it out
 	// once received?
 	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
+}
+
+IInterfaceType *JsonRpcEndpoint::findInterfaceType(
+			const std::string		&name) {
+	std::map<std::string,IInterfaceTypeUP>::const_iterator it;
+
+	if ((it=m_iftype_m.find(name)) != m_iftype_m.end()) {
+		return it->second.get();
+	} else {
+		return 0;
+	}
+}
+
+IInterfaceTypeBuilder *JsonRpcEndpoint::newInterfaceTypeBuilder(
+			const std::string		&name) {
+	return new JsonInterfaceTypeBuilder(name);
+}
+
+IInterfaceType *JsonRpcEndpoint::defineInterfaceType(
+			IInterfaceTypeBuilder	*type) {
+	JsonInterfaceTypeBuilder *builder =
+			static_cast<JsonInterfaceTypeBuilder *>(type);
+	JsonInterfaceType *if_type = builder->type();
+	m_iftype_m.insert({if_type->name(), IInterfaceTypeUP(if_type)});
+
+	return if_type;
+}
+
+IInterfaceInst *JsonRpcEndpoint::defineInterfaceInst(
+			IInterfaceType			*type,
+			const std::string		&inst_name,
+			const invoke_req_f		&req_f) {
+
 }
 
 int32_t JsonRpcEndpoint::recv_req(

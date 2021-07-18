@@ -13,6 +13,7 @@ from tblink_rpc_core.transport import Transport
 from tblink_rpc_core.param_val_int import ParamValInt
 from asyncio.coroutines import iscoroutinefunction
 import asyncio
+from typing import List
 
 
 class TimeUnit(IntEnum):
@@ -41,12 +42,21 @@ class Endpoint(object):
         self.have_connect_complete = False
         self.have_connect_complete_ev = Event()
         
+        self.args = None
+        
         self.callback_id = 1
         
         self.cb_id_m = {}
         
 #    def req_f(self, ):
-    
+   
+    async def init(self) -> ParamValMap:
+        id = self.transport.send_req("tblink.init", ParamValMap())
+        
+        result, error = await self._wait_rsp(id)
+        
+        self.args = result["args"]
+
     async def notify_init(self):
         pass
     
@@ -76,6 +86,10 @@ class Endpoint(object):
             await self.have_connect_complete_ev.wait()
             self.have_connect_complete_ev.clear()
             
+    def args(self) -> List[str]:
+        """Returns command-line arguments from the peer. Valid after 'init'"""
+        return self.args
+
     async def shutdown(self):
         id = self.transport.send_req("tblink.shutdown", ParamValMap())
         

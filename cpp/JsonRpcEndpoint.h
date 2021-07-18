@@ -46,17 +46,19 @@ public:
 
 	virtual const std::string &last_error() override { }
 
+	virtual IInterfaceType *findInterfaceType(
+			const std::string		&name) override;
 
 	virtual IInterfaceTypeBuilder *newInterfaceTypeBuilder(
-			const std::string		&name) override { }
+			const std::string		&name) override;
 
 	virtual IInterfaceType *defineInterfaceType(
-			IInterfaceTypeBuilder	*type) override { }
+			IInterfaceTypeBuilder	*type) override;
 
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
-			const invoke_req_f		&req_f) override { }
+			const invoke_req_f		&req_f) override;
 
 private:
 	int32_t recv_req(
@@ -83,6 +85,8 @@ private:
 	intptr_t														m_callback_id;
 
 	State															m_state;
+
+	std::map<std::string, IInterfaceTypeUP>							m_iftype_m;
 
 };
 
