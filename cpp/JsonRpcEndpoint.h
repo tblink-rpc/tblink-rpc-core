@@ -33,16 +33,21 @@ public:
 
 	virtual int32_t yield() override;
 
+	virtual int32_t yield_blocking() override;
+
 	virtual intptr_t add_time_callback(
 			uint64_t						time,
 			const std::function<void()>		&cb_f) override;
 
 	virtual void cancel_callback(intptr_t	id) override;
 
+	virtual uint64_t time() override;
+
 	/** Called by the environment to notify that
 	 *  a callback has occurred
 	 */
 	virtual void notify_callback(intptr_t   id) override;
+
 
 	virtual const std::string &last_error() override { }
 
@@ -82,11 +87,13 @@ private:
 	bool															m_build_complete;
 	bool															m_connect_complete;
 	std::map<intptr_t, std::function<void()>>						m_callback_m;
+	std::set<intptr_t>												m_pending_time_cb;
 	intptr_t														m_callback_id;
 
 	State															m_state;
 
 	std::map<std::string, IInterfaceTypeUP>							m_iftype_m;
+	uint64_t														m_time;
 
 };
 

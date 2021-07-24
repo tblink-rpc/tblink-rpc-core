@@ -44,7 +44,7 @@ if (NOT PACKAGES_DIR)
           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
     )
-
+   
   add_subdirectory(tests)
 endif()
 
@@ -52,11 +52,13 @@ add_library(tblink_rpc_core ${tblink_rpc_core_SRC})
 
 target_include_directories(tblink_rpc_core PRIVATE
 	${PACKAGES_DIR}/json/include
-	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include)
+	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
+	${CMAKE_BINARY_DIR}/glog/include
+	)
 
 install(TARGETS tblink_rpc_core
     DESTINATION lib
     EXPORT tblink_rpc_core-targets)
 
-message("PSSParser: PACKAGES_DIR=${PACKAGES_DIR}")
+message("tlink-rpc-core: PACKAGES_DIR=${PACKAGES_DIR}")
 

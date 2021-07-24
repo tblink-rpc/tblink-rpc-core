@@ -23,12 +23,10 @@ JsonParamValMap::JsonParamValMap(const nlohmann::json &msg) {
 			it!=msg.end(); it++) {
 		switch (it->type()) {
 		case nlohmann::json::value_t::number_integer:
-			fprintf(stdout, "number_integer\n");
 			setVal(it.key(),
 					JsonParamValSP(new JsonParamValInt(it.value().get<int64_t>())));
 			break;
 		case nlohmann::json::value_t::number_unsigned:
-			fprintf(stdout, "number_unsigned\n");
 			setVal(it.key(),
 					JsonParamValSP(new JsonParamValInt(it.value().get<uint64_t>())));
 			break;

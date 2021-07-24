@@ -8,25 +8,17 @@
 #include "JsonRpcEndpoint.h"
 #include "JsonInterfaceType.h"
 #include "JsonInterfaceTypeBuilder.h"
+#include "glog/logging.h"
 
-#undef EN_DEBUG_JSON_RPC_ENDPOINT
+#define EN_DEBUG_JSON_RPC_ENDPOINT
 
 #ifdef EN_DEBUG_JSON_RPC_ENDPOINT
 #define DEBUG_ENTER(fmt, ...) \
-	fprintf(stdout, "--> JsonRpcEndpoint::"); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "--> JsonRpcEndpoint::" << fmt
 #define DEBUG_LEAVE(fmt, ...) \
-	fprintf(stdout, "<-- JsonRpcEndpoint::"); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "<-- JsonRpcEndpoint::" << fmt
 #define DEBUG(fmt, ...) \
-	fprintf(stdout, "JsonRpcEndpoint: "); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "JsonRpcEndpoint: " << fmt
 #else
 #define DEBUG(fmt, ...)
 #define DEBUG_ENTER(fmt, ...)
@@ -42,6 +34,7 @@ JsonRpcEndpoint::JsonRpcEndpoint(
 	m_services  = services;
 
 	m_state = IEndpoint::Init;
+	m_time = 0;
 
 	m_transport->init(
 			std::bind(
@@ -83,7 +76,9 @@ bool JsonRpcEndpoint::build_complete() {
 		}
 	}
 
-	m_state = IEndpoint::Built;
+	if (m_state != IEndpoint::Shutdown) {
+		m_state = IEndpoint::Built;
+	}
 
 	return true;
 }
@@ -102,7 +97,9 @@ bool JsonRpcEndpoint::connect_complete() {
 		}
 	}
 
-	m_state = IEndpoint::Connected;
+	if (m_state != IEndpoint::Shutdown) {
+		m_state = IEndpoint::Connected;
+	}
 
 	return true;
 }
@@ -126,15 +123,69 @@ bool JsonRpcEndpoint::shutdown() {
 
 int32_t JsonRpcEndpoint::yield() {
 	DEBUG_ENTER("yield");
-	int32_t ret = m_transport->poll(
-			m_transport->outstanding()?1000:0);
+
+	// If we have outstanding messages, or we have
+	// no pending time-consuming operations, then
+	// wait for longer. Otherwise, just check if
+	// there is data.
+
+	int32_t timeout;
+	if (m_transport->outstanding()) {
+		timeout = 1000;
+	} else {
+		timeout = 0;
+	}
+
+	int32_t ret = m_transport->poll(timeout);
 
 	if (ret == -1) {
 		DEBUG_LEAVE("yield -1");
 		return ret;
+	} else if (m_state == IEndpoint::Shutdown) {
+		return 0;
 	} else {
+		if (m_transport->outstanding()) {
+			ret = 1;
+		}
 		DEBUG_LEAVE("yield %d,%d", ret, m_transport->outstanding());
-		return (ret || m_transport->outstanding());
+		return ret;
+	}
+}
+
+int32_t JsonRpcEndpoint::yield_blocking() {
+	DEBUG_ENTER("yield_blocking");
+
+	if (m_state == IEndpoint::Shutdown) {
+		return 0;
+	}
+
+	int32_t timeout;
+	if (m_transport->outstanding() ||
+			(
+				m_pending_time_cb.size() == 0
+			)) {
+		timeout = 1000;
+	} else {
+		timeout = 0;
+	}
+
+	int32_t ret = m_transport->poll(timeout);
+
+	if (ret == -1) {
+		DEBUG_LEAVE("yield_blocking -1");
+		return ret;
+	} else {
+		if (m_state == IEndpoint::Shutdown) {
+			// Need to shut down
+			return 0;
+		} else if (m_transport->outstanding() ||
+				(
+					m_pending_time_cb.size() == 0
+				)) {
+			ret = 1;
+		}
+		DEBUG_LEAVE("yield_blocking %d,%d", ret, m_transport->outstanding());
+		return ret;
 	}
 }
 
@@ -143,16 +194,32 @@ intptr_t JsonRpcEndpoint::add_time_callback(
 			const std::function<void()>		&cb_f) {
 	IParamValMapSP params = m_transport->mkValMap();
 	params->setVal("time", m_transport->mkValIntU(time));
+	intptr_t callback_id = m_callback_id;
+	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
+	m_callback_id += 1;
+
+	m_callback_m.insert({callback_id, cb_f});
+
 	intptr_t id = m_transport->send_req("tblink.add-time-callback", params);
 
 	std::pair<IParamValMapSP,IParamValMapSP> rsp = wait_rsp(id);
 
 	if (rsp.first) {
-		return rsp.first->getValT<IParamValInt>("callback-id")->val_u();
+//		intptr_t callback_id =
+//				rsp.first->getValT<IParamValInt>("callback-id")->val_u();
+
+//		fprintf(stdout, "Rsp callback_id=%lld\n", callback_id);
+//		fflush(stdout);
+		return callback_id;
 	} else {
+		fprintf(stdout, "Error: no response\n");
 		// Error:
 		return -1;
 	}
+}
+
+uint64_t JsonRpcEndpoint::time() {
+	return m_time;
 }
 
 void JsonRpcEndpoint::cancel_callback(intptr_t	callback_id) {
@@ -171,6 +238,7 @@ void JsonRpcEndpoint::notify_callback(intptr_t   callback_id) {
 	IParamValMapSP params = m_transport->mkValMap();
 
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
+	params->setVal("time", m_transport->mkValIntU(m_services->time()));
 
 	intptr_t id = m_transport->send_req("tblink.notify-callback", params);
 
@@ -217,7 +285,7 @@ int32_t JsonRpcEndpoint::recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMapSP			params) {
-	DEBUG_ENTER("recv_req: %s id=%d", method.c_str(), (int)id);
+	DEBUG_ENTER("recv_req: ") << method << " id=" << id;
 
 	if (id != -1) {
 		if (method == "tblink.build-complete") {
@@ -237,13 +305,18 @@ int32_t JsonRpcEndpoint::recv_req(
 					result,
 					error);
 		} else if (method == "tblink.add-time-callback") {
-			intptr_t callback_id = m_services->add_time_cb(
+			intptr_t callback_id = params->getValT<IParamValInt>("callback-id")->val_u();
+
+			m_services->add_time_cb(
 					params->getValT<IParamValInt>("time")->val_s(),
-					params->getValT<IParamValInt>("callback-id")->val_s());
+					callback_id);
+
+			// Save the callback id for later
+			if (!m_pending_time_cb.insert(callback_id).second) {
+				// Error: duplicate ID
+			}
 
 			IParamValMapSP result = m_transport->mkValMap();
-			result->setVal("callback-id",
-					m_transport->mkValIntS(callback_id));
 			IParamValMapSP error;
 			m_transport->send_rsp(
 					id,
@@ -251,6 +324,9 @@ int32_t JsonRpcEndpoint::recv_req(
 					error);
 		} else if (method == "tblink.shutdown") {
 			// TODO: should receive some sort of status
+
+			fprintf(stdout, "Received Shutdown request\n");
+			fflush(stdout);
 
 			// Avoid recursive efforts to shutdown
 			m_state = IEndpoint::Shutdown;
@@ -263,14 +339,36 @@ int32_t JsonRpcEndpoint::recv_req(
 					error);
 
 			m_services->shutdown();
+		} else if (method == "tblink.notify-callback") {
+			intptr_t callback_id = params->getValT<IParamValInt>("callback-id")->val_s();
+			m_time = params->getValT<IParamValInt>("time")->val_u();
+
+			fprintf(stdout, "callback_id: %lld\n", callback_id);
+
+
+			std::map<intptr_t,std::function<void()>>::const_iterator it;
+
+			if ((it=m_callback_m.find(callback_id)) != m_callback_m.end()) {
+				it->second();
+				m_callback_m.erase(it);
+			} else {
+				fprintf(stdout, "Error: callback id %lld not present\n", callback_id);
+			}
+
+			IParamValMapSP result = m_transport->mkValMap();
+			IParamValMapSP error;
+			m_transport->send_rsp(
+					id,
+					result,
+					error);
 		} else {
-			fprintf(stdout, "Error: unhandled message\n");
+			fprintf(stdout, "Error: unhandled message %s\n", method.c_str());
 		}
 	} else {
 		// Notifies
 	}
 
-	DEBUG_LEAVE("recv_req: %s", method.c_str());
+	DEBUG_LEAVE("recv_req: ") << method;
 
 	return 0;
 }
@@ -297,7 +395,7 @@ std::pair<IParamValMapSP,IParamValMapSP> JsonRpcEndpoint::wait_rsp(intptr_t id) 
 
 		DEBUG_ENTER("wait_rsp --> poll");
 		int32_t ret = m_transport->poll(1000);
-		DEBUG_LEAVE("wait_rsp poll %d", ret);
+		DEBUG_LEAVE("wait_rsp poll ") << ret;
 
 		if (ret == -1) {
 			// Failure

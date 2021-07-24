@@ -24,25 +24,17 @@
 #include "JsonParamValMap.h"
 #include "JsonParamValStr.h"
 #include "JsonParamValVectorBase.h"
+#include "glog/logging.h"
 
-#undef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+#define EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
 
 #ifdef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
 #define DEBUG_ENTER(fmt, ...) \
-	fprintf(stdout, "--> SocketMessageTransport::"); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "--> SocketMessageTransport::" << fmt
 #define DEBUG_LEAVE(fmt, ...) \
-	fprintf(stdout, "<-- SocketMessageTransport::"); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "<-- SocketMessageTransport::" << fmt
 #define DEBUG(fmt, ...) \
-	fprintf(stdout, "SocketMessageTransport: "); \
-	fprintf(stdout, fmt, #__VA_ARGS__); \
-	fprintf(stdout, "\n"); \
-	fflush(stdout)
+	VLOG(1) << "SocketMessageTransport: " << fmt
 #else
 #define DEBUG(fmt, ...)
 #define DEBUG_ENTER(fmt, ...)
@@ -104,7 +96,7 @@ void SocketMessageTransport::shutdown() {
 
 				ret = ::waitpid(m_pid, &status, WNOHANG);
 
-				fprintf(stdout, "ret=%d\n", ret);
+				DEBUG("waitpid ret=") << ret;
 
 				if (ret == m_pid) {
 					break;
@@ -126,7 +118,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 
 	do {
 
-		DEBUG("poll -- timeout=%d", timeout_ms);
+		DEBUG("poll -- timeout=") << timeout_ms;
 
 		if (timeout_ms > 0) {
 			// Select to wait on data
@@ -162,10 +154,10 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 		sz = ::recv(m_socket, tmp, 1024, 0);
 		DEBUG_LEAVE("poll recv");
 
-		DEBUG("sz=%d", sz);
+		DEBUG("sz=") << sz;
 
 		if (sz <= 0) {
-			DEBUG("sz=%d errno=%d", sz, errno);
+			DEBUG("sz=") << sz << " errno=" << errno;
 
 			if (errno == EAGAIN) {
 				// Just nothing to see here
@@ -178,7 +170,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 			ret = 1;
 		}
 
-		DEBUG("received %d bytes", sz);
+		DEBUG("received ") << sz << " bytes";
 
 		// Process data
 		for (uint32_t i=0; i<sz; i++) {
@@ -200,13 +192,13 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 				if (m_msgbuf_idx == 0 && isspace(tmp[i])) {
 					// Skip leading whitespace
 				} else {
-					DEBUG("State 1: append %c", tmp[i]);
+					DEBUG("State 1: append ") << tmp[i];
 					msgbuf_append(tmp[i]);
 					if (isspace(tmp[i])) {
 						msgbuf_append(0);
-						DEBUG("header=%s", m_msgbuf);
+						DEBUG("header=") << m_msgbuf;
 						m_msg_length = strtoul(m_msgbuf, 0, 10);
-						DEBUG("len=%d", m_msg_length);
+						DEBUG("len=") << m_msg_length;
 						// Reset the buffer to collect the payload
 						m_msgbuf_idx = 0;
 						m_msg_state = 2;
@@ -222,7 +214,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 					msgbuf_append(tmp[i]);
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
-						DEBUG("Received message: \"%s\"", m_msgbuf);
+						DEBUG("Received message: \"") << m_msgbuf << "\"";
 						nlohmann::json msg;
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
@@ -269,8 +261,12 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 		}
 	} while (ret == 0 || timeout_ms > 0);
 
-	DEBUG_LEAVE("poll return ret=%d,%d", ret, m_outstanding);
-	return (ret || m_outstanding > 0);
+	DEBUG_LEAVE("poll return ret=") << ret << "," << m_outstanding;
+	if (ret == -1) {
+		return -1;
+	} else {
+		return (ret || m_outstanding > 0);
+	}
 }
 
 intptr_t SocketMessageTransport::send_req(
@@ -288,7 +284,7 @@ intptr_t SocketMessageTransport::send_req(
 	m_id++;
 
 	std::string body = msg.dump();
-	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
+	DEBUG("body=\"") << body << " len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	m_outstanding += 1;
@@ -313,7 +309,7 @@ int32_t SocketMessageTransport::send_notify(
 	int32_t ret = 0;
 
 	std::string body = msg.dump();
-	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
+	DEBUG("body=\"") << body << "\" len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	::send(m_socket, tmp, strlen(tmp), 0);
@@ -339,7 +335,7 @@ int32_t SocketMessageTransport::send_rsp(
 	}
 
 	std::string body = msg.dump();
-	DEBUG("body=\"%s\" len=%d", body.c_str(), body.size());
+	DEBUG("body=\"") << body << "\" len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	int32_t ret = 0;
