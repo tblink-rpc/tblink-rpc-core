@@ -21,6 +21,10 @@ public:
 
 	virtual IParamValSP at(uint32_t idx) = 0;
 
+	template <class T> std::shared_ptr<T> atT(uint32_t idx) {
+		return std::dynamic_pointer_cast<T>(at(idx));
+	}
+
 	virtual void push_back(IParamValSP v) = 0;
 
 

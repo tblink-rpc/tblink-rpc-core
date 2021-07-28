@@ -18,7 +18,7 @@ namespace tblink_rpc_core {
 
 class IEndpoint;
 typedef std::unique_ptr<IEndpoint> IEndpointUP;
-class IEndpoint {
+class IEndpoint : public virtual IParamValFactory {
 public:
 	enum State {
 		Init,
@@ -46,6 +46,10 @@ public:
 	 * false when idle.
 	 */
 	virtual int32_t yield() = 0;
+
+	virtual int32_t run_until_event() = 0;
+
+	virtual int32_t await_req() = 0;
 
 	/**
 	 * Process messages until the environment has blocking work to do
@@ -88,6 +92,18 @@ public:
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			const invoke_req_f		&req_f) = 0;
+
+	/**
+	 * Returns the available interface types registered by the
+	 * endpoint peer. Only valid after 'build' is complete
+	 */
+	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() = 0;
+
+	/**
+	 * Returns the available interface instances registered by the
+	 * endpoint peer. Only valid after 'build' is complete
+	 */
+	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() = 0;
 
 	// TODO: register type
 	//       - could have an object-lifetime manager attached

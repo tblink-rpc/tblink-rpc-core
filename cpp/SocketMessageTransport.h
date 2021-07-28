@@ -41,6 +41,8 @@ public:
 
 	virtual int32_t poll(int32_t timeout_ms=-1) override;
 
+	virtual int32_t await_msg() override;
+
 	virtual int32_t outstanding() override { return m_outstanding; }
 
 	virtual IParamValBoolSP mkValBool(bool val) override;
@@ -54,6 +56,9 @@ public:
 	virtual IParamValStrSP mkValStr(const std::string &val) override;
 
 	virtual IParamValVectorSP mkVector() override;
+
+private:
+	int32_t process_data(char *data, uint32_t sz);
 
 private:
 	void msgbuf_append(char c) {

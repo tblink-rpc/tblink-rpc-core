@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include "IInterfaceType.h"
 #include "IMethodType.h"
+#include "IParamValFactory.h"
 #include "IParamValVector.h"
 
 namespace tblink_rpc_core {
@@ -22,14 +23,14 @@ typedef std::function<void(
 		intptr_t			call_id,
 		IParamValVectorSP	params)> invoke_req_f;
 
-typedef std::function<void(
-		intptr_t			call_id,
-		IParamValSP			retval)> invoke_rsp_f;
+typedef std::function<void(IParamValSP retval)> invoke_rsp_f;
 
-class IInterfaceInst {
+class IInterfaceInst : public virtual IParamValFactory {
 public:
 
 	virtual ~IInterfaceInst() { }
+
+	virtual const std::string &name() = 0;
 
 	virtual IInterfaceType *type() = 0;
 
@@ -49,9 +50,9 @@ public:
 			IParamValVectorSP							params) = 0;
 
 	/**
-	 * Sends a response to a blocking request
+	 * Sends a response to an invocation
 	 */
-	virtual void respond(
+	virtual void invoke_rsp(
 			intptr_t									call_id,
 			IParamValSP									ret) = 0;
 

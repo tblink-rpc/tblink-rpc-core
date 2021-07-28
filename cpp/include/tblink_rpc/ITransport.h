@@ -50,6 +50,11 @@ public:
 	virtual int32_t poll(int32_t timeout_ms=-1) = 0;
 
 	/**
+	 * Waits for at least one message to be received
+	 */
+	virtual int32_t await_msg() = 0;
+
+	/**
 	 * Returns number of mismatched req/rsp pairs
 	 */
 	virtual int32_t outstanding() = 0;

@@ -23,6 +23,8 @@ public:
 
 	virtual const std::vector<IMethodType *> &methods() = 0;
 
+	virtual IMethodType *findMethod(const std::string &name) = 0;
+
 //	virtual IMethodType *getMethodById(int32_t id) = 0;
 
 

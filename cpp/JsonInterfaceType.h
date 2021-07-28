@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <map>
 #include <vector>
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IMethodType.h"
@@ -14,6 +15,7 @@ namespace tblink_rpc_core {
 
 class JsonInterfaceType;
 typedef std::unique_ptr<JsonInterfaceType> JsonInterfaceTypeUP;
+typedef std::shared_ptr<JsonInterfaceType> JsonInterfaceTypeSP;
 class JsonInterfaceType : public IInterfaceType {
 public:
 	JsonInterfaceType(const std::string &name);
@@ -28,17 +30,17 @@ public:
 		return m_methods_p;
 	}
 
-	void addMethod(IMethodType *method) {
-		m_methods.push_back(IMethodTypeUP(method));
-		m_methods_p.push_back(method);
-	}
+	void addMethod(IMethodType *method);
+
+	IMethodType *findMethod(const std::string &name);
 
 //	virtual IMethodType *getMethodById(int32_t id) = 0;
 
 private:
-	std::string						m_name;
-	std::vector<IMethodTypeUP>		m_methods;
-	std::vector<IMethodType *>		m_methods_p;
+	std::string							m_name;
+	std::vector<IMethodTypeUP>			m_methods;
+	std::vector<IMethodType *>			m_methods_p;
+	std::map<std::string,IMethodType*>	m_methods_m;
 
 };
 

@@ -215,14 +215,20 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
 						DEBUG("Received message: \"") << m_msgbuf << "\"";
+						fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
+						fflush(stdout);
 						nlohmann::json msg;
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
+							fprintf(stdout, "  json version: %s\n", msg.dump().c_str());
+							fflush(stdout);
 
 							// Is this a request or a response?
 							if (msg.contains("method")) {
 								// TODO: Request or notify
 								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
+
+								fprintf(stdout, "method params: %s\n", msg["params"].dump().c_str());
 								intptr_t id = -1;
 
 								if (msg.contains("id")) {
@@ -239,6 +245,11 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 								IParamValMapSP error;
 								JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
 								DEBUG_ENTER("m_rsp_f");
+								if (msg.contains("result")) {
+									result = JsonParamValMap::mk(msg["result"]);
+								} else if (msg.contains("error")) {
+									error = JsonParamValMap::mk(msg["error"]);
+								}
 								m_rsp_f(id->val_s(), result, error);
 								m_outstanding -= 1;
 								DEBUG_LEAVE("m_rsp_f");
@@ -267,6 +278,59 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 	} else {
 		return (ret || m_outstanding > 0);
 	}
+}
+
+int32_t SocketMessageTransport::await_msg() {
+	int32_t ret = 0;
+	char tmp[1024];
+
+	fprintf(stdout, "--> await_msg\n");
+	fflush(stdout);
+
+	int32_t have_msg = 0;
+	do {
+		int32_t timeout_ms = 1000;
+
+		// Select to wait on data
+		int retval;
+		do {
+			fd_set rfds;
+			struct timeval tv;
+
+			FD_ZERO(&rfds);
+			FD_SET(m_socket, &rfds);
+
+			tv.tv_sec = timeout_ms/1000;
+			tv.tv_usec = (timeout_ms%1000)*1000;
+
+			retval = select(m_socket+1, &rfds, 0, 0, &tv);
+
+		} while (retval == 0 || (retval == -1 && errno == EAGAIN));
+
+		if (retval == -1) {
+			ret = -1;
+			break;
+		}
+
+		DEBUG_ENTER("poll recv");
+		int32_t sz = ::recv(m_socket, tmp, sizeof(tmp), 0);
+		DEBUG_LEAVE("poll recv");
+
+		if (sz == -1 && errno != EAGAIN) {
+			ret = -1;
+		} else if (sz > 0) {
+			fprintf(stdout, "--> process_data\n");
+			fflush(stdout);
+			ret = process_data(tmp, sz);
+			fprintf(stdout, "<-- process_data: %d\n", have_msg);
+			fflush(stdout);
+		}
+	} while (ret == 0);
+
+	fprintf(stdout, "<-- await_msg %d\n", ret);
+	fflush(stdout);
+
+	return ret;
 }
 
 intptr_t SocketMessageTransport::send_req(
@@ -373,6 +437,112 @@ IParamValVectorSP SocketMessageTransport::mkVector() {
 	return JsonParamValVectorBase::mk();
 }
 
+int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
+	int32_t ret = 0;
+
+	// Process data
+	for (uint32_t i=0; i<sz; i++) {
+		switch (m_msg_state) {
+		case 0: { // Waiting for a header
+			if (data[i] == HEADER_PREFIX.at(m_msgbuf_idx)) {
+				m_msgbuf_idx++;
+			} else {
+				m_msgbuf_idx = 0;
+			}
+			if (m_msgbuf_idx == HEADER_PREFIX.size()) {
+				m_msgbuf_idx = 0;
+				m_msg_state = 1;
+			}
+		} break;
+
+		case 1: { // Collecting length up to first '\n'
+			if (m_msgbuf_idx == 0 && isspace(data[i])) {
+				// Skip leading whitespace
+			} else {
+				DEBUG("State 1: append ") << data[i];
+				msgbuf_append(data[i]);
+				if (isspace(data[i])) {
+					msgbuf_append(0);
+					DEBUG("header=") << m_msgbuf;
+					m_msg_length = strtoul(m_msgbuf, 0, 10);
+					DEBUG("len=") << m_msg_length;
+					// Reset the buffer to collect the payload
+					m_msgbuf_idx = 0;
+					m_msg_state = 2;
+				}
+			}
+
+		} break;
+
+		case 2: { // Collecting body data
+			if (m_msgbuf_idx == 0 && isspace(data[i])) {
+				// Skip leading whitespace
+			} else {
+				msgbuf_append(data[i]);
+				if (m_msgbuf_idx >= m_msg_length) {
+					msgbuf_append(0);
+					DEBUG("Received message: \"") << m_msgbuf << "\"";
+					fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
+					fflush(stdout);
+					nlohmann::json msg;
+					try {
+						msg = nlohmann::json::parse(m_msgbuf);
+						fprintf(stdout, "  json version: %s\n", msg.dump().c_str());
+						fflush(stdout);
+
+						// We received a message
+						ret = 1;
+
+						// Is this a request or a response?
+						if (msg.contains("method")) {
+							// TODO: Request or notify
+							JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
+
+							fprintf(stdout, "method params: %s\n", msg["params"].dump().c_str());
+							intptr_t id = -1;
+
+							if (msg.contains("id")) {
+								id = msg["id"];
+							}
+
+							DEBUG_ENTER("m_req_f");
+							m_outstanding += 1;
+							m_req_f(msg["method"], id, params);
+							DEBUG_LEAVE("m_req_f");
+						} else {
+							// TODO: Response
+							IParamValMapSP result;
+							IParamValMapSP error;
+							JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
+							DEBUG_ENTER("m_rsp_f");
+							if (msg.contains("result")) {
+								result = JsonParamValMap::mk(msg["result"]);
+							} else if (msg.contains("error")) {
+								error = JsonParamValMap::mk(msg["error"]);
+							}
+							m_rsp_f(id->val_s(), result, error);
+							m_outstanding -= 1;
+							DEBUG_LEAVE("m_rsp_f");
+						}
+					} catch (const std::exception &e) {
+						fprintf(stdout, "Failed to parse msg \"%s\" %s\n",
+								m_msgbuf, e.what());
+					}
+					m_msg_state = 0;
+					m_msgbuf_idx = 0;
+				}
+			}
+		} break;
+
+		default: {
+			m_msgbuf_idx = 0;
+			m_msg_state = 0;
+		}
+		}
+	}
+
+	return ret;
+}
 
 void SocketMessageTransport::msgbuf_resize_append(char c) {
 	// Confirm that we need to resize

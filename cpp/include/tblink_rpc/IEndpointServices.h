@@ -39,6 +39,9 @@ public:
 
 	virtual uint64_t time() = 0;
 
+	// Release the environment to run
+	virtual void run_until_event() = 0;
+
 };
 
 }

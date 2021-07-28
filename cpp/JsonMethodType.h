@@ -12,6 +12,7 @@ namespace tblink_rpc_core {
 
 class JsonMethodType;
 typedef std::unique_ptr<JsonMethodType> JsonMethodTypeUP;
+typedef std::shared_ptr<JsonMethodType> JsonMethodTypeSP;
 class JsonMethodType : public IMethodType {
 public:
 	JsonMethodType(

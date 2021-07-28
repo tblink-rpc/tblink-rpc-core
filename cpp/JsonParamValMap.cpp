@@ -6,6 +6,7 @@
  */
 
 #include "nlohmann/json.hpp"
+#include "JsonParamValFactory.h"
 #include "JsonParamValInt.h"
 #include "JsonParamValMap.h"
 #include "JsonParamValStr.h"
@@ -21,26 +22,7 @@ JsonParamValMap::JsonParamValMap(const nlohmann::json &msg) {
 	for (nlohmann::json::const_iterator
 			it=msg.begin();
 			it!=msg.end(); it++) {
-		switch (it->type()) {
-		case nlohmann::json::value_t::number_integer:
-			setVal(it.key(),
-					JsonParamValSP(new JsonParamValInt(it.value().get<int64_t>())));
-			break;
-		case nlohmann::json::value_t::number_unsigned:
-			setVal(it.key(),
-					JsonParamValSP(new JsonParamValInt(it.value().get<uint64_t>())));
-			break;
-		case nlohmann::json::value_t::object:
-			setVal(it.key(),
-					IParamValSP(new JsonParamValMap(it.value().get<nlohmann::json>())));
-			break;
-		case nlohmann::json::value_t::string:
-			setVal(it.key(),
-					JsonParamValSP(new JsonParamValStr(it.value().get<std::string>())));
-			break;
-		default:
-			fprintf(stdout, "Error: unhandled parameter type %s\n", it->type_name());
-		}
+		setVal(it.key(), JsonParamValFactory::mk(it.value()));
 	}
 }
 
@@ -83,10 +65,14 @@ void JsonParamValMap::setVal(
 nlohmann::json JsonParamValMap::dump() {
 	nlohmann::json ret;
 
-	for (std::map<std::string,JsonParamValSP>::const_iterator
-			it=m_map.begin();
-			it!=m_map.end(); it++) {
-		ret[it->first] = it->second->dump();
+	if (m_map.size() == 0) {
+		ret = nlohmann::json::object();
+	} else {
+		for (std::map<std::string,JsonParamValSP>::const_iterator
+				it=m_map.begin();
+				it!=m_map.end(); it++) {
+			ret[it->first] = it->second->dump();
+		}
 	}
 
 	return ret;

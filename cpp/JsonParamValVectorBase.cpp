@@ -5,9 +5,9 @@
  *      Author: ballance
  */
 
-#include "JsonParamValVectorBase.h"
-
 #include "nlohmann/json.hpp"
+#include "JsonParamValFactory.h"
+#include "JsonParamValVectorBase.h"
 
 namespace tblink_rpc_core {
 
@@ -26,6 +26,18 @@ JsonParamValVectorBase::JsonParamValVectorBase(
 
 }
 
+JsonParamValVectorBase::JsonParamValVectorBase(const nlohmann::json &msg) {
+	fprintf(stdout, "JsonParamValVectorBase: sz=%d %d %s\n",
+			msg.size(),
+			(msg.begin() == msg.end()),
+			msg.dump().c_str());
+	for (nlohmann::json::const_iterator
+			it=msg.begin();
+			it!=msg.end(); it++) {
+		m_children.push_back(JsonParamValFactory::mk(*it));
+	}
+}
+
 JsonParamValVectorBase::~JsonParamValVectorBase() {
 	// TODO Auto-generated destructor stub
 }
@@ -36,6 +48,18 @@ void JsonParamValVectorBase::push_back(IParamValSP v) {
 
 nlohmann::json JsonParamValVectorBase::dump() {
 	nlohmann::json msg;
+
+	fprintf(stdout, "Dump: %d children\n", m_children.size());
+
+	if (m_children.size() == 0) {
+		msg = nlohmann::json::array();
+	} else {
+		for (std::vector<JsonParamValSP>::const_iterator
+			it=m_children.begin();
+			it!=m_children.end(); it++) {
+			msg.push_back((*it)->dump());
+		}
+	}
 
 	return msg;
 }

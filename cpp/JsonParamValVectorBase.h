@@ -23,6 +23,8 @@ public:
 			std::function<JsonParamValSP(const nlohmann::json &)> 	ctor,
 			const nlohmann::json 							&msg);
 
+	JsonParamValVectorBase(const nlohmann::json &msg);
+
 	virtual ~JsonParamValVectorBase();
 
 	virtual uint32_t size() override { return m_children.size(); }
