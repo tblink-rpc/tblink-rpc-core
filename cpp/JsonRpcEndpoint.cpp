@@ -189,15 +189,9 @@ int32_t JsonRpcEndpoint::run_until_event() {
 int32_t JsonRpcEndpoint::await_req() {
 	int32_t ret = 0;
 
-	fprintf(stdout, "--> await_req\n");
-	fflush(stdout);
-
-	while ((ret=m_transport->await_msg()) <= 0) {
+	while ((ret=m_transport->await_msg()) == 0) {
 		;
 	}
-
-	fprintf(stdout, "<-- await_req %d\n", ret);
-	fflush(stdout);
 
 	return ret;
 }
@@ -286,11 +280,6 @@ intptr_t JsonRpcEndpoint::add_time_callback(
 	std::pair<IParamValMapSP,IParamValMapSP> rsp = wait_rsp(id);
 
 	if (rsp.first) {
-//		intptr_t callback_id =
-//				rsp.first->getValT<IParamValInt>("callback-id")->val_u();
-
-//		fprintf(stdout, "Rsp callback_id=%lld\n", callback_id);
-//		fflush(stdout);
 		return callback_id;
 	} else {
 		fprintf(stdout, "Error: no response\n");
@@ -362,8 +351,6 @@ IInterfaceInst *JsonRpcEndpoint::defineInterfaceInst(
 			const std::string		&inst_name,
 			const invoke_req_f		&req_f) {
 
-	fprintf(stdout, "defineInterfaceInst: type=%p\n", type);
-	fflush(stdout);
 	JsonInterfaceInst *ifinst = new JsonInterfaceInst(
 			this,
 			static_cast<JsonInterfaceType *>(type),
@@ -416,9 +403,6 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_build_complete(
 	IParamValMapSP error;
 	std::vector<JsonInterfaceTypeUP> iftypes = unpack_iftypes(
 			params->getValT<IParamValMap>("iftypes"));
-
-	fprintf(stdout, "req_build_complete: %d iftypes\n", iftypes.size());
-	fflush(stdout);
 
 	// Process iftypes first
 	for (std::vector<JsonInterfaceTypeUP>::iterator
@@ -551,9 +535,6 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_nb(
 
 	std::map<std::string,JsonInterfaceInst*>::const_iterator i_it;
 
-	fprintf(stdout, "ifinst=%s method=%s\n", ifinst.c_str(), method.c_str());
-	fflush(stdout);
-
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
 
@@ -594,9 +575,6 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_run_until_event(
 		intptr_t				id,
 		IParamValMapSP 			params) {
 	m_await_event = true;
-
-	fprintf(stdout, "run until event\n");
-	fflush(stdout);
 
 	// Tell the environment that it's free to run
 	m_services->run_until_event();

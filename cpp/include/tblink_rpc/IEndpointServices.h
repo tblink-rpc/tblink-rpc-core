@@ -8,8 +8,10 @@
 #pragma once
 #include <memory>
 #include <stdint.h>
+#include <vector>
 
 namespace tblink_rpc_core {
+class IEndpoint;
 
 class IEndpointServices;
 typedef std::unique_ptr<IEndpointServices> IEndpointServicesUP;

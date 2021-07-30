@@ -105,6 +105,8 @@ public:
 	 */
 	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() = 0;
 
+//	virtual IInterfaceInst *findInterfaceInst(const std::string &name) = 0;
+
 	// TODO: register type
 	//       - could have an object-lifetime manager attached
 

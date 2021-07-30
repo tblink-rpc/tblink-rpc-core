@@ -215,20 +215,15 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 					if (m_msgbuf_idx >= m_msg_length) {
 						msgbuf_append(0);
 						DEBUG("Received message: \"") << m_msgbuf << "\"";
-						fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
-						fflush(stdout);
 						nlohmann::json msg;
 						try {
 							msg = nlohmann::json::parse(m_msgbuf);
-							fprintf(stdout, "  json version: %s\n", msg.dump().c_str());
-							fflush(stdout);
 
 							// Is this a request or a response?
 							if (msg.contains("method")) {
 								// TODO: Request or notify
 								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
 
-								fprintf(stdout, "method params: %s\n", msg["params"].dump().c_str());
 								intptr_t id = -1;
 
 								if (msg.contains("id")) {
@@ -284,9 +279,6 @@ int32_t SocketMessageTransport::await_msg() {
 	int32_t ret = 0;
 	char tmp[1024];
 
-	fprintf(stdout, "--> await_msg\n");
-	fflush(stdout);
-
 	int32_t have_msg = 0;
 	do {
 		int32_t timeout_ms = 1000;
@@ -319,16 +311,9 @@ int32_t SocketMessageTransport::await_msg() {
 		if (sz == -1 && errno != EAGAIN) {
 			ret = -1;
 		} else if (sz > 0) {
-			fprintf(stdout, "--> process_data\n");
-			fflush(stdout);
 			ret = process_data(tmp, sz);
-			fprintf(stdout, "<-- process_data: %d\n", have_msg);
-			fflush(stdout);
 		}
 	} while (ret == 0);
-
-	fprintf(stdout, "<-- await_msg %d\n", ret);
-	fflush(stdout);
 
 	return ret;
 }
@@ -482,13 +467,9 @@ int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
 				if (m_msgbuf_idx >= m_msg_length) {
 					msgbuf_append(0);
 					DEBUG("Received message: \"") << m_msgbuf << "\"";
-					fprintf(stdout, "Received message: \"%s\"\n", m_msgbuf);
-					fflush(stdout);
 					nlohmann::json msg;
 					try {
 						msg = nlohmann::json::parse(m_msgbuf);
-						fprintf(stdout, "  json version: %s\n", msg.dump().c_str());
-						fflush(stdout);
 
 						// We received a message
 						ret = 1;
@@ -498,7 +479,6 @@ int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
 							// TODO: Request or notify
 							JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
 
-							fprintf(stdout, "method params: %s\n", msg["params"].dump().c_str());
 							intptr_t id = -1;
 
 							if (msg.contains("id")) {
