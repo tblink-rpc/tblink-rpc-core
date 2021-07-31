@@ -50,6 +50,10 @@ public:
 
 	virtual uint64_t time() override;
 
+	virtual int32_t time_precision() override {
+		return m_time_precision;
+	}
+
 	/** Called by the environment to notify that
 	 *  a callback has occurred
 	 */
@@ -181,6 +185,7 @@ private:
 
 	std::map<std::string, IInterfaceTypeUP>							m_iftype_m;
 	uint64_t														m_time;
+	int32_t															m_time_precision;
 
 	std::map<std::string, JsonInterfaceType*>						m_local_ifc_types;
 	std::vector<JsonInterfaceTypeUP>								m_local_ifc_type_l;

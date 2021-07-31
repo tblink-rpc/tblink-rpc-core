@@ -64,6 +64,8 @@ public:
 
 	virtual uint64_t time() = 0;
 
+	virtual int32_t time_precision() = 0;
+
 	/** Called by the environment to notify that
 	 *  a callback has occurred
 	 */

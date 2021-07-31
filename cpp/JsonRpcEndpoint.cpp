@@ -36,6 +36,7 @@ JsonRpcEndpoint::JsonRpcEndpoint(
 
 	m_state = IEndpoint::Init;
 	m_time = 0;
+	m_time_precision = 0;
 	m_await_event = false;
 	m_event_received = 0;
 
@@ -99,6 +100,8 @@ bool JsonRpcEndpoint::build_complete() {
 	// Pack locally-registered interface types and instances
 	params->setVal("iftypes", pack_iftypes());
 	params->setVal("ifinsts", pack_ifinsts());
+	params->setVal("time-precision", m_transport->mkValIntS(
+			m_services->time_precision()));
 
 	intptr_t id = m_transport->send_req("tblink.build-complete", params);
 	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
@@ -445,6 +448,8 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_build_complete(
 			m_local_ifc_insts_pl.push_back(ifinst);
 		}
 	}
+
+	m_time_precision = params->getValT<IParamValInt>("time-precision")->val_s();
 
 	if (!error) {
 		result = m_transport->mkValMap();

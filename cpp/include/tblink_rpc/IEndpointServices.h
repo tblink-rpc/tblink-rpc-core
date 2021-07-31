@@ -41,6 +41,16 @@ public:
 
 	virtual uint64_t time() = 0;
 
+	/**
+	 * Returns the time precision as an exponent:
+	 * 0: 1s
+	 * -3: 1ms
+	 * -6: 1us
+	 * -9: 1ns
+	 * -12: 1ps
+	 */
+	virtual int32_t time_precision() = 0;
+
 	// Release the environment to run
 	virtual void run_until_event() = 0;
 
