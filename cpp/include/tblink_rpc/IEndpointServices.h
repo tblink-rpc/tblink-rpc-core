@@ -16,6 +16,7 @@ class IEndpoint;
 class IEndpointServices;
 typedef std::unique_ptr<IEndpointServices> IEndpointServicesUP;
 
+
 /**
  * Implements support methods used by an endpoint
  */
@@ -53,6 +54,11 @@ public:
 
 	// Release the environment to run
 	virtual void run_until_event() = 0;
+
+	// Notify that we've hit an event
+	virtual void hit_event() = 0;
+
+	virtual void idle() = 0;
 
 };
 

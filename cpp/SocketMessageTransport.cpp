@@ -222,7 +222,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 							// Is this a request or a response?
 							if (msg.contains("method")) {
 								// TODO: Request or notify
-								JsonParamValMapSP params = JsonParamValMap::mk(msg["params"]);
+								JsonParamValMapUP params = JsonParamValMap::mk(msg["params"]);
 
 								intptr_t id = -1;
 
@@ -232,20 +232,20 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 
 								DEBUG_ENTER("m_req_f");
 								m_outstanding += 1;
-								m_req_f(msg["method"], id, params);
+								m_req_f(msg["method"], id, params.get());
 								DEBUG_LEAVE("m_req_f");
 							} else {
 								// TODO: Response
-								IParamValMapSP result;
-								IParamValMapSP error;
-								JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
+								IParamValMapUP result;
+								IParamValMapUP error;
+								JsonParamValIntUP id = JsonParamValInt::mk(msg["id"]);
 								DEBUG_ENTER("m_rsp_f");
 								if (msg.contains("result")) {
 									result = JsonParamValMap::mk(msg["result"]);
 								} else if (msg.contains("error")) {
 									error = JsonParamValMap::mk(msg["error"]);
 								}
-								m_rsp_f(id->val_s(), result, error);
+								m_rsp_f(id->val_s(), result.get(), error.get());
 								m_outstanding -= 1;
 								DEBUG_LEAVE("m_rsp_f");
 							}
@@ -320,14 +320,14 @@ int32_t SocketMessageTransport::await_msg() {
 
 intptr_t SocketMessageTransport::send_req(
 		const std::string		&method,
-		IParamValMapSP			params) {
+		IParamValMap			*params) {
 	DEBUG_ENTER("send_req");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
 	msg["method"] = method;
 	msg["id"] = m_id;
-	msg["params"] = std::dynamic_pointer_cast<JsonParamValMap>(params)->dump();
+	msg["params"] = dynamic_cast<JsonParamValMap *>(params)->dump();
 
 	int32_t ret = m_id;
 	m_id++;
@@ -341,19 +341,22 @@ intptr_t SocketMessageTransport::send_req(
 	::send(m_socket, tmp, strlen(tmp), 0);
 	::send(m_socket, body.c_str(), body.size(), 0);
 
+	// Ownership transfers back to us
+	delete params;
+
 	DEBUG_LEAVE("send_req");
 	return ret;
 }
 
 int32_t SocketMessageTransport::send_notify(
 		const std::string		&method,
-		IParamValMapSP			params) {
+		IParamValMap			*params) {
 	DEBUG_ENTER("send_notify\n");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
 	msg["method"] = method;
-	msg["params"] = std::dynamic_pointer_cast<JsonParamValMap>(params)->dump();
+	msg["params"] = dynamic_cast<JsonParamValMap *>(params)->dump();
 
 	int32_t ret = 0;
 
@@ -364,23 +367,27 @@ int32_t SocketMessageTransport::send_notify(
 	::send(m_socket, tmp, strlen(tmp), 0);
 	::send(m_socket, body.c_str(), body.size(), 0);
 
+	delete params;
+
 	DEBUG_LEAVE("send_notify");
 	return ret;
 }
 
 int32_t SocketMessageTransport::send_rsp(
 		intptr_t				id,
-		IParamValMapSP			result,
-		IParamValMapSP			error) {
+		IParamValMap			*result,
+		IParamValMap			*error) {
 	DEBUG_ENTER("send_rsp");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
 	msg["id"] = id;
 	if (result) {
-		msg["result"] = std::dynamic_pointer_cast<JsonParamVal>(result)->dump();
+		msg["result"] = dynamic_cast<JsonParamVal *>(result)->dump();
+		delete result;
 	} else {
-		msg["error"]  = std::dynamic_pointer_cast<JsonParamVal>(error)->dump();
+		msg["error"]  = dynamic_cast<JsonParamVal *>(error)->dump();
+		delete error;
 	}
 
 	std::string body = msg.dump();
@@ -398,28 +405,28 @@ int32_t SocketMessageTransport::send_rsp(
 	return ret;
 }
 
-IParamValBoolSP SocketMessageTransport::mkValBool(bool val) {
-	return JsonParamValBool::mk(val);
+IParamValBool *SocketMessageTransport::mkValBool(bool val) {
+	return JsonParamValBool::mk(val).release();
 }
 
-IParamValIntSP SocketMessageTransport::mkValIntU(uint64_t val) {
-	return JsonParamValInt::mk(val);
+IParamValInt *SocketMessageTransport::mkValIntU(uint64_t val) {
+	return JsonParamValInt::mk(val).release();
 }
 
-IParamValIntSP SocketMessageTransport::mkValIntS(int64_t val) {
-	return JsonParamValInt::mk(val);
+IParamValInt *SocketMessageTransport::mkValIntS(int64_t val) {
+	return JsonParamValInt::mk(val).release();
 }
 
-IParamValMapSP SocketMessageTransport::mkValMap() {
-	return JsonParamValMap::mk();
+IParamValMap *SocketMessageTransport::mkValMap() {
+	return JsonParamValMap::mk().release();
 }
 
-IParamValStrSP SocketMessageTransport::mkValStr(const std::string &val) {
-	return JsonParamValStr::mk(val);
+IParamValStr *SocketMessageTransport::mkValStr(const std::string &val) {
+	return JsonParamValStr::mk(val).release();
 }
 
-IParamValVectorSP SocketMessageTransport::mkVector() {
-	return JsonParamValVectorBase::mk();
+IParamValVector *SocketMessageTransport::mkVector() {
+	return JsonParamValVectorBase::mk().release();
 }
 
 int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
@@ -487,20 +494,21 @@ int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
 
 							DEBUG_ENTER("m_req_f");
 							m_outstanding += 1;
-							m_req_f(msg["method"], id, params);
+							m_req_f(msg["method"], id, params.get());
 							DEBUG_LEAVE("m_req_f");
 						} else {
 							// TODO: Response
-							IParamValMapSP result;
-							IParamValMapSP error;
-							JsonParamValIntSP id     = JsonParamValInt::mk(msg["id"]);
+							IParamValMapUP result;
+							IParamValMapUP error;
+							JsonParamValIntUP id = JsonParamValInt::mk(msg["id"]);
 							DEBUG_ENTER("m_rsp_f");
 							if (msg.contains("result")) {
 								result = JsonParamValMap::mk(msg["result"]);
 							} else if (msg.contains("error")) {
 								error = JsonParamValMap::mk(msg["error"]);
 							}
-							m_rsp_f(id->val_s(), result, error);
+							// Parameters pass to the callee
+							m_rsp_f(id->val_s(), result.release(), error.release());
 							m_outstanding -= 1;
 							DEBUG_LEAVE("m_rsp_f");
 						}

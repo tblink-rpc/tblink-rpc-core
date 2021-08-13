@@ -13,6 +13,7 @@ namespace tblink_rpc_core {
 
 class IParamValMap;
 typedef std::shared_ptr<IParamValMap> IParamValMapSP;
+typedef std::unique_ptr<IParamValMap> IParamValMapUP;
 class IParamValMap : public virtual IParamVal {
 public:
 
@@ -22,17 +23,19 @@ public:
 
 	virtual bool hasKey(const std::string &key) = 0;
 
-	virtual IParamValSP getVal(
+	virtual IParamVal *getVal(
 			const std::string		&key) = 0;
 
-	template <class T> std::shared_ptr<T> getValT(
+	template <class T> T *getValT(
 			const std::string		&key) {
-		return std::dynamic_pointer_cast<T>(getVal(key));
+		return dynamic_cast<T *>(getVal(key));
 	}
 
 	virtual void setVal(
 			const std::string		&key,
-			IParamValSP				val) = 0;
+			IParamVal				*val) = 0;
+
+	virtual IParamValMap *clone() = 0;
 
 
 };

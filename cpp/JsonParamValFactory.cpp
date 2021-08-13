@@ -24,34 +24,34 @@ JsonParamValFactory::~JsonParamValFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-JsonParamValSP JsonParamValFactory::mk(const nlohmann::json &msg) {
-	JsonParamValSP ret;
+JsonParamValUP JsonParamValFactory::mk(const nlohmann::json &msg) {
+	JsonParamVal *ret = 0;
 
 	switch (msg.type()) {
 	case nlohmann::json::value_t::number_integer:
-		ret = JsonParamValSP(new JsonParamValInt(msg.get<int64_t>()));
+		ret = new JsonParamValInt(msg.get<int64_t>());
 		break;
 	case nlohmann::json::value_t::number_unsigned:
-		ret = JsonParamValSP(new JsonParamValInt(msg.get<uint64_t>()));
+		ret = new JsonParamValInt(msg.get<uint64_t>());
 		break;
 	case nlohmann::json::value_t::object:
-		ret = JsonParamValSP(new JsonParamValMap(msg.get<nlohmann::json>()));
+		ret = new JsonParamValMap(msg.get<nlohmann::json>());
 		break;
 	case nlohmann::json::value_t::string:
-		ret = JsonParamValSP(new JsonParamValStr(msg.get<std::string>()));
+		ret = new JsonParamValStr(msg.get<std::string>());
 		break;
 	case nlohmann::json::value_t::array:
 		fprintf(stdout, "Type is array: %s\n", msg.dump().c_str());
-		ret = JsonParamValSP(new JsonParamValVectorBase(msg));
+		ret = new JsonParamValVectorBase(msg);
 		break;
 	case nlohmann::json::value_t::boolean:
-		ret = JsonParamValSP(new JsonParamValBool(msg.get<bool>()));
+		ret = new JsonParamValBool(msg.get<bool>());
 		break;
 	default:
 		fprintf(stdout, "Error: unhandled parameter type %s\n", msg.type_name());
 	}
 
-	return ret;
+	return JsonParamValUP(ret);
 }
 
 } /* namespace tblink_rpc_core */

@@ -21,7 +21,7 @@ public:
 
 	virtual ~JsonParamValFactory();
 
-	static JsonParamValSP mk(const nlohmann::json &msg);
+	static JsonParamValUP mk(const nlohmann::json &msg);
 
 };
 

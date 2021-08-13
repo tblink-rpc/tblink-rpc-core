@@ -20,17 +20,17 @@ public:
 
 	virtual ~IParamValFactory() { }
 
-	virtual IParamValBoolSP mkValBool(bool val) = 0;
+	virtual IParamValBool *mkValBool(bool val) = 0;
 
-	virtual IParamValIntSP mkValIntU(uint64_t val) = 0;
+	virtual IParamValInt *mkValIntU(uint64_t val) = 0;
 
-	virtual IParamValIntSP mkValIntS(int64_t val) = 0;
+	virtual IParamValInt *mkValIntS(int64_t val) = 0;
 
-	virtual IParamValMapSP mkValMap() = 0;
+	virtual IParamValMap *mkValMap() = 0;
 
-	virtual IParamValStrSP mkValStr(const std::string &val) = 0;
+	virtual IParamValStr *mkValStr(const std::string &val) = 0;
 
-	virtual IParamValVectorSP mkVector() = 0;
+	virtual IParamValVector *mkVector() = 0;
 
 
 };

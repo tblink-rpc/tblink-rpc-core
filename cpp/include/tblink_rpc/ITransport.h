@@ -16,12 +16,12 @@ namespace tblink_rpc_core {
 typedef std::function<int32_t(
 		const std::string		&method,
 		intptr_t				id,
-		IParamValMapSP			params)> recv_req_f;
+		IParamValMap			*params)> recv_req_f;
 
 typedef std::function<int32_t(
 		intptr_t				id,
-		IParamValMapSP			result,
-		IParamValMapSP			error)> recv_rsp_f;
+		IParamValMap			*result,
+		IParamValMap			*error)> recv_rsp_f;
 
 class ITransport : public virtual IParamValFactory {
 public:
@@ -36,16 +36,16 @@ public:
 
 	virtual intptr_t send_req(
 			const std::string		&method,
-			IParamValMapSP			params) = 0;
+			IParamValMap			*params) = 0;
 
 	virtual int32_t send_notify(
 			const std::string		&method,
-			IParamValMapSP			params) = 0;
+			IParamValMap			*params) = 0;
 
 	virtual int32_t send_rsp(
 			intptr_t			id,
-			IParamValMapSP		result,
-			IParamValMapSP		error) = 0;
+			IParamValMap		*result,
+			IParamValMap		*error) = 0;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) = 0;
 

@@ -28,16 +28,16 @@ public:
 
 	virtual intptr_t send_req(
 			const std::string	&method,
-			IParamValMapSP		params) override;
+			IParamValMap		*params) override;
 
 	virtual int32_t send_notify(
 			const std::string	&method,
-			IParamValMapSP		params) override;
+			IParamValMap		*params) override;
 
 	virtual int32_t send_rsp(
 			intptr_t			id,
-			IParamValMapSP		result,
-			IParamValMapSP		error) override;
+			IParamValMap		*result,
+			IParamValMap		*error) override;
 
 	virtual int32_t poll(int32_t timeout_ms=-1) override;
 
@@ -45,17 +45,17 @@ public:
 
 	virtual int32_t outstanding() override { return m_outstanding; }
 
-	virtual IParamValBoolSP mkValBool(bool val) override;
+	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValIntSP mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val) override;
 
-	virtual IParamValIntSP mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val) override;
 
-	virtual IParamValMapSP mkValMap() override;
+	virtual IParamValMap *mkValMap() override;
 
-	virtual IParamValStrSP mkValStr(const std::string &val) override;
+	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVectorSP mkVector() override;
+	virtual IParamValVector *mkVector() override;
 
 private:
 	int32_t process_data(char *data, uint32_t sz);

@@ -21,9 +21,9 @@ typedef std::function<void(
 		IInterfaceInst		*inst,
 		IMethodType			*method,
 		intptr_t			call_id,
-		IParamValVectorSP	params)> invoke_req_f;
+		IParamValVector		*params)> invoke_req_f;
 
-typedef std::function<void(IParamValSP retval)> invoke_rsp_f;
+typedef std::function<void(IParamVal *retval)> invoke_rsp_f;
 
 class IInterfaceInst : public virtual IParamValFactory {
 public:
@@ -34,27 +34,29 @@ public:
 
 	virtual IInterfaceType *type() = 0;
 
+	virtual void set_invoke_req_f(const invoke_req_f &req_f) = 0;
+
 	/**
 	 * Invokes a blocking method via the peer endpoint
 	 */
 	virtual int32_t invoke(
 			IMethodType									*method,
-			IParamValVectorSP							params,
+			IParamValVector								*params,
 			const invoke_rsp_f							&completion_f) = 0;
 
 	/**
 	 * Invoke a non-blocking method via the peer endpoint
 	 */
-	virtual IParamValSP invoke_nb(
+	virtual IParamVal *invoke_nb(
 			IMethodType									*method,
-			IParamValVectorSP							params) = 0;
+			IParamValVector								*params) = 0;
 
 	/**
 	 * Sends a response to an invocation
 	 */
 	virtual void invoke_rsp(
 			intptr_t									call_id,
-			IParamValSP									ret) = 0;
+			IParamVal									*ret) = 0;
 
 
 };

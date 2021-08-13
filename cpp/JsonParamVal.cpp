@@ -11,7 +11,7 @@
 
 namespace tblink_rpc_core {
 
-JsonParamVal::JsonParamVal() {
+JsonParamVal::JsonParamVal(IParamVal::TypeE type) : m_type(type) {
 	// TODO Auto-generated constructor stub
 
 }

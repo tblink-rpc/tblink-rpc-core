@@ -33,39 +33,43 @@ public:
 
 	virtual IInterfaceType *type() override { return m_type; }
 
+	virtual void set_invoke_req_f(const invoke_req_f &req_f) override {
+		m_req_f = req_f;
+	}
+
 	virtual const std::string &name() override {
 		return m_inst_name;
 	}
 
 	void invoke_req(
 			IMethodType				*method,
-			IParamValVectorSP		params,
+			IParamValVector			*params,
 			const invoke_rsp_f		&response_f);
 
 	virtual int32_t invoke(
 			IMethodType									*method,
-			IParamValVectorSP							params,
+			IParamValVector								*params,
 			const invoke_rsp_f							&completion_f) override;
 
-	virtual IParamValSP invoke_nb(
+	virtual IParamVal *invoke_nb(
 			IMethodType									*method,
-			IParamValVectorSP							params) override;
+			IParamValVector								*params) override;
 
 	virtual void invoke_rsp(
 			intptr_t									call_id,
-			IParamValSP									ret) override;
+			IParamVal									*ret) override;
 
-	virtual IParamValBoolSP mkValBool(bool val) override;
+	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValIntSP mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val) override;
 
-	virtual IParamValIntSP mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val) override;
 
-	virtual IParamValMapSP mkValMap() override;
+	virtual IParamValMap *mkValMap() override;
 
-	virtual IParamValStrSP mkValStr(const std::string &val) override;
+	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVectorSP mkVector() override;
+	virtual IParamValVector *mkVector() override;
 
 private:
 	JsonRpcEndpoint						*m_endpoint;

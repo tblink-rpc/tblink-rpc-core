@@ -14,16 +14,22 @@ namespace tblink_rpc_core {
 
 class JsonParamVal;
 typedef std::shared_ptr<JsonParamVal> JsonParamValSP;
+typedef std::unique_ptr<JsonParamVal> JsonParamValUP;
 
 class JsonParamVal : public virtual IParamVal {
 public:
-	JsonParamVal();
+	JsonParamVal(IParamVal::TypeE type);
 
 	virtual ~JsonParamVal();
 
+	virtual IParamVal::TypeE type() override { return m_type; }
+
 	virtual nlohmann::json dump();
 
-	static JsonParamValSP load(const nlohmann::json &msg);
+	static JsonParamValUP load(const nlohmann::json &msg);
+
+private:
+	IParamVal::TypeE				m_type;
 
 };
 

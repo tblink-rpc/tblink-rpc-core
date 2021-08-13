@@ -13,16 +13,18 @@
 
 namespace tblink_rpc_core {
 
-JsonParamValMap::JsonParamValMap() {
+JsonParamValMap::JsonParamValMap() :
+	JsonParamVal(IParamVal::Map) {
 	// TODO Auto-generated constructor stub
 
 }
 
-JsonParamValMap::JsonParamValMap(const nlohmann::json &msg) {
+JsonParamValMap::JsonParamValMap(const nlohmann::json &msg) :
+	JsonParamVal(IParamVal::Map) {
 	for (nlohmann::json::const_iterator
 			it=msg.begin();
 			it!=msg.end(); it++) {
-		setVal(it.key(), JsonParamValFactory::mk(it.value()));
+		setVal(it.key(), JsonParamValFactory::mk(it.value()).release());
 	}
 }
 
@@ -38,12 +40,12 @@ bool JsonParamValMap::hasKey(const std::string &key) {
 	return (m_map.find(key) != m_map.end());
 }
 
-IParamValSP JsonParamValMap::getVal(
+IParamVal *JsonParamValMap::getVal(
 		const std::string		&key) {
-	std::map<std::string,JsonParamValSP>::const_iterator it;
+	std::map<std::string,JsonParamValUP>::const_iterator it;
 
 	if ((it=m_map.find(key)) != m_map.end()) {
-		return it->second;
+		return it->second.get();
 	} else {
 		return 0;
 	}
@@ -51,15 +53,27 @@ IParamValSP JsonParamValMap::getVal(
 
 void JsonParamValMap::setVal(
 		const std::string		&key,
-		IParamValSP				val) {
-	std::map<std::string,JsonParamValSP>::const_iterator it;
-	JsonParamValSP jval = std::dynamic_pointer_cast<JsonParamVal>(val);
+		IParamVal				*val) {
+	std::map<std::string,JsonParamValUP>::const_iterator it;
+	JsonParamVal *jval = dynamic_cast<JsonParamVal *>(val);
 	m_keys.insert(key);
 
 	if ((it=m_map.find(key)) != m_map.end()) {
 		m_map.erase(it);
 	}
-	m_map.insert({key, jval});
+	m_map.insert({key, JsonParamValUP(jval)});
+}
+
+IParamValMap *JsonParamValMap::clone() {
+	JsonParamValMap *ret = new JsonParamValMap();
+
+	for (std::map<std::string,JsonParamValUP>::const_iterator
+			it=m_map.begin();
+			it!=m_map.end(); it++) {
+		ret->setVal(it->first, it->second->clone());
+	}
+
+	return ret;
 }
 
 nlohmann::json JsonParamValMap::dump() {
@@ -68,7 +82,7 @@ nlohmann::json JsonParamValMap::dump() {
 	if (m_map.size() == 0) {
 		ret = nlohmann::json::object();
 	} else {
-		for (std::map<std::string,JsonParamValSP>::const_iterator
+		for (std::map<std::string,JsonParamValUP>::const_iterator
 				it=m_map.begin();
 				it!=m_map.end(); it++) {
 			ret[it->first] = it->second->dump();
@@ -78,12 +92,12 @@ nlohmann::json JsonParamValMap::dump() {
 	return ret;
 }
 
-JsonParamValMapSP JsonParamValMap::mk() {
-	return JsonParamValMapSP(new JsonParamValMap());
+JsonParamValMapUP JsonParamValMap::mk() {
+	return JsonParamValMapUP(new JsonParamValMap());
 }
 
-JsonParamValMapSP JsonParamValMap::mk(const nlohmann::json &msg) {
-	return JsonParamValMapSP(new JsonParamValMap(msg));
+JsonParamValMapUP JsonParamValMap::mk(const nlohmann::json &msg) {
+	return JsonParamValMapUP(new JsonParamValMap(msg));
 }
 
 } /* namespace tblink_rpc_core */

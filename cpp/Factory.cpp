@@ -21,9 +21,8 @@ Factory::~Factory() {
 }
 
 IEndpoint *Factory::mkJsonRpcEndpoint(
-		ITransport 			*transport,
 		IEndpointServices	*services) {
-	return new JsonRpcEndpoint(transport, services);
+	return new JsonRpcEndpoint(services);
 }
 
 ITransport *Factory::mkSocketTransport(

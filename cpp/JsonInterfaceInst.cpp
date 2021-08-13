@@ -38,7 +38,7 @@ JsonInterfaceInst::~JsonInterfaceInst() {
 
 void JsonInterfaceInst::invoke_req(
 			IMethodType				*method,
-			IParamValVectorSP		params,
+			IParamValVector			*params,
 			const invoke_rsp_f		&response_f) {
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -48,16 +48,21 @@ void JsonInterfaceInst::invoke_req(
 
 int32_t JsonInterfaceInst::invoke(
 		IMethodType									*method,
-		IParamValVectorSP							params,
+		IParamValVector								*params,
 		const invoke_rsp_f							&completion_f) {
 
 	// TODO:
-	IParamValMapSP r_params = m_endpoint->mkValMap();
+	IParamValMap *r_params = m_endpoint->mkValMap();
+	intptr_t call_id = m_call_id;
+	m_call_id += 1;
+	m_invoke_m.insert({call_id, completion_f});
+
 	r_params->setVal("ifinst", m_endpoint->mkValStr(name()));
 	r_params->setVal("method", m_endpoint->mkValStr(method->name()));
+	r_params->setVal("call-id", m_endpoint->mkValIntU(call_id));
 	r_params->setVal("params", params);
 	intptr_t id = m_endpoint->send_req(
-			"tblink.invoke",
+			"tblink.invoke-b",
 			r_params);
 
 	std::pair<IParamValMapSP,IParamValMapSP> rsp = m_endpoint->wait_rsp(id);
@@ -65,59 +70,57 @@ int32_t JsonInterfaceInst::invoke(
 	return 0;
 }
 
-IParamValSP JsonInterfaceInst::invoke_nb(
+IParamVal *JsonInterfaceInst::invoke_nb(
 		IMethodType									*method,
-		IParamValVectorSP							params) {
+		IParamValVector								*params) {
 
-	IParamValMapSP r_params = m_endpoint->mkValMap();
-	r_params->setVal("ifinst", m_endpoint->mkValStr(name()));
-	r_params->setVal("method", m_endpoint->mkValStr(method->name()));
-	r_params->setVal("params", params);
-	intptr_t id = m_endpoint->send_req(
-			"tblink.invoke-nb",
-			r_params);
+	fprintf(stdout, "invoke_nb: %s\n", method->name().c_str());
+	fflush(stdout);
 
-	std::pair<IParamValMapSP,IParamValMapSP> rsp = m_endpoint->wait_rsp(id);
+	return m_endpoint->invoke_nb(this, method, params);
 
-	if (rsp.first->hasKey("return")) {
-		return rsp.first->getVal("return");
-	} else {
-		return 0;
-	}
+
 }
 
 void JsonInterfaceInst::invoke_rsp(
 		intptr_t									call_id,
-		IParamValSP									ret) {
+		IParamVal									*ret) {
 	std::map<intptr_t,invoke_rsp_f>::const_iterator it;
 
 	if ((it=m_invoke_m.find(call_id)) != m_invoke_m.end()) {
+		fprintf(stdout, "--> Send response\n");
+		fflush(stdout);
 		it->second(ret);
+		fprintf(stdout, "<-- Send response\n");
+		fflush(stdout);
 		m_invoke_m.erase(it);
+	} else {
+		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
+		fflush(stdout);
 	}
 }
 
-IParamValBoolSP JsonInterfaceInst::mkValBool(bool val) {
+IParamValBool *JsonInterfaceInst::mkValBool(bool val) {
 	return m_endpoint->mkValBool(val);
 }
 
-IParamValIntSP JsonInterfaceInst::mkValIntU(uint64_t val) {
+IParamValInt *JsonInterfaceInst::mkValIntU(uint64_t val) {
 	return m_endpoint->mkValIntU(val);
 }
 
-IParamValIntSP JsonInterfaceInst::mkValIntS(int64_t val) {
+IParamValInt *JsonInterfaceInst::mkValIntS(int64_t val) {
 	return m_endpoint->mkValIntS(val);
 }
 
-IParamValMapSP JsonInterfaceInst::mkValMap() {
+IParamValMap *JsonInterfaceInst::mkValMap() {
 	return m_endpoint->mkValMap();
 }
 
-IParamValStrSP JsonInterfaceInst::mkValStr(const std::string &val) {
+IParamValStr *JsonInterfaceInst::mkValStr(const std::string &val) {
 	return m_endpoint->mkValStr(val);
 }
 
-IParamValVectorSP JsonInterfaceInst::mkVector() {
+IParamValVector *JsonInterfaceInst::mkVector() {
 	return m_endpoint->mkVector();
 }
 

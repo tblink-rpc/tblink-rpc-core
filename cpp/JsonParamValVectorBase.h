@@ -15,6 +15,7 @@ namespace tblink_rpc_core {
 
 class JsonParamValVectorBase;
 typedef std::shared_ptr<JsonParamValVectorBase> JsonParamValVectorBaseSP;
+typedef std::unique_ptr<JsonParamValVectorBase> JsonParamValVectorBaseUP;
 class JsonParamValVectorBase : public JsonParamVal, public virtual IParamValVector {
 public:
 	JsonParamValVectorBase();
@@ -29,28 +30,30 @@ public:
 
 	virtual uint32_t size() override { return m_children.size(); }
 
-	virtual IParamValSP at(uint32_t idx) override { return m_children.at(idx); }
+	virtual IParamVal *at(uint32_t idx) override { return m_children.at(idx).get(); }
 
-	virtual void push_back(IParamValSP v) override;
+	virtual void push_back(IParamVal *v) override;
 
-	const std::vector<JsonParamValSP> &children() const {
+	virtual IParamValVector *clone() override;
+
+	const std::vector<JsonParamValUP> &children() const {
 		return m_children;
 	}
 
-	JsonParamValSP children(uint32_t idx) const {
-		return m_children.at(idx);
+	JsonParamVal *children(uint32_t idx) const {
+		return m_children.at(idx).get();
 	}
 
 	virtual nlohmann::json dump();
 
-	static JsonParamValVectorBaseSP mk(
+	static JsonParamValVectorBaseUP mk(
 			std::function<JsonParamValSP(const nlohmann::json &)> 	ctor,
 			const nlohmann::json 							&msg);
 
-	static JsonParamValVectorBaseSP mk();
+	static JsonParamValVectorBaseUP mk();
 
 private:
-	std::vector<JsonParamValSP>				m_children;
+	std::vector<JsonParamValUP>				m_children;
 
 };
 

@@ -20,11 +20,14 @@ namespace tblink_rpc_core {
 
 class JsonRpcEndpoint : public virtual IEndpoint {
 public:
-	JsonRpcEndpoint(
-			ITransport			*transport,
-			IEndpointServices	*services);
+
+	friend class JsonInterfaceInst;
+
+	JsonRpcEndpoint(IEndpointServices	*services);
 
 	virtual ~JsonRpcEndpoint();
+
+	void init(ITransport *transport);
 
 	virtual State state() override { return m_state; }
 
@@ -88,91 +91,108 @@ public:
 	 */
 	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
 
-	virtual IParamValBoolSP mkValBool(bool val) override;
+	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValIntSP mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val) override;
 
-	virtual IParamValIntSP mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val) override;
 
-	virtual IParamValMapSP mkValMap() override;
+	virtual IParamValMap *mkValMap() override;
 
-	virtual IParamValStrSP mkValStr(const std::string &val) override;
+	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVectorSP mkVector() override;
+	virtual IParamValVector *mkVector() override;
 
-	intptr_t send_req(const std::string &method, IParamValMapSP params);
+	intptr_t send_req(const std::string &method, IParamValMap *params);
 
-	std::pair<IParamValMapSP,IParamValMapSP> wait_rsp(intptr_t id);
+	std::pair<IParamValMapUP,IParamValMapUP> wait_rsp(intptr_t id);
 
 private:
-	typedef std::pair<IParamValMapSP,IParamValMapSP> rsp_t;
-	typedef std::function<rsp_t(intptr_t, IParamValMapSP)> req_func_t;
+	// Methods used by InterfaceInst
+
+	IParamVal *invoke_nb(
+			JsonInterfaceInst	*ifinst,
+			IMethodType 		*method,
+			IParamValVector 	*params);
+
+private:
+	typedef std::pair<IParamValMapUP,IParamValMapUP> rsp_t;
+	typedef std::function<rsp_t(intptr_t, IParamValMap *)> req_func_t;
 private:
 	rsp_t req_build_complete(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap 	*params);
 
 	rsp_t req_connect_complete(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap 	*params);
 
 	rsp_t req_get_interface_types(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap	*params);
 
 	rsp_t req_add_time_callback(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap	*params);
 
 	rsp_t req_notify_callback(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap	*params);
 
 	rsp_t req_shutdown(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap 	*params);
 
 	rsp_t req_invoke_nb(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap 	*params);
+
+	rsp_t req_invoke_b(
+			intptr_t		id,
+			IParamValMap 	*params);
+
+	rsp_t req_invoke_rsp_b(
+			intptr_t		id,
+			IParamValMap 	*params);
 
 	rsp_t req_run_until_event(
 			intptr_t		id,
-			IParamValMapSP 	params);
+			IParamValMap 	*params);
 
-	void call_completion(
+	void call_completion_nb(
 			intptr_t		id,
-			IParamValSP		retval);
+			IParamVal		*retval);
+
+	void call_completion_b(
+			JsonInterfaceInst	*ifinst,
+			intptr_t			call_id,
+			IParamVal			*retval);
 
 	int32_t recv_req(
 			const std::string		&method,
 			intptr_t				id,
-			IParamValMapSP			params);
+			IParamValMap			*params);
 
 	int32_t recv_rsp(
 			intptr_t				id,
-			IParamValMapSP			result,
-			IParamValMapSP			error);
+			IParamValMap			*result,
+			IParamValMap			*error);
 
 
-	std::pair<IParamValMapSP,IParamValMapSP> get_interface_types(
-			);
+	IParamValMap *pack_iftypes();
 
+	IParamValMap *pack_ifinsts();
 
-	IParamValMapSP pack_iftypes();
+	std::vector<JsonInterfaceTypeUP> unpack_iftypes(IParamValMap *iftypes);
 
-	IParamValMapSP pack_ifinsts();
-
-	std::vector<JsonInterfaceTypeUP> unpack_iftypes(IParamValMapSP iftypes);
-
-	std::vector<JsonInterfaceInstUP> unpack_ifinsts(IParamValMapSP ifinsts);
+	std::vector<JsonInterfaceInstUP> unpack_ifinsts(IParamValMap  *ifinsts);
 
 
 private:
 	ITransport						*m_transport;
 	IEndpointServices				*m_services;
 
-	std::map<intptr_t, std::pair<IParamValMapSP,IParamValMapSP>>	m_rsp_m;
+	std::map<intptr_t, std::pair<IParamValMap *,IParamValMap *>>	m_rsp_m;
 
 	bool															m_build_complete;
 	bool															m_connect_complete;
@@ -195,9 +215,6 @@ private:
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 
 	int32_t															m_event_received;
-
-	// Set 'true' when the endpoint is in 'await-event' mode
-	bool															m_await_event;
 
 };
 

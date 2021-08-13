@@ -13,6 +13,7 @@ namespace tblink_rpc_core {
 
 class JsonParamValMap;
 typedef std::shared_ptr<JsonParamValMap> JsonParamValMapSP;
+typedef std::unique_ptr<JsonParamValMap> JsonParamValMapUP;
 class JsonParamValMap : public JsonParamVal, public virtual IParamValMap {
 public:
 	JsonParamValMap();
@@ -25,21 +26,23 @@ public:
 
 	virtual bool hasKey(const std::string &key) override;
 
-	virtual IParamValSP getVal(
+	virtual IParamVal *getVal(
 			const std::string		&key) override;
 
 	virtual void setVal(
 			const std::string		&key,
-			IParamValSP				val) override;
+			IParamVal				*val) override;
+
+	virtual IParamValMap *clone() override;
 
 	virtual nlohmann::json dump();
 
-	static JsonParamValMapSP mk();
+	static JsonParamValMapUP mk();
 
-	static JsonParamValMapSP mk(const nlohmann::json &msg);
+	static JsonParamValMapUP mk(const nlohmann::json &msg);
 
 private:
-	std::map<std::string, JsonParamValSP>	m_map;
+	std::map<std::string, JsonParamValUP>	m_map;
 	std::set<std::string>					m_keys;
 
 };
