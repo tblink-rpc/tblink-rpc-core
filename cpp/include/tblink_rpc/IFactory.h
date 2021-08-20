@@ -18,6 +18,7 @@ public:
 	virtual ~IFactory() { }
 
 	virtual IEndpoint *mkJsonRpcEndpoint(
+			IEndpoint::Type		type,
 			IEndpointServices	*services) = 0;
 
 	virtual ITransport *mkSocketTransport(

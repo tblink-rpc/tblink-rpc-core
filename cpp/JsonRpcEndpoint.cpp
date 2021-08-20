@@ -28,7 +28,10 @@
 
 namespace tblink_rpc_core {
 
-JsonRpcEndpoint::JsonRpcEndpoint(IEndpointServices	*services) {
+JsonRpcEndpoint::JsonRpcEndpoint(
+		IEndpoint::Type		type,
+		IEndpointServices	*services) {
+	m_type = type;
 	m_services  = services;
 	m_transport = 0;
 
@@ -113,19 +116,29 @@ bool JsonRpcEndpoint::build_complete() {
 	params->setVal("time-precision", m_transport->mkValIntS(
 			m_services->time_precision()));
 
-	intptr_t id = m_transport->send_req("tblink.build-complete", params);
-	rsp_t rsp = wait_rsp(id);
+	intptr_t id = send_req(
+			"tblink.build-complete",
+			params,
+			(m_type == Active));
 
-	while (!m_build_complete) {
-		int ret = m_transport->poll(1000);
+	if (m_type == Active) {
+		rsp_t rsp = wait_rsp(id);
 
-		if (ret == -1) {
-			return false;
+		// Wait for a build-complete request
+		while (!m_build_complete) {
+			int ret = m_transport->poll(1000);
+
+			if (ret == -1) {
+				return false;
+			}
 		}
-	}
 
-	if (m_state != IEndpoint::Shutdown) {
-		m_state = IEndpoint::Built;
+		if (m_state != IEndpoint::Shutdown) {
+			m_state = IEndpoint::Built;
+		}
+	} else {
+		// Assume the response will arrive at
+		// some point
 	}
 
 	return true;
@@ -134,29 +147,43 @@ bool JsonRpcEndpoint::build_complete() {
 bool JsonRpcEndpoint::connect_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
-	intptr_t id = m_transport->send_req("tblink.connect-complete", params);
-	rsp_t rsp = wait_rsp(id);
+	intptr_t id = send_req(
+			"tblink.connect-complete",
+			params,
+			(m_type == Active));
 
-	while (!m_connect_complete) {
-		int ret = m_transport->poll(1000);
+	if (m_type == Active) {
+		rsp_t rsp = wait_rsp(id);
 
-		if (ret == -1) {
-			return false;
+		while (!m_connect_complete) {
+			int ret = m_transport->poll(1000);
+
+			if (ret == -1) {
+				return false;
+			}
 		}
-	}
 
-	if (m_state != IEndpoint::Shutdown) {
-		m_state = IEndpoint::Connected;
-	}
+		if (m_state != IEndpoint::Shutdown) {
+			m_state = IEndpoint::Connected;
+		}
 
-	return true;
+		return true;
+	} else {
+		// Passive endpoint
+
+		return (id != -1);
+	}
 }
 
 bool JsonRpcEndpoint::shutdown() {
 	if (m_state != IEndpoint::Shutdown && m_transport) {
 		IParamValMap *params = m_transport->mkValMap();
 
-		intptr_t id = m_transport->send_req("tblink.shutdown", params);
+		intptr_t id = send_req(
+				"tblink.shutdown",
+				params,
+				false // Mark the request as not being actively awaited
+				);
 
 		// TODO: only wait a little bit for a response...
 		//	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
@@ -184,16 +211,16 @@ int32_t JsonRpcEndpoint::run_until_event() {
 	while (m_event_received == 0) {
 		ret = m_transport->await_msg();
 
-		std::map<intptr_t,std::pair<IParamValMap*,IParamValMap*>>::const_iterator it;
+		std::map<intptr_t,rspq_elem_t>::const_iterator it;
 		if (id > 0 && (it=m_rsp_m.find(id)) != m_rsp_m.end()) {
 
 			// Clear out the response
 			m_rsp_m.erase(it);
-			if (it->second.first) {
-				delete it->second.first;
+			if (it->second.second.first) {
+				delete it->second.second.first;
 			}
-			if (it->second.second) {
-				delete it->second.second;
+			if (it->second.second.second) {
+				delete it->second.second.second;
 			}
 			id = -1;
 		}
@@ -764,7 +791,24 @@ int32_t JsonRpcEndpoint::recv_rsp(
 	DEBUG_ENTER("recv_rsp");
 
 	// We take ownership of result and error from the transport
-	m_rsp_m.insert({id, {result, error}});
+	std::map<intptr_t,rspq_elem_t>::iterator it;
+
+	if ((it=m_rsp_m.find(id)) != m_rsp_m.end()) {
+		// Someone will be back to retrieve this ack
+		if (it->second.first) {
+			it->second.second.first = result;
+			it->second.second.first = error;
+		} else {
+			// The ack is being ignored
+			if (result) {
+				delete result;
+			}
+			if (error) {
+				delete error;
+			}
+			m_rsp_m.erase(it);
+		}
+	}
 
 	DEBUG_LEAVE("recv_rsp");
 	return 0;
@@ -772,18 +816,26 @@ int32_t JsonRpcEndpoint::recv_rsp(
 
 intptr_t JsonRpcEndpoint::send_req(
 		const std::string 	&method,
-		IParamValMap		*params) {
-	return m_transport->send_req(method, params);
+		IParamValMap		*params,
+		bool				active_wait) {
+	intptr_t id = m_transport->send_req(method, params);
+
+	// Insert a placeholder for the response we will receive
+	m_rsp_m.insert({id, {active_wait, {0, 0}}});
+
+	return id;
 }
 
 JsonRpcEndpoint::rsp_t JsonRpcEndpoint::wait_rsp(intptr_t id) {
-	std::map<intptr_t,std::pair<IParamValMap*,IParamValMap*>>::iterator it;
+	std::map<intptr_t,rspq_elem_t>::iterator it;
 	std::pair<IParamValMap*,IParamValMap*> rsp;
 
 	DEBUG_ENTER("wait_rsp");
 
 	// Poll waiting
-	while ((it=m_rsp_m.find(id)) == m_rsp_m.end()) {
+	while ((it=m_rsp_m.find(id)) != m_rsp_m.end() &&
+			!it->second.second.first &&
+			!it->second.second.second) {
 
 		DEBUG_ENTER("wait_rsp --> await_msg");
 		int32_t ret = m_transport->await_msg();
@@ -796,7 +848,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::wait_rsp(intptr_t id) {
 	}
 
 	if (it != m_rsp_m.end()) {
-		rsp = it->second;
+		rsp = it->second.second;
 		m_rsp_m.erase(it);
 		DEBUG_LEAVE("wait_rsp");
 		return std::make_pair(IParamValMapUP(rsp.first), IParamValMapUP(rsp.second));

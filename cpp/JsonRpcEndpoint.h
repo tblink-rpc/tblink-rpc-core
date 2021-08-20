@@ -23,13 +23,17 @@ public:
 
 	friend class JsonInterfaceInst;
 
-	JsonRpcEndpoint(IEndpointServices	*services);
+	JsonRpcEndpoint(
+			IEndpoint::Type		type,
+			IEndpointServices	*services);
 
 	virtual ~JsonRpcEndpoint();
 
 	void init(ITransport *transport);
 
 	virtual State state() override { return m_state; }
+
+	virtual Type type() override { return m_type; }
 
 	virtual bool build_complete() override;
 
@@ -103,7 +107,10 @@ public:
 
 	virtual IParamValVector *mkVector() override;
 
-	intptr_t send_req(const std::string &method, IParamValMap *params);
+	intptr_t send_req(
+			const std::string 	&method,
+			IParamValMap 		*params,
+			bool				active_wait=true);
 
 	std::pair<IParamValMapUP,IParamValMapUP> wait_rsp(intptr_t id);
 
@@ -187,12 +194,16 @@ private:
 
 	std::vector<JsonInterfaceInstUP> unpack_ifinsts(IParamValMap  *ifinsts);
 
+private:
+	typedef std::pair<bool, std::pair<IParamValMap*,IParamValMap*>> rspq_elem_t;
+
 
 private:
 	ITransport						*m_transport;
+	IEndpoint::Type					m_type;
 	IEndpointServices				*m_services;
 
-	std::map<intptr_t, std::pair<IParamValMap *,IParamValMap *>>	m_rsp_m;
+	std::map<intptr_t, rspq_elem_t>									m_rsp_m;
 
 	bool															m_build_complete;
 	bool															m_connect_complete;

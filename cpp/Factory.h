@@ -18,6 +18,7 @@ public:
 	virtual ~Factory();
 
 	virtual IEndpoint *mkJsonRpcEndpoint(
+			IEndpoint::Type		type,
 			IEndpointServices	*services) override;
 
 	virtual ITransport *mkSocketTransport(

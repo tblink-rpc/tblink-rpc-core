@@ -28,11 +28,18 @@ public:
 		Shutdown
 	};
 
+	enum Type {
+		Active,
+		Passive
+	};
+
 public:
 
 	virtual ~IEndpoint() { }
 
 	virtual State state() = 0;
+
+	virtual Type type() = 0;
 
 	virtual bool build_complete() = 0;
 

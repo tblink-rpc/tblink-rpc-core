@@ -35,6 +35,17 @@ if (NOT PACKAGES_DIR)
 
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
   enable_testing()
+  
+  ExternalProject_Add(glog
+    PREFIX glog
+    SOURCE_DIR "${PACKAGES_DIR}/glog"
+    CMAKE_CACHE_ARGS
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/glog
+      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+      -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
+      -DBUILD_SHARED_LIBS:BOOL=OFF
+      -DCMAKE_DEBUG_POSTFIX:STRING=""
+  )  
  
   ExternalProject_Add(googletest
         PREFIX googletest
@@ -49,6 +60,11 @@ if (NOT PACKAGES_DIR)
 endif()
 
 add_library(tblink_rpc_core ${tblink_rpc_core_SRC})
+
+add_dependencies(
+	tblink_rpc_core
+	glog
+	)
 
 target_include_directories(tblink_rpc_core PRIVATE
 	${PACKAGES_DIR}/json/include
