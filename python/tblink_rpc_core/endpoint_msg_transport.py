@@ -15,6 +15,9 @@ from asyncio.coroutines import iscoroutinefunction
 import asyncio
 from typing import List
 from tblink_rpc_core.endpoint_mgr import EndpointMgr
+from tblink_rpc_core.interface_type import InterfaceType
+from tblink_rpc_core.method_type import MethodType
+from tblink_rpc_core.interface_inst import InterfaceInst
 
 
 class TimeUnit(IntEnum):
@@ -34,6 +37,8 @@ class EndpointMsgTransport(object):
         self.is_peer_built = False
         self.is_peer_connected = False
         self.is_shutdown = False
+        self.iftype_m = {}
+        self.ifinst_m = {}
         
         EndpointMgr.inst().add_endpoint(self)
         
@@ -71,11 +76,42 @@ class EndpointMsgTransport(object):
         pass
     
     def _load_iftypes(self, iftypes):
-        for v in iftypes:
-            print("v: " + str(v))
+        for v in iftypes.keys():
+            iftype_i = iftypes.getVal(v)
+            iftype = InterfaceType(v)
+            
+            methods = iftype_i.getVal("methods")
+            
+            for mkey in methods.keys():
+                method_t = methods.getVal(mkey)
+                
+                id = -1; #iftype_i.getValue("id").val_s()
+                signature = method_t.getVal("signature").val()
+                is_export = method_t.getVal("is-export").val()
+                is_blocking = method_t.getVal("is-blocking").val()
+                
+                mt = MethodType(
+                    mkey,
+                    id,
+                    signature,
+                    is_export,
+                    is_blocking)
+                
+                iftype.add_method(mt)
+            self.iftype_m[v] = iftype
         pass
     
-    def _load_ifinsts(self, iftypes):
+    def _load_ifinsts(self, ifinsts):
+        print("load_ifinsts")
+        for ifname in ifinsts.keys():
+            print("ifname: %s" % ifname)
+            ifinst_v = ifinsts.getVal(ifname)
+            ifinst_type = self.iftype_m[ifinst_v.getVal("type").val()]
+            ifinst = InterfaceInst(
+                self,
+                ifname,
+                ifinst_type)
+            self.ifinst_m[ifname] = ifinst
         pass
    
 
