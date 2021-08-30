@@ -10,11 +10,14 @@ class InterfaceInst(object):
     def __init__(self,
                  endpoint,
                  name,
-                 iftype):
+                 iftype,
+                 is_mirror,
+                 req_f=None):
         self.endpoint = endpoint
         self.name = name
         self.iftype = iftype
-        self.invoke_f = None
+        self.is_mirror = is_mirror
+        self.req_f = req_f
         self.call_id  = 1
         self.rsp_m = {}
         

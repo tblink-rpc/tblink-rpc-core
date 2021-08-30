@@ -11,3 +11,6 @@ class EndpointMgrListener(object):
     
     def endpoint_removed(self, ep):
         pass
+    
+    def build_complete(self, ep):
+        pass

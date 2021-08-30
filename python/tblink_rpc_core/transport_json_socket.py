@@ -10,6 +10,8 @@ from tblink_rpc_core.json.param2json import Param2Json
 from tblink_rpc_core.param_val_int import ParamValInt
 from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.param_val_str import ParamValStr
+from tblink_rpc_core.param_val_bool import ParamValBool
+from tblink_rpc_core.param_val_vec import ParamValVec
 
 
 class TransportJsonSocket():
@@ -97,7 +99,18 @@ class TransportJsonSocket():
     def mkValBool(self, v):
         return ParamValBool(v)
     
+    def mkValIntS(self, v):
+        return ParamValInt(v)
+    
     def mkValIntU(self, v):
         return ParamValInt(v)
     
+    def mkValMap(self):
+        return ParamValMap()
+
+    def mkValStr(self, v):
+        return ParamValStr(v)
+
+    def mkValVec(self):
+        return ParamValVec()
     

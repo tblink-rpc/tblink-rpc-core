@@ -10,6 +10,21 @@ class ParamValMap(object):
     def __init__(self):
         self.val_m = {}
         
+    def keys(self):
+        return self.val_m.keys()
+        
+    def hasKey(self, key):
+        return key in self.val_m.keys()
+    
+    def getVal(self, key):
+        if key in self.val_m.keys():
+            return self.val_m[key]
+        else:
+            return None
+        
+    def setVal(self, key, val):
+        self.val_m[key] = val
+        
     def __setitem__(self, key, val):
         self.val_m[key] = val
         

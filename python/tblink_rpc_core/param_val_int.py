@@ -12,3 +12,9 @@ class ParamValInt(object):
     def accept(self, v):
         v.visit_int(self)
         
+    def val_s(self):
+        return self.val
+    
+    def val_u(self):
+        return self.val
+        

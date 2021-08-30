@@ -1,10 +1,10 @@
 '''
-Created on Jul 5, 2021
+Created on Aug 26, 2021
 
 @author: mballance
 '''
 
-class ParamValStr(object):
+class ParamValBool(object):
     
     def __init__(self, val):
         self._val = val
@@ -13,4 +13,5 @@ class ParamValStr(object):
         return self._val
         
     def accept(self, v):
-        v.visit_str(self)
+        v.visit_bool(self)
+        
