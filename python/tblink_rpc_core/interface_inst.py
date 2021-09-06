@@ -21,7 +21,7 @@ class InterfaceInst(object):
         self.call_id  = 1
         self.rsp_m = {}
         
-    def invoke_nb(self,
+    def invoke(self,
                method_t : MethodType,
                params,
                completion_f):
@@ -33,15 +33,21 @@ class InterfaceInst(object):
         r_params.setVal("method",
                       self.endpoint.mkValStr(method_t.name))
         r_params.setVal("call-id", 
-                      self.endpoint.mkValIntU(call_id))
+                      self.endpoint.mkValIntU(call_id, 64))
         r_params.setVal("params", params)
         
         if completion_f is not None:
             self.rsp_m[call_id] = (None, None)
 
-        req_id = self.endpoint.send_req(
-            "tblink.invoke-nb",
-            r_params)
+        if method_t.is_blocking:
+            req_id = self.endpoint.send_req(
+                "tblink.invoke-b",
+                r_params)
+        else:
+            req_id = self.endpoint.send_req(
+                "tblink.invoke-nb",
+                r_params,
+                self._invoke_rsp_nb)
 
         if call_id in self.rsp_m.keys() and self.rsp_m[call_id] is not None:
             completion_f(self.rsp_m[call_id][0])
@@ -49,21 +55,17 @@ class InterfaceInst(object):
         
         pass
     
-    async def invoke_b(self,
-                 method_t : MethodType,
-                 params,
-                 completion_f):
-        pass
-    
     def invoke_rsp(self, call_id, ret):
+        """Called by the endpoint when the completion request for a blocking call is received"""
         
         if call_id in self.rsp_m.keys():
             # TODO: need to clone ret?
             self.rsp_m[call_id] = ret
             
             # TODO: if 
-        
-            
         pass
+    
+    def _invoke_rsp_nb(self, id, result, error):
+        print("TODO: _invoke_rsp_nb")
         
         

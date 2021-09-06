@@ -9,14 +9,18 @@ class MethodType(object):
     def __init__(self, 
                  name, 
                  id,
-                 signature,
+                 rtype,
                  is_export,
-                 is_blocking):
+                 is_blocking,
+                 params):
         self.name = name
         self.id = id
-        self.signature = signature
+        self.rtype = rtype
         self.is_export = is_export
         self.is_blocking = is_blocking
-        pass
+        self._params = params.copy()
+        
+    def params(self):
+        return self._params
 
     

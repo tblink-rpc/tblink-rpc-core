@@ -3,22 +3,31 @@ Created on Jul 2, 2021
 
 @author: mballance
 '''
+import asyncio
+from asyncio.coroutines import iscoroutinefunction
 from asyncio.locks import Lock, Event
 from enum import Enum, IntEnum
 import sys
-
-from tblink_rpc_core.msgs.build_complete import BuildComplete
-from tblink_rpc_core.param_val_map import ParamValMap
-from tblink_rpc_core.transport import Transport
-from tblink_rpc_core.param_val_int import ParamValInt
-from asyncio.coroutines import iscoroutinefunction
-import asyncio
 from typing import List
+
 from tblink_rpc_core.endpoint_mgr import EndpointMgr
-from tblink_rpc_core.interface_type import InterfaceType
-from tblink_rpc_core.method_type import MethodType
 from tblink_rpc_core.interface_inst import InterfaceInst
+from tblink_rpc_core.interface_type import InterfaceType
 from tblink_rpc_core.interface_type_builder import InterfaceTypeBuilder
+from tblink_rpc_core.method_type import MethodType
+from tblink_rpc_core.msgs.build_complete import BuildComplete
+from tblink_rpc_core.param_val_bool import ParamValBool
+from tblink_rpc_core.param_val_int import ParamValInt
+from tblink_rpc_core.param_val_map import ParamValMap
+from tblink_rpc_core.param_val_str import ParamValStr
+from tblink_rpc_core.param_val_vec import ParamValVec
+from tblink_rpc_core.transport import Transport
+from tblink_rpc_core.type import Type
+from tblink_rpc_core.type_e import TypeE
+from tblink_rpc_core.type_int import TypeInt
+from tblink_rpc_core.type_map import TypeMap
+from tblink_rpc_core.type_vec import TypeVec
+from tblink_rpc_core.param_decl import ParamDecl
 
 
 class TimeUnit(IntEnum):
@@ -64,15 +73,11 @@ class EndpointMsgTransport(object):
         params.setVal("time-precision", 
                       self.transport.mkValIntS(self.time_precision))
        
-        print("--> send_req", flush=True)
-        id = await self.send_req(
+        print("--> send_req_wait_rsp", flush=True)            
+        result, error = await self.send_req_wait_rsp(
             "tblink.build-complete",
             params)
-        print("<-- send_req", flush=True)
-
-        print("--> wait_rsp %d" % id, flush=True)            
-        result, error = await self.wait_rsp(id)        
-        print("<-- wait_rsp %d" % id, flush=True)            
+        print("<-- send_req_wait_rsp", flush=True)            
         print("<-- build_complete", flush=True)
         
         # Need to wait for receipt of a build-complete message
@@ -115,11 +120,9 @@ class EndpointMsgTransport(object):
         
         params = self.transport.mkValMap()
         
-        id = await self.send_req(
+        result, error = await self.send_req_wait_rsp(
             "tblink.connect-complete",
             params)
-        
-        result, error = await self.wait_rsp(id)        
         
         if not self.is_peer_connected:
             self.build_connect_ev.clear()
@@ -164,13 +167,16 @@ class EndpointMsgTransport(object):
     def peerInterfaceTypes(self):
         return self.peer_iftypes
     
-    async def send_req(self, method, params, exp_rsp=True):
+    def send_req(self, 
+                 method, 
+                 params, 
+                 completion_f=None):
         print("--> ep.send_req", flush=True)
         id = self.req_id
         self.req_id += 1
         
-        if exp_rsp:
-            self.rsp_m[id] = (None, None, None)
+        if completion_f:
+            self.rsp_m[id] = completion_f
             
         self.transport.send_req(method, id, params)
 
@@ -208,6 +214,12 @@ class EndpointMsgTransport(object):
                 id,
                 result,
                 None)
+        elif method == "tblink.invoke-b":
+            print("TODO: invoke-b")
+            pass
+        elif method == "tblink.invoke-nb":
+            print("TODO: invoke-nb")
+            pass
         else:
             print("Error: unhandled method call %s" % method)
         pass
@@ -219,11 +231,9 @@ class EndpointMsgTransport(object):
             raise Exception("both result and error are None")
         
         if id in self.rsp_m.keys():
-            ex = self.rsp_m[id]
-            self.rsp_m[id] = (result, error, None)
-            
-            if ex[2] is not None:
-                ex[2].set()
+            completion_f = self.rsp_m[id]
+            self.rsp_m.pop(id)
+            completion_f(id, result, error)
         else:
             print("Note: id %d not in the map" % id)
                 
@@ -232,28 +242,43 @@ class EndpointMsgTransport(object):
                 cb(id, result, error)
         print("<-- ep.recv_rsp: %d" % id, flush=True)
         
-    async def wait_rsp(self, id):
+    async def send_req_wait_rsp(self, method, params):
         
-        ex = self.rsp_m[id]
-
+        ev = asyncio.Event()
+        
         result = None
         error = None
         
-        print("ex[0]=%s ex[1]=%s" % (str(ex[0]), str(ex[1])))
-        if ex[0] is not None or ex[1] is not None:
-            result = ex[0]
-            error = ex[1]
-            self.rsp_m.pop(id)
-        else:
-            ev = asyncio.Event()
-            self.rsp_m[id] = (None, None, ev)
+        def _rsp_f(id, _result, _error):
+            nonlocal result, error, ev
+            result = _result
+            error  = _error
+            ev.set()
             
+        self.send_req(method, params, _rsp_f)
+        
+        if result is not None and error is not None:
             await ev.wait()
-            result = ex[0]
-            error = ex[1]
-            self.rsp_m.pop(id)
-
+        
         return (result, error)
+    
+    def mkValBool(self, v):
+        return ParamValBool(v)
+    
+    def mkValIntS(self, val, width):
+        return ParamValInt(val)
+    
+    def mkValIntU(self, val, width):
+        return ParamValInt(val)
+    
+    def mkValMap(self):
+        return ParamValMap()
+    
+    def mkValVec(self):
+        return ParamValVec()
+    
+    def mkValStr(self, v):
+        return ParamValStr(v)
     
     def _load_iftypes(self, iftypes):
         iftype_m = {}
@@ -267,16 +292,33 @@ class EndpointMsgTransport(object):
                 method_t = methods.getVal(mkey)
                 
                 id = -1; #iftype_i.getValue("id").val_s()
-                signature = method_t.getVal("signature").val()
+                signature : ParamValMap = method_t.getVal("signature")
+                print("signature: %s" % str(signature))
+                
+                rtype = None
+                
+                if signature.hasKey("rtype"):
+                    rtype = self._load_type(signature.getVal("rtype"))
+
+                params = []
+                parameters : ParamValVec = signature.getVal("parameters")                    
+                for i in range(parameters.size()):
+                    pv : ParamValMap = parameters.at(i)
+                    pname = pv.getVal("name").val()
+                    ptype = self._load_type(pv.getVal("type"))
+                    params.append(ParamDecl(pname, ptype))
+                
                 is_export = method_t.getVal("is-export").val()
                 is_blocking = method_t.getVal("is-blocking").val()
+                
                 
                 mt = MethodType(
                     mkey,
                     id,
-                    signature,
+                    rtype,
                     is_export,
-                    is_blocking)
+                    is_blocking,
+                    params)
                 
                 iftype.add_method(mt)
             iftype_m[v] = iftype
@@ -299,7 +341,20 @@ class EndpointMsgTransport(object):
                 mt_i.setVal("is-export", 
                         self.transport.mkValBool(mt.is_export))
                 mt_i.setVal("is-blocking", 
-                        self.transport.mkValBool(mt.is_task))
+                        self.transport.mkValBool(mt.is_blocking))
+                signature = self.transport.mkValMap()
+                if mt.rtype is not None:
+                    signature.setVal("rtype", self._pack_type(mt.rtype))
+
+                params = self.transport.mkValVec()
+                for p in mt.params():
+                    p_m = self.transport.mkValMap()
+                    p_m.setVal("name", self.transport.mkValStr(p.name()))
+                    p_m.setVal("type", self._pack_type(p.type()))
+                    params.push_back(p_m)
+                    
+                signature.setVal("parameters", params)
+                mt_i.setVal("signature", signature)
                 
                 method_m.setVal(method_n, mt_i)
 
@@ -342,5 +397,58 @@ class EndpointMsgTransport(object):
             ret.setVal(key, ifinst_i)
         
         return ret
-   
 
+    _str2kind_m = {
+        "bool" : TypeE.Bool,
+        "int"  : TypeE.Int,
+        "map"  : TypeE.Map,
+        "str"  : TypeE.Str,
+        "vec"  : TypeE.Vec
+        }    
+    def _load_type(self, t : ParamValMap):
+        kind = EndpointMsgTransport._str2kind_m[t.getVal("kind").val()]
+
+        ret = None
+        
+        if kind in (TypeE.Bool,TypeE.Str):
+            ret = Type(kind)
+        elif kind == TypeE.Int:
+            ret = TypeInt(
+                t.getVal("is-signed").val(),
+                t.getVal("width").val_s())
+        elif kind == TypeE.Map:
+            key_t = self._load_type(t.getVal("key-type"))
+            elem_t = self._load_type(t.getVal("elem-type"))
+            ret = TypeMap(key_t, elem_t)
+        elif kind == TypeE.Vec:
+            elem_t = self._load_type(t.getVal("elem-type"))
+            ret = TypeVec(key_t, elem_t)
+
+        if ret is None:
+            raise Exception("Failed to load type %s" % str(kind))
+
+        return ret                    
+    
+    _kind2str_m = {
+        TypeE.Bool : "bool",
+        TypeE.Int  : "int",
+        TypeE.Map  : "map",
+        TypeE.Str  : "str",
+        TypeE.Vec  : "vec"
+        }    
+    def _pack_type(self, t : Type):
+        ret = self.transport.mkValMap()
+        ret.setVal("kind", self.transport.mkValStr(
+            EndpointMsgTransport._kind2str_m[t.kind()]))
+        
+        if t.kind() == TypeE.Int:
+            ret.setVal("is-signed", self.transport.mkValBool(t.is_signed()))
+            ret.setVal("width", self.transport.mkValIntS(t.width()))
+        elif t.kind() == TypeE.Map:
+            ret.setVal("key-type", self._pack_type(t.key_t()))
+            ret.setVal("elem-type", self._pack_type(t.elem_t()))
+        elif t.kind() == TypeE.Vec:
+            ret.setVal("elem-type", self._pack_type(t.elem_t()))
+            
+        return ret
+        
