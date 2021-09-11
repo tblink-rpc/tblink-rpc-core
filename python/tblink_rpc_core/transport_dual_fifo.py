@@ -11,6 +11,7 @@ from tblink_rpc_core.param_val_vec import ParamValVec
 
 
 class TransportDualFifo(object):
+    DEBUG_EN = False
     
     class TransportEP(object):
    
@@ -29,53 +30,63 @@ class TransportDualFifo(object):
                      method,
                      id,
                      params):
-            print("--> [%d] transport.send_req %s" % (self.id, method), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("--> [%d] transport.send_req %s" % (self.id, method), flush=True)
             if self.id == 1:
                 other_id = 0
             else:
                 other_id = 1
-            print("  id=%d other=%d" % (self.id, other_id))
+            if TransportDualFifo.DEBUG_EN:
+                print("  id=%d other=%d" % (self.id, other_id))
             self.parent.ep[other_id].recv_req(
                 method,
                 id,
                 params)
-            print("<-- [%d] transport.send_req %s" % (self.id, method), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("<-- [%d] transport.send_req %s" % (self.id, method), flush=True)
         
         def send_rsp(self,
                      id,
                      result,
                      error):
-            print("--> [%d] transport.send_rsp %d" % (self.id, id), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("--> [%d] transport.send_rsp %d" % (self.id, id), flush=True)
             if self.id == 1:
                 other_id = 0
             else:
                 other_id = 1
-            print("  id=%d other=%d" % (self.id, other_id))
+            if TransportDualFifo.DEBUG_EN:
+                print("  id=%d other=%d" % (self.id, other_id))
             self.parent.ep[other_id].recv_rsp(
                 id,
                 result,
                 error)
-            print("<-- [%d] transport.send_rsp %d" % (self.id, id), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("<-- [%d] transport.send_rsp %d" % (self.id, id), flush=True)
         
         def recv_req(self, method, id, params):
-            print("--> [%d] transport.recv_req: %s" % (self.id, method), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("--> [%d] transport.recv_req: %s" % (self.id, method), flush=True)
             if self.req_f is not None:
                 self.req_f(method, id, params)
             else:
                 print("Warning: not connected")
                 # TODO: 
                 pass
-            print("<-- [%d] transport.recv_req: %s" % (self.id, method), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("<-- [%d] transport.recv_req: %s" % (self.id, method), flush=True)
         
         def recv_rsp(self, id, result, error):
-            print("--> [%d] transport.recv_rsp: %d" % (self.id, id), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("--> [%d] transport.recv_rsp: %d" % (self.id, id), flush=True)
             if self.rsp_f is not None:
                 self.rsp_f(id, result, error)
             else:
                 print("Warning: not connected")
                 # TODO: 
                 pass
-            print("<-- [%d] transport.recv_rsp: %d" % (self.id, id), flush=True)
+            if TransportDualFifo.DEBUG_EN:
+                print("<-- [%d] transport.recv_rsp: %d" % (self.id, id), flush=True)
         
         def mkValBool(self, v):
             return ParamValBool(v)

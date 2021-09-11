@@ -60,10 +60,19 @@ class EndpointMsgTransport(object):
         self.req_id = 1
         self.rsp_m = {}
         
+        self.req_f_m = {
+            "tblink.build-complete": self._req_build_complete,
+            "tblink.connect-complete": self._req_connect_complete,
+            "tblink.invoke-b": self._req_invoke_b,
+            "tblink.invoke-nb": self._req_invoke_nb,
+            "tblink.invoke-rsp-b": self._req_invoke_rsp_b
+        }
+
         EndpointMgr.inst().add_endpoint(self)
         
     async def build_complete(self):
-        print("--> build_complete", flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("--> build_complete", flush=True)
         params = self.transport.mkValMap()
         
         params.setVal("iftypes", self._pack_iftypes(self.iftype_m))
@@ -73,12 +82,16 @@ class EndpointMsgTransport(object):
         params.setVal("time-precision", 
                       self.transport.mkValIntS(self.time_precision))
        
-        print("--> send_req_wait_rsp", flush=True)            
+        if EndpointMsgTransport.DEBUG_EN:
+            print("--> send_req_wait_rsp", flush=True)            
         result, error = await self.send_req_wait_rsp(
             "tblink.build-complete",
             params)
-        print("<-- send_req_wait_rsp", flush=True)            
-        print("<-- build_complete", flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("<-- send_req_wait_rsp", flush=True)
+            
+        if EndpointMsgTransport.DEBUG_EN:
+            print("<-- build_complete", flush=True)
         
         # Need to wait for receipt of a build-complete message
         # from the peer
@@ -90,7 +103,8 @@ class EndpointMsgTransport(object):
         EndpointMgr.inst().notify_build_complete(self)
     
     async def connect_complete(self):
-        print("--> connect_complete", flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("--> connect_complete", flush=True)
         
         # Need to compare interface instances created
         # by both sides to confirm that they match up
@@ -128,8 +142,8 @@ class EndpointMsgTransport(object):
             self.build_connect_ev.clear()
             await self.build_connect_ev.wait()
         
-        print("<-- connect_complete", flush=True)
-        pass
+        if EndpointMsgTransport.DEBUG_EN:
+            print("<-- connect_complete", flush=True)
     
     def findInterfaceType(self, name):
         if name in self.iftype_m.keys():
@@ -154,8 +168,6 @@ class EndpointMsgTransport(object):
         if iftype is None:
             raise Exception("iftype is None")
 
-        print("defineInterfaceInst %s is_mirror=%s self=%s" % (
-            inst_name, str(is_mirror), str(self)))
         ifinst = InterfaceInst(self, inst_name, iftype, is_mirror, req_f)
         self.ifinst_m[inst_name] = ifinst
         
@@ -171,7 +183,8 @@ class EndpointMsgTransport(object):
                  method, 
                  params, 
                  completion_f=None):
-        print("--> ep.send_req", flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("--> ep.send_req", flush=True)
         id = self.req_id
         self.req_id += 1
         
@@ -180,52 +193,138 @@ class EndpointMsgTransport(object):
             
         self.transport.send_req(method, id, params)
 
-        print("<-- ep.send_req", flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("<-- ep.send_req", flush=True)
         return id
 
     def recv_req(self, method, id, params):
-        print("recv_req: %s" % method)
-        if method == "tblink.build-complete":
-            self.time_precision = params.getVal("time-precision").val_s()
-            
-            self.peer_iftype_m = self._load_iftypes(params.getVal("iftypes"))
-            self.peer_ifinst_m = self._load_ifinsts(params.getVal("ifinsts"))
-            
-            for key in self.peer_iftype_m.keys():
-                self.peer_iftypes.append(self.peer_iftype_m[key])
-            for key in self.peer_ifinst_m.keys():
-                self.peer_ifinsts.append(self.peer_ifinst_m[key])
-            
-            self.is_peer_built = True
-            self.build_connect_ev.set()
-            
-            result = self.transport.mkValMap()
-            self.transport.send_rsp(
-                id,
-                result,
-                None)
-        elif method == "tblink.connect-complete":
-            
-            self.is_peer_connected = True
-            self.build_connect_ev.set()
-            
-            result = self.transport.mkValMap()
-            self.transport.send_rsp(
-                id,
-                result,
-                None)
-        elif method == "tblink.invoke-b":
-            print("TODO: invoke-b")
-            pass
-        elif method == "tblink.invoke-nb":
-            print("TODO: invoke-nb")
-            pass
+        if EndpointMsgTransport.DEBUG_EN:
+            print("recv_req: %s" % method)
+        result = None
+        error = None
+        
+        if method in self.req_f_m.keys():
+            result, error = self.req_f_m[method](id, params)
         else:
-            print("Error: unhandled method call %s" % method)
+            if EndpointMsgTransport.DEBUG_EN:
+                print("Error: unhandled method %s" % method)
+            
+        if result is not None or error is not None:
+            self.transport.send_rsp(
+                id,
+                result,
+                error)
+            
+    def send_rsp(self, id, result, error):
+        self.transport.send_rsp(
+            id,
+            result,
+            error)
+
+    def _req_build_complete(self, id, params):
+        self.time_precision = params.getVal("time-precision").val_s()
+            
+        self.peer_iftype_m = self._load_iftypes(params.getVal("iftypes"))
+        self.peer_ifinst_m = self._load_ifinsts(params.getVal("ifinsts"))
+            
+        for key in self.peer_iftype_m.keys():
+            self.peer_iftypes.append(self.peer_iftype_m[key])
+        for key in self.peer_ifinst_m.keys():
+            self.peer_ifinsts.append(self.peer_ifinst_m[key])
+            
+        self.is_peer_built = True
+        self.build_connect_ev.set()
+            
+        result = self.transport.mkValMap()
+        
+        return (result, None)
+        
+    def _req_connect_complete(self, id, params):
+        error = None
+        result = self.transport.mkValMap()
+        
+        self.is_peer_connected = True
+        self.build_connect_ev.set()
+        
+        return (result, error)
+            
+    def _req_invoke_b(self, id, params):
+        error = None
+        result = self.transport.mkValMap()
+        if EndpointMsgTransport.DEBUG_EN:
+            print("_req_invoke_b")
+        ifinst_n = params.getVal("ifinst").val()
+        method_n = params.getVal("method").val()
+        call_id  = params.getVal("call-id").val_s()
+        call_params = params.getVal("params")
+        
+        if ifinst_n not in self.ifinst_m.keys():
+            raise Exception("Interface %s not in map" % ifinst_n)
+        else:
+            ifinst = self.ifinst_m[ifinst_n]
+
+        if method_n not in ifinst.iftype.method_m.keys():
+            raise Exception("Method %s not found in iftype %s" % (
+                method_n, ifinst.iftype.name))
+        else:
+            method_t = ifinst.iftype.method_m[method_n]
+        
+        ifinst.invoke_local(method_t, id, call_id, call_params)
+
+        # Send an 'ok' response. A subsequent request
+        # will be sent to complete the call        
+        return (result, error)
         pass
     
+    def _req_invoke_nb(self, id, params):
+        error = None
+        result = self.transport.mkValMap()
+
+        if EndpointMsgTransport.DEBUG_EN:
+            print("_req_invoke_nb")        
+        ifinst_n = params.getVal("ifinst").val()
+        method_n = params.getVal("method").val()
+        call_id  = params.getVal("call-id").val_s()
+        call_params = params.getVal("params")
+        
+        if ifinst_n not in self.ifinst_m.keys():
+            raise Exception("Interface %s not in map" % ifinst_n)
+        else:
+            ifinst = self.ifinst_m[ifinst_n]
+
+        if method_n not in ifinst.iftype.method_m.keys():
+            raise Exception("Method %s not found in iftype %s" % (
+                method_n, ifinst.iftype.name))
+        else:
+            method_t = ifinst.iftype.method_m[method_n]
+        
+        ifinst.invoke_local(method_t, id, call_id, call_params)
+
+        return (None, None)
+    
+    def _req_invoke_rsp_b(self, id, params):
+        ifinst_n = params.getVal("ifinst").val()
+        call_id  = params.getVal("call-id").val_s()
+
+        retval = None        
+        if params.hasKey("retval"):
+            retval = params.getVal("retval")
+        
+        if ifinst_n not in self.ifinst_m.keys():
+            raise Exception("Interface %s not in map" % ifinst_n)
+        else:
+            ifinst = self.ifinst_m[ifinst_n]
+
+        ifinst.notify_remote_rsp(call_id, retval)
+        
+        error = None
+        result = self.transport.mkValMap()
+        
+        return (result, error)
+    
     def recv_rsp(self, id, result, error):
-        print("--> ep.recv_rsp: %d" % id, flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("--> ep.recv_rsp: %d" % id, flush=True)
         
         if result is None and error is None:
             raise Exception("both result and error are None")
@@ -235,12 +334,14 @@ class EndpointMsgTransport(object):
             self.rsp_m.pop(id)
             completion_f(id, result, error)
         else:
-            print("Note: id %d not in the map" % id)
+            if EndpointMsgTransport.DEBUG_EN:
+                print("Note: id %d not in the map" % id)
                 
         if len(self.rsp_l) > 0:
             for cb in self.rsp_l.copy():
                 cb(id, result, error)
-        print("<-- ep.recv_rsp: %d" % id, flush=True)
+        if EndpointMsgTransport.DEBUG_EN:
+            print("<-- ep.recv_rsp: %d" % id, flush=True)
         
     async def send_req_wait_rsp(self, method, params):
         
@@ -293,12 +394,11 @@ class EndpointMsgTransport(object):
                 
                 id = -1; #iftype_i.getValue("id").val_s()
                 signature : ParamValMap = method_t.getVal("signature")
-                print("signature: %s" % str(signature))
-                
-                rtype = None
                 
                 if signature.hasKey("rtype"):
                     rtype = self._load_type(signature.getVal("rtype"))
+                else:
+                    rtype = None
 
                 params = []
                 parameters : ParamValVec = signature.getVal("parameters")                    
@@ -367,9 +467,9 @@ class EndpointMsgTransport(object):
     def _load_ifinsts(self, ifinsts):
         ifinst_m = {}
         
-        print("load_ifinsts")
         for ifname in ifinsts.keys():
-            print("ifname: %s" % ifname)
+            if EndpointMsgTransport.DEBUG_EN:
+                print("ifname: %s" % ifname)
             ifinst_v = ifinsts.getVal(ifname)
             ifinst_type = self.iftype_m[ifinst_v.getVal("type").val()]
             is_mirror = ifinst_v.getVal("is-mirror").val()

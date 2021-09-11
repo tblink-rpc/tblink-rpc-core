@@ -5,9 +5,14 @@ Created on Jul 5, 2021
 '''
 from typing import Dict
 
-class ParamValMap(object):
+from tblink_rpc_core.param_val import ParamVal
+from tblink_rpc_core.type_e import TypeE
+
+
+class ParamValMap(ParamVal):
     
     def __init__(self):
+        super().__init__(TypeE.Map)
         self.val_m = {}
         
     def keys(self):
