@@ -8,18 +8,22 @@ from tblink_rpc_core.param_val_int import ParamValInt
 from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.param_val_str import ParamValStr
 from tblink_rpc_core.param_val_vec import ParamValVec
+from tblink_rpc_core.transport import Transport
+import asyncio
 
 
 class TransportDualFifo(object):
     DEBUG_EN = False
     
-    class TransportEP(object):
+    class TransportEP(Transport):
    
         def __init__(self, parent, id):
+            super().__init__()
             self.parent = parent
             self.id = id
             self.req_f = None
             self.rsp_f = None
+            self.ev = asyncio.Event()
             pass
         
         def init(self, req_f, rsp_f):
@@ -38,7 +42,7 @@ class TransportDualFifo(object):
                 other_id = 1
             if TransportDualFifo.DEBUG_EN:
                 print("  id=%d other=%d" % (self.id, other_id))
-            self.parent.ep[other_id].recv_req(
+            self.parent.ep[other_id]._recv_req(
                 method,
                 id,
                 params)
@@ -57,16 +61,24 @@ class TransportDualFifo(object):
                 other_id = 1
             if TransportDualFifo.DEBUG_EN:
                 print("  id=%d other=%d" % (self.id, other_id))
-            self.parent.ep[other_id].recv_rsp(
+            self.parent.ep[other_id]._recv_rsp(
                 id,
                 result,
                 error)
             if TransportDualFifo.DEBUG_EN:
                 print("<-- [%d] transport.send_rsp %d" % (self.id, id), flush=True)
+                
+        def process_one_message(self):
+            raise Exception("Dual-Fifo transport doesn't support a non-async process_one_message")
         
-        def recv_req(self, method, id, params):
+        async def process_one_message_a(self):
+            await asyncio.sleep(0)
+                
+        def _recv_req(self, method, id, params):
+            """Called by the peer transport EP to deliver a request"""
             if TransportDualFifo.DEBUG_EN:
                 print("--> [%d] transport.recv_req: %s" % (self.id, method), flush=True)
+            self.ev.set()
             if self.req_f is not None:
                 self.req_f(method, id, params)
             else:
@@ -76,9 +88,11 @@ class TransportDualFifo(object):
             if TransportDualFifo.DEBUG_EN:
                 print("<-- [%d] transport.recv_req: %s" % (self.id, method), flush=True)
         
-        def recv_rsp(self, id, result, error):
+        def _recv_rsp(self, id, result, error):
+            """Called by the peer transport EP to deliver a response"""
             if TransportDualFifo.DEBUG_EN:
                 print("--> [%d] transport.recv_rsp: %d" % (self.id, id), flush=True)
+            self.ev.set()
             if self.rsp_f is not None:
                 self.rsp_f(id, result, error)
             else:

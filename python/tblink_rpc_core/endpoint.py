@@ -3,17 +3,17 @@ Created on Jul 2, 2021
 
 @author: mballance
 '''
-from asyncio.locks import Lock, Event
-from enum import Enum, IntEnum
-import sys
+from enum import IntEnum
 
-from tblink_rpc_core.msgs.build_complete import BuildComplete
-from tblink_rpc_core.param_val_map import ParamValMap
-from tblink_rpc_core.transport import Transport
+from typing import List, Callable
+from tblink_rpc_core.interface_type import InterfaceType
+from tblink_rpc_core.interface_type_builder import InterfaceTypeBuilder
+from tblink_rpc_core.interface_inst import InterfaceInst
+from tblink_rpc_core.param_val_bool import ParamValBool
 from tblink_rpc_core.param_val_int import ParamValInt
-from asyncio.coroutines import iscoroutinefunction
-import asyncio
-from typing import List
+from tblink_rpc_core.param_val_map import ParamValMap
+from tblink_rpc_core.param_val_vec import ParamValVec
+from tblink_rpc_core.param_val_str import ParamValStr
 
 
 class TimeUnit(IntEnum):
@@ -26,177 +26,135 @@ class TimeUnit(IntEnum):
 class Endpoint(object):
     DEBUG_EN = False
     
-    def __init__(self, transport):
-        self.loop = asyncio.get_event_loop()
-        self.transport : Transport = transport
-        
-        self.transport.init(
-            self._req_f,
-            self._rsp_f)
-
-        self.rsp_m = {}
-        self.rsp_m_lock = Lock()
-
-        self.have_build_complete = False
-        self.have_build_complete_ev = Event()
-        self.have_connect_complete = False
-        self.have_connect_complete_ev = Event()
-        
-        self.args = None
-        
-        self.callback_id = 1
-        
-        self.cb_id_m = {}
-        
-#    def req_f(self, ):
-   
-    async def init(self) -> ParamValMap:
-        id = self.transport.send_req("tblink.init", ParamValMap())
-        
-        result, error = await self._wait_rsp(id)
-        
-        self.args = result["args"]
-
-    async def notify_init(self):
+    def init(self, 
+             ep_services : 'EndpointServices',
+             ep_listener : 'EndpointListener') -> bool:
         pass
     
-    async def wait_init(self):
-        pass
+    def is_init_complete(self) -> int:
+        """
+        Returns True when init has been signaled by this EP,
+        and init has been signaled by the peer EP
+        """
+        raise NotImplementedError("is_init_complete for class %s" % str(type(self)))
     
-    async def build_complete(self):
-        # Send build-complete message
-        # Wait for a response
-        # Return True/False based on response
-        id = self.transport.send_req("tblink.build-complete", ParamValMap())
-        
-        result, error = await self._wait_rsp(id)
-        if Endpoint.DEBUG_EN:
-            print("result,error=%s,%s" % (str(result), str(error)))
-        
-        while not self.have_build_complete:
-            await self.have_build_complete_ev.wait()
-            self.have_build_complete_ev.clear()
+    def build_complete(self) -> bool:
+        """
+        Notifies the peer EP that build activities are complete
+        """
+        raise NotImplementedError("build_complete for class %s" % str(type(self)))
             
-        
-    async def connect_complete(self):
-        id = self.transport.send_req("tblink.connect-complete", ParamValMap())
-        result, error = await self._wait_rsp(id)
+    def is_build_complete(self) -> int:
+        """
+        Returns True when build_complete has been signaled by this EP,
+        and build_complete has been signaled by the peer EP
+        """
+        raise NotImplementedError("is_build_complete for class %s" % str(type(self)))
 
-        while not self.have_connect_complete:
-            await self.have_connect_complete_ev.wait()
-            self.have_connect_complete_ev.clear()
+    def connect_complete(self):
+        """
+        Notifies the peer EP that connect activities are complete
+        """
+        raise NotImplementedError("connect_complete for class %s" % str(type(self)))
+            
+    def is_connect_complete(self) -> int:
+        """
+        Returns True when connect_complete has been signaled by this EP,
+        and connect_complete has been signaled by the peer EP
+        """
+        raise NotImplementedError("is_connect_complete for class %s" % str(type(self)))
+    
+    def findInterfaceType(self, name) -> InterfaceType:
+        """
+        Finds the interface type named ''name'' and returns it
+        if it exists. None is returned if ''name'' does not exist.
+        """
+        raise NotImplementedError("findInterfaceType for class %s" % str(type(self)))
+    
+    def newInterfaceTypeBuilder(self, name) -> InterfaceTypeBuilder:
+        """
+        Returns a new interface type builder for iftype ''name''
+        """
+        raise NotImplementedError("newInterfaceTypeBuilder for class %s" % str(type(self)))
+    
+    def defineInterfaceType(self, iftype_b : InterfaceTypeBuilder) -> InterfaceType:
+        """
+        Defines a new interface type from the information collected
+        in the iftype builder
+        """
+        raise NotImplementedError("defineInterfaceType for class %s" % str(type(self)))
+    
+    def defineInterfaceInst(self, 
+                            iftype : InterfaceType,
+                            inst_name : str,
+                            is_mirror : bool,
+                            req_f : Callable) -> InterfaceInst:
+        """Defines a new interface instance"""
+        raise NotImplementedError("defineInterface for class %s" % str(type(self)))
+            
+    def process_one_message(self):
+        """
+        Blocks until a single message is processed. This must be used 
+        *very* sparingly, but may be done to implement operations 
+        that are blocking and non-async from a user perspective.
+        In many cases, the Endpoint implementation simply delegates 
+        to the underlying transport.
+        """
+        raise NotImplementedError("process_one_message for class %s" % str(type(self)))
+    
+    async def process_one_message_a(self):
+        """
+        Blocks until a single message is processed. This must be used 
+        *very* sparingly, but may be done to implement operations 
+        that are blocking and non-async from a user perspective.
+        In many cases, the Endpoint implementation simply delegates 
+        to the underlying transport.
+        """
+        raise NotImplementedError("process_one_message for class %s" % str(type(self)))
             
     def args(self) -> List[str]:
         """Returns command-line arguments from the peer. Valid after 'init'"""
-        return self.args
+        raise NotImplementedError("args for class %s" % str(type(self)))
+    
+    def time(self) -> int:
+        """Returns the last known time of the peer EP"""
+        raise NotImplementedError("time for class %s" % str(type(self)))
+    
+    def time_precision(self) -> TimeUnit:
+        """
+        Returns the time precision of the peer EP. A valid result 
+        is returned after is_init_complete returns True
+        """
+        raise NotImplementedError("time_precision for class %s" % str(type(self)))
 
-    async def shutdown(self):
-        id = self.transport.send_req("tblink.shutdown", ParamValMap())
-        
-        # Under some circumstances, it's important to flush the transport
-        await self.transport.writer.drain()
-#        result, error = await self._wait_rsp(id)
+    def shutdown(self):
+        """
+        Sends a shutdown-request message to the peer EP
+        """
+        raise NotImplementedError("shutdown for class %s" % str(type(self)))
             
+    def add_time_callback(self, time, cb_f) -> int:
+        """
+        Adds a time callback to be satisfied by the peer EP
+        """
+        raise NotImplementedError("add_time_callback for class %s" % str(type(self)))
+    
+    def mkValBool(self, v) -> ParamValBool:
+        """Creates a boolean param object"""
+        raise NotImplementedError("mkValBool for class %s" % str(type(self)))
+    
+    def mkValIntS(self, val, width) -> ParamValInt:
+        raise NotImplementedError("mkValIntS for class %s" % str(type(self)))
+    
+    def mkValIntU(self, val, width) -> ParamValInt:
+        raise NotImplementedError("mkValIntU for class %s" % str(type(self)))
+    
+    def mkValMap(self) -> ParamValMap:
+        raise NotImplementedError("mkValMap for class %s" % str(type(self)))
+    
+    def mkValVec(self) -> ParamValVec:
+        raise NotImplementedError("mkValVec for class %s" % str(type(self)))
+    
+    def mkValStr(self, v) -> ParamValStr:
+        raise NotImplementedError("mkValStr for class %s" % str(type(self)))
 
-    async def add_time_callback(self, time, cb_f) -> int:
-        if Endpoint.DEBUG_EN:
-            print("--> Python: add_time_callback")
-        params = ParamValMap()
-
-        if not iscoroutinefunction(cb_f):
-            raise Exception("time callback must be asynchronous")        
-        if Endpoint.DEBUG_EN:
-            print("cb_f: " + str(type(cb_f)))
-        callback_id = self.callback_id
-        self.callback_id += 1
-        self.cb_id_m[callback_id] = cb_f
-        params["time"] = ParamValInt(time)
-        params["callback-id"] = ParamValInt(callback_id)
-        
-        id = self.transport.send_req("tblink.add-time-callback", params)
-        result, error = await self._wait_rsp(id)
-        
-        if Endpoint.DEBUG_EN:
-            print("<-- Python: add_time_callback")
-        return callback_id
-        
-    
-    async def wait_time(self, time, units=None):
-        pass
-    
-    async def _req_f(self, method, id, params):
-        if Endpoint.DEBUG_EN:
-            print("Python: REQ_F: %d %s" % (id, method))
-        
-        if id != -1:
-            if method == "tblink.build-complete":
-                self.have_build_complete = True
-                self.have_build_complete_ev.set()
-                self.transport.send_rsp(id, ParamValMap(), None)
-            elif method == "tblink.connect-complete":
-                self.have_connect_complete = True
-                self.have_connect_complete_ev.set()
-                self.transport.send_rsp(id, ParamValMap(), None)
-            elif method == "tblink.notify-callback":
-                callback_id = params["callback-id"].val
-                if not callback_id in self.cb_id_m.keys():
-                    raise Exception("callback %d not in map" % callback_id)
-                cb = self.cb_id_m[callback_id]
-                asyncio.ensure_future(cb())
-                del self.cb_id_m[callback_id]
-                self.transport.send_rsp(id, ParamValMap(), None)
-            else:
-                print("TODO: %s" % method)
-        else:
-            if method == "tblink.notify-callback":
-                callback_id = params["callback-id"].val
-                asyncio.ensure_future(self.cb_id_m[callback_id]())
-                del self.cb_id_m[callback_id]
-            else:
-                print("TODO: %s" % method)
-        pass
-    
-    async def _rsp_f(self, id, result, error):
-        if Endpoint.DEBUG_EN:
-            print("--> Python: _rsp_f %d" % id)
-        sys.stdout.flush()
-        
-        await self.rsp_m_lock.acquire()
-        if id in self.rsp_m.keys():
-            ev = self.rsp_m[id][0]
-            self.rsp_m[id] = (ev, (result, error))
-            ev.set()
-        else:
-            self.rsp_m[id] = (None, (result, error))
-        self.rsp_m_lock.release()
-        
-        if Endpoint.DEBUG_EN:
-            print("<-- Python: _rsp_f %d" % id)
-        sys.stdout.flush()
-    
-    async def _wait_rsp(self, id):
-        if Endpoint.DEBUG_EN:
-            print("--> Python: wait_rsp %d" % id)
-        sys.stdout.flush()
-        
-        await self.rsp_m_lock.acquire()
-        if id in self.rsp_m.keys():
-            # Already have a message waiting
-            ret = self.rsp_m[id][1]
-        else:
-            ev = Event()
-            self.rsp_m[id] = (ev, None)
-            self.rsp_m_lock.release()
-            await ev.wait()
-            
-        await self.rsp_m_lock.acquire()
-        ret = self.rsp_m[id][1]
-        del self.rsp_m[id]
-        
-        self.rsp_m_lock.release()
-
-        if Endpoint.DEBUG_EN:
-            print("<-- Python: wait_rsp %d" % id)
-        sys.stdout.flush()
-        return ret
-        

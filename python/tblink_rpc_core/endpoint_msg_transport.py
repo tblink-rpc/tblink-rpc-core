@@ -28,6 +28,9 @@ from tblink_rpc_core.type_int import TypeInt
 from tblink_rpc_core.type_map import TypeMap
 from tblink_rpc_core.type_vec import TypeVec
 from tblink_rpc_core.param_decl import ParamDecl
+from tblink_rpc_core.endpoint_services import EndpointServices
+from tblink_rpc_core.endpoint_listener import EndpointListener
+from tblink_rpc_core.endpoint import Endpoint
 
 
 class TimeUnit(IntEnum):
@@ -37,16 +40,28 @@ class TimeUnit(IntEnum):
     ms = -3
     s = 1
 
-class EndpointMsgTransport(object):
+class EndpointMsgTransport(Endpoint):
+    """Implements the Endpoint API in terms of a method-based message-passing API"""
     DEBUG_EN = False
     
     def __init__(self, transport):
+        super().__init__()
         self.transport = transport
-        self.transport.init(self.recv_req, self.recv_rsp)
+        self.transport.init(self._recv_req, self._recv_rsp)
+       
+        self.ep_services = None
+        self.ep_listener = None
+
+        self._args = []        
         self.time_precision = -9
-        self.build_connect_ev = asyncio.Event()
+        
+        self.is_init = False
+        self.is_peer_init = False
+        self.is_built = False
         self.is_peer_built = False
+        self.is_connected = False
         self.is_peer_connected = False
+        
         self.is_shutdown = False
         self.iftype_m = {}
         self.iftypes  = []
@@ -56,11 +71,11 @@ class EndpointMsgTransport(object):
         self.peer_iftypes  = []
         self.peer_ifinst_m = {}
         self.peer_ifinsts  = []
-        self.rsp_l = []
         self.req_id = 1
         self.rsp_m = {}
         
         self.req_f_m = {
+            "tblink.init": self._req_init,
             "tblink.build-complete": self._req_build_complete,
             "tblink.connect-complete": self._req_connect_complete,
             "tblink.invoke-b": self._req_invoke_b,
@@ -70,7 +85,40 @@ class EndpointMsgTransport(object):
 
         EndpointMgr.inst().add_endpoint(self)
         
-    async def build_complete(self):
+    def init(self,
+             ep_services : EndpointServices,
+             ep_listener : EndpointListener) -> bool:
+        self.ep_services = ep_services
+        self.ep_listener = ep_listener
+        
+        if ep_listener is not None:
+            ep_listener.init(self)
+        
+        params = self.transport.mkValMap()
+        
+        args_p = self.mkValVec()
+        for arg in self.ep_services.args():
+            args_p.push_back(self.mkValStr(arg))
+        params.setVal("args", args_p)
+        
+        params.setVal("time-units", 
+                      self.mkValIntS(self.ep_services.time_precision(), 32))
+
+        self.send_req(
+            "tblink.init",
+            params)
+        self.is_init = True
+        
+        if self.is_init and self.is_peer_init:
+            if self.ep_listener is not None:
+                self.ep_listener.init_complete()
+                
+        return True
+    
+    def is_init_complete(self) -> bool:
+        return self.is_init and self.is_peer_init
+        
+    def build_complete(self):
         if EndpointMsgTransport.DEBUG_EN:
             print("--> build_complete", flush=True)
         params = self.transport.mkValMap()
@@ -83,26 +131,27 @@ class EndpointMsgTransport(object):
                       self.transport.mkValIntS(self.time_precision))
        
         if EndpointMsgTransport.DEBUG_EN:
-            print("--> send_req_wait_rsp", flush=True)            
-        result, error = await self.send_req_wait_rsp(
+            print("--> send_req", flush=True)
+        self.send_req(
             "tblink.build-complete",
             params)
         if EndpointMsgTransport.DEBUG_EN:
-            print("<-- send_req_wait_rsp", flush=True)
+            print("<-- send_req", flush=True)
             
         if EndpointMsgTransport.DEBUG_EN:
             print("<-- build_complete", flush=True)
-        
-        # Need to wait for receipt of a build-complete message
-        # from the peer
-        
-        if not self.is_peer_built:
-            self.build_connect_ev.clear()
-            await self.build_connect_ev.wait()
-        
-        EndpointMgr.inst().notify_build_complete(self)
+            
+        self.is_built = True
+
+        if self.is_built and self.is_peer_built:
+            if self.ep_listener is not None:
+                self.ep_listener.build_complete()
+            EndpointMgr.inst().notify_build_complete(self)
+            
+    def is_build_complete(self)->int:
+        return self.is_built and self.is_peer_built
     
-    async def connect_complete(self):
+    def connect_complete(self):
         if EndpointMsgTransport.DEBUG_EN:
             print("--> connect_complete", flush=True)
         
@@ -134,16 +183,21 @@ class EndpointMsgTransport(object):
         
         params = self.transport.mkValMap()
         
-        result, error = await self.send_req_wait_rsp(
+        self.send_req(
             "tblink.connect-complete",
             params)
         
-        if not self.is_peer_connected:
-            self.build_connect_ev.clear()
-            await self.build_connect_ev.wait()
+        self.is_connected = True
+        
+        if self.is_connected and self.is_peer_connected:
+            if self.ep_listener is not None:
+                self.ep_listener.connect_complete()
         
         if EndpointMsgTransport.DEBUG_EN:
             print("<-- connect_complete", flush=True)
+            
+    def is_connect_complete(self) -> bool:
+        return self.is_connected and self.is_peer_connected
     
     def findInterfaceType(self, name):
         if name in self.iftype_m.keys():
@@ -173,6 +227,17 @@ class EndpointMsgTransport(object):
         
         return ifinst
     
+    def process_one_message(self):
+        self.transport.process_one_message()
+        
+    def args(self):
+        if not self.is_init or not self.is_peer_init:
+            raise Exception("args may only be called one init sequence is complete")
+        return self._args
+        
+    async def process_one_message_a(self):
+        await self.transport.process_one_message_a()
+    
     def peerInterfaceInsts(self):
         return self.peer_ifinsts
     
@@ -197,7 +262,7 @@ class EndpointMsgTransport(object):
             print("<-- ep.send_req", flush=True)
         return id
 
-    def recv_req(self, method, id, params):
+    def _recv_req(self, method, id, params):
         if EndpointMsgTransport.DEBUG_EN:
             print("recv_req: %s" % method)
         result = None
@@ -220,6 +285,24 @@ class EndpointMsgTransport(object):
             id,
             result,
             error)
+        
+    def _req_init(self, id, params):
+        
+        self.time_precision = params.getVal("time-units").val_s()
+        args_p = params.getVal("args")
+        for i in range(args_p.size()):
+            self._args.append(args_p.at(i).val())
+        
+        result = self.transport.mkValMap()
+        error = None
+
+        self.is_peer_init = True
+        
+        if self.is_init and self.is_peer_init:
+            if self.ep_listener is not None:
+                self.ep_listener.init_complete()
+                
+        return (result, error)
 
     def _req_build_complete(self, id, params):
         self.time_precision = params.getVal("time-precision").val_s()
@@ -233,9 +316,13 @@ class EndpointMsgTransport(object):
             self.peer_ifinsts.append(self.peer_ifinst_m[key])
             
         self.is_peer_built = True
-        self.build_connect_ev.set()
-            
         result = self.transport.mkValMap()
+
+        if self.is_built and self.is_peer_built:
+            if self.ep_listener is not None:
+                self.ep_listener.build_complete()
+            EndpointMgr.inst().notify_build_complete(self)
+            
         
         return (result, None)
         
@@ -244,7 +331,10 @@ class EndpointMsgTransport(object):
         result = self.transport.mkValMap()
         
         self.is_peer_connected = True
-        self.build_connect_ev.set()
+        
+        if self.is_connected and self.is_peer_connected:
+            if self.ep_listener is not None:
+                self.ep_listener.connect_complete()
         
         return (result, error)
             
@@ -322,7 +412,7 @@ class EndpointMsgTransport(object):
         
         return (result, error)
     
-    def recv_rsp(self, id, result, error):
+    def _recv_rsp(self, id, result, error):
         if EndpointMsgTransport.DEBUG_EN:
             print("--> ep.recv_rsp: %d" % id, flush=True)
         
@@ -337,9 +427,6 @@ class EndpointMsgTransport(object):
             if EndpointMsgTransport.DEBUG_EN:
                 print("Note: id %d not in the map" % id)
                 
-        if len(self.rsp_l) > 0:
-            for cb in self.rsp_l.copy():
-                cb(id, result, error)
         if EndpointMsgTransport.DEBUG_EN:
             print("<-- ep.recv_rsp: %d" % id, flush=True)
         

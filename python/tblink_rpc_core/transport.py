@@ -18,11 +18,14 @@ class Transport(object):
     def send_req(self, method, params) -> int:
         raise NotImplementedError("send_req not implemented by " + str(type(self)))
     
-    def send_notify(self, method, params):
-        raise NotImplementedError("send_notify not implemented by " + str(type(self)))
-    
     def send_rsp(self, id, result, error):
         raise NotImplementedError("send_rsp not implemented by " + str(type(self)))
+    
+    def process_one_message(self):
+        raise NotImplementedError("process_one_message not implemented by " + str(type(self)))
+    
+    async def process_one_message_a(self):
+        raise NotImplementedError("process_one_message not implemented by " + str(type(self)))
     
     async def run(self):
         raise NotImplementedError("poll not implemented by " + str(type(self)))
