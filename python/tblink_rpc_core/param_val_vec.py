@@ -18,6 +18,6 @@ class ParamValVec(object):
     def push_back(self, val):
         self.elems.append(val)
         
-    def accept(self):
-        self.visit_param_val_vec(self)
+    def accept(self, v):
+        v.visit_vec(self)
         
