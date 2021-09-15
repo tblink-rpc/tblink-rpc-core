@@ -10,13 +10,12 @@
 
 namespace tblink_rpc_core {
 
-class IParamValVector;
-typedef std::shared_ptr<IParamValVector> IParamValVectorSP;
-typedef std::unique_ptr<IParamValVector> IParamValVectorUP;
-class IParamValVector : public virtual IParamVal {
+class IParamValVec;
+typedef std::unique_ptr<IParamValVec> IParamValVecUP;
+class IParamValVec : public virtual IParamVal {
 public:
 
-	virtual ~IParamValVector() { }
+	virtual ~IParamValVec() { }
 
 	virtual uint32_t size() = 0;
 
@@ -28,7 +27,7 @@ public:
 
 	virtual void push_back(IParamVal *v) = 0;
 
-	virtual IParamValVector *clone() = 0;
+	virtual IParamValVec *clone() = 0;
 
 
 };

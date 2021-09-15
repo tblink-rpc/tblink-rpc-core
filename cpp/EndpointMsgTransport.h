@@ -8,8 +8,9 @@
 #pragma once
 #include <map>
 #include <stdint.h>
-#include "JsonInterfaceType.h"
-#include "JsonInterfaceInst.h"
+
+#include "InterfaceInst.h"
+#include "InterfaceType.h"
 #include "tblink_rpc/IParamVal.h"
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IEndpointServices.h"
@@ -18,16 +19,16 @@
 
 namespace tblink_rpc_core {
 
-class JsonRpcEndpoint : public virtual IEndpoint {
+class EndpointMsgTransport : public virtual IEndpoint {
 public:
 
-	friend class JsonInterfaceInst;
+	friend class InterfaceInst;
 
-	JsonRpcEndpoint(
+	EndpointMsgTransport(
 			IEndpoint::Type		type,
 			IEndpointServices	*services);
 
-	virtual ~JsonRpcEndpoint();
+	virtual ~EndpointMsgTransport();
 
 	void init(ITransport *transport);
 
@@ -105,7 +106,7 @@ public:
 
 	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVector *mkVector() override;
+	virtual IParamValVec *mkValVec() override;
 
 	intptr_t send_req(
 			const std::string 	&method,
@@ -118,9 +119,9 @@ private:
 	// Methods used by InterfaceInst
 
 	IParamVal *invoke_nb(
-			JsonInterfaceInst	*ifinst,
+			InterfaceInst	*ifinst,
 			IMethodType 		*method,
-			IParamValVector 	*params);
+			IParamValVec 	*params);
 
 private:
 	typedef std::pair<IParamValMapUP,IParamValMapUP> rsp_t;
@@ -171,7 +172,7 @@ private:
 			IParamVal		*retval);
 
 	void call_completion_b(
-			JsonInterfaceInst	*ifinst,
+			InterfaceInst	*ifinst,
 			intptr_t			call_id,
 			IParamVal			*retval);
 
@@ -190,7 +191,7 @@ private:
 
 	IParamValMap *pack_ifinsts();
 
-	std::vector<JsonInterfaceTypeUP> unpack_iftypes(IParamValMap *iftypes);
+	std::vector<InterfaceTypeUP> unpack_iftypes(IParamValMap *iftypes);
 
 	std::vector<JsonInterfaceInstUP> unpack_ifinsts(IParamValMap  *ifinsts);
 
@@ -218,10 +219,10 @@ private:
 	uint64_t														m_time;
 	int32_t															m_time_precision;
 
-	std::map<std::string, JsonInterfaceType*>						m_local_ifc_types;
-	std::vector<JsonInterfaceTypeUP>								m_local_ifc_type_l;
+	std::map<std::string, InterfaceType*>						m_local_ifc_types;
+	std::vector<InterfaceTypeUP>								m_local_ifc_type_l;
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
-	std::map<std::string, JsonInterfaceInst*>						m_local_ifc_insts;
+	std::map<std::string, InterfaceInst*>						m_local_ifc_insts;
 	std::vector<JsonInterfaceInstUP>								m_local_ifc_insts_l;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 

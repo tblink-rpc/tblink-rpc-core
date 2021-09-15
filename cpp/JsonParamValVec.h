@@ -8,25 +8,25 @@
 #pragma once
 #include <functional>
 
-#include "tblink_rpc/IParamValVector.h"
+#include "include/tblink_rpc/IParamValVec.h"
 #include "JsonParamVal.h"
 
 namespace tblink_rpc_core {
 
-class JsonParamValVectorBase;
-typedef std::shared_ptr<JsonParamValVectorBase> JsonParamValVectorBaseSP;
-typedef std::unique_ptr<JsonParamValVectorBase> JsonParamValVectorBaseUP;
-class JsonParamValVectorBase : public JsonParamVal, public virtual IParamValVector {
+class JsonParamValVec;
+typedef std::shared_ptr<JsonParamValVec> JsonParamValVectorBaseSP;
+typedef std::unique_ptr<JsonParamValVec> JsonParamValVectorBaseUP;
+class JsonParamValVec : public JsonParamVal, public virtual IParamValVec {
 public:
-	JsonParamValVectorBase();
+	JsonParamValVec();
 
-	JsonParamValVectorBase(
+	JsonParamValVec(
 			std::function<JsonParamValSP(const nlohmann::json &)> 	ctor,
 			const nlohmann::json 							&msg);
 
-	JsonParamValVectorBase(const nlohmann::json &msg);
+	JsonParamValVec(const nlohmann::json &msg);
 
-	virtual ~JsonParamValVectorBase();
+	virtual ~JsonParamValVec();
 
 	virtual uint32_t size() override { return m_children.size(); }
 
@@ -34,7 +34,7 @@ public:
 
 	virtual void push_back(IParamVal *v) override;
 
-	virtual IParamValVector *clone() override;
+	virtual IParamValVec *clone() override;
 
 	const std::vector<JsonParamValUP> &children() const {
 		return m_children;

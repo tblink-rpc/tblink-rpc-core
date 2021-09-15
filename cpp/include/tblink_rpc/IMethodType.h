@@ -7,6 +7,9 @@
 
 #pragma once
 #include <memory>
+#include <vector>
+#include "tblink_rpc/IParamDecl.h"
+#include "tblink_rpc/IType.h"
 
 namespace tblink_rpc_core {
 
@@ -21,12 +24,13 @@ public:
 
 	virtual intptr_t id() = 0;
 
-	virtual const std::string &signature() = 0;
+	virtual IType *rtype() const = 0;
 
 	virtual bool is_export() = 0;
 
 	virtual bool is_blocking() = 0;
 
+	virtual const std::vector<IParamDecl *> &params() const = 0;
 
 };
 

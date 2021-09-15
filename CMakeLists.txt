@@ -36,7 +36,7 @@ if (NOT PACKAGES_DIR)
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
   enable_testing()
   
-  ExternalProject_Add(glog
+  ExternalProject_Add(GLOG
     PREFIX glog
     SOURCE_DIR "${PACKAGES_DIR}/glog"
     CMAKE_CACHE_ARGS
@@ -63,7 +63,7 @@ add_library(tblink_rpc_core ${tblink_rpc_core_SRC})
 
 add_dependencies(
 	tblink_rpc_core
-	glog
+	GLOG
 	)
 
 target_include_directories(tblink_rpc_core PRIVATE

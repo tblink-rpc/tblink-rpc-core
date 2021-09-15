@@ -12,18 +12,18 @@
 
 namespace tblink_rpc_core {
 
-class FifoMessageTransport;
+class TransportMessageFifo;
 
-class FifoMessageTransportEP;
-typedef std::unique_ptr<FifoMessageTransportEP> FifoMessageTransportEPUP;
-class FifoMessageTransportEP : public virtual ITransport {
-	friend class FifoMessageTransport;
+class TransportMessageFifoUP;
+typedef std::unique_ptr<TransportMessageFifoUP> FifoMessageTransportEPUP;
+class TransportMessageFifoUP : public virtual ITransport {
+	friend class TransportMessageFifo;
 public:
-	FifoMessageTransportEP(
-			FifoMessageTransport		*parent,
+	TransportMessageFifoUP(
+			TransportMessageFifo		*parent,
 			uint32_t					id);
 
-	virtual ~FifoMessageTransportEP();
+	virtual ~TransportMessageFifoUP();
 
 	virtual void init(
 			const recv_req_f &req_f,
@@ -66,7 +66,7 @@ public:
 
 	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVector *mkVector() override;
+	virtual IParamValVec *mkValVec() override;
 
 private:
 
@@ -86,7 +86,7 @@ private:
 
 
 private:
-	FifoMessageTransport			*m_parent;
+	TransportMessageFifo			*m_parent;
 	uint32_t						m_id;
 	recv_req_f						m_req_f;
 	recv_rsp_f						m_rsp_f;

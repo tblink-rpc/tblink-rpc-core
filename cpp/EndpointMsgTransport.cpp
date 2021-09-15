@@ -5,11 +5,12 @@
  *      Author: mballance
  */
 
-#include "JsonRpcEndpoint.h"
-#include "JsonInterfaceType.h"
-#include "JsonInterfaceTypeBuilder.h"
-#include "JsonMethodType.h"
+#include "EndpointMsgTransport.h"
+
 #include "glog/logging.h"
+#include "InterfaceType.h"
+#include "InterfaceTypeBuilder.h"
+#include "MethodType.h"
 
 #define EN_DEBUG_JSON_RPC_ENDPOINT
 
@@ -28,7 +29,7 @@
 
 namespace tblink_rpc_core {
 
-JsonRpcEndpoint::JsonRpcEndpoint(
+EndpointMsgTransport::EndpointMsgTransport(
 		IEndpoint::Type		type,
 		IEndpointServices	*services) {
 	m_type = type;
@@ -48,58 +49,58 @@ JsonRpcEndpoint::JsonRpcEndpoint(
 	m_callback_id = 0;
 
 	m_req_m.insert({"tblink.build-complete", std::bind(
-			&JsonRpcEndpoint::req_build_complete, this,
+			&EndpointMsgTransport::req_build_complete, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.connect-complete", std::bind(
-			&JsonRpcEndpoint::req_connect_complete, this,
+			&EndpointMsgTransport::req_connect_complete, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.add-time-callback", std::bind(
-			&JsonRpcEndpoint::req_add_time_callback, this,
+			&EndpointMsgTransport::req_add_time_callback, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.shutdown", std::bind(
-			&JsonRpcEndpoint::req_shutdown, this,
+			&EndpointMsgTransport::req_shutdown, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.notify-callback", std::bind(
-			&JsonRpcEndpoint::req_notify_callback, this,
+			&EndpointMsgTransport::req_notify_callback, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.invoke-b", std::bind(
-			&JsonRpcEndpoint::req_invoke_b, this,
+			&EndpointMsgTransport::req_invoke_b, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.invoke-rsp-b", std::bind(
-			&JsonRpcEndpoint::req_invoke_rsp_b, this,
+			&EndpointMsgTransport::req_invoke_rsp_b, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.invoke-nb", std::bind(
-			&JsonRpcEndpoint::req_invoke_nb, this,
+			&EndpointMsgTransport::req_invoke_nb, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.run-until-event", std::bind(
-			&JsonRpcEndpoint::req_run_until_event, this,
+			&EndpointMsgTransport::req_run_until_event, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 }
 
-JsonRpcEndpoint::~JsonRpcEndpoint() {
+EndpointMsgTransport::~EndpointMsgTransport() {
 	// TODO Auto-generated destructor stub
 }
 
-void JsonRpcEndpoint::init(ITransport *transport) {
+void EndpointMsgTransport::init(ITransport *transport) {
 	m_transport = transport;
 	m_transport->init(
 			std::bind(
-					&JsonRpcEndpoint::recv_req,
+					&EndpointMsgTransport::recv_req,
 					this,
 					std::placeholders::_1,
 					std::placeholders::_2,
 					std::placeholders::_3),
 			std::bind(
-					&JsonRpcEndpoint::recv_rsp,
+					&EndpointMsgTransport::recv_rsp,
 					this,
 					std::placeholders::_1,
 					std::placeholders::_2,
@@ -107,7 +108,7 @@ void JsonRpcEndpoint::init(ITransport *transport) {
 					);
 }
 
-bool JsonRpcEndpoint::build_complete() {
+bool EndpointMsgTransport::build_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
 	// Pack locally-registered interface types and instances
@@ -144,7 +145,7 @@ bool JsonRpcEndpoint::build_complete() {
 	return true;
 }
 
-bool JsonRpcEndpoint::connect_complete() {
+bool EndpointMsgTransport::connect_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
 	intptr_t id = send_req(
@@ -175,7 +176,7 @@ bool JsonRpcEndpoint::connect_complete() {
 	}
 }
 
-bool JsonRpcEndpoint::shutdown() {
+bool EndpointMsgTransport::shutdown() {
 	if (m_state != IEndpoint::Shutdown && m_transport) {
 		IParamValMap *params = m_transport->mkValMap();
 
@@ -196,7 +197,7 @@ bool JsonRpcEndpoint::shutdown() {
 	return true;
 }
 
-int32_t JsonRpcEndpoint::run_until_event() {
+int32_t EndpointMsgTransport::run_until_event() {
 	int32_t ret = 0;
 
 	m_event_received = 0;
@@ -233,7 +234,7 @@ int32_t JsonRpcEndpoint::run_until_event() {
 	return ret;
 }
 
-int32_t JsonRpcEndpoint::await_req() {
+int32_t EndpointMsgTransport::await_req() {
 	int32_t ret = 0;
 
 	while ((ret=m_transport->await_msg()) == 0) {
@@ -243,7 +244,7 @@ int32_t JsonRpcEndpoint::await_req() {
 	return ret;
 }
 
-int32_t JsonRpcEndpoint::yield() {
+int32_t EndpointMsgTransport::yield() {
 	DEBUG_ENTER("yield");
 
 	// If we have outstanding messages, or we have
@@ -274,7 +275,7 @@ int32_t JsonRpcEndpoint::yield() {
 	}
 }
 
-int32_t JsonRpcEndpoint::yield_blocking() {
+int32_t EndpointMsgTransport::yield_blocking() {
 	DEBUG_ENTER("yield_blocking");
 
 	if (m_state == IEndpoint::Shutdown) {
@@ -311,7 +312,7 @@ int32_t JsonRpcEndpoint::yield_blocking() {
 	}
 }
 
-intptr_t JsonRpcEndpoint::add_time_callback(
+intptr_t EndpointMsgTransport::add_time_callback(
 			uint64_t						time,
 			const std::function<void()>		&cb_f) {
 	IParamValMap *params = m_transport->mkValMap();
@@ -335,11 +336,11 @@ intptr_t JsonRpcEndpoint::add_time_callback(
 	}
 }
 
-uint64_t JsonRpcEndpoint::time() {
+uint64_t EndpointMsgTransport::time() {
 	return m_time;
 }
 
-void JsonRpcEndpoint::cancel_callback(intptr_t	callback_id) {
+void EndpointMsgTransport::cancel_callback(intptr_t	callback_id) {
 	IParamValMap *params = m_transport->mkValMap();
 
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
@@ -351,7 +352,7 @@ void JsonRpcEndpoint::cancel_callback(intptr_t	callback_id) {
 /** Called by the environment to notify that
  *  a callback has occurred
  */
-void JsonRpcEndpoint::notify_callback(intptr_t   callback_id) {
+void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 	IParamValMap *params = m_transport->mkValMap();
 
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
@@ -368,9 +369,9 @@ void JsonRpcEndpoint::notify_callback(intptr_t   callback_id) {
 	m_services->idle();
 }
 
-IInterfaceType *JsonRpcEndpoint::findInterfaceType(
+IInterfaceType *EndpointMsgTransport::findInterfaceType(
 			const std::string		&name) {
-	std::map<std::string,JsonInterfaceType *>::const_iterator it;
+	std::map<std::string,InterfaceType *>::const_iterator it;
 
 	if ((it=m_local_ifc_types.find(name)) != m_local_ifc_types.end()) {
 		return it->second;
@@ -379,31 +380,31 @@ IInterfaceType *JsonRpcEndpoint::findInterfaceType(
 	}
 }
 
-IInterfaceTypeBuilder *JsonRpcEndpoint::newInterfaceTypeBuilder(
+IInterfaceTypeBuilder *EndpointMsgTransport::newInterfaceTypeBuilder(
 			const std::string		&name) {
-	return new JsonInterfaceTypeBuilder(name);
+	return new InterfaceTypeBuilder(name);
 }
 
-IInterfaceType *JsonRpcEndpoint::defineInterfaceType(
+IInterfaceType *EndpointMsgTransport::defineInterfaceType(
 			IInterfaceTypeBuilder	*type) {
-	JsonInterfaceTypeBuilder *builder =
-			static_cast<JsonInterfaceTypeBuilder *>(type);
-	JsonInterfaceType *if_type = builder->type();
+	InterfaceTypeBuilder *builder =
+			static_cast<InterfaceTypeBuilder *>(type);
+	InterfaceType *if_type = builder->type();
 	m_local_ifc_types.insert({if_type->name(), if_type});
-	m_local_ifc_type_l.push_back(JsonInterfaceTypeUP(if_type));
+	m_local_ifc_type_l.push_back(InterfaceTypeUP(if_type));
 	m_local_ifc_type_pl.push_back(if_type);
 
 	return if_type;
 }
 
-IInterfaceInst *JsonRpcEndpoint::defineInterfaceInst(
+IInterfaceInst *EndpointMsgTransport::defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			const invoke_req_f		&req_f) {
 
-	JsonInterfaceInst *ifinst = new JsonInterfaceInst(
+	InterfaceInst *ifinst = new InterfaceInst(
 			this,
-			static_cast<JsonInterfaceType *>(type),
+			static_cast<InterfaceType *>(type),
 			inst_name,
 			req_f);
 	m_local_ifc_insts.insert({inst_name, ifinst});
@@ -413,62 +414,62 @@ IInterfaceInst *JsonRpcEndpoint::defineInterfaceInst(
 	return ifinst;
 }
 
-const std::vector<IInterfaceType *> &JsonRpcEndpoint::getInterfaceTypes() {
+const std::vector<IInterfaceType *> &EndpointMsgTransport::getInterfaceTypes() {
 	return m_local_ifc_type_pl;
 }
 
-const std::vector<IInterfaceInst *> &JsonRpcEndpoint::getInterfaceInsts() {
+const std::vector<IInterfaceInst *> &EndpointMsgTransport::getInterfaceInsts() {
 	return m_local_ifc_insts_pl;
 }
 
-IParamValBool *JsonRpcEndpoint::mkValBool(bool val) {
+IParamValBool *EndpointMsgTransport::mkValBool(bool val) {
 	return m_transport->mkValBool(val);
 }
 
-IParamValInt *JsonRpcEndpoint::mkValIntU(uint64_t val) {
+IParamValInt *EndpointMsgTransport::mkValIntU(uint64_t val) {
 	return m_transport->mkValIntU(val);
 }
 
-IParamValInt *JsonRpcEndpoint::mkValIntS(int64_t val) {
+IParamValInt *EndpointMsgTransport::mkValIntS(int64_t val) {
 	return m_transport->mkValIntS(val);
 }
 
-IParamValMap *JsonRpcEndpoint::mkValMap() {
+IParamValMap *EndpointMsgTransport::mkValMap() {
 	return m_transport->mkValMap();
 }
 
-IParamValStr *JsonRpcEndpoint::mkValStr(const std::string &val) {
+IParamValStr *EndpointMsgTransport::mkValStr(const std::string &val) {
 	return m_transport->mkValStr(val);
 }
 
-IParamValVector *JsonRpcEndpoint::mkVector() {
-	return m_transport->mkVector();
+IParamValVec *EndpointMsgTransport::mkValVec() {
+	return m_transport->mkValVec();
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_build_complete(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	m_build_complete = true;
 	IParamValMap *result = 0;
 	IParamValMap *error = 0;
-	std::vector<JsonInterfaceTypeUP> iftypes = unpack_iftypes(
+	std::vector<InterfaceTypeUP> iftypes = unpack_iftypes(
 			params->getValT<IParamValMap>("iftypes"));
 
 	// Process iftypes first
-	for (std::vector<JsonInterfaceTypeUP>::iterator
+	for (std::vector<InterfaceTypeUP>::iterator
 			it=iftypes.begin();
 			it!=iftypes.end(); it++) {
-		std::map<std::string,JsonInterfaceType*>::const_iterator m_it;
+		std::map<std::string,InterfaceType*>::const_iterator m_it;
 		if ((m_it=m_local_ifc_types.find((*it)->name())) != m_local_ifc_types.end()) {
 			// Need to compare
 		} else {
 			// Add ourselves
-			JsonInterfaceType *iftype = it->release();
+			InterfaceType *iftype = it->release();
 			m_local_ifc_types.insert({
 				iftype->name(),
 				iftype
 			});
-			m_local_ifc_type_l.push_back(JsonInterfaceTypeUP(iftype));
+			m_local_ifc_type_l.push_back(InterfaceTypeUP(iftype));
 			m_local_ifc_type_pl.push_back(iftype);
 		}
 	}
@@ -481,12 +482,12 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_build_complete(
 	for (std::vector<JsonInterfaceInstUP>::iterator
 			it=ifinsts.begin();
 			it!=ifinsts.end(); it++) {
-		std::map<std::string,JsonInterfaceInst*>::const_iterator m_it;
+		std::map<std::string,InterfaceInst*>::const_iterator m_it;
 		if ((m_it=m_local_ifc_insts.find((*it)->name())) != m_local_ifc_insts.end()) {
 			// Need to compare
 		} else {
 			// Add
-			JsonInterfaceInst *ifinst = it->release();
+			InterfaceInst *ifinst = it->release();
 			m_local_ifc_insts.insert({
 				ifinst->name(),
 				ifinst
@@ -505,7 +506,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_build_complete(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_connect_complete(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_connect_complete(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	m_connect_complete = true;
@@ -515,7 +516,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_connect_complete(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_get_interface_types(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_get_interface_types(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	IParamValMap *result = m_transport->mkValMap();
@@ -524,7 +525,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_get_interface_types(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_add_time_callback(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_add_time_callback(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	intptr_t callback_id = params->getValT<IParamValInt>("callback-id")->val_u();
@@ -544,7 +545,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_add_time_callback(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_notify_callback(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_notify_callback(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	intptr_t callback_id = params->getValT<IParamValInt>("callback-id")->val_s();
@@ -567,7 +568,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_notify_callback(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_shutdown(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_shutdown(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	// Avoid recursive efforts to shutdown
@@ -579,23 +580,23 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_shutdown(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_nb(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
 	std::string method = params->getValT<IParamValStr>("method")->val();
 
-	std::map<std::string,JsonInterfaceInst*>::const_iterator i_it;
+	std::map<std::string,InterfaceInst*>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
 
 		if (method_t) {
-			IParamValVector *m_params = params->getValT<IParamValVector>("params");
+			IParamValVec *m_params = params->getValT<IParamValVec>("params");
 			i_it->second->invoke_req(
 					method_t,
 					m_params,
-					std::bind(&JsonRpcEndpoint::call_completion_nb,
+					std::bind(&EndpointMsgTransport::call_completion_nb,
 							this,
 							id,
 							std::placeholders::_1));
@@ -620,24 +621,24 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_nb(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_b(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_b(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	uint64_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 
-	std::map<std::string,JsonInterfaceInst*>::const_iterator i_it;
+	std::map<std::string,InterfaceInst*>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
 
 		if (method_t) {
-			IParamValVector *m_params = params->getValT<IParamValVector>("params");
+			IParamValVec *m_params = params->getValT<IParamValVec>("params");
 			i_it->second->invoke_req(
 					method_t,
 					m_params,
-					std::bind(&JsonRpcEndpoint::call_completion_b,
+					std::bind(&EndpointMsgTransport::call_completion_b,
 							this,
 							i_it->second,
 							call_id,
@@ -660,7 +661,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_b(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_rsp_b(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_rsp_b(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
@@ -671,7 +672,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_rsp_b(
 		retval = params->getVal("return");
 	}
 
-	std::map<std::string,JsonInterfaceInst*>::const_iterator i_it;
+	std::map<std::string,InterfaceInst*>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 
@@ -694,7 +695,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_invoke_rsp_b(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_run_until_event(
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_run_until_event(
 		intptr_t				id,
 		IParamValMap 			*params) {
 
@@ -707,7 +708,7 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::req_run_until_event(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-void JsonRpcEndpoint::call_completion_nb(
+void EndpointMsgTransport::call_completion_nb(
 			intptr_t		id,
 			IParamVal		*retval) {
 	IParamValMap *result = m_transport->mkValMap();
@@ -718,8 +719,8 @@ void JsonRpcEndpoint::call_completion_nb(
 	m_transport->send_rsp(id, result, error);
 }
 
-void JsonRpcEndpoint::call_completion_b(
-		JsonInterfaceInst		*ifinst,
+void EndpointMsgTransport::call_completion_b(
+		InterfaceInst		*ifinst,
 		intptr_t				call_id,
 		IParamVal				*retval) {
 	IParamValMap *params = m_transport->mkValMap();
@@ -745,7 +746,7 @@ void JsonRpcEndpoint::call_completion_b(
 	m_services->idle();
 }
 
-int32_t JsonRpcEndpoint::recv_req(
+int32_t EndpointMsgTransport::recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMap			*params) {
@@ -757,7 +758,7 @@ int32_t JsonRpcEndpoint::recv_req(
 		std::map<std::string,req_func_t>::const_iterator it;
 
 		if ((it=m_req_m.find(method)) != m_req_m.end()) {
-			JsonRpcEndpoint::rsp_t rsp = it->second(id, params);
+			EndpointMsgTransport::rsp_t rsp = it->second(id, params);
 
 			// Note: if neither result not error are non-null,
 			// then the method is handling its own response
@@ -784,7 +785,7 @@ int32_t JsonRpcEndpoint::recv_req(
 	return 0;
 }
 
-int32_t JsonRpcEndpoint::recv_rsp(
+int32_t EndpointMsgTransport::recv_rsp(
 		intptr_t				id,
 		IParamValMap			*result,
 		IParamValMap			*error) {
@@ -814,7 +815,7 @@ int32_t JsonRpcEndpoint::recv_rsp(
 	return 0;
 }
 
-intptr_t JsonRpcEndpoint::send_req(
+intptr_t EndpointMsgTransport::send_req(
 		const std::string 	&method,
 		IParamValMap		*params,
 		bool				active_wait) {
@@ -826,7 +827,7 @@ intptr_t JsonRpcEndpoint::send_req(
 	return id;
 }
 
-JsonRpcEndpoint::rsp_t JsonRpcEndpoint::wait_rsp(intptr_t id) {
+EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
 	std::map<intptr_t,rspq_elem_t>::iterator it;
 	std::pair<IParamValMap*,IParamValMap*> rsp;
 
@@ -858,10 +859,10 @@ JsonRpcEndpoint::rsp_t JsonRpcEndpoint::wait_rsp(intptr_t id) {
 	}
 }
 
-IParamVal *JsonRpcEndpoint::invoke_nb(
-		JsonInterfaceInst		*ifinst,
+IParamVal *EndpointMsgTransport::invoke_nb(
+		InterfaceInst		*ifinst,
 		IMethodType 			*method,
-		IParamValVector 		*params) {
+		IParamValVec 		*params) {
 	IParamValMap *r_params = mkValMap();
 	r_params->setVal("ifinst", mkValStr(ifinst->name()));
 	r_params->setVal("method", mkValStr(method->name()));
@@ -885,10 +886,10 @@ IParamVal *JsonRpcEndpoint::invoke_nb(
 	}
 }
 
-IParamValMap *JsonRpcEndpoint::pack_iftypes() {
+IParamValMap *EndpointMsgTransport::pack_iftypes() {
 	IParamValMap *ret = m_transport->mkValMap();
 
-	for (std::map<std::string,JsonInterfaceType*>::const_iterator
+	for (std::map<std::string,InterfaceType*>::const_iterator
 			it=m_local_ifc_types.begin();
 			it!=m_local_ifc_types.end(); it++) {
 		IParamValMap *iftype = m_transport->mkValMap();
@@ -898,7 +899,8 @@ IParamValMap *JsonRpcEndpoint::pack_iftypes() {
 				m_it=it->second->methods().begin();
 				m_it!=it->second->methods().end(); m_it++) {
 			IParamValMap *method = m_transport->mkValMap();
-			method->setVal("signature", m_transport->mkValStr((*m_it)->signature()));
+			// TODO:
+//			method->setVal("signature", m_transport->mkValStr((*m_it)->signature()));
 			method->setVal("is-export", m_transport->mkValBool((*m_it)->is_export()));
 			method->setVal("is-blocking", m_transport->mkValBool((*m_it)->is_blocking()));
 
@@ -912,10 +914,10 @@ IParamValMap *JsonRpcEndpoint::pack_iftypes() {
 	return ret;
 }
 
-IParamValMap *JsonRpcEndpoint::pack_ifinsts() {
+IParamValMap *EndpointMsgTransport::pack_ifinsts() {
 	IParamValMap *ret = m_transport->mkValMap();
 
-	for (std::map<std::string,JsonInterfaceInst*>::const_iterator
+	for (std::map<std::string,InterfaceInst*>::const_iterator
 			it=m_local_ifc_insts.begin();
 			it!=m_local_ifc_insts.end(); it++) {
 		IParamValMap *ifinst = m_transport->mkValMap();
@@ -927,37 +929,37 @@ IParamValMap *JsonRpcEndpoint::pack_ifinsts() {
 	return ret;
 }
 
-std::vector<JsonInterfaceTypeUP> JsonRpcEndpoint::unpack_iftypes(
+std::vector<InterfaceTypeUP> EndpointMsgTransport::unpack_iftypes(
 		IParamValMap *iftypes) {
-	std::vector<JsonInterfaceTypeUP> ret;
+	std::vector<InterfaceTypeUP> ret;
 
 	for (std::set<std::string>::const_iterator
 			k_it=iftypes->keys().begin();
 			k_it!=iftypes->keys().end(); k_it++) {
 		IParamValMap *iftype_v = iftypes->getValT<IParamValMap>(*k_it);
-		JsonInterfaceType *iftype = new JsonInterfaceType(*k_it);
+		InterfaceType *iftype = new InterfaceType(*k_it);
 		IParamValMap *methods = iftype_v->getValT<IParamValMap>("methods");
 		for (std::set<std::string>::const_iterator
 				k_it=methods->keys().begin();
 				k_it!=methods->keys().end(); k_it++) {
 			IParamValMap *method_v = methods->getValT<IParamValMap>(*k_it);
-			JsonMethodType *method = new JsonMethodType(
+			MethodType *method = new MethodType(
 					(*k_it),
-					0, // id
-					method_v->getValT<IParamValStr>("signature")->val(),
+					0, // TODO: id
+					0, // TODO: rtype
 					// Note: we reverse the direction declared by the peer
 					!method_v->getValT<IParamValBool>("is-export")->val(),
 					method_v->getValT<IParamValBool>("is-blocking")->val());
 			iftype->addMethod(method);
 		}
 
-		ret.push_back(JsonInterfaceTypeUP(iftype));
+		ret.push_back(InterfaceTypeUP(iftype));
 	}
 
 	return ret;
 }
 
-std::vector<JsonInterfaceInstUP> JsonRpcEndpoint::unpack_ifinsts(
+std::vector<JsonInterfaceInstUP> EndpointMsgTransport::unpack_ifinsts(
 		IParamValMap *ifinsts) {
 	std::vector<JsonInterfaceInstUP> ret;
 
@@ -965,13 +967,13 @@ std::vector<JsonInterfaceInstUP> JsonRpcEndpoint::unpack_ifinsts(
 			k_it=ifinsts->keys().begin();
 			k_it!=ifinsts->keys().end(); k_it++) {
 		IParamValMap *ifinst_v = ifinsts->getValT<IParamValMap>(*k_it);
-		std::map<std::string,JsonInterfaceType*>::const_iterator it;
+		std::map<std::string,InterfaceType*>::const_iterator it;
 		std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
-		JsonInterfaceType *type = 0;
+		InterfaceType *type = 0;
 		if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
 			type = it->second;
 		}
-		JsonInterfaceInst *ifinst = new JsonInterfaceInst(
+		InterfaceInst *ifinst = new InterfaceInst(
 				this,
 				type,
 				*k_it);

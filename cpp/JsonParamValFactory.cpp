@@ -11,7 +11,7 @@
 #include "JsonParamValInt.h"
 #include "JsonParamValMap.h"
 #include "JsonParamValStr.h"
-#include "JsonParamValVectorBase.h"
+#include "JsonParamValVec.h"
 
 namespace tblink_rpc_core {
 
@@ -42,7 +42,7 @@ JsonParamValUP JsonParamValFactory::mk(const nlohmann::json &msg) {
 		break;
 	case nlohmann::json::value_t::array:
 		fprintf(stdout, "Type is array: %s\n", msg.dump().c_str());
-		ret = new JsonParamValVectorBase(msg);
+		ret = new JsonParamValVec(msg);
 		break;
 	case nlohmann::json::value_t::boolean:
 		ret = new JsonParamValBool(msg.get<bool>());

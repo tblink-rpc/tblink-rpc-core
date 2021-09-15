@@ -13,14 +13,13 @@
 
 namespace tblink_rpc_core {
 
-class JsonInterfaceType;
-typedef std::unique_ptr<JsonInterfaceType> JsonInterfaceTypeUP;
-typedef std::shared_ptr<JsonInterfaceType> JsonInterfaceTypeSP;
-class JsonInterfaceType : public IInterfaceType {
+class InterfaceType;
+typedef std::unique_ptr<InterfaceType> InterfaceTypeUP;
+class InterfaceType : public IInterfaceType {
 public:
-	JsonInterfaceType(const std::string &name);
+	InterfaceType(const std::string &name);
 
-	virtual ~JsonInterfaceType();
+	virtual ~InterfaceType();
 
 	virtual const std::string &name() override {
 		return m_name;

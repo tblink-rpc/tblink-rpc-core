@@ -6,8 +6,9 @@
  */
 
 #include "Factory.h"
-#include "JsonRpcEndpoint.h"
-#include "SocketMessageTransport.h"
+
+#include "EndpointMsgTransport.h"
+#include "TransportJsonSocket.h"
 
 namespace tblink_rpc_core {
 
@@ -23,13 +24,13 @@ Factory::~Factory() {
 IEndpoint *Factory::mkJsonRpcEndpoint(
 		IEndpoint::Type		type,
 		IEndpointServices	*services) {
-	return new JsonRpcEndpoint(type, services);
+	return new EndpointMsgTransport(type, services);
 }
 
 ITransport *Factory::mkSocketTransport(
 		pid_t			pid,
 		int32_t 		fd) {
-	return new SocketMessageTransport(pid, fd);
+	return new TransportJsonSocket(pid, fd);
 }
 
 static Factory prvFactory;

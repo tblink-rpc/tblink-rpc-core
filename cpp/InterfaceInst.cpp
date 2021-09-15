@@ -5,13 +5,14 @@
  *      Author: mballance
  */
 
-#include "JsonInterfaceInst.h"
-#include "JsonRpcEndpoint.h"
+#include "InterfaceInst.h"
+
+#include "EndpointMsgTransport.h"
 
 namespace tblink_rpc_core {
 
-JsonInterfaceInst::JsonInterfaceInst(
-		JsonRpcEndpoint			*endpoint,
+InterfaceInst::InterfaceInst(
+		EndpointMsgTransport			*endpoint,
 		IInterfaceType			*type,
 		const std::string		&inst_name) {
 	m_endpoint = endpoint;
@@ -20,8 +21,8 @@ JsonInterfaceInst::JsonInterfaceInst(
 	m_call_id = 0;
 }
 
-JsonInterfaceInst::JsonInterfaceInst(
-		JsonRpcEndpoint			*endpoint,
+InterfaceInst::InterfaceInst(
+		EndpointMsgTransport			*endpoint,
 		IInterfaceType			*type,
 		const std::string		&inst_name,
 		const invoke_req_f		&req_f) {
@@ -32,13 +33,13 @@ JsonInterfaceInst::JsonInterfaceInst(
 	m_call_id = 0;
 }
 
-JsonInterfaceInst::~JsonInterfaceInst() {
+InterfaceInst::~InterfaceInst() {
 	// TODO Auto-generated destructor stub
 }
 
-void JsonInterfaceInst::invoke_req(
+void InterfaceInst::invoke_req(
 			IMethodType				*method,
-			IParamValVector			*params,
+			IParamValVec			*params,
 			const invoke_rsp_f		&response_f) {
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -46,9 +47,9 @@ void JsonInterfaceInst::invoke_req(
 	m_req_f(this, method, call_id, params);
 }
 
-int32_t JsonInterfaceInst::invoke(
+int32_t InterfaceInst::invoke(
 		IMethodType									*method,
-		IParamValVector								*params,
+		IParamValVec								*params,
 		const invoke_rsp_f							&completion_f) {
 
 	// TODO:
@@ -70,9 +71,9 @@ int32_t JsonInterfaceInst::invoke(
 	return 0;
 }
 
-IParamVal *JsonInterfaceInst::invoke_nb(
+IParamVal *InterfaceInst::invoke_nb(
 		IMethodType									*method,
-		IParamValVector								*params) {
+		IParamValVec								*params) {
 
 	fprintf(stdout, "invoke_nb: %s\n", method->name().c_str());
 	fflush(stdout);
@@ -82,7 +83,7 @@ IParamVal *JsonInterfaceInst::invoke_nb(
 
 }
 
-void JsonInterfaceInst::invoke_rsp(
+void InterfaceInst::invoke_rsp(
 		intptr_t									call_id,
 		IParamVal									*ret) {
 	std::map<intptr_t,invoke_rsp_f>::const_iterator it;
@@ -100,28 +101,28 @@ void JsonInterfaceInst::invoke_rsp(
 	}
 }
 
-IParamValBool *JsonInterfaceInst::mkValBool(bool val) {
+IParamValBool *InterfaceInst::mkValBool(bool val) {
 	return m_endpoint->mkValBool(val);
 }
 
-IParamValInt *JsonInterfaceInst::mkValIntU(uint64_t val) {
+IParamValInt *InterfaceInst::mkValIntU(uint64_t val) {
 	return m_endpoint->mkValIntU(val);
 }
 
-IParamValInt *JsonInterfaceInst::mkValIntS(int64_t val) {
+IParamValInt *InterfaceInst::mkValIntS(int64_t val) {
 	return m_endpoint->mkValIntS(val);
 }
 
-IParamValMap *JsonInterfaceInst::mkValMap() {
+IParamValMap *InterfaceInst::mkValMap() {
 	return m_endpoint->mkValMap();
 }
 
-IParamValStr *JsonInterfaceInst::mkValStr(const std::string &val) {
+IParamValStr *InterfaceInst::mkValStr(const std::string &val) {
 	return m_endpoint->mkValStr(val);
 }
 
-IParamValVector *JsonInterfaceInst::mkVector() {
-	return m_endpoint->mkVector();
+IParamValVec *InterfaceInst::mkValVec() {
+	return m_endpoint->mkValVec();
 }
 
 } /* namespace tblink_rpc_core */

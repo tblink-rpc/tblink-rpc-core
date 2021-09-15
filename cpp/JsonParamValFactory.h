@@ -6,10 +6,10 @@
  */
 
 #pragma once
+#include "include/tblink_rpc/IParamValVec.h"
 #include "tblink_rpc/IParamValInt.h"
 #include "tblink_rpc/IParamValMap.h"
 #include "tblink_rpc/IParamValStr.h"
-#include "tblink_rpc/IParamValVector.h"
 #include "nlohmann/json_fwd.hpp"
 #include "JsonParamVal.h"
 

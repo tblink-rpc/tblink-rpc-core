@@ -8,19 +8,19 @@
 #pragma once
 #include <vector>
 #include "tblink_rpc/ITransport.h"
-#include "FifoMessageTransportEP.h"
+#include "TransportMessageFifoUP.h"
 
 namespace tblink_rpc_core {
 
-class FifoMessageTransport;
-typedef std::unique_ptr<FifoMessageTransport> FifoMessageTransportUP;
-class FifoMessageTransport {
+class TransportMessageFifo;
+typedef std::unique_ptr<TransportMessageFifo> FifoMessageTransportUP;
+class TransportMessageFifo {
 public:
-	FifoMessageTransport(bool is_blocking=false);
+	TransportMessageFifo(bool is_blocking=false);
 
-	virtual ~FifoMessageTransport();
+	virtual ~TransportMessageFifo();
 
-	virtual FifoMessageTransportEP *ep(uint32_t id);
+	virtual TransportMessageFifoUP *ep(uint32_t id);
 
 	virtual int32_t send_req(
 			uint32_t				ep_id,

@@ -7,23 +7,24 @@
 
 #pragma once
 #include "tblink_rpc/IMethodType.h"
+#include "tblink_rpc/IParamDecl.h"
+#include "tblink_rpc/IType.h"
 
 namespace tblink_rpc_core {
 
-class JsonMethodType;
-typedef std::unique_ptr<JsonMethodType> JsonMethodTypeUP;
-typedef std::shared_ptr<JsonMethodType> JsonMethodTypeSP;
-class JsonMethodType : public IMethodType {
+class MethodType;
+typedef std::unique_ptr<MethodType> MethodTypeUP;
+class MethodType : public IMethodType {
 public:
-	JsonMethodType(
+	MethodType(
 			const std::string 	&name,
 			intptr_t			id,
-			const std::string	&signature,
+			IType				*rtype,
 			bool				is_export,
 			bool				is_blocking
 			);
 
-	virtual ~JsonMethodType();
+	virtual ~MethodType();
 
 	virtual const std::string &name() override {
 		return m_name;
@@ -33,18 +34,28 @@ public:
 		return m_id;
 	}
 
-	virtual const std::string &signature() {
-		return m_signature;
+	virtual IType *rtype() const override {
+		return m_rtype.get();
 	}
 
 	virtual bool is_export() override { return m_is_export; }
 
 	virtual bool is_blocking() override { return m_is_blocking; }
 
+	virtual const std::vector<IParamDecl *> &params() const override {
+		return m_params;
+	}
+
+	void add_param(
+			const std::string			&name,
+			IType						*type);
+
 private:
 	std::string					m_name;
 	intptr_t					m_id;
-	std::string					m_signature;
+	ITypeUP						m_rtype;
+	std::vector<IParamDecl *>	m_params;
+	std::vector<IParamDeclUP>	m_params_up;
 	bool						m_is_export;
 	bool						m_is_blocking;
 

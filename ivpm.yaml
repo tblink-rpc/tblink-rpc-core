@@ -8,12 +8,16 @@ package:
      url: https://github.com/nlohmann/json/archive/v3.9.1.tar.gz
    - name: json-rpc
      src: pypi 
+   - name: glog
+     url: https://github.com/google/glog/archive/refs/tags/v0.5.0.tar.gz
    
    dev-deps:
    - name: json
      url: https://github.com/nlohmann/json/archive/v3.9.1.tar.gz
    - name: json-rpc
      src: pypi
+   - name: glog
+     url: https://github.com/google/glog/archive/refs/tags/v0.5.0.tar.gz
    - name: googletest
      url: https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
      

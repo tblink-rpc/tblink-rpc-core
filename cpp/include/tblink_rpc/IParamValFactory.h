@@ -7,11 +7,11 @@
 
 #pragma once
 
+#include "IParamValVec.h"
 #include "tblink_rpc/IParamValBool.h"
 #include "tblink_rpc/IParamValInt.h"
 #include "tblink_rpc/IParamValMap.h"
 #include "tblink_rpc/IParamValStr.h"
-#include "tblink_rpc/IParamValVector.h"
 
 namespace tblink_rpc_core {
 
@@ -30,7 +30,7 @@ public:
 
 	virtual IParamValStr *mkValStr(const std::string &val) = 0;
 
-	virtual IParamValVector *mkVector() = 0;
+	virtual IParamValVec *mkValVec() = 0;
 
 
 };

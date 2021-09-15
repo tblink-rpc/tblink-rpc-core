@@ -7,8 +7,9 @@
 #pragma once
 #include <functional>
 #include <stdint.h>
+
+#include "IParamValVec.h"
 #include "tblink_rpc/IParamValMap.h"
-#include "tblink_rpc/IParamValVector.h"
 #include "tblink_rpc/IParamValFactory.h"
 
 namespace tblink_rpc_core {

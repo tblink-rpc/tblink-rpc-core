@@ -5,26 +5,35 @@
  *      Author: mballance
  */
 
-#include "JsonMethodType.h"
+#include "MethodType.h"
+#include "ParamDecl.h"
 
 namespace tblink_rpc_core {
 
-JsonMethodType::JsonMethodType(
+MethodType::MethodType(
 		const std::string		&name,
 		intptr_t				id,
-		const std::string		&signature,
+		IType					*rtype,
 		bool					is_export,
 		bool					is_blocking) :
 			m_name(name), m_id(id),
-			m_signature(signature),
+			m_rtype(rtype),
 			m_is_export(is_export),
 			m_is_blocking(is_blocking) {
 	// TODO Auto-generated constructor stub
 
 }
 
-JsonMethodType::~JsonMethodType() {
+MethodType::~MethodType() {
 	// TODO Auto-generated destructor stub
+}
+
+void MethodType::add_param(
+			const std::string			&name,
+			IType						*type) {
+	ParamDecl *p = new ParamDecl(name, type);
+	m_params.push_back(p);
+	m_params_up.push_back(IParamDeclUP(p));
 }
 
 } /* namespace tblink_rpc_core */

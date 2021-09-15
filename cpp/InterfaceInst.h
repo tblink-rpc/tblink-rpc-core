@@ -12,24 +12,24 @@
 
 namespace tblink_rpc_core {
 
-class JsonRpcEndpoint;
-class JsonInterfaceInst;
-typedef std::unique_ptr<JsonInterfaceInst> JsonInterfaceInstUP;
-typedef std::shared_ptr<JsonInterfaceInst> JsonInterfaceInstSP;
-class JsonInterfaceInst : public IInterfaceInst {
+class EndpointMsgTransport;
+class InterfaceInst;
+typedef std::unique_ptr<InterfaceInst> JsonInterfaceInstUP;
+typedef std::shared_ptr<InterfaceInst> JsonInterfaceInstSP;
+class InterfaceInst : public IInterfaceInst {
 public:
-	JsonInterfaceInst(
-			JsonRpcEndpoint			*endpoint,
+	InterfaceInst(
+			EndpointMsgTransport			*endpoint,
 			IInterfaceType			*type,
 			const std::string		&inst_name);
 
-	JsonInterfaceInst(
-			JsonRpcEndpoint			*endpoint,
+	InterfaceInst(
+			EndpointMsgTransport			*endpoint,
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			const invoke_req_f		&req_f);
 
-	virtual ~JsonInterfaceInst();
+	virtual ~InterfaceInst();
 
 	virtual IInterfaceType *type() override { return m_type; }
 
@@ -43,17 +43,17 @@ public:
 
 	void invoke_req(
 			IMethodType				*method,
-			IParamValVector			*params,
+			IParamValVec			*params,
 			const invoke_rsp_f		&response_f);
 
 	virtual int32_t invoke(
 			IMethodType									*method,
-			IParamValVector								*params,
+			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;
 
 	virtual IParamVal *invoke_nb(
 			IMethodType									*method,
-			IParamValVector								*params) override;
+			IParamValVec								*params) override;
 
 	virtual void invoke_rsp(
 			intptr_t									call_id,
@@ -69,10 +69,10 @@ public:
 
 	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVector *mkVector() override;
+	virtual IParamValVec *mkValVec() override;
 
 private:
-	JsonRpcEndpoint						*m_endpoint;
+	EndpointMsgTransport						*m_endpoint;
 	IInterfaceType						*m_type;
 	std::string							m_inst_name;
 	invoke_req_f						m_req_f;

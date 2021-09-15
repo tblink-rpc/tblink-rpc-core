@@ -5,18 +5,19 @@
  *      Author: ballance
  */
 
+#include "JsonParamValVec.h"
+
 #include "nlohmann/json.hpp"
 #include "JsonParamValFactory.h"
-#include "JsonParamValVectorBase.h"
 
 namespace tblink_rpc_core {
 
-JsonParamValVectorBase::JsonParamValVectorBase() :
+JsonParamValVec::JsonParamValVec() :
 	JsonParamVal(IParamVal::Vector) {
 
 }
 
-JsonParamValVectorBase::JsonParamValVectorBase(
+JsonParamValVec::JsonParamValVec(
 		std::function<JsonParamValSP(const nlohmann::json &)> 	ctor,
 		const nlohmann::json							&msg) :
 			JsonParamVal(IParamVal::Vector) {
@@ -28,7 +29,7 @@ JsonParamValVectorBase::JsonParamValVectorBase(
 
 }
 
-JsonParamValVectorBase::JsonParamValVectorBase(const nlohmann::json &msg) :
+JsonParamValVec::JsonParamValVec(const nlohmann::json &msg) :
 	JsonParamVal(IParamVal::Vector) {
 	fprintf(stdout, "JsonParamValVectorBase: sz=%d %d %s\n",
 			msg.size(),
@@ -41,16 +42,16 @@ JsonParamValVectorBase::JsonParamValVectorBase(const nlohmann::json &msg) :
 	}
 }
 
-JsonParamValVectorBase::~JsonParamValVectorBase() {
+JsonParamValVec::~JsonParamValVec() {
 	// TODO Auto-generated destructor stub
 }
 
-void JsonParamValVectorBase::push_back(IParamVal *v) {
+void JsonParamValVec::push_back(IParamVal *v) {
 	m_children.push_back(JsonParamValUP(dynamic_cast<JsonParamVal *>(v)));
 }
 
-IParamValVector *JsonParamValVectorBase::clone() {
-	JsonParamValVectorBase *ret = new JsonParamValVectorBase();
+IParamValVec *JsonParamValVec::clone() {
+	JsonParamValVec *ret = new JsonParamValVec();
 
 	for (std::vector<JsonParamValUP>::const_iterator
 			it=m_children.begin();
@@ -60,7 +61,7 @@ IParamValVector *JsonParamValVectorBase::clone() {
 	return ret;
 }
 
-nlohmann::json JsonParamValVectorBase::dump() {
+nlohmann::json JsonParamValVec::dump() {
 	nlohmann::json msg;
 
 	fprintf(stdout, "Dump: %d children\n", m_children.size());
@@ -78,14 +79,14 @@ nlohmann::json JsonParamValVectorBase::dump() {
 	return msg;
 }
 
-JsonParamValVectorBaseUP JsonParamValVectorBase::mk(
+JsonParamValVectorBaseUP JsonParamValVec::mk(
 			std::function<JsonParamValSP(const nlohmann::json &)> 	ctor,
 			const nlohmann::json 							&msg) {
-	return JsonParamValVectorBaseUP(new JsonParamValVectorBase(ctor, msg));
+	return JsonParamValVectorBaseUP(new JsonParamValVec(ctor, msg));
 }
 
-JsonParamValVectorBaseUP JsonParamValVectorBase::mk() {
-	return JsonParamValVectorBaseUP(new JsonParamValVectorBase());
+JsonParamValVectorBaseUP JsonParamValVec::mk() {
+	return JsonParamValVectorBaseUP(new JsonParamValVec());
 }
 
 } /* namespace tblink_rpc_core */

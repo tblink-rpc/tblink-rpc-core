@@ -12,13 +12,13 @@
 
 namespace tblink_rpc_core {
 
-class SocketMessageTransport : public virtual ITransport {
+class TransportJsonSocket : public virtual ITransport {
 public:
-	SocketMessageTransport(
+	TransportJsonSocket(
 			pid_t			pid,
 			int32_t			socket);
 
-	virtual ~SocketMessageTransport();
+	virtual ~TransportJsonSocket();
 
 	virtual void init(
 			const recv_req_f		&req_f,
@@ -55,7 +55,7 @@ public:
 
 	virtual IParamValStr *mkValStr(const std::string &val) override;
 
-	virtual IParamValVector *mkVector() override;
+	virtual IParamValVec *mkValVec() override;
 
 private:
 	int32_t process_data(char *data, uint32_t sz);

@@ -5,7 +5,8 @@
  *      Author: ballance
  */
 
-#include "SocketMessageTransport.h"
+#include "TransportJsonSocket.h"
+
 #include <string>
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,7 @@
 #include "JsonParamValInt.h"
 #include "JsonParamValMap.h"
 #include "JsonParamValStr.h"
-#include "JsonParamValVectorBase.h"
+#include "JsonParamValVec.h"
 #include "glog/logging.h"
 
 #define EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
@@ -43,7 +44,7 @@
 
 namespace tblink_rpc_core {
 
-SocketMessageTransport::SocketMessageTransport(
+TransportJsonSocket::TransportJsonSocket(
 		pid_t		pid,
 		int32_t 	socket) :
 	m_msgbuf(0), m_msg_state(0), m_msg_length(0),
@@ -58,20 +59,20 @@ SocketMessageTransport::SocketMessageTransport(
 	m_msgbuf = new char[m_msgbuf_max];
 }
 
-SocketMessageTransport::~SocketMessageTransport() {
+TransportJsonSocket::~TransportJsonSocket() {
 	if (m_msgbuf) {
 		delete [] m_msgbuf;
 	}
 }
 
-void SocketMessageTransport::init(
+void TransportJsonSocket::init(
 		const recv_req_f			&req_f,
 		const recv_rsp_f			&rsp_f) {
 	m_req_f = req_f;
 	m_rsp_f = rsp_f;
 }
 
-void SocketMessageTransport::shutdown() {
+void TransportJsonSocket::shutdown() {
 	DEBUG_ENTER("shutdown");
 	if (m_pid > 0) {
 		int status = -1;
@@ -109,7 +110,7 @@ void SocketMessageTransport::shutdown() {
 	}
 }
 
-int32_t SocketMessageTransport::poll(int timeout_ms) {
+int32_t TransportJsonSocket::poll(int timeout_ms) {
 	char tmp[1024];
 	int32_t sz;
 	int32_t ret = 0;
@@ -275,7 +276,7 @@ int32_t SocketMessageTransport::poll(int timeout_ms) {
 	}
 }
 
-int32_t SocketMessageTransport::await_msg() {
+int32_t TransportJsonSocket::await_msg() {
 	int32_t ret = 0;
 	char tmp[1024];
 
@@ -318,7 +319,7 @@ int32_t SocketMessageTransport::await_msg() {
 	return ret;
 }
 
-intptr_t SocketMessageTransport::send_req(
+intptr_t TransportJsonSocket::send_req(
 		const std::string		&method,
 		IParamValMap			*params) {
 	DEBUG_ENTER("send_req");
@@ -348,7 +349,7 @@ intptr_t SocketMessageTransport::send_req(
 	return ret;
 }
 
-int32_t SocketMessageTransport::send_notify(
+int32_t TransportJsonSocket::send_notify(
 		const std::string		&method,
 		IParamValMap			*params) {
 	DEBUG_ENTER("send_notify\n");
@@ -373,7 +374,7 @@ int32_t SocketMessageTransport::send_notify(
 	return ret;
 }
 
-int32_t SocketMessageTransport::send_rsp(
+int32_t TransportJsonSocket::send_rsp(
 		intptr_t				id,
 		IParamValMap			*result,
 		IParamValMap			*error) {
@@ -405,31 +406,31 @@ int32_t SocketMessageTransport::send_rsp(
 	return ret;
 }
 
-IParamValBool *SocketMessageTransport::mkValBool(bool val) {
+IParamValBool *TransportJsonSocket::mkValBool(bool val) {
 	return JsonParamValBool::mk(val).release();
 }
 
-IParamValInt *SocketMessageTransport::mkValIntU(uint64_t val) {
+IParamValInt *TransportJsonSocket::mkValIntU(uint64_t val) {
 	return JsonParamValInt::mk(val).release();
 }
 
-IParamValInt *SocketMessageTransport::mkValIntS(int64_t val) {
+IParamValInt *TransportJsonSocket::mkValIntS(int64_t val) {
 	return JsonParamValInt::mk(val).release();
 }
 
-IParamValMap *SocketMessageTransport::mkValMap() {
+IParamValMap *TransportJsonSocket::mkValMap() {
 	return JsonParamValMap::mk().release();
 }
 
-IParamValStr *SocketMessageTransport::mkValStr(const std::string &val) {
+IParamValStr *TransportJsonSocket::mkValStr(const std::string &val) {
 	return JsonParamValStr::mk(val).release();
 }
 
-IParamValVector *SocketMessageTransport::mkVector() {
-	return JsonParamValVectorBase::mk().release();
+IParamValVec *TransportJsonSocket::mkValVec() {
+	return JsonParamValVec::mk().release();
 }
 
-int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
+int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 	int32_t ret = 0;
 
 	// Process data
@@ -532,7 +533,7 @@ int32_t SocketMessageTransport::process_data(char *data, uint32_t sz) {
 	return ret;
 }
 
-void SocketMessageTransport::msgbuf_resize_append(char c) {
+void TransportJsonSocket::msgbuf_resize_append(char c) {
 	// Confirm that we need to resize
 	if (m_msgbuf_idx+1 >= m_msgbuf_max) {
 		// yup, must resize
@@ -548,7 +549,7 @@ void SocketMessageTransport::msgbuf_resize_append(char c) {
 	m_msgbuf[m_msgbuf_idx++] = c;
 }
 
-const std::string	SocketMessageTransport::HEADER_PREFIX = "Content-Length: ";
+const std::string	TransportJsonSocket::HEADER_PREFIX = "Content-Length: ";
 
 } /* namespace tblink_rpc_core */
 

@@ -5,18 +5,18 @@
  *      Author: mballance
  */
 
-#include "FifoMessageTransportEP.h"
-#include "FifoMessageTransport.h"
 #include "JsonParamValBool.h"
 #include "JsonParamValInt.h"
 #include "JsonParamValMap.h"
 #include "JsonParamValStr.h"
-#include "JsonParamValVector.h"
+#include "JsonParamValVec.h"
+#include "TransportMessageFifo.h"
+#include "TransportMessageFifoUP.h"
 
 namespace tblink_rpc_core {
 
-FifoMessageTransportEP::FifoMessageTransportEP(
-		FifoMessageTransport	*parent,
+TransportMessageFifoUP::TransportMessageFifoUP(
+		TransportMessageFifo	*parent,
 		uint32_t				id) :
 			m_parent(parent), m_id(id),
 			m_req_id(0) {
@@ -24,22 +24,22 @@ FifoMessageTransportEP::FifoMessageTransportEP(
 
 }
 
-FifoMessageTransportEP::~FifoMessageTransportEP() {
+TransportMessageFifoUP::~TransportMessageFifoUP() {
 	// TODO Auto-generated destructor stub
 }
 
-void FifoMessageTransportEP::init(
+void TransportMessageFifoUP::init(
 		const recv_req_f &req_f,
 		const recv_rsp_f &rsp_f) {
 	m_req_f = req_f;
 	m_rsp_f = rsp_f;
 }
 
-void FifoMessageTransportEP::shutdown() {
+void TransportMessageFifoUP::shutdown() {
 
 }
 
-intptr_t FifoMessageTransportEP::send_req(
+intptr_t TransportMessageFifoUP::send_req(
 		const std::string		&method,
 		IParamValMap			*params) {
 	intptr_t req_id = m_req_id;
@@ -57,13 +57,13 @@ intptr_t FifoMessageTransportEP::send_req(
 	}
 }
 
-int32_t FifoMessageTransportEP::send_notify(
+int32_t TransportMessageFifoUP::send_notify(
 		const std::string		&method,
 		IParamValMap			*params) {
 	return -1;
 }
 
-int32_t FifoMessageTransportEP::send_rsp(
+int32_t TransportMessageFifoUP::send_rsp(
 		intptr_t			id,
 		IParamValMap		*result,
 		IParamValMap		*error) {
@@ -74,7 +74,7 @@ int32_t FifoMessageTransportEP::send_rsp(
 			error);
 }
 
-int32_t FifoMessageTransportEP::recv_rsp(
+int32_t TransportMessageFifoUP::recv_rsp(
 			intptr_t				id,
 			IParamValMap			*result,
 			IParamValMap			*error) {
@@ -92,14 +92,14 @@ int32_t FifoMessageTransportEP::recv_rsp(
 	return ret;
 }
 
-int32_t FifoMessageTransportEP::poll(int32_t timeout_ms) {
+int32_t TransportMessageFifoUP::poll(int32_t timeout_ms) {
 	return -1;
 }
 
 /**
  * Waits for at least one message to be received
  */
-int32_t FifoMessageTransportEP::await_msg() {
+int32_t TransportMessageFifoUP::await_msg() {
 	int32_t ret = 0;
 
 	fprintf(stdout, "[%d] await_msg: %d %d\n",
@@ -139,36 +139,36 @@ int32_t FifoMessageTransportEP::await_msg() {
 /**
  * Returns number of mismatched req/rsp pairs
  */
-int32_t FifoMessageTransportEP::outstanding() {
+int32_t TransportMessageFifoUP::outstanding() {
 	return 0;
 }
 
-IParamValBool *FifoMessageTransportEP::mkValBool(bool val) {
+IParamValBool *TransportMessageFifoUP::mkValBool(bool val) {
 	return new JsonParamValBool(val);
 }
 
-IParamValInt *FifoMessageTransportEP::mkValIntU(uint64_t val) {
+IParamValInt *TransportMessageFifoUP::mkValIntU(uint64_t val) {
 	return new JsonParamValInt(val);
 }
 
-IParamValInt *FifoMessageTransportEP::mkValIntS(int64_t val) {
+IParamValInt *TransportMessageFifoUP::mkValIntS(int64_t val) {
 	return new JsonParamValInt(val);
 }
 
-IParamValMap *FifoMessageTransportEP::mkValMap() {
+IParamValMap *TransportMessageFifoUP::mkValMap() {
 	return new JsonParamValMap();
 }
 
-IParamValStr *FifoMessageTransportEP::mkValStr(const std::string &val) {
+IParamValStr *TransportMessageFifoUP::mkValStr(const std::string &val) {
 	return new JsonParamValStr(val);
 }
 
-IParamValVector *FifoMessageTransportEP::mkVector() {
-	return new JsonParamValVectorBase();
+IParamValVec *TransportMessageFifoUP::mkValVec() {
+	return new JsonParamValVec();
 }
 
 
-int32_t FifoMessageTransportEP::recv_req(
+int32_t TransportMessageFifoUP::recv_req(
 			const std::string		&method,
 			intptr_t				req_id,
 			IParamValMap			*params) {
