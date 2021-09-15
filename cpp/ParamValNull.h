@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include "JsonParamVal.h"
+#include "ParamVal.h"
 
 namespace tblink_rpc_core {
 

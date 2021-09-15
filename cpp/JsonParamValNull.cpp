@@ -5,7 +5,7 @@
  *      Author: ballance
  */
 
-#include "JsonParamValNull.h"
+#include "ParamValNull.h"
 
 namespace tblink_rpc_core {
 

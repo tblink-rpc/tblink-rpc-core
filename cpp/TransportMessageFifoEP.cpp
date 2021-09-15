@@ -5,11 +5,11 @@
  *      Author: mballance
  */
 
-#include "JsonParamValBool.h"
-#include "JsonParamValInt.h"
-#include "JsonParamValMap.h"
-#include "JsonParamValStr.h"
-#include "JsonParamValVec.h"
+#include "ParamValBool.h"
+#include "ParamValInt.h"
+#include "ParamValMap.h"
+#include "ParamValStr.h"
+#include "ParamValVec.h"
 #include "TransportMessageFifo.h"
 #include "TransportMessageFifoUP.h"
 
@@ -144,27 +144,27 @@ int32_t TransportMessageFifoUP::outstanding() {
 }
 
 IParamValBool *TransportMessageFifoUP::mkValBool(bool val) {
-	return new JsonParamValBool(val);
+	return new ParamValBool(val);
 }
 
 IParamValInt *TransportMessageFifoUP::mkValIntU(uint64_t val) {
-	return new JsonParamValInt(val);
+	return new ParamValInt(val);
 }
 
 IParamValInt *TransportMessageFifoUP::mkValIntS(int64_t val) {
-	return new JsonParamValInt(val);
+	return new ParamValInt(val);
 }
 
 IParamValMap *TransportMessageFifoUP::mkValMap() {
-	return new JsonParamValMap();
+	return new ParamValMap();
 }
 
 IParamValStr *TransportMessageFifoUP::mkValStr(const std::string &val) {
-	return new JsonParamValStr(val);
+	return new ParamValStr(val);
 }
 
 IParamValVec *TransportMessageFifoUP::mkValVec() {
-	return new JsonParamValVec();
+	return new ParamValVec();
 }
 
 

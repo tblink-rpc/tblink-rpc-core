@@ -11,7 +11,7 @@
 #include "tblink_rpc/IParamValMap.h"
 #include "tblink_rpc/IParamValStr.h"
 #include "nlohmann/json_fwd.hpp"
-#include "JsonParamVal.h"
+#include "ParamVal.h"
 
 namespace tblink_rpc_core {
 
@@ -21,7 +21,13 @@ public:
 
 	virtual ~JsonParamValFactory();
 
-	static JsonParamValUP mk(const nlohmann::json &msg);
+	IParamVal *mk(const nlohmann::json &msg);
+
+	template <class T> T *mkT(const nlohmann::json &msg) {
+		return dynamic_cast<T *>(mk(msg));
+	}
+
+	nlohmann::json mk(IParamVal *val);
 
 };
 

@@ -22,9 +22,9 @@ public:
 
 	virtual IParamValBool *mkValBool(bool val) = 0;
 
-	virtual IParamValInt *mkValIntU(uint64_t val) = 0;
+	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) = 0;
 
-	virtual IParamValInt *mkValIntS(int64_t val) = 0;
+	virtual IParamValInt *mkValIntS(int64_t val, int32_t width) = 0;
 
 	virtual IParamValMap *mkValMap() = 0;
 

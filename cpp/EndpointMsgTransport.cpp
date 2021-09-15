@@ -400,6 +400,7 @@ IInterfaceType *EndpointMsgTransport::defineInterfaceType(
 IInterfaceInst *EndpointMsgTransport::defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
+			bool					is_mirror,
 			const invoke_req_f		&req_f) {
 
 	InterfaceInst *ifinst = new InterfaceInst(

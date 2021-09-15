@@ -20,7 +20,7 @@ public:
 		Int,
 		Map,
 		Str,
-		Vector
+		Vec
 	};
 
 public:

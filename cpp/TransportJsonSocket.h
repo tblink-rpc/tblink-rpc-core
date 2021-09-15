@@ -9,6 +9,7 @@
 #include <string>
 #include "tblink_rpc/ITransport.h"
 #include "nlohmann/json_fwd.hpp"
+#include "JsonParamValFactory.h"
 
 namespace tblink_rpc_core {
 
@@ -84,6 +85,7 @@ private:
 
 	recv_req_f					m_req_f;
 	recv_rsp_f					m_rsp_f;
+	JsonParamValFactory			m_param_f;
 
 
 
