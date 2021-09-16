@@ -48,7 +48,10 @@ public:
 			IParamValMap		*result,
 			IParamValMap		*error) = 0;
 
-	virtual int32_t poll(int32_t timeout_ms=-1) = 0;
+	/**
+	 * Polls, waiting for a message. Returns -1 in case of failure.
+	 */
+	virtual int32_t process_one_message() = 0;
 
 	/**
 	 * Waits for at least one message to be received

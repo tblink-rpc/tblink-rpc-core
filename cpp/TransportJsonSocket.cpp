@@ -111,6 +111,11 @@ void TransportJsonSocket::shutdown() {
 	}
 }
 
+int32_t TransportJsonSocket::process_one_message() {
+	// TODO:
+}
+
+#ifdef UNDEFINED
 int32_t TransportJsonSocket::poll(int timeout_ms) {
 	char tmp[1024];
 	int32_t sz;
@@ -276,6 +281,7 @@ int32_t TransportJsonSocket::poll(int timeout_ms) {
 		return (ret || m_outstanding > 0);
 	}
 }
+#endif /* UNDEFINED */
 
 int32_t TransportJsonSocket::await_msg() {
 	int32_t ret = 0;
@@ -411,11 +417,11 @@ IParamValBool *TransportJsonSocket::mkValBool(bool val) {
 	return ParamValBool::mk(val).release();
 }
 
-IParamValInt *TransportJsonSocket::mkValIntU(uint64_t val) {
+IParamValInt *TransportJsonSocket::mkValIntU(uint64_t val, int32_t width) {
 	return ParamValInt::mk(val).release();
 }
 
-IParamValInt *TransportJsonSocket::mkValIntS(int64_t val) {
+IParamValInt *TransportJsonSocket::mkValIntS(int64_t val, int32_t width) {
 	return ParamValInt::mk(val).release();
 }
 

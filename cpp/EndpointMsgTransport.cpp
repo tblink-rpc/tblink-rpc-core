@@ -115,13 +115,14 @@ bool EndpointMsgTransport::build_complete() {
 	params->setVal("iftypes", pack_iftypes());
 	params->setVal("ifinsts", pack_ifinsts());
 	params->setVal("time-precision", m_transport->mkValIntS(
-			m_services->time_precision()));
+			m_services->time_precision(), 32));
 
 	intptr_t id = send_req(
 			"tblink.build-complete",
 			params,
 			(m_type == Active));
 
+	/*
 	if (m_type == Active) {
 		rsp_t rsp = wait_rsp(id);
 
@@ -141,6 +142,7 @@ bool EndpointMsgTransport::build_complete() {
 		// Assume the response will arrive at
 		// some point
 	}
+	 */
 
 	return true;
 }
@@ -153,6 +155,7 @@ bool EndpointMsgTransport::connect_complete() {
 			params,
 			(m_type == Active));
 
+	/*
 	if (m_type == Active) {
 		rsp_t rsp = wait_rsp(id);
 
@@ -174,6 +177,7 @@ bool EndpointMsgTransport::connect_complete() {
 
 		return (id != -1);
 	}
+	 */
 }
 
 bool EndpointMsgTransport::shutdown() {
@@ -252,6 +256,7 @@ int32_t EndpointMsgTransport::yield() {
 	// wait for longer. Otherwise, just check if
 	// there is data.
 
+	/*
 	int32_t timeout;
 	if (m_transport->outstanding()) {
 		timeout = 1000;
@@ -273,6 +278,7 @@ int32_t EndpointMsgTransport::yield() {
 		DEBUG_LEAVE("yield %d,%d", ret, m_transport->outstanding());
 		return ret;
 	}
+	 */
 }
 
 int32_t EndpointMsgTransport::yield_blocking() {
@@ -282,6 +288,7 @@ int32_t EndpointMsgTransport::yield_blocking() {
 		return 0;
 	}
 
+	/*
 	int32_t timeout;
 	if (m_transport->outstanding() ||
 			(
@@ -310,15 +317,16 @@ int32_t EndpointMsgTransport::yield_blocking() {
 		DEBUG_LEAVE("yield_blocking %d,%d", ret, m_transport->outstanding());
 		return ret;
 	}
+	 */
 }
 
 intptr_t EndpointMsgTransport::add_time_callback(
 			uint64_t						time,
 			const std::function<void()>		&cb_f) {
 	IParamValMap *params = m_transport->mkValMap();
-	params->setVal("time", m_transport->mkValIntU(time));
+	params->setVal("time", m_transport->mkValIntU(time, 64));
 	intptr_t callback_id = m_callback_id;
-	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
+	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 32));
 	m_callback_id += 1;
 
 	m_callback_m.insert({callback_id, cb_f});
@@ -343,7 +351,7 @@ uint64_t EndpointMsgTransport::time() {
 void EndpointMsgTransport::cancel_callback(intptr_t	callback_id) {
 	IParamValMap *params = m_transport->mkValMap();
 
-	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
+	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 64));
 
 	intptr_t id = m_transport->send_req("tblink.cancel-callback", params);
 	rsp_t rsp = wait_rsp(id);
@@ -355,8 +363,8 @@ void EndpointMsgTransport::cancel_callback(intptr_t	callback_id) {
 void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 	IParamValMap *params = m_transport->mkValMap();
 
-	params->setVal("callback-id", m_transport->mkValIntU(callback_id));
-	params->setVal("time", m_transport->mkValIntU(m_services->time()));
+	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 64));
+	params->setVal("time", m_transport->mkValIntU(m_services->time(), 64));
 
 	intptr_t id = m_transport->send_req("tblink.notify-callback", params);
 
@@ -415,6 +423,10 @@ IInterfaceInst *EndpointMsgTransport::defineInterfaceInst(
 	return ifinst;
 }
 
+int32_t EndpointMsgTransport::process_one_message() {
+	return m_transport->process_one_message();
+}
+
 const std::vector<IInterfaceType *> &EndpointMsgTransport::getInterfaceTypes() {
 	return m_local_ifc_type_pl;
 }
@@ -427,12 +439,12 @@ IParamValBool *EndpointMsgTransport::mkValBool(bool val) {
 	return m_transport->mkValBool(val);
 }
 
-IParamValInt *EndpointMsgTransport::mkValIntU(uint64_t val) {
-	return m_transport->mkValIntU(val);
+IParamValInt *EndpointMsgTransport::mkValIntU(uint64_t val, int32_t width) {
+	return m_transport->mkValIntU(val, width);
 }
 
-IParamValInt *EndpointMsgTransport::mkValIntS(int64_t val) {
-	return m_transport->mkValIntS(val);
+IParamValInt *EndpointMsgTransport::mkValIntS(int64_t val, int32_t width) {
+	return m_transport->mkValIntS(val, width);
 }
 
 IParamValMap *EndpointMsgTransport::mkValMap() {
@@ -727,7 +739,7 @@ void EndpointMsgTransport::call_completion_b(
 	IParamValMap *params = m_transport->mkValMap();
 
 	params->setVal("ifinst", m_transport->mkValStr(ifinst->name()));
-	params->setVal("call-id", m_transport->mkValIntU(call_id));
+	params->setVal("call-id", m_transport->mkValIntU(call_id, 64));
 
 	if (retval) {
 		params->setVal("return", retval);

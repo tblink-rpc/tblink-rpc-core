@@ -47,11 +47,11 @@ void InterfaceInst::invoke_req(
 	m_req_f(this, method, call_id, params);
 }
 
-int32_t InterfaceInst::invoke(
+IParamVal *InterfaceInst::invoke(
 		IMethodType									*method,
-		IParamValVec								*params,
-		const invoke_rsp_f							&completion_f) {
+		IParamValVec								*params) {
 
+	/*
 	// TODO:
 	IParamValMap *r_params = m_endpoint->mkValMap();
 	intptr_t call_id = m_call_id;
@@ -67,20 +67,21 @@ int32_t InterfaceInst::invoke(
 			r_params);
 
 	std::pair<IParamValMapSP,IParamValMapSP> rsp = m_endpoint->wait_rsp(id);
+	 */
 
 	return 0;
 }
 
-IParamVal *InterfaceInst::invoke_nb(
+int32_t InterfaceInst::invoke_nb(
 		IMethodType									*method,
-		IParamValVec								*params) {
+		IParamValVec								*params,
+		const invoke_rsp_f							&completion_f) {
 
 	fprintf(stdout, "invoke_nb: %s\n", method->name().c_str());
 	fflush(stdout);
 
-	return m_endpoint->invoke_nb(this, method, params);
-
-
+//	return m_endpoint->invoke_nb(this, method, params);
+	return 0;
 }
 
 void InterfaceInst::invoke_rsp(
@@ -105,12 +106,12 @@ IParamValBool *InterfaceInst::mkValBool(bool val) {
 	return m_endpoint->mkValBool(val);
 }
 
-IParamValInt *InterfaceInst::mkValIntU(uint64_t val) {
-	return m_endpoint->mkValIntU(val);
+IParamValInt *InterfaceInst::mkValIntU(uint64_t val, int32_t width) {
+	return m_endpoint->mkValIntU(val, width);
 }
 
-IParamValInt *InterfaceInst::mkValIntS(int64_t val) {
-	return m_endpoint->mkValIntS(val);
+IParamValInt *InterfaceInst::mkValIntS(int64_t val, int32_t width) {
+	return m_endpoint->mkValIntS(val, width);
 }
 
 IParamValMap *InterfaceInst::mkValMap() {

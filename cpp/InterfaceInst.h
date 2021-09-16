@@ -20,18 +20,20 @@ class InterfaceInst : public IInterfaceInst {
 public:
 	InterfaceInst(
 			EndpointMsgTransport			*endpoint,
-			IInterfaceType			*type,
-			const std::string		&inst_name);
+			IInterfaceType					*type,
+			const std::string				&inst_name);
 
 	InterfaceInst(
 			EndpointMsgTransport			*endpoint,
-			IInterfaceType			*type,
-			const std::string		&inst_name,
-			const invoke_req_f		&req_f);
+			IInterfaceType					*type,
+			const std::string				&inst_name,
+			const invoke_req_f				&req_f);
 
 	virtual ~InterfaceInst();
 
 	virtual IInterfaceType *type() override { return m_type; }
+
+	virtual bool is_mirror() { return m_is_mirror; }
 
 	virtual void set_invoke_req_f(const invoke_req_f &req_f) override {
 		m_req_f = req_f;
@@ -46,14 +48,14 @@ public:
 			IParamValVec			*params,
 			const invoke_rsp_f		&response_f);
 
-	virtual int32_t invoke(
+	virtual IParamVal *invoke(
+			IMethodType									*method,
+			IParamValVec								*params) override;
+
+	virtual int32_t invoke_nb(
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;
-
-	virtual IParamVal *invoke_nb(
-			IMethodType									*method,
-			IParamValVec								*params) override;
 
 	virtual void invoke_rsp(
 			intptr_t									call_id,
@@ -61,9 +63,9 @@ public:
 
 	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValInt *mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
 
-	virtual IParamValInt *mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val, int32_t width) override;
 
 	virtual IParamValMap *mkValMap() override;
 
@@ -73,11 +75,12 @@ public:
 
 private:
 	EndpointMsgTransport						*m_endpoint;
-	IInterfaceType						*m_type;
-	std::string							m_inst_name;
-	invoke_req_f						m_req_f;
-	intptr_t							m_call_id;
-	std::map<intptr_t,invoke_rsp_f>		m_invoke_m;
+	IInterfaceType								*m_type;
+	std::string									m_inst_name;
+	bool										m_is_mirror;
+	invoke_req_f								m_req_f;
+	intptr_t									m_call_id;
+	std::map<intptr_t,invoke_rsp_f>				m_invoke_m;
 
 };
 

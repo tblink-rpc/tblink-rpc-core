@@ -5,17 +5,18 @@
  *      Author: mballance
  */
 
+#include "TransportMessageFifoEP.h"
+
 #include "ParamValBool.h"
 #include "ParamValInt.h"
 #include "ParamValMap.h"
 #include "ParamValStr.h"
 #include "ParamValVec.h"
 #include "TransportMessageFifo.h"
-#include "TransportMessageFifoUP.h"
 
 namespace tblink_rpc_core {
 
-TransportMessageFifoUP::TransportMessageFifoUP(
+TransportMessageFifoEP::TransportMessageFifoEP(
 		TransportMessageFifo	*parent,
 		uint32_t				id) :
 			m_parent(parent), m_id(id),
@@ -24,22 +25,22 @@ TransportMessageFifoUP::TransportMessageFifoUP(
 
 }
 
-TransportMessageFifoUP::~TransportMessageFifoUP() {
+TransportMessageFifoEP::~TransportMessageFifoEP() {
 	// TODO Auto-generated destructor stub
 }
 
-void TransportMessageFifoUP::init(
+void TransportMessageFifoEP::init(
 		const recv_req_f &req_f,
 		const recv_rsp_f &rsp_f) {
 	m_req_f = req_f;
 	m_rsp_f = rsp_f;
 }
 
-void TransportMessageFifoUP::shutdown() {
+void TransportMessageFifoEP::shutdown() {
 
 }
 
-intptr_t TransportMessageFifoUP::send_req(
+intptr_t TransportMessageFifoEP::send_req(
 		const std::string		&method,
 		IParamValMap			*params) {
 	intptr_t req_id = m_req_id;
@@ -57,13 +58,13 @@ intptr_t TransportMessageFifoUP::send_req(
 	}
 }
 
-int32_t TransportMessageFifoUP::send_notify(
+int32_t TransportMessageFifoEP::send_notify(
 		const std::string		&method,
 		IParamValMap			*params) {
 	return -1;
 }
 
-int32_t TransportMessageFifoUP::send_rsp(
+int32_t TransportMessageFifoEP::send_rsp(
 		intptr_t			id,
 		IParamValMap		*result,
 		IParamValMap		*error) {
@@ -74,7 +75,11 @@ int32_t TransportMessageFifoUP::send_rsp(
 			error);
 }
 
-int32_t TransportMessageFifoUP::recv_rsp(
+int32_t TransportMessageFifoEP::process_one_message() {
+	return 0;
+}
+
+int32_t TransportMessageFifoEP::recv_rsp(
 			intptr_t				id,
 			IParamValMap			*result,
 			IParamValMap			*error) {
@@ -92,14 +97,10 @@ int32_t TransportMessageFifoUP::recv_rsp(
 	return ret;
 }
 
-int32_t TransportMessageFifoUP::poll(int32_t timeout_ms) {
-	return -1;
-}
-
 /**
  * Waits for at least one message to be received
  */
-int32_t TransportMessageFifoUP::await_msg() {
+int32_t TransportMessageFifoEP::await_msg() {
 	int32_t ret = 0;
 
 	fprintf(stdout, "[%d] await_msg: %d %d\n",
@@ -139,36 +140,36 @@ int32_t TransportMessageFifoUP::await_msg() {
 /**
  * Returns number of mismatched req/rsp pairs
  */
-int32_t TransportMessageFifoUP::outstanding() {
+int32_t TransportMessageFifoEP::outstanding() {
 	return 0;
 }
 
-IParamValBool *TransportMessageFifoUP::mkValBool(bool val) {
+IParamValBool *TransportMessageFifoEP::mkValBool(bool val) {
 	return new ParamValBool(val);
 }
 
-IParamValInt *TransportMessageFifoUP::mkValIntU(uint64_t val) {
+IParamValInt *TransportMessageFifoEP::mkValIntU(uint64_t val, int32_t width) {
 	return new ParamValInt(val);
 }
 
-IParamValInt *TransportMessageFifoUP::mkValIntS(int64_t val) {
+IParamValInt *TransportMessageFifoEP::mkValIntS(int64_t val, int32_t width) {
 	return new ParamValInt(val);
 }
 
-IParamValMap *TransportMessageFifoUP::mkValMap() {
+IParamValMap *TransportMessageFifoEP::mkValMap() {
 	return new ParamValMap();
 }
 
-IParamValStr *TransportMessageFifoUP::mkValStr(const std::string &val) {
+IParamValStr *TransportMessageFifoEP::mkValStr(const std::string &val) {
 	return new ParamValStr(val);
 }
 
-IParamValVec *TransportMessageFifoUP::mkValVec() {
+IParamValVec *TransportMessageFifoEP::mkValVec() {
 	return new ParamValVec();
 }
 
 
-int32_t TransportMessageFifoUP::recv_req(
+int32_t TransportMessageFifoEP::recv_req(
 			const std::string		&method,
 			intptr_t				req_id,
 			IParamValMap			*params) {

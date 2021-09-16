@@ -40,7 +40,7 @@ public:
 			IParamValMap		*result,
 			IParamValMap		*error) override;
 
-	virtual int32_t poll(int32_t timeout_ms=-1) override;
+	virtual int32_t process_one_message() override;
 
 	virtual int32_t await_msg() override;
 
@@ -48,9 +48,9 @@ public:
 
 	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValInt *mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
 
-	virtual IParamValInt *mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val, int32_t width) override;
 
 	virtual IParamValMap *mkValMap() override;
 

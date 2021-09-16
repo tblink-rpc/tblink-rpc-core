@@ -104,6 +104,12 @@ public:
 			const invoke_req_f		&req_f) = 0;
 
 	/**
+	 * Poll, waiting for a message to be received.
+	 * Returns -1 on transport error.
+	 */
+	virtual int32_t process_one_message() = 0;
+
+	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */

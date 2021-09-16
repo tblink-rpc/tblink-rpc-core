@@ -86,6 +86,12 @@ public:
 			const invoke_req_f		&req_f) override;
 
 	/**
+	 * Poll, waiting for a message to be received.
+	 * Returns -1 on transport error.
+	 */
+	virtual int32_t process_one_message() override;
+
+	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
@@ -99,9 +105,9 @@ public:
 
 	virtual IParamValBool *mkValBool(bool val) override;
 
-	virtual IParamValInt *mkValIntU(uint64_t val) override;
+	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
 
-	virtual IParamValInt *mkValIntS(int64_t val) override;
+	virtual IParamValInt *mkValIntS(int64_t val, int32_t width) override;
 
 	virtual IParamValMap *mkValMap() override;
 

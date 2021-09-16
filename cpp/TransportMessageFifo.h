@@ -8,7 +8,7 @@
 #pragma once
 #include <vector>
 #include "tblink_rpc/ITransport.h"
-#include "TransportMessageFifoUP.h"
+#include "TransportMessageFifoEP.h"
 
 namespace tblink_rpc_core {
 
@@ -18,9 +18,14 @@ class TransportMessageFifo {
 public:
 	TransportMessageFifo(bool is_blocking=false);
 
+	TransportMessageFifo(
+			TransportMessageFifoEP		*ep0,
+			TransportMessageFifoEP		*ep1,
+			bool 						is_blocking=false);
+
 	virtual ~TransportMessageFifo();
 
-	virtual TransportMessageFifoUP *ep(uint32_t id);
+	virtual TransportMessageFifoEP *ep(uint32_t id);
 
 	virtual int32_t send_req(
 			uint32_t				ep_id,
@@ -41,8 +46,8 @@ public:
 
 private:
 	bool							m_is_blocking;
-	FifoMessageTransportEPUP		m_ep0;
-	FifoMessageTransportEPUP		m_ep1;
+	TransportMessageFifoEPUP		m_ep0;
+	TransportMessageFifoEPUP		m_ep1;
 
 };
 
