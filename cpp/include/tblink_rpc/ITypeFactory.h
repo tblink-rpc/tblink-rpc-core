@@ -16,7 +16,7 @@ public:
 
 	virtual ~ITypeFactory() { }
 
-	virtual ITypeInt *mkTypeBool() = 0;
+	virtual IType *mkTypeBool() = 0;
 
 	virtual ITypeInt *mkTypeInt(
 			bool		is_signed,
@@ -26,7 +26,7 @@ public:
 			IType		*key_t,
 			IType		*elem_t) = 0;
 
-	virtual ITypeInt *mkTypeStr() = 0;
+	virtual IType *mkTypeStr() = 0;
 
 	virtual ITypeVec *mkTypeVec(
 			IType		*elem_t) = 0;

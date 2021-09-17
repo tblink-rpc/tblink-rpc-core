@@ -10,6 +10,8 @@
 #include <string>
 //#include "IType.h"
 //#include "ITypeBuilder.h"
+#include "tblink_rpc/IEndpointListener.h"
+#include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/IInterfaceInst.h"
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IInterfaceTypeBuilder.h"
@@ -37,13 +39,21 @@ public:
 
 	virtual ~IEndpoint() { }
 
+	virtual int32_t init(
+			IEndpointServices		*ep_services,
+			IEndpointListener		*ep_listener) = 0;
+
 	virtual State state() = 0;
 
-	virtual Type type() = 0;
+	virtual int32_t is_init() = 0;
 
-	virtual bool build_complete() = 0;
+	virtual int32_t build_complete() = 0;
 
-	virtual bool connect_complete() = 0;
+	virtual int32_t is_build_complete() = 0;
+
+	virtual int32_t connect_complete() = 0;
+
+	virtual int32_t is_connect_complete() = 0;
 
 	virtual bool shutdown() = 0;
 
@@ -68,6 +78,8 @@ public:
 			const std::function<void()>		&cb_f) = 0;
 
 	virtual void cancel_callback(intptr_t	id) = 0;
+
+	virtual const std::vector<std::string> &args() = 0;
 
 	virtual uint64_t time() = 0;
 

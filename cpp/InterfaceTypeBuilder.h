@@ -32,7 +32,7 @@ public:
 	virtual IMethodType *add_method(
 			IMethodTypeBuilder	*mtb) override;
 
-	virtual ITypeInt *mkTypeBool() override;
+	virtual IType *mkTypeBool() override;
 
 	virtual ITypeInt *mkTypeInt(
 			bool		is_signed,
@@ -42,7 +42,7 @@ public:
 			IType		*key_t,
 			IType		*elem_t) override;
 
-	virtual ITypeInt *mkTypeStr() override;
+	virtual IType *mkTypeStr() override;
 
 	virtual ITypeVec *mkTypeVec(
 			IType		*elem_t) override;

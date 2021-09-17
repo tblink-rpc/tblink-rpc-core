@@ -63,7 +63,10 @@ IInterfaceType *BfmReqRsp::registerType(tblink_rpc_core::IEndpoint *ep) {
 			0,
 			false,
 			false);
-	mtb->add_param("v", iftype_b->mkTypeInt(true, 32));
+	fprintf(stdout, "mtb: %p\n", mtb);
+	mtb->add_param(
+			"v",
+			iftype_b->mkTypeInt(true, 32));
 	iftype_b->add_method(mtb);
 
 	mtb = iftype_b->newMethodTypeBuilder(
@@ -95,7 +98,7 @@ BfmReqRsp *BfmReqRsp::mkInst(
 			inst_name,
 			is_mirror,
 			std::bind(&BfmReqRsp::invoke,
-					this,
+					ret,
 					std::placeholders::_1,
 					std::placeholders::_2,
 					std::placeholders::_3,

@@ -29,25 +29,42 @@
 
 namespace tblink_rpc_core {
 
-EndpointMsgTransport::EndpointMsgTransport(
-		IEndpoint::Type		type,
-		IEndpointServices	*services) {
-	m_type = type;
-	m_services  = services;
-	m_transport = 0;
+EndpointMsgTransport::EndpointMsgTransport(ITransport *transport) {
+	m_services  = 0;
+	m_transport = transport;
+
+	m_transport->init(
+			std::bind(
+					&EndpointMsgTransport::recv_req,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2,
+					std::placeholders::_3),
+			std::bind(
+					&EndpointMsgTransport::recv_rsp,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2,
+					std::placeholders::_3)
+					);
 
 	m_state = IEndpoint::Init;
 	m_time = 0;
 	m_time_precision = 0;
 	m_event_received = 0;
 
-
-	m_services->init(this);
-
-	m_build_complete = false;
-	m_connect_complete = false;
+	m_init = 0;
+	m_peer_init = 0;
+	m_build_complete = 0;
+	m_peer_build_complete = 0;
+	m_connect_complete = 0;
+	m_peer_connect_complete = 0;
 	m_callback_id = 0;
 
+	m_req_m.insert({"tblink.init", std::bind(
+			&EndpointMsgTransport::req_init, this,
+			std::placeholders::_1,
+			std::placeholders::_2)});
 	m_req_m.insert({"tblink.build-complete", std::bind(
 			&EndpointMsgTransport::req_build_complete, this,
 			std::placeholders::_1,
@@ -90,25 +107,42 @@ EndpointMsgTransport::~EndpointMsgTransport() {
 	// TODO Auto-generated destructor stub
 }
 
-void EndpointMsgTransport::init(ITransport *transport) {
-	m_transport = transport;
-	m_transport->init(
-			std::bind(
-					&EndpointMsgTransport::recv_req,
-					this,
-					std::placeholders::_1,
-					std::placeholders::_2,
-					std::placeholders::_3),
-			std::bind(
-					&EndpointMsgTransport::recv_rsp,
-					this,
-					std::placeholders::_1,
-					std::placeholders::_2,
-					std::placeholders::_3)
-					);
+int32_t EndpointMsgTransport::init(
+		IEndpointServices		*ep_services,
+		IEndpointListener		*ep_listener) {
+	m_services = ep_services;
+	m_services->init(this);
+
+	auto params = m_transport->mkValMap();
+
+	auto args_p = m_transport->mkValVec();
+	for (auto arg : m_services->args()) {
+		args_p->push_back(mkValStr(arg));
+	}
+	params->setVal("args", args_p);
+	params->setVal("time-units", mkValIntS(m_services->time_precision(), 32));
+
+	m_init = 1;
+	send_req(
+			"tblink.init",
+			params);
+
+	// TODO: listener
+
+	// TODO: send init message
+
+	return 0;
 }
 
-bool EndpointMsgTransport::build_complete() {
+int32_t EndpointMsgTransport::is_init() {
+	if (m_init == -1 || m_peer_init == -1) {
+		return -1;
+	} else {
+		return m_init && m_peer_init;
+	}
+}
+
+int32_t EndpointMsgTransport::build_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
 	// Pack locally-registered interface types and instances
@@ -117,10 +151,10 @@ bool EndpointMsgTransport::build_complete() {
 	params->setVal("time-precision", m_transport->mkValIntS(
 			m_services->time_precision(), 32));
 
+	m_build_complete = 1;
 	intptr_t id = send_req(
 			"tblink.build-complete",
-			params,
-			(m_type == Active));
+			params);
 
 	/*
 	if (m_type == Active) {
@@ -144,16 +178,24 @@ bool EndpointMsgTransport::build_complete() {
 	}
 	 */
 
-	return true;
+	return 0;
 }
 
-bool EndpointMsgTransport::connect_complete() {
+int32_t EndpointMsgTransport::is_build_complete() {
+	if (m_build_complete == -1 || m_peer_build_complete == -1) {
+		return -1;
+	} else {
+		return m_build_complete && m_peer_build_complete;
+	}
+}
+
+int32_t EndpointMsgTransport::connect_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
+	m_connect_complete = 1;
 	intptr_t id = send_req(
 			"tblink.connect-complete",
-			params,
-			(m_type == Active));
+			params);
 
 	/*
 	if (m_type == Active) {
@@ -178,6 +220,16 @@ bool EndpointMsgTransport::connect_complete() {
 		return (id != -1);
 	}
 	 */
+
+	return 0;
+}
+
+int32_t EndpointMsgTransport::is_connect_complete() {
+	if (m_connect_complete == -1 || m_peer_connect_complete == -1) {
+		return -1;
+	} else {
+		return m_connect_complete && m_peer_connect_complete;
+	}
 }
 
 bool EndpointMsgTransport::shutdown() {
@@ -186,9 +238,7 @@ bool EndpointMsgTransport::shutdown() {
 
 		intptr_t id = send_req(
 				"tblink.shutdown",
-				params,
-				false // Mark the request as not being actively awaited
-				);
+				params);
 
 		// TODO: only wait a little bit for a response...
 		//	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
@@ -216,11 +266,13 @@ int32_t EndpointMsgTransport::run_until_event() {
 	while (m_event_received == 0) {
 		ret = m_transport->await_msg();
 
+#ifdef UNDEFINED
 		std::map<intptr_t,rspq_elem_t>::const_iterator it;
 		if (id > 0 && (it=m_rsp_m.find(id)) != m_rsp_m.end()) {
 
 			// Clear out the response
-			m_rsp_m.erase(it);
+			// TODO:
+//			m_rsp_m.erase(it);
 			if (it->second.second.first) {
 				delete it->second.second.first;
 			}
@@ -229,6 +281,7 @@ int32_t EndpointMsgTransport::run_until_event() {
 			}
 			id = -1;
 		}
+#endif
 
 		if (ret < 0) {
 			break;
@@ -333,6 +386,7 @@ intptr_t EndpointMsgTransport::add_time_callback(
 
 	intptr_t id = m_transport->send_req("tblink.add-time-callback", params);
 
+#ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
 
 	if (rsp.first) {
@@ -342,6 +396,11 @@ intptr_t EndpointMsgTransport::add_time_callback(
 		// Error:
 		return -1;
 	}
+#endif
+}
+
+const std::vector<std::string> &EndpointMsgTransport::args() {
+	return m_args;
 }
 
 uint64_t EndpointMsgTransport::time() {
@@ -354,7 +413,9 @@ void EndpointMsgTransport::cancel_callback(intptr_t	callback_id) {
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 64));
 
 	intptr_t id = m_transport->send_req("tblink.cancel-callback", params);
+#ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
+#endif
 }
 
 /** Called by the environment to notify that
@@ -371,7 +432,9 @@ void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 	// TODO: We don't really care about the response directly. Can
 	// we let the system know to expect a response, but clear it out
 	// once received?
+#ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
+#endif
 
 	m_services->hit_event();
 	m_services->idle();
@@ -459,10 +522,24 @@ IParamValVec *EndpointMsgTransport::mkValVec() {
 	return m_transport->mkValVec();
 }
 
+EndpointMsgTransport::rsp_t EndpointMsgTransport::req_init(
+			intptr_t		id,
+			IParamValMap 	*params) {
+	m_peer_init = 1;
+
+	m_time_precision = params->getValT<IParamValInt>("time-units")->val_s();
+	IParamValVec *args_p = params->getValT<IParamValVec>("args");
+
+	for (uint32_t i=0; i<args_p->size(); i++) {
+		m_args.push_back(args_p->atT<IParamValStr>(i)->val());
+	}
+
+	return {IParamValMapUP(mkValMap()), IParamValMapUP()};
+}
+
 EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 		intptr_t				id,
 		IParamValMap 			*params) {
-	m_build_complete = true;
 	IParamValMap *result = 0;
 	IParamValMap *error = 0;
 	std::vector<InterfaceTypeUP> iftypes = unpack_iftypes(
@@ -511,6 +588,8 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 	}
 
 	m_time_precision = params->getValT<IParamValInt>("time-precision")->val_s();
+
+	m_peer_build_complete = 1;
 
 	if (!error) {
 		result = m_transport->mkValMap();
@@ -748,7 +827,9 @@ void EndpointMsgTransport::call_completion_b(
 	intptr_t id = m_transport->send_req("tblink.invoke-rsp-b",
 			params);
 
+#ifdef UNDEFINED
 	wait_rsp(id);
+#endif
 
 	// Let the services know that we've encountered a
 	// time-based event
@@ -805,23 +886,18 @@ int32_t EndpointMsgTransport::recv_rsp(
 	DEBUG_ENTER("recv_rsp");
 
 	// We take ownership of result and error from the transport
-	std::map<intptr_t,rspq_elem_t>::iterator it;
+	std::unordered_map<intptr_t,response_f>::iterator it;
 
 	if ((it=m_rsp_m.find(id)) != m_rsp_m.end()) {
-		// Someone will be back to retrieve this ack
-		if (it->second.first) {
-			it->second.second.first = result;
-			it->second.second.first = error;
-		} else {
-			// The ack is being ignored
-			if (result) {
-				delete result;
-			}
-			if (error) {
-				delete error;
-			}
-			m_rsp_m.erase(it);
-		}
+		it->second(id, result, error);
+		m_rsp_m.erase(it);
+	}
+
+	if (result) {
+		delete result;
+	}
+	if (error) {
+		delete error;
 	}
 
 	DEBUG_LEAVE("recv_rsp");
@@ -830,17 +906,26 @@ int32_t EndpointMsgTransport::recv_rsp(
 
 intptr_t EndpointMsgTransport::send_req(
 		const std::string 	&method,
+		IParamValMap		*params) {
+	intptr_t id = m_transport->send_req(method, params);
+
+	return id;
+}
+
+intptr_t EndpointMsgTransport::send_req(
+		const std::string 	&method,
 		IParamValMap		*params,
-		bool				active_wait) {
+		const response_f	&rsp_f) {
 	intptr_t id = m_transport->send_req(method, params);
 
 	// Insert a placeholder for the response we will receive
-	m_rsp_m.insert({id, {active_wait, {0, 0}}});
+	m_rsp_m.insert({id, rsp_f});
 
 	return id;
 }
 
 EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
+#ifdef UNDEFINED
 	std::map<intptr_t,rspq_elem_t>::iterator it;
 	std::pair<IParamValMap*,IParamValMap*> rsp;
 
@@ -861,6 +946,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
 		}
 	}
 
+	/*
 	if (it != m_rsp_m.end()) {
 		rsp = it->second.second;
 		m_rsp_m.erase(it);
@@ -870,6 +956,8 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
 		DEBUG_LEAVE("wait_rsp");
 		return std::make_pair(IParamValMapUP(), IParamValMapUP());
 	}
+	 */
+#endif
 }
 
 IParamVal *EndpointMsgTransport::invoke_nb(

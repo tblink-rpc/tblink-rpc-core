@@ -8,6 +8,10 @@
 #include "InterfaceTypeBuilder.h"
 #include "MethodType.h"
 #include "MethodTypeBuilder.h"
+#include "Type.h"
+#include "TypeInt.h"
+#include "TypeMap.h"
+#include "TypeVec.h"
 
 namespace tblink_rpc_core {
 
@@ -27,44 +31,49 @@ IMethodTypeBuilder *InterfaceTypeBuilder::newMethodTypeBuilder(
 			IType				*rtype,
 			bool				is_export,
 			bool				is_blocking) {
+	fprintf(stdout, "--> newMethodTypeBuilder\n");
 	MethodTypeBuilder *mtb = new MethodTypeBuilder(
 			name,
 			id,
 			rtype,
 			is_export,
 			is_blocking);
+	fprintf(stdout, "<-- newMethodTypeBuilder %p\n", mtb);
 
 	return mtb;
 }
 
 IMethodType *InterfaceTypeBuilder::add_method(
 		IMethodTypeBuilder			*mtb) {
-
+	IMethodType *mt = dynamic_cast<MethodTypeBuilder *>(mtb)->method_t();
+	delete mtb;
+	m_type->addMethod(mt);
+	return mt;
 }
 
-ITypeInt *InterfaceTypeBuilder::mkTypeBool() {
-
+IType *InterfaceTypeBuilder::mkTypeBool() {
+	return new Type(TypeE::Bool);
 }
 
 ITypeInt *InterfaceTypeBuilder::mkTypeInt(
 		bool		is_signed,
 		int32_t		width) {
-
+	return new TypeInt(is_signed, width);
 }
 
 ITypeMap *InterfaceTypeBuilder::mkTypeMap(
 		IType		*key_t,
 		IType		*elem_t) {
-
+	return new TypeMap(key_t, elem_t);
 }
 
-ITypeInt *InterfaceTypeBuilder::mkTypeStr() {
-
+IType *InterfaceTypeBuilder::mkTypeStr() {
+	return new Type(TypeE::Str);
 }
 
 ITypeVec *InterfaceTypeBuilder::mkTypeVec(
 		IType		*elem_t) {
-
+	return 0;
 }
 
 

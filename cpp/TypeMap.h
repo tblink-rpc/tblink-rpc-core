@@ -10,7 +10,7 @@
 
 namespace tblink_rpc_core {
 
-class TypeMap : public virtual Type, public virtual ITypeMap {
+class TypeMap : public Type, public virtual ITypeMap {
 public:
 	TypeMap(
 			IType		*key_t,

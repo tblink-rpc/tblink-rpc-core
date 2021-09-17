@@ -28,6 +28,10 @@ TransportMessageFifo::TransportMessageFifo(
 			TransportMessageFifoEP		*ep1,
 			bool 						is_blocking) :
 				m_ep0(ep0), m_ep1(ep1), m_is_blocking(is_blocking) {
+	m_ep0->parent(this);
+	m_ep1->parent(this);
+	m_ep0->id(0);
+	m_ep1->id(1);
 }
 
 TransportMessageFifo::~TransportMessageFifo() {

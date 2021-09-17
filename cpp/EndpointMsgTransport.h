@@ -7,12 +7,14 @@
 
 #pragma once
 #include <map>
+#include <unordered_map>
 #include <stdint.h>
 
 #include "InterfaceInst.h"
 #include "InterfaceType.h"
 #include "tblink_rpc/IParamVal.h"
 #include "tblink_rpc/IEndpoint.h"
+#include "tblink_rpc/IEndpointListener.h"
 #include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/ITransport.h"
 
@@ -21,24 +23,30 @@ namespace tblink_rpc_core {
 
 class EndpointMsgTransport : public virtual IEndpoint {
 public:
+	using response_f = std::function<void (intptr_t, IParamValMap *, IParamValMap *)>;
+public:
 
 	friend class InterfaceInst;
 
-	EndpointMsgTransport(
-			IEndpoint::Type		type,
-			IEndpointServices	*services);
+	EndpointMsgTransport(ITransport	*transport);
 
 	virtual ~EndpointMsgTransport();
 
-	void init(ITransport *transport);
+	virtual int32_t init(
+			IEndpointServices		*ep_services,
+			IEndpointListener		*ep_listener) override;
 
 	virtual State state() override { return m_state; }
 
-	virtual Type type() override { return m_type; }
+	virtual int32_t is_init() override;
 
-	virtual bool build_complete() override;
+	virtual int32_t build_complete() override;
 
-	virtual bool connect_complete() override;
+	virtual int32_t is_build_complete() override;
+
+	virtual int32_t connect_complete() override;
+
+	virtual int32_t is_connect_complete() override;
 
 	virtual bool shutdown() override;
 
@@ -55,6 +63,8 @@ public:
 			const std::function<void()>		&cb_f) override;
 
 	virtual void cancel_callback(intptr_t	id) override;
+
+	virtual const std::vector<std::string> &args() override;
 
 	virtual uint64_t time() override;
 
@@ -117,8 +127,12 @@ public:
 
 	intptr_t send_req(
 			const std::string 	&method,
-			IParamValMap 		*params,
-			bool				active_wait=true);
+			IParamValMap 		*params);
+
+	intptr_t send_req(
+			const std::string 				&method,
+			IParamValMap 					*params,
+			const response_f				&rsp_f);
 
 	std::pair<IParamValMapUP,IParamValMapUP> wait_rsp(intptr_t id);
 
@@ -134,6 +148,11 @@ private:
 	typedef std::pair<IParamValMapUP,IParamValMapUP> rsp_t;
 	typedef std::function<rsp_t(intptr_t, IParamValMap *)> req_func_t;
 private:
+
+	rsp_t req_init(
+			intptr_t		id,
+			IParamValMap 	*params);
+
 	rsp_t req_build_complete(
 			intptr_t		id,
 			IParamValMap 	*params);
@@ -207,29 +226,34 @@ private:
 
 
 private:
-	ITransport						*m_transport;
-	IEndpoint::Type					m_type;
-	IEndpointServices				*m_services;
+	ITransport											*m_transport;
+	IEndpointServices									*m_services;
 
-	std::map<intptr_t, rspq_elem_t>									m_rsp_m;
+	std::unordered_map<intptr_t, response_f>			m_rsp_m;
 
-	bool															m_build_complete;
-	bool															m_connect_complete;
-	std::map<intptr_t, std::function<void()>>						m_callback_m;
-	std::set<intptr_t>												m_pending_time_cb;
-	intptr_t														m_callback_id;
-	std::map<std::string,req_func_t>								m_req_m;
+	int32_t												m_init;
+	int32_t												m_peer_init;
+	int32_t												m_build_complete;
+	int32_t												m_peer_build_complete;
+	int32_t												m_connect_complete;
+	int32_t												m_peer_connect_complete;
+	std::map<intptr_t, std::function<void()>>			m_callback_m;
+	std::set<intptr_t>									m_pending_time_cb;
+	intptr_t											m_callback_id;
+	std::map<std::string,req_func_t>					m_req_m;
 
 	State															m_state;
 
 	std::map<std::string, IInterfaceTypeUP>							m_iftype_m;
 	uint64_t														m_time;
+
+	std::vector<std::string>										m_args;
 	int32_t															m_time_precision;
 
-	std::map<std::string, InterfaceType*>						m_local_ifc_types;
-	std::vector<InterfaceTypeUP>								m_local_ifc_type_l;
+	std::map<std::string, InterfaceType*>							m_local_ifc_types;
+	std::vector<InterfaceTypeUP>									m_local_ifc_type_l;
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
-	std::map<std::string, InterfaceInst*>						m_local_ifc_insts;
+	std::map<std::string, InterfaceInst*>							m_local_ifc_insts;
 	std::vector<JsonInterfaceInstUP>								m_local_ifc_insts_l;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 

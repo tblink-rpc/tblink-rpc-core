@@ -10,9 +10,6 @@ link_directories(
 	${CMAKE_BINARY_DIR}/googletest/lib64
 	${CMAKE_BINARY_DIR}/glog/lib
 	${CMAKE_BINARY_DIR}/glog/lib64
-	${CMAKE_BINARY_DIR}/antlr/lib
-	${CMAKE_BINARY_DIR}/pssparser
-	${CMAKE_BINARY_DIR}/pss_ast/lib
 	)
 
 set(CompilerFlags
@@ -41,10 +38,25 @@ add_dependencies(tblink_rpc_core_testmain GLOG googletest)
 target_include_directories(tblink_rpc_core_testmain PRIVATE
 	${CMAKE_BINARY_DIR}/googletest/include
 	${PACKAGES_DIR}/googletest/googletest/include
-	${CMAKE_CURRENT_SOURCE_DIR}/../cpp/include)
+	${CMAKE_CURRENT_SOURCE_DIR}/../cpp/include
+	${CMAKE_CURRENT_SOURCE_DIR}/../cpp
+    )
 
-list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS gtest gtest_main tblink_rpc_core)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	message("Debug mode ${CMAKE_BUILD_TYPE}")
+list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS gtestd gtest_maind)
+else()
+	message("Release mode ${CMAKE_BUILD_TYPE}")
+list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS gtest gtest_main)
+endif()
+
+list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS tblink_rpc_core)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS glogd)
+else()
 list(APPEND TBLINK_RPC_CORE_TESTMAIN_LIBS glog)
+endif()
 
 if (WIN32)
 #	if (BUILD_SHARED_LIBS)
