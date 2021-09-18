@@ -48,6 +48,8 @@ EndpointMsgTransport::EndpointMsgTransport(ITransport *transport) {
 					std::placeholders::_3)
 					);
 
+	m_id = 1;
+
 	m_state = IEndpoint::Init;
 	m_time = 0;
 	m_time_precision = 0;
@@ -59,6 +61,7 @@ EndpointMsgTransport::EndpointMsgTransport(ITransport *transport) {
 	m_peer_build_complete = 0;
 	m_connect_complete = 0;
 	m_peer_connect_complete = 0;
+	m_peer_local_check_complete = 0;
 	m_callback_id = 0;
 
 	m_req_m.insert({"tblink.init", std::bind(
@@ -146,8 +149,8 @@ int32_t EndpointMsgTransport::build_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
 	// Pack locally-registered interface types and instances
-	params->setVal("iftypes", pack_iftypes());
-	params->setVal("ifinsts", pack_ifinsts());
+	params->setVal("iftypes", pack_iftypes(m_local_ifc_types));
+	params->setVal("ifinsts", pack_ifinsts(m_local_ifc_insts));
 	params->setVal("time-precision", m_transport->mkValIntS(
 			m_services->time_precision(), 32));
 
@@ -192,44 +195,87 @@ int32_t EndpointMsgTransport::is_build_complete() {
 int32_t EndpointMsgTransport::connect_complete() {
 	IParamValMap *params = m_transport->mkValMap();
 
+	// TODO: should bail if build has failed?
+
 	m_connect_complete = 1;
+
+	// Pack the current set of instances present in the client
+	params->setVal("ifinsts", pack_ifinsts(m_local_ifc_insts));
+
 	intptr_t id = send_req(
 			"tblink.connect-complete",
 			params);
 
-	/*
-	if (m_type == Active) {
-		rsp_t rsp = wait_rsp(id);
-
-		while (!m_connect_complete) {
-			int ret = m_transport->poll(1000);
-
-			if (ret == -1) {
-				return false;
-			}
-		}
-
-		if (m_state != IEndpoint::Shutdown) {
-			m_state = IEndpoint::Connected;
-		}
-
-		return true;
+	if (m_connect_complete == -1) {
+		return -1;
 	} else {
-		// Passive endpoint
-
-		return (id != -1);
+		return 0;
 	}
-	 */
-
-	return 0;
 }
 
 int32_t EndpointMsgTransport::is_connect_complete() {
-	if (m_connect_complete == -1 || m_peer_connect_complete == -1) {
-		return -1;
-	} else {
-		return m_connect_complete && m_peer_connect_complete;
+	if (m_peer_local_check_complete == 0 &&
+			m_connect_complete && m_peer_connect_complete) {
+
+		// Check results
+		m_peer_local_check_complete = 1;
+		for (auto it=m_local_ifc_insts.begin();
+				it!=m_local_ifc_insts.end(); it++) {
+			std::unordered_map<std::string,InterfaceInstUP>::iterator peer_it;
+			if ((peer_it=m_peer_ifc_insts.find(it->first)) != m_peer_ifc_insts.end()) {
+				// Compare types
+				InterfaceInst *local_ifinst = it->second.get();
+				InterfaceInst *peer_ifinst = peer_it->second.get();
+
+				if (local_ifinst->type() != peer_ifinst->type()) {
+					fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
+							local_ifinst->name().c_str(),
+							local_ifinst->type()->name().c_str(),
+							peer_ifinst->type()->name().c_str());
+					m_peer_local_check_complete = -1;
+					break;
+				}
+			} else {
+				// Instance doesn't exist
+				fprintf(stdout, "Error: Local interface %s does not have remote peer\n",
+						it->second->name().c_str());
+				m_peer_local_check_complete = -1;
+				break;
+			}
+		}
+
+		// Check the opposite way
+		if (m_peer_local_check_complete == 1) {
+			for (auto it=m_peer_ifc_insts.begin();
+					it!=m_peer_ifc_insts.end(); it++) {
+				std::unordered_map<std::string,InterfaceInstUP>::iterator local_it;
+				if ((local_it=m_local_ifc_insts.find(it->first)) != m_local_ifc_insts.end()) {
+					// Compare types
+					InterfaceInst *peer_ifinst = it->second.get();
+					InterfaceInst *local_ifinst = local_it->second.get();
+
+					if (local_ifinst->type() != peer_ifinst->type()) {
+						fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
+								local_ifinst->name().c_str(),
+								local_ifinst->type()->name().c_str(),
+								peer_ifinst->type()->name().c_str());
+						m_peer_local_check_complete = -1;
+						break;
+					}
+				} else {
+					// Instance doesn't exist
+					fprintf(stdout, "Error: Local interface %s does not have remote peer\n",
+							it->second->name().c_str());
+					m_peer_local_check_complete = -1;
+					break;
+				}
+			}
+		}
+
+		// TODO: notify listener if present
 	}
+
+	return m_peer_local_check_complete;
 }
 
 bool EndpointMsgTransport::shutdown() {
@@ -258,7 +304,7 @@ int32_t EndpointMsgTransport::run_until_event() {
 
 	// Send a run request to the peer
 	IParamValMap *params = m_transport->mkValMap();
-	intptr_t id = m_transport->send_req(
+	send_req(
 			"tblink.run-until-event",
 			params);
 
@@ -384,7 +430,7 @@ intptr_t EndpointMsgTransport::add_time_callback(
 
 	m_callback_m.insert({callback_id, cb_f});
 
-	intptr_t id = m_transport->send_req("tblink.add-time-callback", params);
+	intptr_t id = send_req("tblink.add-time-callback", params);
 
 #ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
@@ -412,7 +458,7 @@ void EndpointMsgTransport::cancel_callback(intptr_t	callback_id) {
 
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 64));
 
-	intptr_t id = m_transport->send_req("tblink.cancel-callback", params);
+	intptr_t id = send_req("tblink.cancel-callback", params);
 #ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
 #endif
@@ -427,7 +473,7 @@ void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 	params->setVal("callback-id", m_transport->mkValIntU(callback_id, 64));
 	params->setVal("time", m_transport->mkValIntU(m_services->time(), 64));
 
-	intptr_t id = m_transport->send_req("tblink.notify-callback", params);
+	intptr_t id = send_req("tblink.notify-callback", params);
 
 	// TODO: We don't really care about the response directly. Can
 	// we let the system know to expect a response, but clear it out
@@ -442,10 +488,10 @@ void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 
 IInterfaceType *EndpointMsgTransport::findInterfaceType(
 			const std::string		&name) {
-	std::map<std::string,InterfaceType *>::const_iterator it;
+	std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
 
 	if ((it=m_local_ifc_types.find(name)) != m_local_ifc_types.end()) {
-		return it->second;
+		return it->second.get();
 	} else {
 		return 0;
 	}
@@ -461,8 +507,8 @@ IInterfaceType *EndpointMsgTransport::defineInterfaceType(
 	InterfaceTypeBuilder *builder =
 			static_cast<InterfaceTypeBuilder *>(type);
 	InterfaceType *if_type = builder->type();
-	m_local_ifc_types.insert({if_type->name(), if_type});
-	m_local_ifc_type_l.push_back(InterfaceTypeUP(if_type));
+	m_local_ifc_types.insert({if_type->name(), InterfaceTypeUP(if_type)});
+//	m_local_ifc_type_l.push_back(InterfaceTypeUP(if_type));
 	m_local_ifc_type_pl.push_back(if_type);
 
 	return if_type;
@@ -478,9 +524,9 @@ IInterfaceInst *EndpointMsgTransport::defineInterfaceInst(
 			this,
 			static_cast<InterfaceType *>(type),
 			inst_name,
+			is_mirror,
 			req_f);
-	m_local_ifc_insts.insert({inst_name, ifinst});
-	m_local_ifc_insts_l.push_back(JsonInterfaceInstUP(ifinst));
+	m_local_ifc_insts.insert({inst_name, InterfaceInstUP(ifinst)});
 	m_local_ifc_insts_pl.push_back(ifinst);
 
 	return ifinst;
@@ -542,34 +588,25 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 		IParamValMap 			*params) {
 	IParamValMap *result = 0;
 	IParamValMap *error = 0;
-	std::vector<InterfaceTypeUP> iftypes = unpack_iftypes(
+	std::unordered_map<std::string,InterfaceTypeUP> iftypes;
+
+	unpack_iftypes(
+			m_peer_ifc_types,
 			params->getValT<IParamValMap>("iftypes"));
 
-	// Process iftypes first
-	for (std::vector<InterfaceTypeUP>::iterator
-			it=iftypes.begin();
-			it!=iftypes.end(); it++) {
-		std::map<std::string,InterfaceType*>::const_iterator m_it;
-		if ((m_it=m_local_ifc_types.find((*it)->name())) != m_local_ifc_types.end()) {
-			// Need to compare
-		} else {
-			// Add ourselves
-			InterfaceType *iftype = it->release();
-			m_local_ifc_types.insert({
-				iftype->name(),
-				iftype
-			});
-			m_local_ifc_type_l.push_back(InterfaceTypeUP(iftype));
-			m_local_ifc_type_pl.push_back(iftype);
-		}
-	}
+#ifdef UNDEFINED
+
+#endif
 
 	// Now, unpack ifinsts. We need to have a consistent
 	// type system prior to doing so
-	std::vector<JsonInterfaceInstUP> ifinsts = unpack_ifinsts(
+	std::unordered_map<std::string,InterfaceInstUP> ifinsts;
+	unpack_ifinsts(
+			m_peer_ifc_insts,
 			params->getValT<IParamValMap>("ifinsts"));
 
-	for (std::vector<JsonInterfaceInstUP>::iterator
+#ifdef UNDEFINED
+	for (std::unordered_map<std::string,InterfaceInstUP>::iterator
 			it=ifinsts.begin();
 			it!=ifinsts.end(); it++) {
 		std::map<std::string,InterfaceInst*>::const_iterator m_it;
@@ -582,10 +619,11 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 				ifinst->name(),
 				ifinst
 			});
-			m_local_ifc_insts_l.push_back(JsonInterfaceInstUP(ifinst));
+			m_local_ifc_insts_l.push_back(InterfaceInstUP(ifinst));
 			m_local_ifc_insts_pl.push_back(ifinst);
 		}
 	}
+#endif
 
 	m_time_precision = params->getValT<IParamValInt>("time-precision")->val_s();
 
@@ -601,9 +639,23 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 EndpointMsgTransport::rsp_t EndpointMsgTransport::req_connect_complete(
 		intptr_t				id,
 		IParamValMap 			*params) {
-	m_connect_complete = true;
+
+	// The connect request conveys an updated set of interface instances
+	/*
+	m_local_ifc_insts.clear();
+	m_local_ifc_insts_l.clear();
+	m_local_ifc_insts_pl.clear();
+	 */
+
+	m_peer_ifc_insts.clear();
+	unpack_ifinsts(
+			m_peer_ifc_insts,
+			params->getValT<IParamValMap>("ifinsts"));
+
 	IParamValMap *result = m_transport->mkValMap();
 	IParamValMap *error = 0;
+
+	m_peer_connect_complete = 1;
 
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
@@ -678,7 +730,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
 	std::string method = params->getValT<IParamValStr>("method")->val();
 
-	std::map<std::string,InterfaceInst*>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
@@ -720,7 +772,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_b(
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	uint64_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 
-	std::map<std::string,InterfaceInst*>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
@@ -732,7 +784,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_b(
 					m_params,
 					std::bind(&EndpointMsgTransport::call_completion_b,
 							this,
-							i_it->second,
+							i_it->second.get(),
 							call_id,
 							std::placeholders::_1));
 		} else {
@@ -764,7 +816,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_rsp_b(
 		retval = params->getVal("return");
 	}
 
-	std::map<std::string,InterfaceInst*>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 
@@ -824,7 +876,7 @@ void EndpointMsgTransport::call_completion_b(
 		params->setVal("return", retval);
 	}
 
-	intptr_t id = m_transport->send_req("tblink.invoke-rsp-b",
+	intptr_t id = send_req("tblink.invoke-rsp-b",
 			params);
 
 #ifdef UNDEFINED
@@ -893,13 +945,6 @@ int32_t EndpointMsgTransport::recv_rsp(
 		m_rsp_m.erase(it);
 	}
 
-	if (result) {
-		delete result;
-	}
-	if (error) {
-		delete error;
-	}
-
 	DEBUG_LEAVE("recv_rsp");
 	return 0;
 }
@@ -907,21 +952,26 @@ int32_t EndpointMsgTransport::recv_rsp(
 intptr_t EndpointMsgTransport::send_req(
 		const std::string 	&method,
 		IParamValMap		*params) {
-	intptr_t id = m_transport->send_req(method, params);
+	intptr_t id = m_id;
+	m_id += 1;
 
-	return id;
+	return m_transport->send_req(method, id, params);
 }
 
 intptr_t EndpointMsgTransport::send_req(
 		const std::string 	&method,
 		IParamValMap		*params,
 		const response_f	&rsp_f) {
-	intptr_t id = m_transport->send_req(method, params);
-
 	// Insert a placeholder for the response we will receive
+	intptr_t id = m_id;
+	m_id += 1;
+
 	m_rsp_m.insert({id, rsp_f});
 
-	return id;
+	intptr_t ret = m_transport->send_req(method, id, params);
+
+
+	return ret;
 }
 
 EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
@@ -987,12 +1037,13 @@ IParamVal *EndpointMsgTransport::invoke_nb(
 	}
 }
 
-IParamValMap *EndpointMsgTransport::pack_iftypes() {
+IParamValMap *EndpointMsgTransport::pack_iftypes(
+		const std::unordered_map<std::string,InterfaceTypeUP> &iftypes) {
 	IParamValMap *ret = m_transport->mkValMap();
 
-	for (std::map<std::string,InterfaceType*>::const_iterator
-			it=m_local_ifc_types.begin();
-			it!=m_local_ifc_types.end(); it++) {
+	for (std::unordered_map<std::string,InterfaceTypeUP>::const_iterator
+			it=iftypes.begin();
+			it!=iftypes.end(); it++) {
 		IParamValMap *iftype = m_transport->mkValMap();
 		iftype->setVal("name", m_transport->mkValStr(it->second->name()));
 		IParamValMap *methods = m_transport->mkValMap();
@@ -1000,8 +1051,23 @@ IParamValMap *EndpointMsgTransport::pack_iftypes() {
 				m_it=it->second->methods().begin();
 				m_it!=it->second->methods().end(); m_it++) {
 			IParamValMap *method = m_transport->mkValMap();
-			// TODO:
-//			method->setVal("signature", m_transport->mkValStr((*m_it)->signature()));
+
+			IParamValMap *signature = m_transport->mkValMap();
+
+			if ((*m_it)->rtype()) {
+				signature->setVal("rtype", pack_type((*m_it)->rtype()));
+			}
+
+			IParamValVec *params = m_transport->mkValVec();
+			for (auto p : (*m_it)->params()) {
+				IParamValMap *p_m = m_transport->mkValMap();
+				p_m->setVal("name", m_transport->mkValStr(p->name()));
+				p_m->setVal("type", pack_type(p->type()));
+				params->push_back(p_m);
+			}
+			signature->setVal("parameters", params);
+			method->setVal("signature", signature);
+
 			method->setVal("is-export", m_transport->mkValBool((*m_it)->is_export()));
 			method->setVal("is-blocking", m_transport->mkValBool((*m_it)->is_blocking()));
 
@@ -1015,29 +1081,65 @@ IParamValMap *EndpointMsgTransport::pack_iftypes() {
 	return ret;
 }
 
-IParamValMap *EndpointMsgTransport::pack_ifinsts() {
+IParamValMap *EndpointMsgTransport::pack_ifinsts(
+		const std::unordered_map<std::string, InterfaceInstUP> &ifinsts) {
 	IParamValMap *ret = m_transport->mkValMap();
 
-	for (std::map<std::string,InterfaceInst*>::const_iterator
-			it=m_local_ifc_insts.begin();
-			it!=m_local_ifc_insts.end(); it++) {
+	for (std::unordered_map<std::string,InterfaceInstUP>::const_iterator
+			it=ifinsts.begin();
+			it!=ifinsts.end(); it++) {
 		IParamValMap *ifinst = m_transport->mkValMap();
-		ifinst->setVal("name", m_transport->mkValStr(it->second->name()));
 		ifinst->setVal("type", m_transport->mkValStr(it->second->type()->name()));
+		ifinst->setVal("is-mirror", m_transport->mkValBool(it->second->is_mirror()));
 		ret->setVal(it->second->name(), ifinst);
 	}
 
 	return ret;
 }
 
-std::vector<InterfaceTypeUP> EndpointMsgTransport::unpack_iftypes(
-		IParamValMap *iftypes) {
+static std::unordered_map<TypeE, std::string> kind2str_m = {
+		{TypeE::Bool, "bool"},
+		{TypeE::Int, "int"},
+		{TypeE::Map, "map"},
+		{TypeE::Str, "str"},
+		{TypeE::Vec, "vec"}
+};
+
+IParamValMap *EndpointMsgTransport::pack_type(IType *t) {
+	IParamValMap *ret = m_transport->mkValMap();
+
+	ret->setVal("kind", m_transport->mkValStr(
+			kind2str_m.find(t->kind())->second));
+
+	switch (t->kind()) {
+	case TypeE::Int: {
+		ITypeInt *ti = dynamic_cast<ITypeInt *>(t);
+		ret->setVal("is-signed", m_transport->mkValBool(ti->is_signed()));
+		ret->setVal("width", m_transport->mkValIntU(ti->width(), 32));
+	} break;
+	case TypeE::Map: {
+		ITypeMap *tm = dynamic_cast<ITypeMap *>(t);
+		ret->setVal("key-type", pack_type(tm->key_t()));
+		ret->setVal("elem-type", pack_type(tm->elem_t()));
+	} break;
+	case TypeE::Vec: {
+		ITypeVec *tv = dynamic_cast<ITypeVec *>(t);
+		ret->setVal("elem-type", pack_type(tv->elem_t()));
+	} break;
+	}
+
+	return ret;
+}
+
+void EndpointMsgTransport::unpack_iftypes(
+		std::unordered_map<std::string, InterfaceTypeUP>	&iftypes,
+		IParamValMap 										*iftypes_p) {
 	std::vector<InterfaceTypeUP> ret;
 
 	for (std::set<std::string>::const_iterator
-			k_it=iftypes->keys().begin();
-			k_it!=iftypes->keys().end(); k_it++) {
-		IParamValMap *iftype_v = iftypes->getValT<IParamValMap>(*k_it);
+			k_it=iftypes_p->keys().begin();
+			k_it!=iftypes_p->keys().end(); k_it++) {
+		IParamValMap *iftype_v = iftypes_p->getValT<IParamValMap>(*k_it);
 		InterfaceType *iftype = new InterfaceType(*k_it);
 		IParamValMap *methods = iftype_v->getValT<IParamValMap>("methods");
 		for (std::set<std::string>::const_iterator
@@ -1051,37 +1153,40 @@ std::vector<InterfaceTypeUP> EndpointMsgTransport::unpack_iftypes(
 					// Note: we reverse the direction declared by the peer
 					!method_v->getValT<IParamValBool>("is-export")->val(),
 					method_v->getValT<IParamValBool>("is-blocking")->val());
+
+			// TODO: parameters
+
 			iftype->addMethod(method);
 		}
 
-		ret.push_back(InterfaceTypeUP(iftype));
+		iftypes.insert({*k_it, InterfaceTypeUP(iftype)});
 	}
 
-	return ret;
 }
 
-std::vector<JsonInterfaceInstUP> EndpointMsgTransport::unpack_ifinsts(
-		IParamValMap *ifinsts) {
-	std::vector<JsonInterfaceInstUP> ret;
+void EndpointMsgTransport::unpack_ifinsts(
+		std::unordered_map<std::string,InterfaceInstUP>		&ifinsts,
+		IParamValMap 										*ifinsts_p) {
+	std::vector<InterfaceInstUP> ret;
 
 	for (std::set<std::string>::const_iterator
-			k_it=ifinsts->keys().begin();
-			k_it!=ifinsts->keys().end(); k_it++) {
-		IParamValMap *ifinst_v = ifinsts->getValT<IParamValMap>(*k_it);
-		std::map<std::string,InterfaceType*>::const_iterator it;
+			k_it=ifinsts_p->keys().begin();
+			k_it!=ifinsts_p->keys().end(); k_it++) {
+		IParamValMap *ifinst_v = ifinsts_p->getValT<IParamValMap>(*k_it);
+		std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
 		std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
+		bool is_mirror = ifinst_v->getValT<IParamValBool>("is-mirror")->val();
 		InterfaceType *type = 0;
 		if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
-			type = it->second;
+			type = it->second.get();
 		}
 		InterfaceInst *ifinst = new InterfaceInst(
 				this,
 				type,
-				*k_it);
-		ret.push_back(JsonInterfaceInstUP(ifinst));
+				*k_it,
+				is_mirror);
+		ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
 	}
-
-	return ret;
 }
 
 } /* namespace tblink_rpc_core */

@@ -38,6 +38,7 @@ add_dependencies(tblink_rpc_core_testmain GLOG googletest)
 target_include_directories(tblink_rpc_core_testmain PRIVATE
 	${CMAKE_BINARY_DIR}/googletest/include
 	${PACKAGES_DIR}/googletest/googletest/include
+	${PACKAGES_DIR}/json/include
 	${CMAKE_CURRENT_SOURCE_DIR}/../cpp/include
 	${CMAKE_CURRENT_SOURCE_DIR}/../cpp
     )

@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include <map>
+#include <unordered_map>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IInterfaceInst.h"
 
@@ -14,19 +14,20 @@ namespace tblink_rpc_core {
 
 class EndpointMsgTransport;
 class InterfaceInst;
-typedef std::unique_ptr<InterfaceInst> JsonInterfaceInstUP;
-typedef std::shared_ptr<InterfaceInst> JsonInterfaceInstSP;
+typedef std::unique_ptr<InterfaceInst> InterfaceInstUP;
 class InterfaceInst : public IInterfaceInst {
 public:
 	InterfaceInst(
 			EndpointMsgTransport			*endpoint,
 			IInterfaceType					*type,
-			const std::string				&inst_name);
+			const std::string				&inst_name,
+			bool							is_mirror);
 
 	InterfaceInst(
 			EndpointMsgTransport			*endpoint,
 			IInterfaceType					*type,
 			const std::string				&inst_name,
+			bool							is_mirror,
 			const invoke_req_f				&req_f);
 
 	virtual ~InterfaceInst();
@@ -61,6 +62,11 @@ public:
 			intptr_t									call_id,
 			IParamVal									*ret) override;
 
+	virtual void invoke_nb_rsp(
+			intptr_t									id,
+			IParamValMap								*result,
+			IParamValMap								*error);
+
 	virtual IParamValBool *mkValBool(bool val) override;
 
 	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
@@ -80,7 +86,7 @@ private:
 	bool										m_is_mirror;
 	invoke_req_f								m_req_f;
 	intptr_t									m_call_id;
-	std::map<intptr_t,invoke_rsp_f>				m_invoke_m;
+	std::unordered_map<intptr_t,invoke_rsp_f>	m_invoke_m;
 
 };
 

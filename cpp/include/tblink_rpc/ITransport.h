@@ -37,6 +37,7 @@ public:
 
 	virtual intptr_t send_req(
 			const std::string		&method,
+			intptr_t				id,
 			IParamValMap			*params) = 0;
 
 	virtual int32_t send_notify(

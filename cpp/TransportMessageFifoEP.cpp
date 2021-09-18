@@ -42,20 +42,15 @@ void TransportMessageFifoEP::shutdown() {
 
 intptr_t TransportMessageFifoEP::send_req(
 		const std::string		&method,
+		intptr_t				id,
 		IParamValMap			*params) {
-	intptr_t req_id = m_req_id;
-	m_req_id += 1;
 	int32_t req_ret = m_parent->send_req(
 			(m_id)?0:1,
 			method,
-			req_id,
+			id,
 			params);
 
-	if (req_ret < 0) {
-		return -1;
-	} else {
-		return req_id;
-	}
+	return req_ret;
 }
 
 int32_t TransportMessageFifoEP::send_notify(

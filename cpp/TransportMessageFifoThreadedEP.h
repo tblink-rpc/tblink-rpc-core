@@ -26,7 +26,7 @@ protected:
 
 	virtual int32_t recv_req(
 			const std::string		&method,
-			intptr_t				req_id,
+			intptr_t				id,
 			IParamValMap			*params);
 
 	virtual int32_t recv_rsp(

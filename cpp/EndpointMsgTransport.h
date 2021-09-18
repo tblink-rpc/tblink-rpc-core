@@ -213,13 +213,21 @@ private:
 			IParamValMap			*error);
 
 
-	IParamValMap *pack_iftypes();
+	IParamValMap *pack_iftypes(
+			const std::unordered_map<std::string,InterfaceTypeUP>	&iftypes);
 
-	IParamValMap *pack_ifinsts();
+	IParamValMap *pack_ifinsts(
+			const std::unordered_map<std::string,InterfaceInstUP>	&ifinsts);
 
-	std::vector<InterfaceTypeUP> unpack_iftypes(IParamValMap *iftypes);
+	IParamValMap *pack_type(IType *t);
 
-	std::vector<JsonInterfaceInstUP> unpack_ifinsts(IParamValMap  *ifinsts);
+	void unpack_iftypes(
+			std::unordered_map<std::string,InterfaceTypeUP>		&iftypes,
+			IParamValMap 										*iftypes_p);
+
+	void unpack_ifinsts(
+			std::unordered_map<std::string,InterfaceInstUP>		&ifinsts,
+			IParamValMap  										*ifinsts_p);
 
 private:
 	typedef std::pair<bool, std::pair<IParamValMap*,IParamValMap*>> rspq_elem_t;
@@ -228,6 +236,7 @@ private:
 private:
 	ITransport											*m_transport;
 	IEndpointServices									*m_services;
+	intptr_t											m_id;
 
 	std::unordered_map<intptr_t, response_f>			m_rsp_m;
 
@@ -237,6 +246,7 @@ private:
 	int32_t												m_peer_build_complete;
 	int32_t												m_connect_complete;
 	int32_t												m_peer_connect_complete;
+	int32_t												m_peer_local_check_complete;
 	std::map<intptr_t, std::function<void()>>			m_callback_m;
 	std::set<intptr_t>									m_pending_time_cb;
 	intptr_t											m_callback_id;
@@ -250,11 +260,12 @@ private:
 	std::vector<std::string>										m_args;
 	int32_t															m_time_precision;
 
-	std::map<std::string, InterfaceType*>							m_local_ifc_types;
-	std::vector<InterfaceTypeUP>									m_local_ifc_type_l;
+	std::unordered_map<std::string, InterfaceTypeUP>				m_peer_ifc_types;
+	std::unordered_map<std::string, InterfaceTypeUP>				m_local_ifc_types;
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
-	std::map<std::string, InterfaceInst*>							m_local_ifc_insts;
-	std::vector<JsonInterfaceInstUP>								m_local_ifc_insts_l;
+
+	std::unordered_map<std::string, InterfaceInstUP>				m_peer_ifc_insts;
+	std::unordered_map<std::string, InterfaceInstUP>				m_local_ifc_insts;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 
 	int32_t															m_event_received;

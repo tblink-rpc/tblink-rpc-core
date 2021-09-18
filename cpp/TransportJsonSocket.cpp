@@ -28,15 +28,24 @@
 #include "ParamValVec.h"
 #include "glog/logging.h"
 
-#define EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+#undef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
 
 #ifdef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+/*
 #define DEBUG_ENTER(fmt, ...) \
 	VLOG(1) << "--> SocketMessageTransport::" << fmt
 #define DEBUG_LEAVE(fmt, ...) \
 	VLOG(1) << "<-- SocketMessageTransport::" << fmt
 #define DEBUG(fmt, ...) \
 	VLOG(1) << "SocketMessageTransport: " << fmt
+	 */
+#define DEBUG_ENTER(fmt, ...) \
+	fprintf(stdout, "--> SocketMessageTransport::" fmt, ##__VA_ARGS__)
+#define DEBUG_LEAVE(fmt, ...) \
+	fprintf(stdout, "<-- SocketMessageTransport::" fmt, ##__VA_ARGS__)
+#define DEBUG(fmt, ...) \
+	fprintf(stdout, "SocketMessageTransport: "); \
+	fprintf(stdout, fmt, ##__VA_ARGS__)
 #else
 #define DEBUG(fmt, ...)
 #define DEBUG_ENTER(fmt, ...)
@@ -98,7 +107,7 @@ void TransportJsonSocket::shutdown() {
 
 				ret = ::waitpid(m_pid, &status, WNOHANG);
 
-				DEBUG("waitpid ret=") << ret;
+//				DEBUG("waitpid ret=") << ret;
 
 				if (ret == m_pid) {
 					break;
@@ -112,7 +121,17 @@ void TransportJsonSocket::shutdown() {
 }
 
 int32_t TransportJsonSocket::process_one_message() {
-	// TODO:
+	char tmp[1024];
+	int32_t sz;
+	int32_t ret = 0;
+
+	sz = ::recv(m_socket, tmp, sizeof(tmp), 0);
+
+	if (sz > 0) {
+		process_data(tmp, sz);
+	}
+
+	return ret;
 }
 
 #ifdef UNDEFINED
@@ -328,20 +347,19 @@ int32_t TransportJsonSocket::await_msg() {
 
 intptr_t TransportJsonSocket::send_req(
 		const std::string		&method,
+		intptr_t				id,
 		IParamValMap			*params) {
 	DEBUG_ENTER("send_req");
 	char tmp[64];
 	nlohmann::json msg;
 	msg["json-rpc"] = "2.0";
 	msg["method"] = method;
-	msg["id"] = m_id;
+	msg["id"] = id;
 	msg["params"] = m_param_f.mk(params);
 
-	int32_t ret = m_id;
-	m_id++;
-
 	std::string body = msg.dump();
-	DEBUG("body=\"") << body << " len=" << body.size();
+
+//	DEBUG("body=\"") << body << " len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	m_outstanding += 1;
@@ -353,7 +371,8 @@ intptr_t TransportJsonSocket::send_req(
 	delete params;
 
 	DEBUG_LEAVE("send_req");
-	return ret;
+
+	return 0;
 }
 
 int32_t TransportJsonSocket::send_notify(
@@ -369,7 +388,7 @@ int32_t TransportJsonSocket::send_notify(
 	int32_t ret = 0;
 
 	std::string body = msg.dump();
-	DEBUG("body=\"") << body << "\" len=" << body.size();
+//	DEBUG("body=\"") << body << "\" len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	::send(m_socket, tmp, strlen(tmp), 0);
@@ -399,7 +418,8 @@ int32_t TransportJsonSocket::send_rsp(
 	}
 
 	std::string body = msg.dump();
-	DEBUG("body=\"") << body << "\" len=" << body.size();
+
+//	DEBUG("body=\"") << body << "\" len=" << body.size();
 	sprintf(tmp, "Content-Length: %d\r\n\r\n", body.size());
 
 	int32_t ret = 0;
@@ -459,13 +479,13 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 			if (m_msgbuf_idx == 0 && isspace(data[i])) {
 				// Skip leading whitespace
 			} else {
-				DEBUG("State 1: append ") << data[i];
+//				DEBUG("State 1: append ") << data[i];
 				msgbuf_append(data[i]);
 				if (isspace(data[i])) {
 					msgbuf_append(0);
-					DEBUG("header=") << m_msgbuf;
+//					DEBUG("header=") << m_msgbuf;
 					m_msg_length = strtoul(m_msgbuf, 0, 10);
-					DEBUG("len=") << m_msg_length;
+//					DEBUG("len=") << m_msg_length;
 					// Reset the buffer to collect the payload
 					m_msgbuf_idx = 0;
 					m_msg_state = 2;
@@ -481,7 +501,7 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 				msgbuf_append(data[i]);
 				if (m_msgbuf_idx >= m_msg_length) {
 					msgbuf_append(0);
-					DEBUG("Received message: \"") << m_msgbuf << "\"";
+//					DEBUG("Received message: \"") << m_msgbuf << "\"";
 					nlohmann::json msg;
 					try {
 						msg = nlohmann::json::parse(m_msgbuf);
@@ -492,7 +512,7 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 						// Is this a request or a response?
 						if (msg.contains("method")) {
 							// TODO: Request or notify
-//							JsonParamValMapSP params = ParamValMap::mk(msg["params"]);
+							IParamValMapUP params(m_param_f.mkT<IParamValMap>(msg["params"]));
 
 							intptr_t id = -1;
 
@@ -503,7 +523,7 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 							DEBUG_ENTER("m_req_f");
 							m_outstanding += 1;
 							// TODO:
-//							m_req_f(msg["method"], id, params.get());
+							m_req_f(msg["method"], id, params.get());
 							DEBUG_LEAVE("m_req_f");
 						} else {
 							// TODO: Response
@@ -516,8 +536,8 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 							} else if (msg.contains("error")) {
 								error = IParamValMapUP(m_param_f.mkT<IParamValMap>(msg["error"]));
 							}
-							// Parameters pass to the callee
-							m_rsp_f(id->val_s(), result.release(), error.release());
+
+							m_rsp_f(id->val_s(), result.get(), error.get());
 							m_outstanding -= 1;
 							DEBUG_LEAVE("m_rsp_f");
 						}

@@ -8,7 +8,6 @@
 #pragma once
 #include <string>
 #include "tblink_rpc/ITransport.h"
-#include "nlohmann/json_fwd.hpp"
 #include "JsonParamValFactory.h"
 
 namespace tblink_rpc_core {
@@ -29,6 +28,7 @@ public:
 
 	virtual intptr_t send_req(
 			const std::string	&method,
+			intptr_t			id,
 			IParamValMap		*params) override;
 
 	virtual int32_t send_notify(

@@ -19,15 +19,18 @@ BfmReqRsp::~BfmReqRsp() {
 
 // Import
 void BfmReqRsp::req(int32_t v) {
+	fprintf(stdout, "m_ifinst=%p\n", m_ifinst);
+	fprintf(stdout, "is_mirror=%d\n", m_ifinst->is_mirror());
 	if (m_ifinst->is_mirror()) {
 		// Really a call-in, since we're a mirror
+		m_req_f(v);
 	} else {
 		// TODO: pack params and invoke
 		IParamValVec *params = m_ifinst->mkValVec();
 		params->push_back(m_ifinst->mkValIntS(v, 32));
 
 		IParamValUP ret(m_ifinst->invoke(
-				m_rsp_mt,
+				m_req_mt,
 				params));
 	}
 }
@@ -45,6 +48,7 @@ void BfmReqRsp::rsp(int32_t v) {
 				params));
 	} else {
 		// Really a call-in, since we're not a mirror
+		m_rsp_f(v);
 	}
 }
 
