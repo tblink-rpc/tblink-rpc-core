@@ -234,23 +234,23 @@ private:
 
 
 private:
-	ITransport											*m_transport;
-	IEndpointServices									*m_services;
-	intptr_t											m_id;
+	ITransport														*m_transport;
+	IEndpointServices												*m_services;
+	intptr_t														m_id;
 
-	std::unordered_map<intptr_t, response_f>			m_rsp_m;
+	std::unordered_map<intptr_t, response_f>						m_rsp_m;
 
-	int32_t												m_init;
-	int32_t												m_peer_init;
-	int32_t												m_build_complete;
-	int32_t												m_peer_build_complete;
-	int32_t												m_connect_complete;
-	int32_t												m_peer_connect_complete;
-	int32_t												m_peer_local_check_complete;
-	std::map<intptr_t, std::function<void()>>			m_callback_m;
-	std::set<intptr_t>									m_pending_time_cb;
-	intptr_t											m_callback_id;
-	std::map<std::string,req_func_t>					m_req_m;
+	int32_t															m_init;
+	int32_t															m_peer_init;
+	int32_t															m_build_complete;
+	int32_t															m_peer_build_complete;
+	int32_t															m_connect_complete;
+	int32_t															m_peer_connect_complete;
+	int32_t															m_peer_local_check_complete;
+	std::map<intptr_t, std::function<void()>>						m_callback_m;
+	std::set<intptr_t>												m_pending_time_cb;
+	intptr_t														m_callback_id;
+	std::map<std::string,req_func_t>								m_req_m;
 
 	State															m_state;
 

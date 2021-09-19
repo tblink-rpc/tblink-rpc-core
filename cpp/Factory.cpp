@@ -34,7 +34,31 @@ ITransport *Factory::mkSocketTransport(
 	return new TransportJsonSocket(pid, fd);
 }
 
+void Factory::addLaunchType(ILaunchType *launch_t) {
+	m_launch_type_m.insert({launch_t->name(), launch_t});
+	m_launch_types.push_back(launch_t);
+}
+
+ILaunchType *Factory::findLaunchType(const std::string &id) {
+	std::map<std::string,ILaunchType*>::const_iterator it;
+
+	if ((it=m_launch_type_m.find(id)) != m_launch_type_m.end()) {
+		return it->second;
+	} else {
+		return 0;
+	}
+}
+
+Factory *Factory::inst() {
+	if (!m_inst) {
+		m_inst = std::unique_ptr<Factory>(new Factory());
+	}
+	return m_inst.get();
+}
+
 static Factory prvFactory;
+
+std::unique_ptr<Factory> Factory::m_inst;
 
 } /* namespace tblink_rpc_core */
 
