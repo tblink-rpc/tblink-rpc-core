@@ -30,10 +30,8 @@ public:
 	 * endpoint. In the case of an error, the string will
 	 * contain an error message
 	 */
-	virtual result_t launch(
-			const std::vector<std::string>				&args,
-			const std::map<std::string,std::string>		&params
-			) override;
+	virtual result_t launch(ILaunchParams *params) override;
+
 };
 
 } /* namespace tblink_rpc_core */

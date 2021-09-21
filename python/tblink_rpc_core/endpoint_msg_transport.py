@@ -42,7 +42,7 @@ class TimeUnit(IntEnum):
 
 class EndpointMsgTransport(Endpoint):
     """Implements the Endpoint API in terms of a method-based message-passing API"""
-    DEBUG_EN = False
+    DEBUG_EN = True
     
     def __init__(self, transport):
         super().__init__()

@@ -6,16 +6,19 @@
  */
 
 #pragma once
+#include <vector>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IEndpointServices.h"
+#include "tblink_rpc/ILaunchParams.h"
+#include "tblink_rpc/ILaunchType.h"
 #include "tblink_rpc/ITransport.h"
 
 namespace tblink_rpc_core {
 
-class IFactory {
+class ITbLink {
 public:
 
-	virtual ~IFactory() { }
+	virtual ~ITbLink() { }
 
 	virtual IEndpoint *mkJsonRpcEndpoint(
 			IEndpoint::Type		type,
@@ -24,6 +27,14 @@ public:
 	virtual ITransport *mkSocketTransport(
 			pid_t			pid,
 			int32_t 		socket) = 0;
+
+	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
+
+	virtual void addLaunchType(ILaunchType *launch_t) = 0;
+
+	virtual ILaunchType *findLaunchType(const std::string &id) = 0;
+
+	virtual ILaunchParams *newLaunchParams() = 0;
 
 };
 

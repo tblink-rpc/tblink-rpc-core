@@ -11,6 +11,7 @@
 #include <string>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IEndpointServices.h"
+#include "tblink_rpc/ILaunchParams.h"
 
 namespace tblink_rpc_core {
 
@@ -28,10 +29,7 @@ public:
 	 * endpoint. In the case of an error, the string will
 	 * contain an error message
 	 */
-	virtual result_t launch(
-			const std::vector<std::string>				&args,
-			const std::map<std::string,std::string>		&params
-			) = 0;
+	virtual result_t launch(ILaunchParams *params) = 0;
 
 };
 

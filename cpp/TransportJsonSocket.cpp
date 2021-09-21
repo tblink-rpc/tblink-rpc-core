@@ -364,8 +364,17 @@ intptr_t TransportJsonSocket::send_req(
 
 	m_outstanding += 1;
 
-	::send(m_socket, tmp, strlen(tmp), 0);
-	::send(m_socket, body.c_str(), body.size(), 0);
+	int ret;
+
+	if ((ret=::send(m_socket, tmp, strlen(tmp), MSG_NOSIGNAL)) == -1) {
+		fprintf(stdout, "error status\n");
+		return ret;
+	}
+
+	if ((ret=::send(m_socket, body.c_str(), body.size(), MSG_NOSIGNAL)) == -1) {
+		fprintf(stdout, "error status\n");
+		return ret;
+	}
 
 	// Ownership transfers back to us
 	delete params;

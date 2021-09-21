@@ -7,16 +7,17 @@
 
 #pragma once
 #include <memory>
-#include "tblink_rpc/IFactory.h"
+
+#include "include/tblink_rpc/ITbLink.h"
 #include "tblink_rpc/ILaunchType.h"
 
 namespace tblink_rpc_core {
 
-class Factory : public IFactory {
+class TbLink : public ITbLink {
 public:
-	Factory();
+	TbLink();
 
-	virtual ~Factory();
+	virtual ~TbLink();
 
 	virtual IEndpoint *mkJsonRpcEndpoint(
 			IEndpoint::Type		type,
@@ -26,20 +27,22 @@ public:
 			pid_t		pid,
 			int32_t 	socket) override;
 
-	const std::vector<ILaunchType *> &launchTypes() const {
+	virtual const std::vector<ILaunchType *> &launchTypes() const override {
 		return m_launch_types;
 	}
 
-	void addLaunchType(ILaunchType *launch_t);
+	virtual void addLaunchType(ILaunchType *launch_t) override;
 
-	ILaunchType *findLaunchType(const std::string &id);
+	virtual ILaunchType *findLaunchType(const std::string &id) override;
 
-	static Factory *inst();
+	virtual ILaunchParams *newLaunchParams() override;
+
+	static TbLink *inst();
 
 private:
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
-	static std::unique_ptr<Factory>			m_inst;
+	static TbLink							*m_inst;
 };
 
 } /* namespace tblink_rpc_core */

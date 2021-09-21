@@ -5,6 +5,7 @@
  *      Author: mballance
  */
 
+#include <stdarg.h>
 #include "EndpointMsgTransport.h"
 
 #include "glog/logging.h"
@@ -126,9 +127,9 @@ int32_t EndpointMsgTransport::init(
 	params->setVal("time-units", mkValIntS(m_services->time_precision(), 32));
 
 	m_init = 1;
-	send_req(
-			"tblink.init",
-			params);
+	if (send_req("tblink.init", params) == -1) {
+		return -1;
+	}
 
 	// TODO: listener
 
@@ -155,31 +156,13 @@ int32_t EndpointMsgTransport::build_complete() {
 			m_services->time_precision(), 32));
 
 	m_build_complete = 1;
-	intptr_t id = send_req(
-			"tblink.build-complete",
-			params);
-
-	/*
-	if (m_type == Active) {
-		rsp_t rsp = wait_rsp(id);
-
-		// Wait for a build-complete request
-		while (!m_build_complete) {
-			int ret = m_transport->poll(1000);
-
-			if (ret == -1) {
-				return false;
-			}
-		}
-
-		if (m_state != IEndpoint::Shutdown) {
-			m_state = IEndpoint::Built;
-		}
-	} else {
-		// Assume the response will arrive at
-		// some point
+	if (send_req("tblink.build-complete", params) == -1) {
+		return -1;
 	}
-	 */
+
+	if (m_peer_build_complete == -1) {
+		return -1;
+	}
 
 	return 0;
 }
@@ -202,11 +185,12 @@ int32_t EndpointMsgTransport::connect_complete() {
 	// Pack the current set of instances present in the client
 	params->setVal("ifinsts", pack_ifinsts(m_local_ifc_insts));
 
-	intptr_t id = send_req(
-			"tblink.connect-complete",
-			params);
+	if (send_req("tblink.connect-complete", params) == -1) {
+		last_error("Failed to send connect-complete message");
+		return -1;
+	}
 
-	if (m_connect_complete == -1) {
+	if (m_peer_connect_complete == -1) {
 		return -1;
 	} else {
 		return 0;
@@ -282,9 +266,9 @@ bool EndpointMsgTransport::shutdown() {
 	if (m_state != IEndpoint::Shutdown && m_transport) {
 		IParamValMap *params = m_transport->mkValMap();
 
-		intptr_t id = send_req(
-				"tblink.shutdown",
-				params);
+		if (send_req("tblink.shutdown", params) == -1) {
+			return false;
+		}
 
 		// TODO: only wait a little bit for a response...
 		//	std::pair<IParamValSP,IParamValSP> rsp = wait_rsp(id);
@@ -304,9 +288,9 @@ int32_t EndpointMsgTransport::run_until_event() {
 
 	// Send a run request to the peer
 	IParamValMap *params = m_transport->mkValMap();
-	send_req(
-			"tblink.run-until-event",
-			params);
+	if (send_req("tblink.run-until-event", params) == -1) {
+		return -1;
+	}
 
 	// Process messages until we receive an event notification
 	while (m_event_received == 0) {
@@ -484,6 +468,16 @@ void EndpointMsgTransport::notify_callback(intptr_t   callback_id) {
 
 	m_services->hit_event();
 	m_services->idle();
+}
+
+void EndpointMsgTransport::last_error(const char *fmt, ...) {
+	va_list ap;
+	char tmp[128];
+
+	va_start(ap, fmt);
+	vsnprintf(tmp, sizeof(tmp), fmt, ap);
+	m_last_error = fmt;
+	va_end(ap);
 }
 
 IInterfaceType *EndpointMsgTransport::findInterfaceType(
@@ -1169,23 +1163,25 @@ void EndpointMsgTransport::unpack_ifinsts(
 		IParamValMap 										*ifinsts_p) {
 	std::vector<InterfaceInstUP> ret;
 
-	for (std::set<std::string>::const_iterator
-			k_it=ifinsts_p->keys().begin();
-			k_it!=ifinsts_p->keys().end(); k_it++) {
-		IParamValMap *ifinst_v = ifinsts_p->getValT<IParamValMap>(*k_it);
-		std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
-		std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
-		bool is_mirror = ifinst_v->getValT<IParamValBool>("is-mirror")->val();
-		InterfaceType *type = 0;
-		if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
-			type = it->second.get();
+	if (ifinsts_p) {
+		for (std::set<std::string>::const_iterator
+				k_it=ifinsts_p->keys().begin();
+				k_it!=ifinsts_p->keys().end(); k_it++) {
+			IParamValMap *ifinst_v = ifinsts_p->getValT<IParamValMap>(*k_it);
+			std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
+			std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
+			bool is_mirror = ifinst_v->getValT<IParamValBool>("is-mirror")->val();
+			InterfaceType *type = 0;
+			if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
+				type = it->second.get();
+			}
+			InterfaceInst *ifinst = new InterfaceInst(
+					this,
+					type,
+					*k_it,
+					is_mirror);
+			ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
 		}
-		InterfaceInst *ifinst = new InterfaceInst(
-				this,
-				type,
-				*k_it,
-				is_mirror);
-		ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
 	}
 }
 

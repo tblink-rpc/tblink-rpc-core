@@ -5,41 +5,42 @@
  *      Author: mballance
  */
 
-#include "Factory.h"
+#include "TbLink.h"
 
 #include "EndpointMsgTransport.h"
+#include "LaunchParams.h"
 #include "TransportJsonSocket.h"
 
 namespace tblink_rpc_core {
 
-Factory::Factory() {
+TbLink::TbLink() {
 	// TODO Auto-generated constructor stub
 
 }
 
-Factory::~Factory() {
+TbLink::~TbLink() {
 	// TODO Auto-generated destructor stub
 }
 
-IEndpoint *Factory::mkJsonRpcEndpoint(
+IEndpoint *TbLink::mkJsonRpcEndpoint(
 		IEndpoint::Type		type,
 		IEndpointServices	*services) {
 //	return new EndpointMsgTransport(type, services);
 	return 0;
 }
 
-ITransport *Factory::mkSocketTransport(
+ITransport *TbLink::mkSocketTransport(
 		pid_t			pid,
 		int32_t 		fd) {
 	return new TransportJsonSocket(pid, fd);
 }
 
-void Factory::addLaunchType(ILaunchType *launch_t) {
+void TbLink::addLaunchType(ILaunchType *launch_t) {
 	m_launch_type_m.insert({launch_t->name(), launch_t});
 	m_launch_types.push_back(launch_t);
 }
 
-ILaunchType *Factory::findLaunchType(const std::string &id) {
+ILaunchType *TbLink::findLaunchType(const std::string &id) {
 	std::map<std::string,ILaunchType*>::const_iterator it;
 
 	if ((it=m_launch_type_m.find(id)) != m_launch_type_m.end()) {
@@ -49,22 +50,24 @@ ILaunchType *Factory::findLaunchType(const std::string &id) {
 	}
 }
 
-Factory *Factory::inst() {
-	if (!m_inst) {
-		m_inst = std::unique_ptr<Factory>(new Factory());
-	}
-	return m_inst.get();
+ILaunchParams *TbLink::newLaunchParams() {
+	return new LaunchParams();
 }
 
-static Factory prvFactory;
+TbLink *TbLink::inst() {
+	if (!m_inst) {
+		m_inst = new TbLink();
+	}
+	return m_inst;
+}
 
-std::unique_ptr<Factory> Factory::m_inst;
+TbLink *TbLink::m_inst = 0;
 
 } /* namespace tblink_rpc_core */
 
 extern "C" {
-tblink_rpc_core::IFactory *tblink_rpc_get_factory() {
-	return &tblink_rpc_core::prvFactory;
+tblink_rpc_core::ITbLink *tblink() {
+	return tblink_rpc_core::TbLink::inst();
 }
 }
 

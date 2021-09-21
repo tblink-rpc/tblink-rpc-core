@@ -78,7 +78,11 @@ public:
 	virtual void notify_callback(intptr_t   id) override;
 
 
-	virtual const std::string &last_error() override { }
+	virtual const std::string &last_error() override {
+		return m_last_error;
+	}
+
+	virtual void last_error(const char *fmt, ...);
 
 	virtual IInterfaceType *findInterfaceType(
 			const std::string		&name) override;
@@ -237,6 +241,7 @@ private:
 	ITransport														*m_transport;
 	IEndpointServices												*m_services;
 	intptr_t														m_id;
+	std::string														m_last_error;
 
 	std::unordered_map<intptr_t, response_f>						m_rsp_m;
 
