@@ -125,10 +125,31 @@ int32_t TransportJsonSocket::process_one_message() {
 	int32_t sz;
 	int32_t ret = 0;
 
-	sz = ::recv(m_socket, tmp, sizeof(tmp), 0);
+	fd_set rfds, efds;
+	struct timeval tv;
+	int retval;
 
-	if (sz > 0) {
-		process_data(tmp, sz);
+	FD_ZERO(&rfds);
+	FD_ZERO(&efds);
+	FD_SET(m_socket, &rfds);
+	FD_SET(m_socket, &efds);
+
+	/* Wait up to five seconds. */
+
+	ret = select(m_socket+1, &rfds, 0, &efds, 0);
+
+	if (ret > 0) {
+		if (FD_ISSET(m_socket, &efds)) {
+			fprintf(stdout, "Exception\n");
+			ret = -1;
+		} else if (FD_ISSET(m_socket, &rfds)) {
+			sz = ::recv(m_socket, tmp, sizeof(tmp), 0);
+			if (sz > 0) {
+				process_data(tmp, sz);
+			} else {
+				ret = -1;
+			}
+		}
 	}
 
 	return ret;
