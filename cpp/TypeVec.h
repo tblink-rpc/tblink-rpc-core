@@ -6,15 +6,17 @@
  */
 
 #pragma once
-#include "Type.h"
+#include "tblink_rpc/ITypeVec.h"
 
 namespace tblink_rpc_core {
 
-class TypeVec : public Type {
+class TypeVec : public virtual ITypeVec {
 public:
 	TypeVec(IType *elem_t);
 
 	virtual ~TypeVec();
+
+	virtual TypeE kind() const override { return TypeE::Vec; }
 
 	IType *elem_t() const { return m_elem_t.get(); }
 

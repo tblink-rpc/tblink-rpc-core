@@ -433,8 +433,12 @@ int32_t TransportJsonSocket::send_rsp(
 
 	int32_t ret = 0;
 
-	ret = ::send(m_socket, tmp, strlen(tmp), 0);
-	ret = ::send(m_socket, body.c_str(), body.size(), 0);
+	if ((ret=::send(m_socket, tmp, strlen(tmp), MSG_NOSIGNAL)) == -1) {
+		return ret;
+	}
+	if ((ret=::send(m_socket, body.c_str(), body.size(), MSG_NOSIGNAL)) == -1) {
+		return ret;
+	}
 
 	m_outstanding -= 1;
 

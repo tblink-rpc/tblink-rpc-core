@@ -54,6 +54,7 @@ EndpointMsgTransport::EndpointMsgTransport(ITransport *transport) {
 	m_state = IEndpoint::Init;
 	m_time = 0;
 	m_time_precision = 0;
+	m_run_until_event = 0;
 	m_event_received = 0;
 
 	m_init = 0;
@@ -260,6 +261,19 @@ int32_t EndpointMsgTransport::is_connect_complete() {
 	}
 
 	return m_peer_local_check_complete;
+}
+
+int32_t EndpointMsgTransport::start() {
+	// Process messages until
+	int ret = 0;
+
+	while (!m_run_until_event) {
+		if ((ret=process_one_message()) == -1) {
+			break;
+		}
+	}
+
+	return ret;
 }
 
 bool EndpointMsgTransport::shutdown() {
@@ -723,6 +737,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 		IParamValMap 			*params) {
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
 	std::string method = params->getValT<IParamValStr>("method")->val();
+	intptr_t call_id = params->getValT<IParamValInt>("call-id")->val_s();
 
 	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
 
@@ -737,6 +752,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 					std::bind(&EndpointMsgTransport::call_completion_nb,
 							this,
 							id,
+							call_id,
 							std::placeholders::_1));
 		} else {
 			// TODO: error signaling
@@ -837,6 +853,8 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_run_until_event(
 		intptr_t				id,
 		IParamValMap 			*params) {
 
+	m_run_until_event++;
+
 	// Tell the environment that it's free to run
 	m_services->run_until_event();
 
@@ -848,8 +866,13 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_run_until_event(
 
 void EndpointMsgTransport::call_completion_nb(
 			intptr_t		id,
+			intptr_t		call_id,
 			IParamVal		*retval) {
 	IParamValMap *result = m_transport->mkValMap();
+
+	// Must attach call-id to this
+	result->setVal("call-id", m_transport->mkValIntS(call_id, 64));
+
 	if (retval) {
 		result->setVal("return", retval);
 	}
@@ -1049,7 +1072,10 @@ IParamValMap *EndpointMsgTransport::pack_iftypes(
 			IParamValMap *signature = m_transport->mkValMap();
 
 			if ((*m_it)->rtype()) {
-				signature->setVal("rtype", pack_type((*m_it)->rtype()));
+				IParamValMap *rtype = pack_type((*m_it)->rtype());
+				fprintf(stdout, "rtype(src)=%p rtype=%p", (*m_it)->rtype(), rtype);
+				fflush(stdout);
+				signature->setVal("rtype", rtype);
 			}
 
 			IParamValVec *params = m_transport->mkValVec();
@@ -1101,6 +1127,8 @@ static std::unordered_map<TypeE, std::string> kind2str_m = {
 
 IParamValMap *EndpointMsgTransport::pack_type(IType *t) {
 	IParamValMap *ret = m_transport->mkValMap();
+
+	fprintf(stdout, "pack_type: t=%p\n", t);
 
 	ret->setVal("kind", m_transport->mkValStr(
 			kind2str_m.find(t->kind())->second));
@@ -1182,6 +1210,8 @@ void EndpointMsgTransport::unpack_ifinsts(
 					is_mirror);
 			ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
 		}
+	} else {
+		fprintf(stdout, "unpack_ifinsts: null ifinsts_p\n");
 	}
 }
 

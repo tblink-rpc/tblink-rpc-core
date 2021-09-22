@@ -48,6 +48,8 @@ public:
 
 	virtual int32_t is_connect_complete() override;
 
+	virtual int32_t start() override;
+
 	virtual bool shutdown() override;
 
 	virtual int32_t yield() override;
@@ -199,6 +201,7 @@ private:
 
 	void call_completion_nb(
 			intptr_t		id,
+			intptr_t		call_id,
 			IParamVal		*retval);
 
 	void call_completion_b(
@@ -273,6 +276,7 @@ private:
 	std::unordered_map<std::string, InterfaceInstUP>				m_local_ifc_insts;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 
+	int32_t															m_run_until_event;
 	int32_t															m_event_received;
 
 };

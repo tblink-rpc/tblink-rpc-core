@@ -11,7 +11,7 @@ namespace tblink_rpc_core {
 
 TypeMap::TypeMap(
 		IType			*key_t,
-		IType			*elem_t) : Type(TypeE::Map),
+		IType			*elem_t) :
 				m_key_t(key_t), m_elem_t(elem_t) {
 	// TODO Auto-generated constructor stub
 

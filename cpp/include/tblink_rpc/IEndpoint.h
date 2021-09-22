@@ -55,6 +55,8 @@ public:
 
 	virtual int32_t is_connect_complete() = 0;
 
+	virtual int32_t start() = 0;
+
 	virtual bool shutdown() = 0;
 
 	/**

@@ -10,13 +10,15 @@
 
 namespace tblink_rpc_core {
 
-class TypeMap : public Type, public virtual ITypeMap {
+class TypeMap : public virtual ITypeMap {
 public:
 	TypeMap(
 			IType		*key_t,
 			IType		*val_t);
 
 	virtual ~TypeMap();
+
+	virtual TypeE kind() const override { return TypeE::Map; }
 
 	virtual IType *key_t() const override {
 		return m_key_t.get();

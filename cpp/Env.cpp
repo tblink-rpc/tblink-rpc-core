@@ -37,8 +37,6 @@ char **Env::environ_p() {
 		for (std::map<std::string,std::string>::const_iterator
 				it=m_env.begin();
 				it!=m_env.end(); it++) {
-			fprintf(stdout, "env: %s=%s\n", it->first.c_str(), it->second.c_str());
-			fflush(stdout);
 			char *var = new char[it->first.size()+it->second.size()+2];
 			strcpy(var, it->first.c_str());
 			strcat(var, "=");

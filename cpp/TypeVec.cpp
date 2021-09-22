@@ -9,7 +9,7 @@
 
 namespace tblink_rpc_core {
 
-TypeVec::TypeVec(IType *elem_t) : Type(TypeE::Vec), m_elem_t(elem_t) {
+TypeVec::TypeVec(IType *elem_t) : m_elem_t(elem_t) {
 	// TODO Auto-generated constructor stub
 
 }

@@ -183,6 +183,8 @@ class EndpointMsgTransport(Endpoint):
         
         params = self.transport.mkValMap()
         
+        params.setVal("ifinsts", self._pack_ifinsts(self.ifinst_m))
+        
         self.send_req(
             "tblink.connect-complete",
             params)
@@ -571,8 +573,9 @@ class EndpointMsgTransport(Endpoint):
     
     def _pack_ifinsts(self, ifinst_m):
         ret = self.transport.mkValMap()
-        
+
         for key in ifinst_m.keys():
+            print("Pack ifinst %s" % key)
             ifinst = ifinst_m[key]
             ifinst_i = self.transport.mkValMap()
             

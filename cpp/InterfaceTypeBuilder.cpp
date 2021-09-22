@@ -46,6 +46,8 @@ IMethodTypeBuilder *InterfaceTypeBuilder::newMethodTypeBuilder(
 IMethodType *InterfaceTypeBuilder::add_method(
 		IMethodTypeBuilder			*mtb) {
 	IMethodType *mt = dynamic_cast<MethodTypeBuilder *>(mtb)->method_t();
+	fprintf(stdout, "add_method: mt=%p\n", mt);
+	fflush(stdout);
 	delete mtb;
 	m_type->addMethod(mt);
 	return mt;

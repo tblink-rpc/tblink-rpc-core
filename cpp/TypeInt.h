@@ -10,13 +10,15 @@
 
 namespace tblink_rpc_core {
 
-class TypeInt : public virtual Type, public virtual ITypeInt {
+class TypeInt : /*public Type,*/ public virtual ITypeInt {
 public:
 	TypeInt(
 			bool			is_signed,
 			int32_t			width);
 
 	virtual ~TypeInt();
+
+	virtual TypeE kind() const override { return TypeE::Int; }
 
 	virtual bool is_signed() const override {
 		return m_is_signed;
