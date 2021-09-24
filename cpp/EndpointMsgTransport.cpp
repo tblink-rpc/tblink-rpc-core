@@ -8,12 +8,12 @@
 #include <stdarg.h>
 #include "EndpointMsgTransport.h"
 
-#include "glog/logging.h"
+// #include "glog/logging.h"
 #include "InterfaceType.h"
 #include "InterfaceTypeBuilder.h"
 #include "MethodType.h"
 
-#define EN_DEBUG_JSON_RPC_ENDPOINT
+#undef EN_DEBUG_JSON_RPC_ENDPOINT
 
 #ifdef EN_DEBUG_JSON_RPC_ENDPOINT
 #define DEBUG_ENTER(fmt, ...) \
@@ -913,7 +913,7 @@ int32_t EndpointMsgTransport::recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMap			*params) {
-	DEBUG_ENTER("recv_req: ") << method << " id=" << id;
+//	DEBUG_ENTER("recv_req: ") << method << " id=" << id;
 
 	IEndpoint::State prev_state = m_state;
 
@@ -943,7 +943,7 @@ int32_t EndpointMsgTransport::recv_req(
 		// Notifies
 	}
 
-	DEBUG_LEAVE("recv_req: ") << method;
+//	DEBUG_LEAVE("recv_req: ") << method;
 
 	return 0;
 }

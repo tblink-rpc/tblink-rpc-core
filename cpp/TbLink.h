@@ -37,11 +37,14 @@ public:
 
 	virtual ILaunchParams *newLaunchParams() override;
 
+	virtual const std::string &getLibPath() override;
+
 	static TbLink *inst();
 
 private:
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
+	std::string								m_libpath;
 	static TbLink							*m_inst;
 };
 

@@ -36,6 +36,8 @@ public:
 
 	virtual ILaunchParams *newLaunchParams() = 0;
 
+	virtual const std::string &getLibPath() = 0;
+
 };
 
 }

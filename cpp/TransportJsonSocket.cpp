@@ -26,7 +26,6 @@
 #include "ParamValMap.h"
 #include "ParamValStr.h"
 #include "ParamValVec.h"
-#include "glog/logging.h"
 
 #undef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
 
