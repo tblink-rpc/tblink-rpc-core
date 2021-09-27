@@ -129,6 +129,7 @@ int32_t EndpointMsgTransport::init(
 
 	m_init = 1;
 	if (send_req("tblink.init", params) == -1) {
+		m_last_error = "Transport send_req returned error status";
 		return -1;
 	}
 
