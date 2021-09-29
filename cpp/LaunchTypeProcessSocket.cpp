@@ -79,12 +79,18 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
     	env.set("TBLINK_PORT", tmp);
     	env.set("TBLINK_HOST", "localhost");
 
-    	char **argv = (char **)alloca(sizeof(char *)*(params->args().size()+1));
+    	std::vector<std::string> args = params->args();
 
-    	for (uint32_t i=0; i<params->args().size(); i++) {
-    		argv[i] = strdup(params->args().at(i).c_str());
+    	if (env.has("TBLINK_VALGRIND") && env.get("TBLINK_VALGRIND") == "1") {
+    		args.insert(args.begin(), {"valgrind", "--tool=memcheck"});
     	}
-    	argv[params->args().size()] = 0;
+
+    	char **argv = (char **)alloca(sizeof(char *)*(args.size()+1));
+
+    	for (uint32_t i=0; i<args.size(); i++) {
+    		argv[i] = strdup(args.at(i).c_str());
+    	}
+    	argv[args.size()] = 0;
 
     	// TODO: need proper propagation of hostname/port
     	int status = posix_spawnp(

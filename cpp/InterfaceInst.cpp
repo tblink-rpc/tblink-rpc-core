@@ -41,6 +41,9 @@ InterfaceInst::~InterfaceInst() {
 	// TODO Auto-generated destructor stub
 }
 
+/**
+ * Called in response to an invoke request from the peer endpoint
+ */
 void InterfaceInst::invoke_req(
 			IMethodType				*method,
 			IParamValVec			*params,
@@ -54,7 +57,6 @@ void InterfaceInst::invoke_req(
 IParamVal *InterfaceInst::invoke(
 		IMethodType									*method,
 		IParamValVec								*params) {
-	IParamVal *ret = 0;
 	IParamValMap *r_params = m_endpoint->mkValMap();
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -64,6 +66,13 @@ IParamVal *InterfaceInst::invoke(
 	r_params->setVal("call-id", m_endpoint->mkValIntU(call_id, 64));
 	r_params->setVal("params", params);
 
+	IParamVal *ret = 0;
+	bool have_rsp = false;
+
+	m_outbound_invoke_m.insert({call_id, [&](IParamVal *retval) {
+		have_rsp = true;
+	}});
+
 	if (method->is_blocking()) {
 		intptr_t id = m_endpoint->send_req(
 				"tblink.invoke-b",
@@ -72,6 +81,16 @@ IParamVal *InterfaceInst::invoke(
 		// TODO: wait for a response via the m_invoke_m
 
 		// TODO: wait for a response via a matching request
+		fprintf(stdout, "--> run_until_event\n");
+		fflush(stdout);
+		while (!have_rsp) {
+			if (m_endpoint->run_until_event() == -1) {
+				break;
+			}
+		}
+
+		fprintf(stdout, "<-- run_until_event\n");
+		fflush(stdout);
 	} else {
 		bool recv_rsp = false;
 
@@ -79,17 +98,14 @@ IParamVal *InterfaceInst::invoke(
 		intptr_t id = m_endpoint->send_req(
 				"tblink.invoke-nb",
 				r_params,
-				[&](intptr_t id, IParamValMap *r, IParamValMap *e) {
-					fprintf(stdout, "receive response to invoke-nb\n");
-					if (method->rtype()) {
-						ret = r->getVal("retval");
-					}
-					recv_rsp = true;
-				});
+				std::bind(&InterfaceInst::invoke_nb_rsp, this,
+						std::placeholders::_1,
+						std::placeholders::_2,
+						std::placeholders::_3));
 		fprintf(stdout, "<-- Send invoke-nb\n");
 
 		fprintf(stdout, "--> Await response\n");
-		while (!recv_rsp) {
+		while (!have_rsp) {
 			m_endpoint->process_one_message();
 		}
 		fprintf(stdout, "<-- Await response\n");
@@ -132,6 +148,9 @@ int32_t InterfaceInst::invoke_nb(
 	return 0;
 }
 
+/**
+ * Called to complete a local call.
+ */
 void InterfaceInst::invoke_rsp(
 		intptr_t									call_id,
 		IParamVal									*ret) {
@@ -150,6 +169,9 @@ void InterfaceInst::invoke_rsp(
 	}
 }
 
+/**
+ * Called when the response for a non-blocking invoke is received
+ */
 void InterfaceInst::invoke_nb_rsp(
 		intptr_t									id,
 		IParamValMap								*result,
@@ -157,7 +179,7 @@ void InterfaceInst::invoke_nb_rsp(
 	int64_t call_id = result->getValT<IParamValInt>("call-id")->val_s();
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 
-	if ((it=m_invoke_m.find(call_id)) != m_invoke_m.end()) {
+	if ((it=m_outbound_invoke_m.find(call_id)) != m_outbound_invoke_m.end()) {
 		IParamVal *retval = 0;
 
 		if (result->hasKey("retval")) {
@@ -166,11 +188,45 @@ void InterfaceInst::invoke_nb_rsp(
 
 		it->second(retval);
 
+		m_outbound_invoke_m.erase(it);
+	} else {
+		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
+		fflush(stdout);
+	}
+}
+
+/**
+ * Called in response to a response-request message from the
+ * remote peer endpoint
+ */
+void InterfaceInst::invoke_b_rsp(
+			intptr_t									call_id,
+			IParamVal									*ret) {
+	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
+	if ((it=m_outbound_invoke_m.find(call_id)) != m_outbound_invoke_m.end()) {
+		fprintf(stdout, "--> Receive response\n");
+		fflush(stdout);
+		it->second(ret);
+		m_outbound_invoke_m.erase(it);
+		fprintf(stdout, "<-- Receive response\n");
+		fflush(stdout);
+	} else {
+		fprintf(stdout, "Error: unknown call-response id %lld\n", call_id);
+		fflush(stdout);
+	}
+#ifdef UNDEFINED
+	if ((it=m_invoke_m.find(call_id)) != m_invoke_m.end()) {
+		fprintf(stdout, "--> Send response\n");
+		fflush(stdout);
+		it->second(ret);
+		fprintf(stdout, "<-- Send response\n");
+		fflush(stdout);
 		m_invoke_m.erase(it);
 	} else {
 		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
 		fflush(stdout);
 	}
+#endif
 }
 
 IParamValBool *InterfaceInst::mkValBool(bool val) {

@@ -19,6 +19,8 @@ InterfaceType::~InterfaceType() {
 }
 
 void InterfaceType::addMethod(IMethodType *method) {
+	fprintf(stdout, "addMethod: %p\n", method);
+	fflush(stdout);
 	m_methods.push_back(IMethodTypeUP(method));
 	m_methods_p.push_back(method);
 	m_methods_m.insert({method->name(), method});

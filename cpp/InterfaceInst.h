@@ -67,6 +67,14 @@ public:
 			IParamValMap								*result,
 			IParamValMap								*error);
 
+	/**
+	 * Response to a remote call
+	 */
+	void invoke_b_rsp(
+			intptr_t									call_id,
+			IParamVal									*ret
+			);
+
 	virtual IParamValBool *mkValBool(bool val) override;
 
 	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
@@ -86,6 +94,9 @@ private:
 	bool										m_is_mirror;
 	invoke_req_f								m_req_f;
 	intptr_t									m_call_id;
+
+	std::unordered_map<intptr_t,invoke_rsp_f>	m_outbound_invoke_m;
+
 	std::unordered_map<intptr_t,invoke_rsp_f>	m_invoke_m;
 
 };

@@ -831,7 +831,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_rsp_b(
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 
-		i_it->second->invoke_rsp(
+		i_it->second->invoke_b_rsp(
 				call_id,
 				retval);
 	} else {
