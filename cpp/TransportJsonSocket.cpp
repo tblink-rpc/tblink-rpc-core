@@ -359,6 +359,8 @@ int32_t TransportJsonSocket::await_msg() {
 			ret = -1;
 		} else if (sz > 0) {
 			ret = process_data(tmp, sz);
+		} else if (sz == 0) {
+			ret = -1;
 		}
 	} while (ret == 0);
 

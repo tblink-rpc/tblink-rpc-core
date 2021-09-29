@@ -81,7 +81,11 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
 
     	std::vector<std::string> args = params->args();
 
-    	if (env.has("TBLINK_VALGRIND") && env.get("TBLINK_VALGRIND") == "1") {
+    	if (env.has("TBLINK_GDBSRV") && env.get("TBLINK_GDBSRV") == "1") {
+    		args.insert(args.begin(), {"gdbserver", ":6001"});
+    	} else if (env.has("TBLINK_GDB") && env.get("TBLINK_GDB") == "1") {
+    		args.insert(args.begin(), {"xterm", "-e", "gdb", "--args"});
+    	} else if (env.has("TBLINK_VALGRIND") && env.get("TBLINK_VALGRIND") == "1") {
     		args.insert(args.begin(), {"valgrind", "--tool=memcheck"});
     	}
 
