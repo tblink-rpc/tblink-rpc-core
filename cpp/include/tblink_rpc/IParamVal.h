@@ -31,6 +31,10 @@ public:
 
 	virtual IParamVal *clone() = 0;
 
+	template <class T> T *cloneT() {
+		return dynamic_cast<T *>(clone());
+	}
+
 };
 
 
