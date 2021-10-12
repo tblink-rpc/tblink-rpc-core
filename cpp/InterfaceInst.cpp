@@ -81,20 +81,14 @@ IParamVal *InterfaceInst::invoke(
 		// TODO: wait for a response via the m_invoke_m
 
 		// TODO: wait for a response via a matching request
-		fprintf(stdout, "--> run_until_event\n");
-		fflush(stdout);
 		while (!have_rsp) {
 			if (m_endpoint->run_until_event() == -1) {
 				break;
 			}
 		}
-
-		fprintf(stdout, "<-- run_until_event\n");
-		fflush(stdout);
 	} else {
 		bool recv_rsp = false;
 
-		fprintf(stdout, "--> Send invoke-nb\n");
 		intptr_t id = m_endpoint->send_req(
 				"tblink.invoke-nb",
 				r_params,
@@ -102,13 +96,12 @@ IParamVal *InterfaceInst::invoke(
 						std::placeholders::_1,
 						std::placeholders::_2,
 						std::placeholders::_3));
-		fprintf(stdout, "<-- Send invoke-nb\n");
 
-		fprintf(stdout, "--> Await response\n");
 		while (!have_rsp) {
-			m_endpoint->process_one_message();
+			if (m_endpoint->process_one_message() == -1) {
+				break;
+			}
 		}
-		fprintf(stdout, "<-- Await response\n");
 	}
 
 	return ret;
@@ -135,15 +128,10 @@ int32_t InterfaceInst::invoke_nb(
 				"tblink.invoke-nb",
 				r_params);
 	} else {
-		fprintf(stdout, "--> Send invoke-nb\n");
 		intptr_t id = m_endpoint->send_req(
 				"tblink.invoke-nb",
 				r_params);
-		fprintf(stdout, "<-- Send invoke-nb\n");
 	}
-
-	fprintf(stdout, "invoke_nb: %s\n", method->name().c_str());
-	fflush(stdout);
 
 	return 0;
 }
@@ -157,11 +145,7 @@ void InterfaceInst::invoke_rsp(
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 
 	if ((it=m_invoke_m.find(call_id)) != m_invoke_m.end()) {
-		fprintf(stdout, "--> Send response\n");
-		fflush(stdout);
 		it->second(ret);
-		fprintf(stdout, "<-- Send response\n");
-		fflush(stdout);
 		m_invoke_m.erase(it);
 	} else {
 		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
