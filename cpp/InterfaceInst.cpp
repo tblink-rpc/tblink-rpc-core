@@ -71,6 +71,9 @@ IParamVal *InterfaceInst::invoke(
 
 	m_outbound_invoke_m.insert({call_id, [&](IParamVal *retval) {
 		have_rsp = true;
+		if (retval) {
+			ret = retval->clone();
+		}
 	}});
 
 	if (method->is_blocking()) {
