@@ -757,7 +757,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 							std::placeholders::_1));
 		} else {
 			// TODO: error signaling
-			fprintf(stdout, "Error: failed to find method\n");
+			fprintf(stdout, "Error: failed to find method %s\n", method.c_str());
 			fflush(stdout);
 		}
 	} else {
@@ -1074,8 +1074,6 @@ IParamValMap *EndpointMsgTransport::pack_iftypes(
 
 			if ((*m_it)->rtype()) {
 				IParamValMap *rtype = pack_type((*m_it)->rtype());
-				fprintf(stdout, "rtype(src)=%p rtype=%p", (*m_it)->rtype(), rtype);
-				fflush(stdout);
 				signature->setVal("rtype", rtype);
 			}
 

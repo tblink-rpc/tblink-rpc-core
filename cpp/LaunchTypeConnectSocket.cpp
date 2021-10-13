@@ -74,7 +74,7 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
      }
 
      int flags =1;
-     setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flags, sizeof(flags));
+     ::setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flags, sizeof(flags));
 
      TransportJsonSocket *transport = new TransportJsonSocket(0, sock);
      EndpointMsgTransport *endpoint = new EndpointMsgTransport(transport);

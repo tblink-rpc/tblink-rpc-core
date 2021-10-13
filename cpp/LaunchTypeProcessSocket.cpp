@@ -89,9 +89,14 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
     		args.insert(args.begin(), {"valgrind", "--tool=memcheck"});
     	}
 
+    	fprintf(stdout, "Launch Args: %d\n", args.size());
+    	fflush(stdout);
+
     	char **argv = (char **)alloca(sizeof(char *)*(args.size()+1));
 
     	for (uint32_t i=0; i<args.size(); i++) {
+    		fprintf(stdout, "Launch arg[%d]: %s\n", i, args.at(i).c_str());
+    		fflush(stdout);
     		argv[i] = strdup(args.at(i).c_str());
     	}
     	argv[args.size()] = 0;
@@ -153,7 +158,15 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
 
     	if (retval > 0) {
     		unsigned int clilen = sizeof(serv_addr);
+           	int flag = 1;
     		conn_socket = accept(srv_socket, (struct sockaddr *)&serv_addr, &clilen);
+
+           	::setsockopt(
+			conn_socket,
+			IPPROTO_TCP,
+			TCP_NODELAY,
+			(char *)&flag,
+			sizeof(int));
     	} else {
     		// TODO: shut down the remote?
     		return {0, "Failed to connect within appropriate interval"};

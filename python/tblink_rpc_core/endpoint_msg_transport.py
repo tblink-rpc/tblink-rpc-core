@@ -42,7 +42,7 @@ class TimeUnit(IntEnum):
 
 class EndpointMsgTransport(Endpoint):
     """Implements the Endpoint API in terms of a method-based message-passing API"""
-    DEBUG_EN = True
+    DEBUG_EN = False
     
     def __init__(self, transport):
         super().__init__()
@@ -308,7 +308,8 @@ class EndpointMsgTransport(Endpoint):
 
     def _req_build_complete(self, id, params):
         self.time_precision = params.getVal("time-precision").val_s()
-            
+
+        print("_req_build_complete", flush=True)            
         self.peer_iftype_m = self._load_iftypes(params.getVal("iftypes"))
         self.peer_ifinst_m = self._load_ifinsts(params.getVal("ifinsts"))
             
@@ -427,7 +428,7 @@ class EndpointMsgTransport(Endpoint):
             completion_f(id, result, error)
         else:
             if EndpointMsgTransport.DEBUG_EN:
-                print("Note: id %d not in the map" % id)
+                print("Note: response-id %d not in the map" % id)
                 
         if EndpointMsgTransport.DEBUG_EN:
             print("<-- ep.recv_rsp: %d" % id, flush=True)
