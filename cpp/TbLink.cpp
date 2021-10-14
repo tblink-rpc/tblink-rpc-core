@@ -63,6 +63,7 @@ ILaunchParams *TbLink::newLaunchParams() {
 
 const std::string &TbLink::getLibPath() {
 	if (m_libpath == "") {
+#ifdef UNDEFINED
 		// Platform-specific discovery...
 		pid_t pid = getpid();
 		char mapfile_path[128];
@@ -125,6 +126,12 @@ const std::string &TbLink::getLibPath() {
 				break;
 			}
 		}
+#endif
+
+		m_sym_finder.init();
+		std::pair<void *, std::string> path = m_sym_finder.findSymLib("tblink");
+
+		m_libpath = path.second;
 
 		if (m_libpath.size() == 0) {
 			fprintf(stdout, "TBLink Error: failed to find library path\n");
@@ -132,6 +139,11 @@ const std::string &TbLink::getLibPath() {
 	}
 
 	return m_libpath;
+}
+
+ISymFinder *TbLink::sym_finder() {
+	m_sym_finder.init();
+	return &m_sym_finder;
 }
 
 TbLink *TbLink::inst() {

@@ -16,6 +16,7 @@ from tblink_rpc_core.transport import Transport
 import selectors
 import json
 from tblink_rpc_core.json.json2param import Json2Param
+import select
 
 
 class TransportJsonSocket(Transport):
@@ -107,6 +108,9 @@ class TransportJsonSocket(Transport):
 
         data = self.conn.recv(1024)
         
+        if len(data) == 0:
+            raise Exception("Zero-size data received")
+        
         if TransportJsonSocket.DEBUG_EN:
             print("  received %d bytes" % len(data))
         
@@ -188,10 +192,25 @@ class TransportJsonSocket(Transport):
     def process_one_message(self):
 #        if TransportJsonSocket.DEBUG_EN:
 #            print("--> process_one_message", flush=True)
-        events = self.sel.select()
-
-        for key, mask in events:
-            key.data()
+        try:
+            ready_to_read, ready_to_write, in_error = select.select([self.conn], [self.conn], [], 5)
+#            events = self.sel.select()
+#
+#            for key, mask in events:
+#                key.data()
+                
+#            print("process_one_message: %d %d %d" % (
+#                len(ready_to_read), len(ready_to_write), len(in_error)))
+            
+            if len(ready_to_read) > 0:
+                self._recv_data()
+                
+            if len(in_error) > 0:
+                print("in_error: ", flush=True)
+        except Exception:
+            print("disconnect")
+            raise Exception("disconnect")
+         
             
 #        if TransportJsonSocket.DEBUG_EN:
 #            print("<-- process_one_message", flush=True)

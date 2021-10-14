@@ -11,6 +11,7 @@
 #include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/ILaunchParams.h"
 #include "tblink_rpc/ILaunchType.h"
+#include "tblink_rpc/ISymFinder.h"
 #include "tblink_rpc/ITransport.h"
 
 namespace tblink_rpc_core {
@@ -37,6 +38,8 @@ public:
 	virtual ILaunchParams *newLaunchParams() = 0;
 
 	virtual const std::string &getLibPath() = 0;
+
+	virtual ISymFinder *sym_finder() = 0;
 
 };
 

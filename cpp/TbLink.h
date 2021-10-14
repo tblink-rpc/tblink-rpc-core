@@ -8,8 +8,9 @@
 #pragma once
 #include <memory>
 
-#include "include/tblink_rpc/ITbLink.h"
+#include "tblink_rpc/ITbLink.h"
 #include "tblink_rpc/ILaunchType.h"
+#include "DynSymFinder.h"
 
 namespace tblink_rpc_core {
 
@@ -39,12 +40,15 @@ public:
 
 	virtual const std::string &getLibPath() override;
 
+	virtual ISymFinder *sym_finder() override;
+
 	static TbLink *inst();
 
 private:
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
 	std::string								m_libpath;
+	DynSymFinder							m_sym_finder;
 	static TbLink							*m_inst;
 };
 
