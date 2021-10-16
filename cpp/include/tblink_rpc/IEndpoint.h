@@ -55,7 +55,11 @@ public:
 
 	virtual int32_t is_connect_complete() = 0;
 
-	virtual int32_t start() = 0;
+	/**
+	 * Process messages until a run-until-event
+	 * request is received
+	 */
+	virtual int32_t await_run_until_event() = 0;
 
 	virtual bool shutdown() = 0;
 

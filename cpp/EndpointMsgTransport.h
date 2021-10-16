@@ -48,7 +48,7 @@ public:
 
 	virtual int32_t is_connect_complete() override;
 
-	virtual int32_t start() override;
+	virtual int32_t await_run_until_event() override;
 
 	virtual bool shutdown() override;
 

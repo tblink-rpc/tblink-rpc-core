@@ -264,7 +264,7 @@ int32_t EndpointMsgTransport::is_connect_complete() {
 	return m_peer_local_check_complete;
 }
 
-int32_t EndpointMsgTransport::start() {
+int32_t EndpointMsgTransport::await_run_until_event() {
 	// Process messages until
 	int ret = 0;
 
@@ -273,6 +273,8 @@ int32_t EndpointMsgTransport::start() {
 			break;
 		}
 	}
+
+	m_run_until_event = 0;
 
 	return ret;
 }
@@ -853,7 +855,6 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_rsp_b(
 EndpointMsgTransport::rsp_t EndpointMsgTransport::req_run_until_event(
 		intptr_t				id,
 		IParamValMap 			*params) {
-
 	m_run_until_event++;
 
 	// Tell the environment that it's free to run
@@ -1126,8 +1127,6 @@ static std::unordered_map<TypeE, std::string> kind2str_m = {
 
 IParamValMap *EndpointMsgTransport::pack_type(IType *t) {
 	IParamValMap *ret = m_transport->mkValMap();
-
-	fprintf(stdout, "pack_type: t=%p\n", t);
 
 	ret->setVal("kind", m_transport->mkValStr(
 			kind2str_m.find(t->kind())->second));

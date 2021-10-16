@@ -62,6 +62,8 @@ class EndpointMsgTransport(Endpoint):
         self.is_connected = False
         self.is_peer_connected = False
         
+        self.event_received = 0
+        
         self.is_shutdown = False
         self.iftype_m = {}
         self.iftypes  = []
@@ -200,6 +202,25 @@ class EndpointMsgTransport(Endpoint):
             
     def is_connect_complete(self) -> bool:
         return self.is_connected and self.is_peer_connected
+    
+    def run_until_event(self):
+        params = self.transport.mkValMap()
+
+        if self.event_received > 0:       
+            self.event_received -= 1
+            
+        self.send_req(
+            "tblink.run-until-event",
+            params)
+        
+        while self.event_received == 0:
+            self.process_one_message()
+            
+        pass
+    
+    async def run_until_event_a(self):
+            
+        pass
     
     def findInterfaceType(self, name):
         if name in self.iftype_m.keys():
@@ -400,8 +421,8 @@ class EndpointMsgTransport(Endpoint):
         call_id  = params.getVal("call-id").val_s()
 
         retval = None        
-        if params.hasKey("retval"):
-            retval = params.getVal("retval")
+        if params.hasKey("return"):
+            retval = params.getVal("return")
         
         if ifinst_n not in self.ifinst_m.keys():
             raise Exception("Interface %s not in map" % ifinst_n)
@@ -409,6 +430,8 @@ class EndpointMsgTransport(Endpoint):
             ifinst = self.ifinst_m[ifinst_n]
 
         ifinst.notify_remote_rsp(call_id, retval)
+        
+        self.event_received += 1
         
         error = None
         result = self.transport.mkValMap()

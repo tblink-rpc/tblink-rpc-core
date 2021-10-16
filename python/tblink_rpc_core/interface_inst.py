@@ -72,7 +72,7 @@ class InterfaceInst(object):
             
             result.setVal("call-id", self.ep.mkValIntS(call_id, 32))
             if ret is not None:
-                rsp_params.setVal("retval", ret)
+                rsp_params.setVal("return", ret)
                 
             self.ep.send_rsp(id, result, error)
 

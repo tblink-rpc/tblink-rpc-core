@@ -162,11 +162,11 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
     		conn_socket = accept(srv_socket, (struct sockaddr *)&serv_addr, &clilen);
 
            	::setsockopt(
-			conn_socket,
-			IPPROTO_TCP,
-			TCP_NODELAY,
-			(char *)&flag,
-			sizeof(int));
+           			conn_socket,
+					IPPROTO_TCP,
+					TCP_NODELAY,
+					(char *)&flag,
+					sizeof(int));
     	} else {
     		// TODO: shut down the remote?
     		return {0, "Failed to connect within appropriate interval"};
