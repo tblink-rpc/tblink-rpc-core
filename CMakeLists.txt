@@ -20,7 +20,6 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
-
 foreach(CompilerFlag ${CompilerFlags})
   string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
   string(REPLACE "/MDd" "/MTd" ${CompilerFlag} "${${CompilerFlag}}")
@@ -33,12 +32,19 @@ file(GLOB tblink_rpc_core_SRC
 if (NOT PACKAGES_DIR)
   set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
 
+  set (GLOG_DIR "${PACKAGES_DIR}/glog")
+
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
   enable_testing()
-  
+
+  add_subdirectory(tests)
+endif()
+
+
+if (GLOG_DIR)
   ExternalProject_Add(GLOG
     PREFIX glog
-    SOURCE_DIR "${PACKAGES_DIR}/glog"
+    SOURCE_DIR "${GLOG_DIR}"
     CMAKE_CACHE_ARGS
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/glog
       -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
@@ -46,20 +52,39 @@ if (NOT PACKAGES_DIR)
       -DBUILD_SHARED_LIBS:BOOL=OFF
       -DCMAKE_DEBUG_POSTFIX:STRING=""
   )  
- 
-  ExternalProject_Add(googletest
-        PREFIX googletest
-        SOURCE_DIR "${PACKAGES_DIR}/googletest"
-        CMAKE_CACHE_ARGS
-          -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/googletest
-          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-          -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
-    )
-   
-  add_subdirectory(tests)
 endif()
 
-add_library(tblink_rpc_core ${tblink_rpc_core_SRC})
+#******************************************************************** 
+#* Static Library
+#******************************************************************** 
+add_library(tblink_rpc_core_static ${tblink_rpc_core_SRC})
+
+add_dependencies(
+	tblink_rpc_core_static
+	GLOG
+	)
+
+target_include_directories(tblink_rpc_core_static PRIVATE
+	${PACKAGES_DIR}/json/include
+	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
+	${CMAKE_BINARY_DIR}/glog/include
+	)
+
+install(TARGETS tblink_rpc_core_static
+    DESTINATION lib
+    EXPORT tblink_rpc_core-targets)
+
+
+#******************************************************************** 
+#* Shared Library
+#******************************************************************** 
+add_library(tblink_rpc_core SHARED ${tblink_rpc_core_SRC})
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(libglog glogd)
+else()
+	set(libglog glog)
+endif()    
 
 add_dependencies(
 	tblink_rpc_core
@@ -72,9 +97,16 @@ target_include_directories(tblink_rpc_core PRIVATE
 	${CMAKE_BINARY_DIR}/glog/include
 	)
 
-install(TARGETS tblink_rpc_core
-    DESTINATION lib
-    EXPORT tblink_rpc_core-targets)
+target_link_directories(
+	tblink_rpc_core
+	PRIVATE
+	${CMAKE_BINARY_DIR}/glog/lib64
+	)
+
+target_link_libraries(
+	tblink_rpc_core
+	${libglog}
+	)
 
 message("tlink-rpc-core: PACKAGES_DIR=${PACKAGES_DIR}")
 

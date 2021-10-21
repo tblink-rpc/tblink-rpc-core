@@ -9,6 +9,8 @@ from yaml.loader import FullLoader
 from tblink_rpc.interface_type_spec import InterfaceTypeSpec
 from tblink_rpc.method_spec import MethodSpec
 from _ast import Param
+from tblink_rpc.type_spec_int import TypeSpecInt
+from tblink_rpc.type_spec import TypeKind, TypeSpec
 
 class YamlIDLParser(object):
     
@@ -107,8 +109,50 @@ class YamlIDLParser(object):
         
         return method_m
 
+    int_m = {
+        "int8" : (8, True),
+        "int16" : (16, True),
+        "int32" : (32, True),
+        "int64" : (64, True),
+        "uint8" : (8, False),
+        "uint16" : (16, False),
+        "uint32" : (32, False),
+        "uint64" : (64, False),
+        }
+
     def _process_type(self, type_s):
-        return None
+        type_s = type_s.strip()
+        ret = None
+
+        if type_s in YamlIDLParser.int_m.keys():
+            int_s = YamlIDLParser.int_m[type_s]
+            ret = TypeSpecInt(int_s[0], int_s[1])
+        elif type_s == "str":
+            ret = TypeSpec(TypeKind.Str)
+        elif type_s == "bool":
+            ret = TypeSpec(TypeKind.Bool)
+        else:
+            # More-complex 
+            lt_i = type_s.find('<')
+            
+            if lt_i != -1:
+                # Parameterized type
+                if type_s[-1] != '>':
+                    raise Exception("Unbalanced parameterized type: %s" % type_s)
+
+                root_type_s = type_s[:lt_i].strip()
+                inner_type_s = type_s[lt_i+1:-1].strip()
+                
+                print("root_type_s: %s ; inner_type_s: %s" % (root_type_s, inner_type_s))
+                
+                # TODO: tokenize inner parameter list
+                raise Exception("TODO: support parameterized types")
+            else:
+                # Non-parameterized type
+                raise Exception("TODO: unsupported type %s" % type_s)
+                pass
+        
+        return ret
         
         
     
