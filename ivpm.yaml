@@ -20,8 +20,12 @@ package:
      src: pypi
    - name: pykwalify
      src: pypi
+   - name: pytblink-rpc
+     url: https://github.com/tblink-rpc/pytblink-rpc.git
    - name: glog
      url: https://github.com/google/glog/archive/refs/tags/v0.5.0.tar.gz
    - name: googletest
      url: https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+   - name: mkdv
+     url: https://github.com/fvutils/mkdv.git
      

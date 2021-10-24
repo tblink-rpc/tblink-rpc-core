@@ -4,8 +4,9 @@ Created on Oct 20, 2021
 @author: mballance
 '''
 
-class InputSpec(object):
+class CmdGenArgs(object):
     
     def __init__(self):
-        self.files = []
         pass
+    
+    

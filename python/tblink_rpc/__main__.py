@@ -10,6 +10,9 @@ def get_parser():
     parser = argparse.ArgumentParser()
     
     subparsers = parser.add_subparsers()
+    subparsers.required = True
+    subparsers.dest = 'command'
+    
     # TODO: list and get help on input/output filters
     
     gen_cmd = subparsers.add_parser("gen",
@@ -25,6 +28,7 @@ def get_parser():
     gen_cmd.add_argument("-os", "--output-style",
         help="Specifies output style to use")
     gen_cmd.add_argument("-o", "--output", 
+        dest="output",
         help="Specifies output path")
     gen_cmd.add_argument("-ns", "--namespace",
         help="Specifies output namespace for targets that support it")

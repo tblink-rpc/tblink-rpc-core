@@ -11,4 +11,10 @@ class IDLSpec(object):
         self.iftypes = []
         pass
     
+    def add_iftype(self, iftype):
+        if iftype.name in self.iftype_m.keys():
+            raise Exception("Duplicate iftype %s" % iftype.name)
+        self.iftype_m[iftype.name] = iftype
+        self.iftypes.append(iftype)
+    
     

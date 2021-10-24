@@ -67,6 +67,8 @@ class YamlIDLParser(object):
             
             print("iftype_name: %s" % iftype_name)
             
+            self.spec.add_iftype(iftype_m)
+            
         return iftype_m
     
     def _process_method(self, method_s):
