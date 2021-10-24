@@ -1,0 +1,18 @@
+
+interface-types:
+    - pingpong_if:
+        methods:
+            - req:
+                is-export: True
+                is-blocking: False
+                returns: uint32
+                parameters:
+                    - v: uint32
+            - rsp:
+                is-export: False
+                is-blocking: False
+                returns: uint32
+                parameters:
+                    - v: uint32
+
+
