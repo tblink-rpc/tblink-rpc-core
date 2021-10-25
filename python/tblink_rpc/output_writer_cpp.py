@@ -125,12 +125,12 @@ class OutputWriterCpp(OutputWriter):
         self.out_h.dec_ind()
         self.out_h.println("private:")
         self.out_h.inc_ind()
-        self.out_h.println("void invoke_req(")
+        self.out_h.println("virtual void invoke_req(")
         self.out_h.inc_ind()
         self.out_h.println("tblink_rpc_core::IInterfaceInst  *ifinst,")
         self.out_h.println("tblink_rpc_core::IMethodType     *method,")
         self.out_h.println("intptr_t                         call_id,")
-        self.out_h.println("IParamValVec                     *params);")
+        self.out_h.println("tblink_rpc_core::IParamValVec    *params);")
         self.out_h.dec_ind()
         
         self.out_h.println()
@@ -150,6 +150,14 @@ class OutputWriterCpp(OutputWriter):
         self.out_cpp.println("%s::%s() {" % (iftype.name, iftype.name))
         self.out_cpp.inc_ind()
         self.out_cpp.println("m_ifinst = 0;")
+        # Initialize function closures to call the corresponding class method
+        for m in iftype.methods:
+            self.out_cpp.write("%sm_%s_impl = std::bind(&%s::%s, this" % (
+                self.out_cpp.ind, m.name, iftype.name, m.name))
+            for i,_ in enumerate(m.params):
+                self.out_cpp.write(", std::placeholders::_%d" % (i+1))
+            self.out_cpp.write(");\n")
+                
         self.out_cpp.dec_ind()
         self.out_cpp.println("}")
         self.out_cpp.println()
@@ -181,7 +189,7 @@ class OutputWriterCpp(OutputWriter):
         self.out_cpp.println("std::placeholders::_1,")
         self.out_cpp.println("std::placeholders::_2,")
         self.out_cpp.println("std::placeholders::_3,")
-        self.out_cpp.println("std::placeholders::_4);")
+        self.out_cpp.println("std::placeholders::_4));")
         self.out_cpp.dec_ind()
         
         self.out_cpp.dec_ind()
@@ -207,6 +215,91 @@ class OutputWriterCpp(OutputWriter):
         self.out_cpp.dec_ind()
         self.out_cpp.println("}")
         self.out_cpp.println()
+        
+        self.write_invoke_req(iftype)
+        
+    def write_invoke_req(self, iftype):
+        self.out_cpp.println("void %s::invoke_req(" % iftype.name)
+        self.out_cpp.inc_ind()
+        self.out_cpp.inc_ind()
+        self.out_cpp.println("IInterfaceInst    *ifinst,")
+        self.out_cpp.println("IMethodType       *method,")
+        self.out_cpp.println("intptr_t          call_id,")
+        self.out_cpp.println("IParamValVec      *params) {")
+        self.out_cpp.dec_ind()
+        self.out_cpp.println("IParamVal *rval = 0;")
+        self.out_cpp.println()
+        self.out_cpp.println("switch (method->id()) {")
+        for i,m in enumerate(iftype.methods):
+            self.out_cpp.println("case %d: {" % i)
+            self.out_cpp.inc_ind()
+            self.out_cpp.println("// Method %s" % m.name)
+            for j,p in enumerate(m.params):
+                self.write_param_assignment(j, p)
+
+            # Implementation invocation
+            self.out_cpp.write(self.out_cpp.ind)
+            if m.rtype is not None:
+                self.write_ctype(self.out_cpp, m.rtype)
+                self.out_cpp.write(" ret = ")
+                
+            self.out_cpp.write("m_%s_impl(" % m.name)
+            for i,p in enumerate(m.params):
+                if i > 0:
+                    self.out_cpp.write(", ")
+                self.out_cpp.write("%s" % p[0])
+            self.out_cpp.write(");\n")
+            self.out_cpp.println()
+
+            # Create an appropriate return value            
+            if m.rtype is not None:
+                if m.rtype.kind == TypeKind.Bool:
+                    self.out_cpp.println("rval = ifinst->mkValBool(ret);")
+                elif m.rtype.kind == TypeKind.Int:
+                    if m.rtype.is_signed:
+                        self.out_cpp.println("rval = ifinst->mkValIntS(ret, %d);" % m.rtype.width)
+                    else:
+                        self.out_cpp.println("rval = ifinst->mkValIntU(ret, %d);" % m.rtype.width)
+                elif p[1].kind == TypeKind.Str:
+                    self.out_cpp.println("rval = ifinst->mkValStr(ret);")
+            
+            self.out_cpp.dec_ind()
+            self.out_cpp.println("} break;")
+        self.out_cpp.println("}")
+        self.out_cpp.println()
+        self.out_cpp.println("ifinst->invoke_rsp(call_id, rval);")
+        self.out_cpp.dec_ind()
+        self.out_cpp.println("}")
+
+    def write_param_assignment(self, idx, p):
+        self.out_cpp.write(self.out_cpp.ind)
+        self.write_ctype(self.out_cpp, p[1])
+        self.out_cpp.write(" %s = " % p[0])
+        
+        if p[1].kind == TypeKind.Bool:
+            self.out_cpp.write("params->atT<IParamValBool>(%d)->val();\n" % idx)
+        elif p[1].kind == TypeKind.Int:
+            if p[1].is_signed:
+                self.out_cpp.write("params->atT<IParamValInt>(%d)->val_s();\n" % idx)
+            else:
+                self.out_cpp.write("params->atT<IParamValInt>(%d)->val_u();\n" % idx)
+        elif p[1].kind == TypeKind.Str:
+            self.out_cpp.write("params->atT<IParamValStr>(%d)->val();\n" % idx)
+            
+        # elif t.kind == TypeKind.Map:
+        #     self.out_cpp.write("iftype_b->mkTypeMap(\n")
+        #     self.out_cpp.inc_ind()
+        #     self.mk_method_type(t.key_t)
+        #     self.out_cpp.write(",\n")
+        #     self.mk_method_type(t.elem_t)
+        #     self.out_cpp.dec_ind()
+        #     self.out_cpp.write(")")
+        # elif t.kind == TypeKind.Vec:
+        #     self.out_cpp.write("iftype_b->mkTypeVec(\n")
+        #     self.out_cpp.inc_ind()
+        #     self.mk_method_type(t.elem_t)
+        #     self.out_cpp.dec_ind()
+        #     self.out_cpp.write(")")        
         
     def register_method_type(self, method_id, m : MethodSpec):
 
@@ -238,7 +331,7 @@ class OutputWriterCpp(OutputWriter):
             self.out_cpp.write(");\n")
             self.out_cpp.dec_ind()
             
-        self.out_cpp.println("ifype_b->add_method(iftype_b);")
+        self.out_cpp.println("iftype_b->add_method(method_b);")
         
     def define_method_proto(self, m):
         # Typedef for the signature
@@ -258,6 +351,7 @@ class OutputWriterCpp(OutputWriter):
         
         # Prototype for the method
         self.out_h.write(self.out_h.ind)
+        self.out_h.write("virtual ")
         self.write_ctype(self.out_h, m.rtype)
         self.out_h.write(" %s(" % m.name)
         for i,p in enumerate(m.params):
@@ -290,9 +384,9 @@ class OutputWriterCpp(OutputWriter):
         # This is an invoke method if the method-type is 
         # export==True and mirror==False or export==False and mirror==True
         if m.is_export:
-            self.out_cpp.println("if (!m_ifinst.is_mirror()) {")
+            self.out_cpp.println("if (!m_ifinst->is_mirror()) {")
         else:
-            self.out_cpp.println("if (m_ifinst.is_mirror()) {")
+            self.out_cpp.println("if (m_ifinst->is_mirror()) {")
         self.out_cpp.inc_ind()
         self.out_cpp.println("// implements remote-call")
         
@@ -300,23 +394,25 @@ class OutputWriterCpp(OutputWriter):
         self.out_cpp.println("} else {")
         self.out_cpp.inc_ind()
         self.out_cpp.println("// implements local-call")
-        self.out_cpp.println("if (m_%s_impl) {" % m.name);
-        self.out_cpp.inc_ind()
-        if m.rtype is None:
-            self.out_cpp.write("%sm_%s_impl(" % (self.out_cpp.ind, m.name))
-        else:
-            self.out_cpp.write("%sreturn m_%s_impl(" % (self.out_cpp.ind, m.name))
-        self.out_cpp.write(");\n")
+#        self.out_cpp.println("if (m_%s_impl) {" % m.name);
+#        self.out_cpp.inc_ind()
+#        if m.rtype is None:
+#            self.out_cpp.write("%sm_%s_impl(" % (self.out_cpp.ind, m.name))
+#        else:
+#            self.out_cpp.write("%sreturn m_%s_impl(" % (self.out_cpp.ind, m.name))
+#        self.out_cpp.write(");\n")
 
-        self.out_cpp.dec_ind()
-        self.out_cpp.println("} else {")
-        self.out_cpp.inc_ind()
+#        self.out_cpp.dec_ind()
+#        self.out_cpp.println("} else {")
+#        self.out_cpp.inc_ind()
         self.out_cpp.println("fprintf(stdout, \"Error: no implementation provided for %s\\n\");" % iftype.name)
+        if m.rtype is not None:
+            self.default_return(self.out_cpp, m.rtype)
         self.out_cpp.dec_ind()
         self.out_cpp.println("}")
         
-        self.out_cpp.dec_ind()
-        self.out_cpp.println("}")
+#        self.out_cpp.dec_ind()
+#        self.out_cpp.println("}")
         
         self.out_cpp.dec_ind()
         self.out_cpp.println("}")
@@ -335,23 +431,36 @@ class OutputWriterCpp(OutputWriter):
                     out.write("uint%d_t" % t.width)
             elif t.kind == TypeKind.Str:
                 out.write("const std::string &")
+                
+    def default_return(self, out, t):
+        if t.kind == TypeKind.Bool:
+            out.println("return false;")
+        elif t.kind == TypeKind.Int:
+            if t.is_signed:
+                out.println("return -1;")
+            else:
+                out.println("return 0;")
+        elif t.kind == TypeKind.Str:
+            out.println("return \"\";");
+        
+        
 
     def mk_method_type(self, t : TypeSpec):
         self.out_cpp.write("%s" % self.out_cpp.ind)
         
         if t.kind == TypeKind.Bool:
-            self.out_cpp.write("iftype_b.mkTypeBool()")
+            self.out_cpp.write("iftype_b->mkTypeBool()")
         elif t.kind == TypeKind.Int:
-            self.out_cpp.write("iftype_b.mkTypeInt(")
+            self.out_cpp.write("iftype_b->mkTypeInt(")
             if t.is_signed:
                 self.out_cpp.write("true, ")
             else:
                 self.out_cpp.write("false, ")
             self.out_cpp.write("%d)" % t.width)
         elif t.kind == TypeKind.Str:
-            self.out_cpp.write("iftype_b.mkTypeStr()")
+            self.out_cpp.write("iftype_b->mkTypeStr()")
         elif t.kind == TypeKind.Map:
-            self.out_cpp.write("iftype_b.mkTypeMap(\n")
+            self.out_cpp.write("iftype_b->mkTypeMap(\n")
             self.out_cpp.inc_ind()
             self.mk_method_type(t.key_t)
             self.out_cpp.write(",\n")
@@ -359,7 +468,7 @@ class OutputWriterCpp(OutputWriter):
             self.out_cpp.dec_ind()
             self.out_cpp.write(")")
         elif t.kind == TypeKind.Vec:
-            self.out_cpp.write("iftype_b.mkTypeVec(\n")
+            self.out_cpp.write("iftype_b->mkTypeVec(\n")
             self.out_cpp.inc_ind()
             self.mk_method_type(t.elem_t)
             self.out_cpp.dec_ind()

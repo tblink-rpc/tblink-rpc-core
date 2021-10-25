@@ -19,4 +19,5 @@ pingpong_if.cpp pingpong_if.h : $(TEST_DIR)/pingpong_if.yaml
 	$(PACKAGES_DIR)/python/bin/python3 -m tblink_rpc gen \
 		-o pingpong_if.cpp --output-style cpp \
 		$^
+	$(CXX) -c pingpong_if.cpp -I. -I$(TBLINK_RPC_CORE_DIR)/cpp/include
 
