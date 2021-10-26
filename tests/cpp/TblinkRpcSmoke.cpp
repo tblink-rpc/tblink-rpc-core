@@ -41,7 +41,7 @@ TEST_F(TblinkRpcSmoke, smoke) {
 
 	fprintf(stdout, "client_fd: %d\n", client_fd);
 
-	ITbLink *f = tblink_rpc_get_factory();
+//	ITbLink *f = tblink_rpc_get_factory();
 //	ITransport *tp = f->mkSocketTransport(client_fd);
 //	IEndpoint *ep = f->mkJsonRpcEndpoint(tp);
 
