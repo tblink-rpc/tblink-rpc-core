@@ -5,6 +5,14 @@ MKDV_TOOL ?= none
 
 MKDV_RUN_DEPS += run-test
 
+ifeq (1,$(MKDV_GDB))
+CMD_PREFIX=gdb --args 
+endif
+
+ifeq (1,$(MKDV_VALGRIND))
+CMD_PREFIX=valgrind --tool=memcheck 
+endif
+
 include $(TEST_DIR)/../common/defs_rules.mk
 
 RULES := 1
@@ -43,5 +51,5 @@ pingpong_if.cpp pingpong_if.h : $(TEST_DIR)/pingpong_if.yaml
 	$(CXX) -c pingpong_if.cpp -I. -I$(TBLINK_RPC_CORE_DIR)/cpp/include
 
 run-test : test-main
-	valgrind --tool=memcheck $(MKDV_RUNDIR)/test-main --gtest_filter=PingpongNB.launcher
+	$(CMD_PREFIX)$(MKDV_RUNDIR)/test-main --gtest_filter=PingpongNB.launcher
 

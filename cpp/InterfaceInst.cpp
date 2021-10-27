@@ -169,8 +169,8 @@ void InterfaceInst::invoke_nb_rsp(
 	if ((it=m_outbound_invoke_m.find(call_id)) != m_outbound_invoke_m.end()) {
 		IParamVal *retval = 0;
 
-		if (result->hasKey("retval")) {
-			retval = result->getVal("retval");
+		if (result->hasKey("return")) {
+			retval = result->getVal("return");
 		}
 
 		it->second(retval);

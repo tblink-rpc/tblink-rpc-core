@@ -5,6 +5,7 @@
  *      Author: mballance
  */
 
+#include "Debug.h"
 #include "JsonParamValFactory.h"
 
 #include "nlohmann/json.hpp"
