@@ -219,6 +219,9 @@ setup(
       'tblink-rpc = tblink_rpc.__main__:main'
     ]
   },
+  install_requires=[
+      pyyaml
+  ],
   setup_requires=[
     'setuptools_scm',
   ],
