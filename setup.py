@@ -220,7 +220,7 @@ setup(
     ]
   },
   install_requires=[
-      pyyaml
+      'pyyaml'
   ],
   setup_requires=[
     'setuptools_scm',
