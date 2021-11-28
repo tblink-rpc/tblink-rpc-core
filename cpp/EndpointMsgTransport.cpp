@@ -16,11 +16,11 @@
 
 #ifdef EN_DEBUG_ENDPOINT_MSG_TRANSPORT
 #define DEBUG_ENTER(fmt, ...) \
-	DEBUG_ENTER_BASE(EndpointMsgTransport, fmt, #__VA_ARGS__)
+	DEBUG_ENTER_BASE(EndpointMsgTransport, fmt, ##__VA_ARGS__)
 #define DEBUG_LEAVE(fmt, ...) \
-	DEBUG_LEAVE_BASE(EndpointMsgTransport, fmt, #__VA_ARGS__)
+	DEBUG_LEAVE_BASE(EndpointMsgTransport, fmt, ##__VA_ARGS__)
 #define DEBUG(fmt, ...) \
-	DEBUG_BASE(EndpointMsgTransport, fmt, #__VA_ARGS__)
+	DEBUG_BASE(EndpointMsgTransport, fmt, ##__VA_ARGS__)
 #else
 #define DEBUG_ENTER(fmt, ...)
 #define DEBUG_LEAVE(fmt, ...)
@@ -885,6 +885,7 @@ void EndpointMsgTransport::call_completion_b(
 		InterfaceInst		*ifinst,
 		intptr_t				call_id,
 		IParamVal				*retval) {
+	DEBUG_ENTER("call_completion_b");
 	IParamValMap *params = m_transport->mkValMap();
 
 	params->setVal("ifinst", m_transport->mkValStr(ifinst->name()));
@@ -908,6 +909,7 @@ void EndpointMsgTransport::call_completion_b(
 	// Give the endpoint services a chance to decide how
 	// best to proceed
 	m_services->idle();
+	DEBUG_LEAVE("call_completion_b");
 }
 
 int32_t EndpointMsgTransport::recv_req(

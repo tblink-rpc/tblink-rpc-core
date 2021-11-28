@@ -36,6 +36,9 @@ cwd = os.getcwd()
 if not os.path.isdir(os.path.join(cwd, "build")):
     os.makedirs(os.path.join(cwd, "build"))
 
+if not os.path.isdir(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc")):
+    os.makedirs(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc"))
+
 # Run configure...
 result = subprocess.run(
     ["cmake", 
