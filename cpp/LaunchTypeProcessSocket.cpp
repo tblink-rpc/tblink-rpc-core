@@ -7,6 +7,7 @@
 
 #include "EndpointMsgTransport.h"
 #include "Env.h"
+#include "LaunchParams.h"
 #include "TransportJsonSocket.h"
 #include "LaunchTypeProcessSocket.h"
 #include "LaunchTypeRegistration.h"
@@ -176,7 +177,13 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
     TransportJsonSocket *transport = new TransportJsonSocket(pid, conn_socket);
     IEndpoint *ep = new EndpointMsgTransport(transport);
 
+    delete params;
+
     return {ep, ""};
+}
+
+ILaunchParams *LaunchTypeProcessSocket::newLaunchParams() {
+	return new LaunchParams();
 }
 
 static LaunchTypeRegistration<LaunchTypeProcessSocket>	m_registration;

@@ -32,6 +32,8 @@ public:
 	 */
 	virtual result_t launch(ILaunchParams *params) override;
 
+	virtual ILaunchParams *newLaunchParams() override;
+
 };
 
 } /* namespace tblink_rpc_core */

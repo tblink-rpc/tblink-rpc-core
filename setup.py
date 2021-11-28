@@ -224,17 +224,23 @@ setup(
   ],
   setup_requires=[
     'setuptools_scm',
+    'cython'
   ],
   cmdclass={'build_ext': build_ext},
   ext_modules=[
-        Extension("tblink_rpc.tblink_rpc_stub",
+        Extension("tblink_rpc_core.native",
             extra_compile_args=extra_compile_args,
 #            include_dirs=[
 #                os.path.join(pybfms_root, 'ext/common'), 
 #                os.path.join(pybfms_root, 'ext/hdl_sim')],
             sources=[
-                os.path.join(tblink_rpc_core_dir, 'python', "tblink_rpc_stub.pyx"), 
+                os.path.join(tblink_rpc_core_dir, 'python', "native.pyx"), 
             ],
+            language="c++",
+            include_dirs=[
+                os.path.join(tblink_rpc_core_dir, 'cpp'),
+                os.path.join(tblink_rpc_core_dir, 'cpp', 'include')
+            ]
 #            libraries=[
 #                "-Wl,--whole-archive",
 #                "tblink_rpc_hdl",

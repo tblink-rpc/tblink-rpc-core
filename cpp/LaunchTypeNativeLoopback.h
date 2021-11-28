@@ -1,7 +1,7 @@
 /*
- * LaunchTypeConnectSocket.h
+ * LaunchTypeNativeLoopback.h
  *
- *  Created on: Sep 27, 2021
+ *  Created on: Nov 27, 2021
  *      Author: mballance
  */
 
@@ -10,13 +10,13 @@
 
 namespace tblink_rpc_core {
 
-class LaunchTypeConnectSocket : public ILaunchType {
+class LaunchTypeNativeLoopback : public ILaunchType {
 public:
-	LaunchTypeConnectSocket();
+	LaunchTypeNativeLoopback();
 
-	virtual ~LaunchTypeConnectSocket();
+	virtual ~LaunchTypeNativeLoopback();
 
-	virtual std::string name() { return "connect.socket"; }
+	virtual std::string name() override { return "native.loopback"; }
 
 	virtual result_t launch(ILaunchParams *params) override;
 
@@ -25,5 +25,4 @@ public:
 };
 
 } /* namespace tblink_rpc_core */
-
 

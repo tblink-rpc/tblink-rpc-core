@@ -26,6 +26,7 @@
 #endif
 
 #include "EndpointMsgTransport.h"
+#include "LaunchParams.h"
 #include "LaunchTypeConnectSocket.h"
 #include "LaunchTypeRegistration.h"
 #include "TransportJsonSocket.h"
@@ -45,10 +46,12 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
 
 	// TODO: need to handle non-localhost hosts
 	if (params->params().find("host") == params->params().end()) {
+		delete params;
 		return {0, "No 'host' param speicifed"};
 	}
 
 	if (params->params().find("port") == params->params().end()) {
+		delete params;
 		return {0, "No 'port' param speicifed"};
 	}
 
@@ -56,6 +59,7 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
 
     int sock = socket (AF_INET, SOCK_STREAM, 0);
      if (sock == -1) {
+    	 delete params;
          return {0, "socket creation failed"};
      }
 
@@ -70,6 +74,7 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
      if (connect(sock, (struct sockaddr*) &addr, sizeof(addr)) == -1) {
          fprintf(stdout, "Error: Connection error\n");
          ::close(sock);
+         delete params;
          return {0, "connection error"};
      }
 
@@ -79,7 +84,13 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
      TransportJsonSocket *transport = new TransportJsonSocket(0, sock);
      EndpointMsgTransport *endpoint = new EndpointMsgTransport(transport);
 
+     delete params;
+
 	return {endpoint, ""};
+}
+
+ILaunchParams *LaunchTypeConnectSocket::newLaunchParams() {
+	return new LaunchParams();
 }
 
 static LaunchTypeRegistration<LaunchTypeConnectSocket>	m_registration;

@@ -31,6 +31,11 @@ public:
 	 */
 	virtual result_t launch(ILaunchParams *params) = 0;
 
+	/**
+	 *
+	 */
+	virtual ILaunchParams *newLaunchParams() = 0;
+
 };
 
 }
