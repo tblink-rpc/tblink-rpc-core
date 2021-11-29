@@ -206,11 +206,11 @@ int32_t EndpointMsgTransport::is_connect_complete() {
 		m_peer_local_check_complete = 1;
 		for (auto it=m_local_ifc_insts.begin();
 				it!=m_local_ifc_insts.end(); it++) {
-			std::unordered_map<std::string,InterfaceInstUP>::iterator peer_it;
+			std::unordered_map<std::string,InterfaceInstMsgTransportUP>::iterator peer_it;
 			if ((peer_it=m_peer_ifc_insts.find(it->first)) != m_peer_ifc_insts.end()) {
 				// Compare types
-				InterfaceInst *local_ifinst = it->second.get();
-				InterfaceInst *peer_ifinst = peer_it->second.get();
+				InterfaceInstBase *local_ifinst = it->second.get();
+				InterfaceInstBase *peer_ifinst = peer_it->second.get();
 
 				if (local_ifinst->type() != peer_ifinst->type()) {
 					fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
@@ -233,11 +233,11 @@ int32_t EndpointMsgTransport::is_connect_complete() {
 		if (m_peer_local_check_complete == 1) {
 			for (auto it=m_peer_ifc_insts.begin();
 					it!=m_peer_ifc_insts.end(); it++) {
-				std::unordered_map<std::string,InterfaceInstUP>::iterator local_it;
+				std::unordered_map<std::string,InterfaceInstMsgTransportUP>::iterator local_it;
 				if ((local_it=m_local_ifc_insts.find(it->first)) != m_local_ifc_insts.end()) {
 					// Compare types
-					InterfaceInst *peer_ifinst = it->second.get();
-					InterfaceInst *local_ifinst = local_it->second.get();
+					InterfaceInstBase *peer_ifinst = it->second.get();
+					InterfaceInstBase *local_ifinst = local_it->second.get();
 
 					if (local_ifinst->type() != peer_ifinst->type()) {
 						fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
@@ -530,13 +530,13 @@ IInterfaceInst *EndpointMsgTransport::defineInterfaceInst(
 			bool					is_mirror,
 			const invoke_req_f		&req_f) {
 
-	InterfaceInst *ifinst = new InterfaceInst(
+	InterfaceInstMsgTransport *ifinst = new InterfaceInstMsgTransport(
 			this,
 			static_cast<InterfaceType *>(type),
 			inst_name,
 			is_mirror,
 			req_f);
-	m_local_ifc_insts.insert({inst_name, InterfaceInstUP(ifinst)});
+	m_local_ifc_insts.insert({inst_name, InterfaceInstMsgTransportUP(ifinst)});
 	m_local_ifc_insts_pl.push_back(ifinst);
 
 	return ifinst;
@@ -619,12 +619,12 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 	for (std::unordered_map<std::string,InterfaceInstUP>::iterator
 			it=ifinsts.begin();
 			it!=ifinsts.end(); it++) {
-		std::map<std::string,InterfaceInst*>::const_iterator m_it;
+		std::map<std::string,InterfaceInstBase*>::const_iterator m_it;
 		if ((m_it=m_local_ifc_insts.find((*it)->name())) != m_local_ifc_insts.end()) {
 			// Need to compare
 		} else {
 			// Add
-			InterfaceInst *ifinst = it->release();
+			InterfaceInstBase *ifinst = it->release();
 			m_local_ifc_insts.insert({
 				ifinst->name(),
 				ifinst
@@ -741,7 +741,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_nb(
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	intptr_t call_id = params->getValT<IParamValInt>("call-id")->val_s();
 
-	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstMsgTransportUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
@@ -784,7 +784,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_b(
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	uint64_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 
-	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstMsgTransportUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 		IMethodType *method_t = i_it->second->type()->findMethod(method);
@@ -828,7 +828,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_invoke_rsp_b(
 		retval = params->getVal("return");
 	}
 
-	std::unordered_map<std::string,InterfaceInstUP>::const_iterator i_it;
+	std::unordered_map<std::string,InterfaceInstMsgTransportUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
 
@@ -882,7 +882,7 @@ void EndpointMsgTransport::call_completion_nb(
 }
 
 void EndpointMsgTransport::call_completion_b(
-		InterfaceInst		*ifinst,
+		InterfaceInstBase		*ifinst,
 		intptr_t				call_id,
 		IParamVal				*retval) {
 	DEBUG_ENTER("call_completion_b");
@@ -1030,7 +1030,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::wait_rsp(intptr_t id) {
 }
 
 IParamVal *EndpointMsgTransport::invoke_nb(
-		InterfaceInst		*ifinst,
+		InterfaceInstBase		*ifinst,
 		IMethodType 			*method,
 		IParamValVec 		*params) {
 	IParamValMap *r_params = mkValMap();
@@ -1102,12 +1102,10 @@ IParamValMap *EndpointMsgTransport::pack_iftypes(
 }
 
 IParamValMap *EndpointMsgTransport::pack_ifinsts(
-		const std::unordered_map<std::string, InterfaceInstUP> &ifinsts) {
+		const std::unordered_map<std::string, InterfaceInstMsgTransportUP> &ifinsts) {
 	IParamValMap *ret = m_transport->mkValMap();
 
-	for (std::unordered_map<std::string,InterfaceInstUP>::const_iterator
-			it=ifinsts.begin();
-			it!=ifinsts.end(); it++) {
+	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
 		IParamValMap *ifinst = m_transport->mkValMap();
 		ifinst->setVal("type", m_transport->mkValStr(it->second->type()->name()));
 		ifinst->setVal("is-mirror", m_transport->mkValBool(it->second->is_mirror()));
@@ -1185,8 +1183,8 @@ void EndpointMsgTransport::unpack_iftypes(
 }
 
 void EndpointMsgTransport::unpack_ifinsts(
-		std::unordered_map<std::string,InterfaceInstUP>		&ifinsts,
-		IParamValMap 										*ifinsts_p) {
+		std::unordered_map<std::string,InterfaceInstMsgTransportUP>	&ifinsts,
+		IParamValMap 												*ifinsts_p) {
 	std::vector<InterfaceInstUP> ret;
 
 	if (ifinsts_p) {
@@ -1201,12 +1199,12 @@ void EndpointMsgTransport::unpack_ifinsts(
 			if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
 				type = it->second.get();
 			}
-			InterfaceInst *ifinst = new InterfaceInst(
+			InterfaceInstMsgTransport *ifinst = new InterfaceInstMsgTransport(
 					this,
 					type,
 					*k_it,
 					is_mirror);
-			ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
+			ifinsts.insert({*k_it, InterfaceInstMsgTransportUP(ifinst)});
 		}
 	} else {
 		fprintf(stdout, "unpack_ifinsts: null ifinsts_p\n");

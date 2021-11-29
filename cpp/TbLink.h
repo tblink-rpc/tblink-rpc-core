@@ -20,13 +20,13 @@ public:
 
 	virtual ~TbLink();
 
-	virtual IEndpoint *mkJsonRpcEndpoint(
-			IEndpoint::Type		type,
-			IEndpointServices	*services) override;
+	virtual IEndpoint *getDefaultEP() const {
+		return m_default_ep;
+	}
 
-	virtual ITransport *mkSocketTransport(
-			pid_t		pid,
-			int32_t 	socket) override;
+	virtual void setDefaultEP(IEndpoint *ep) override {
+		m_default_ep = ep;
+	}
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const override {
 		return m_launch_types;
@@ -36,8 +36,6 @@ public:
 
 	virtual ILaunchType *findLaunchType(const std::string &id) override;
 
-	virtual ILaunchParams *newLaunchParams() override;
-
 	virtual const std::string &getLibPath() override;
 
 	virtual ISymFinder *sym_finder() override;
@@ -45,6 +43,7 @@ public:
 	static TbLink *inst();
 
 private:
+	IEndpoint								*m_default_ep;
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
 	std::string								m_libpath;

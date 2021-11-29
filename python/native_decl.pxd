@@ -33,6 +33,8 @@ ctypedef ILaunchType *ILaunchTypeP
 cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
     cdef cppclass ITbLink:
     
+        IEndpoint *getDefaultEP()
+    
         const cpp_vector[ILaunchTypeP] &launchTypes()
     
         ILaunchType *findLaunchType(const cpp_string &id)

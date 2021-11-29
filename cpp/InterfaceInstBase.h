@@ -13,24 +13,24 @@
 namespace tblink_rpc_core {
 
 class EndpointMsgTransport;
-class InterfaceInst;
-typedef std::unique_ptr<InterfaceInst> InterfaceInstUP;
-class InterfaceInst : public IInterfaceInst {
+class InterfaceInstBase;
+typedef std::unique_ptr<InterfaceInstBase> InterfaceInstUP;
+class InterfaceInstBase : public IInterfaceInst {
 public:
-	InterfaceInst(
-			EndpointMsgTransport			*endpoint,
+	InterfaceInstBase(
+			IEndpoint						*endpoint,
 			IInterfaceType					*type,
 			const std::string				&inst_name,
 			bool							is_mirror);
 
-	InterfaceInst(
-			EndpointMsgTransport			*endpoint,
+	InterfaceInstBase(
+			IEndpoint						*endpoint,
 			IInterfaceType					*type,
 			const std::string				&inst_name,
 			bool							is_mirror,
 			const invoke_req_f				&req_f);
 
-	virtual ~InterfaceInst();
+	virtual ~InterfaceInstBase();
 
 	virtual IInterfaceType *type() override { return m_type; }
 
@@ -49,6 +49,7 @@ public:
 			IParamValVec			*params,
 			const invoke_rsp_f		&response_f);
 
+	/** Must be implemented by sub-types
 	virtual IParamVal *invoke(
 			IMethodType									*method,
 			IParamValVec								*params) override;
@@ -57,6 +58,7 @@ public:
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;
+	 */
 
 	virtual void invoke_rsp(
 			intptr_t									call_id,
@@ -87,8 +89,8 @@ public:
 
 	virtual IParamValVec *mkValVec() override;
 
-private:
-	EndpointMsgTransport						*m_endpoint;
+protected:
+	IEndpoint									*m_endpoint;
 	IInterfaceType								*m_type;
 	std::string									m_inst_name;
 	bool										m_is_mirror;

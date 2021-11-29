@@ -101,14 +101,6 @@ public:
 	virtual IInterfaceType *findInterfaceType(
 			const std::string		&name) = 0;
 
-	/*
-	virtual ITypeBuilderSP mk_type_builder(
-			const std::string		&name) = 0;
-
-	virtual ITypeSP define_interface_type(
-			ITypeBuilderSP			type) = 0;
-			 */
-
 	virtual IInterfaceTypeBuilder *newInterfaceTypeBuilder(
 			const std::string		&name) = 0;
 

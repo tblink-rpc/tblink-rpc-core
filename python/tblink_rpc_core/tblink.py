@@ -6,12 +6,43 @@ Created on Nov 27, 2021
 from tblink_rpc_core import native
 import os
 from ctypes import CDLL
+from tblink_rpc_core.launch_type import LaunchType
 
 class TbLink(object):
     
     _inst = None
     
     def __init__(self):
+        self.launchtype_m = {}
+        self.launchtypes = []
+        self.native_tblink = None
+        self._setup_native()
+    
+    @classmethod
+    def inst(cls):
+        if cls._inst is None:
+            cls._inst = TbLink()
+        return cls._inst
+    
+    def getDefaultEP(self):
+        return self.native_tblink.getDefaultEP()
+    
+    def launchTypes(self):
+        ret = self.launchtypes.copy()
+        ret.extend(self.native_tblink.launchTypes())
+        return ret
+    
+    def addLaunchType(self, lt):
+        self.launchtype_m[lt.name()] = lt
+        self.launchtypes.append(lt)
+
+    def findLaunchType(self, name) -> LaunchType:
+        if name in self.launchtype_m.keys():
+            return self.launchtype_m[name]
+        else:
+            return self.native_tblink.findLaunchType(name)
+    
+    def _setup_native(self):
         # First, check all the loaded libraries to see if they contain
         # the 'tblink' symbol. This will occur when Python is
         # loaded as an embedded interpreter in an environment that has
@@ -67,11 +98,26 @@ class TbLink(object):
         
         lib_path = None
         
-        for p in paths:
+        for p in filter(lambda x : x.find('tblink') != -1, paths):
             lib = CDLL(p)
-            if hasattr(lib, 'tblink'):
+            try:
+                getattr(lib, 'tblink')
                 lib_path = p
+                print("Found tblink")
                 break
+            except Exception as e:
+                pass
+            
+        if lib_path is None:
+            for p in filter(lambda x : x.find('tblink') == -1, paths):
+                lib = CDLL(p)
+                try:
+                    getattr(lib, 'tblink')
+                    lib_path = p
+                    print("Found tblink")
+                    break
+                except Exception as e:
+                    pass
 
         # Nothing already loaded provides tblink, so load the core library
         if lib_path is None:
@@ -79,18 +125,6 @@ class TbLink(object):
             lib_path = os.path.join(lib_dir, "libtblink_rpc_core.so")
             
         print("lib_path: %s" % lib_path)
-        self.native_tblink = native.TbLink(lib_path)
-        pass
-    
-    @classmethod
-    def inst(cls):
-        if cls._inst is None:
-            cls._inst = TbLink()
-        pass
-    
-    def launchTypes(self):
-        ret = []
-        ret.extend(self.native_tblink.launchTypes())
-        return ret
+        self.native_tblink = native.TbLink(lib_path)        
     
     pass

@@ -66,6 +66,15 @@ cdef class TbLink(object):
     
     def __init__(self, lib_path):
         self._hndl = native_decl.get_tblink(lib_path.encode())
+        
+    cpdef Endpoint getDefaultEP(self):
+        cdef IEndpointP ep = self._hndl.getDefaultEP()
+        if ep:
+            ret = Endpoint()
+            ret._hndl = ep
+            return ret
+        else:
+            return None
     
     cpdef findLaunchType(self, id):
         ret = LaunchType()

@@ -21,21 +21,15 @@ public:
 
 	virtual ~ITbLink() { }
 
-	virtual IEndpoint *mkJsonRpcEndpoint(
-			IEndpoint::Type		type,
-			IEndpointServices	*services) = 0;
+	virtual IEndpoint *getDefaultEP() const = 0;
 
-	virtual ITransport *mkSocketTransport(
-			pid_t			pid,
-			int32_t 		socket) = 0;
+	virtual void setDefaultEP(IEndpoint *) = 0;
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
 
 	virtual void addLaunchType(ILaunchType *launch_t) = 0;
 
 	virtual ILaunchType *findLaunchType(const std::string &id) = 0;
-
-	virtual ILaunchParams *newLaunchParams() = 0;
 
 	virtual const std::string &getLibPath() = 0;
 

@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <stdint.h>
 
-#include "InterfaceInst.h"
+#include "InterfaceInstMsgTransport.h"
 #include "InterfaceType.h"
 #include "tblink_rpc/IParamVal.h"
 #include "tblink_rpc/IEndpoint.h"
@@ -26,7 +26,7 @@ public:
 	using response_f = std::function<void (intptr_t, IParamValMap *, IParamValMap *)>;
 public:
 
-	friend class InterfaceInst;
+	friend class InterfaceInstBase;
 
 	EndpointMsgTransport(ITransport	*transport);
 
@@ -146,7 +146,7 @@ private:
 	// Methods used by InterfaceInst
 
 	IParamVal *invoke_nb(
-			InterfaceInst	*ifinst,
+			InterfaceInstBase	*ifinst,
 			IMethodType 		*method,
 			IParamValVec 	*params);
 
@@ -205,7 +205,7 @@ private:
 			IParamVal		*retval);
 
 	void call_completion_b(
-			InterfaceInst	*ifinst,
+			InterfaceInstBase	*ifinst,
 			intptr_t			call_id,
 			IParamVal			*retval);
 
@@ -224,7 +224,7 @@ private:
 			const std::unordered_map<std::string,InterfaceTypeUP>	&iftypes);
 
 	IParamValMap *pack_ifinsts(
-			const std::unordered_map<std::string,InterfaceInstUP>	&ifinsts);
+			const std::unordered_map<std::string,InterfaceInstMsgTransportUP>	&ifinsts);
 
 	IParamValMap *pack_type(IType *t);
 
@@ -233,8 +233,8 @@ private:
 			IParamValMap 										*iftypes_p);
 
 	void unpack_ifinsts(
-			std::unordered_map<std::string,InterfaceInstUP>		&ifinsts,
-			IParamValMap  										*ifinsts_p);
+			std::unordered_map<std::string,InterfaceInstMsgTransportUP>	&ifinsts,
+			IParamValMap  												*ifinsts_p);
 
 private:
 	typedef std::pair<bool, std::pair<IParamValMap*,IParamValMap*>> rspq_elem_t;
@@ -272,8 +272,8 @@ private:
 	std::unordered_map<std::string, InterfaceTypeUP>				m_local_ifc_types;
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
 
-	std::unordered_map<std::string, InterfaceInstUP>				m_peer_ifc_insts;
-	std::unordered_map<std::string, InterfaceInstUP>				m_local_ifc_insts;
+	std::unordered_map<std::string, InterfaceInstMsgTransportUP>	m_peer_ifc_insts;
+	std::unordered_map<std::string, InterfaceInstMsgTransportUP>	m_local_ifc_insts;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 
 	int32_t															m_run_until_event;

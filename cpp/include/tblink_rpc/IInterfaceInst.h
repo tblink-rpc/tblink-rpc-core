@@ -17,6 +17,7 @@
 namespace tblink_rpc_core {
 
 class IInterfaceInst;
+using IInterfaceInstUP=std::unique_ptr<IInterfaceInst>;
 typedef std::function<void(
 		IInterfaceInst		*inst,
 		IMethodType			*method,

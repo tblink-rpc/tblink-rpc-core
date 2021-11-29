@@ -20,26 +20,13 @@
 
 namespace tblink_rpc_core {
 
-TbLink::TbLink() {
+TbLink::TbLink() : m_default_ep(0) {
 	// TODO Auto-generated constructor stub
 
 }
 
 TbLink::~TbLink() {
 	// TODO Auto-generated destructor stub
-}
-
-IEndpoint *TbLink::mkJsonRpcEndpoint(
-		IEndpoint::Type		type,
-		IEndpointServices	*services) {
-//	return new EndpointMsgTransport(type, services);
-	return 0;
-}
-
-ITransport *TbLink::mkSocketTransport(
-		pid_t			pid,
-		int32_t 		fd) {
-	return new TransportJsonSocket(pid, fd);
 }
 
 void TbLink::addLaunchType(ILaunchType *launch_t) {
@@ -55,10 +42,6 @@ ILaunchType *TbLink::findLaunchType(const std::string &id) {
 	} else {
 		return 0;
 	}
-}
-
-ILaunchParams *TbLink::newLaunchParams() {
-	return new LaunchParams();
 }
 
 const std::string &TbLink::getLibPath() {
