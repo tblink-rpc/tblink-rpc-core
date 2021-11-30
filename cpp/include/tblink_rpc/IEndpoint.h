@@ -125,11 +125,13 @@ public:
 	 */
 	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() = 0;
 
+	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() = 0;
+
 	/**
 	 * Returns the available interface instances registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() = 0;
+	virtual const std::vector<IInterfaceInst *> &getPeerInterfaceInsts() = 0;
 
 //	virtual IInterfaceInst *findInterfaceInst(const std::string &name) = 0;
 

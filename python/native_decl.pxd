@@ -7,6 +7,9 @@ from libcpp.pair cimport pair as cpp_pair
 from libcpp.string cimport string as cpp_string
 from libcpp.vector cimport vector as cpp_vector
 
+#********************************************************************
+#* ILaunchParams
+#********************************************************************
 cdef extern from "tblink_rpc/ILaunchParams.h" namespace "tblink_rpc_core":
     cdef cppclass ILaunchParams:
         
@@ -15,13 +18,41 @@ cdef extern from "tblink_rpc/ILaunchParams.h" namespace "tblink_rpc_core":
         void add_param(
             const cpp_string &,
             const cpp_string &)
+        
+#********************************************************************
+#* IInterfaceInst
+#********************************************************************
+cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
+    cdef cppclass IInterfaceInst:
+        const cpp_string &name()
+        
+ctypedef IInterfaceInst *IInterfaceInstP
     
+#********************************************************************
+#* IEndpoint
+#********************************************************************
 cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
     cdef cppclass IEndpoint:
+    
+        int build_complete()
+        
+        int is_build_complete()
+        
+        int connect_complete()
+        
+        int is_connect_complete()
+    
+        const cpp_vector[IInterfaceInstP] &getInterfaceInsts()
+        
+        const cpp_vector[IInterfaceInstP] &getPeerInterfaceInsts()
+        
         pass
 
 ctypedef IEndpoint *IEndpointP
 
+#********************************************************************
+#* ILaunchType
+#********************************************************************
 cdef extern from "tblink_rpc/ILaunchType.h" namespace "tblink_rpc_core":
     cdef cppclass ILaunchType:
         cpp_string name()
@@ -30,6 +61,9 @@ cdef extern from "tblink_rpc/ILaunchType.h" namespace "tblink_rpc_core":
 
 ctypedef ILaunchType *ILaunchTypeP        
 
+#********************************************************************
+#* ITbLink
+#********************************************************************
 cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
     cdef cppclass ITbLink:
     

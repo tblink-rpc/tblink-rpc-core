@@ -7,6 +7,8 @@
 
 #include "Debug.h"
 #include "EndpointLoopback.h"
+#include "InterfaceInstLoopback.h"
+#include "InterfaceType.h"
 
 #define EN_DEBUG_ENDPOINT_LOOPBACK
 
@@ -77,26 +79,19 @@ IInterfaceInst *EndpointLoopback::defineInterfaceInst(
 		const std::string		&inst_name,
 		bool					is_mirror,
 		const invoke_req_f		&req_f) {
-	if (m_primary) {
-		/** TODO:
-		InterfaceInstBase *ifinst = new InterfaceInstBase(
-				this,
-				static_cast<InterfaceType *>(type),
-				inst_name,
-				is_mirror,
-				req_f);
-		m_ifinst_m.insert({inst_name, InterfaceInstUP(ifinst)});
-		m_ifinsts.push_back(ifinst);
+	DEBUG_ENTER("defineInterfaceInst");
+	InterfaceInstLoopback *ifinst = 0;
+	ifinst = new InterfaceInstLoopback(
+			this,
+			static_cast<InterfaceType *>(type),
+			inst_name,
+			is_mirror,
+			req_f);
+	m_ifinst_m.insert({inst_name, InterfaceInstUP(ifinst)});
+	m_ifinsts.push_back(ifinst);
 
-		return ifinst;
-		 */
-	} else {
-		return m_peer->defineInterfaceInst(
-				type,
-				inst_name,
-				is_mirror,
-				req_f);
-	}
+	DEBUG_LEAVE("defineInterfaceInst");
+	return ifinst;
 }
 
 /**
@@ -121,6 +116,12 @@ const std::vector<IInterfaceInst *> &EndpointLoopback::getInterfaceInsts() {
 	} else {
 		return m_peer->getInterfaceInsts();
 	}
+}
+
+const std::vector<IInterfaceInst *> &EndpointLoopback::getPeerInterfaceInsts() {
+	DEBUG_ENTER("getPeerInterfaceInsts");
+	DEBUG_LEAVE("getPeerInterfaceInsts");
+	return m_peer->getInterfaceInsts();
 }
 
 } /* namespace tblink_rpc_core */

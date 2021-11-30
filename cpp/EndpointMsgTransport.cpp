@@ -554,6 +554,10 @@ const std::vector<IInterfaceInst *> &EndpointMsgTransport::getInterfaceInsts() {
 	return m_local_ifc_insts_pl;
 }
 
+const std::vector<IInterfaceInst *> &EndpointMsgTransport::getPeerInterfaceInsts() {
+	return m_peer_ifc_insts_pl;
+}
+
 IParamValBool *EndpointMsgTransport::mkValBool(bool val) {
 	return m_transport->mkValBool(val);
 }
@@ -613,6 +617,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 	std::unordered_map<std::string,InterfaceInstUP> ifinsts;
 	unpack_ifinsts(
 			m_peer_ifc_insts,
+			m_peer_ifc_insts_pl,
 			params->getValT<IParamValMap>("ifinsts"));
 
 #ifdef UNDEFINED
@@ -658,8 +663,10 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_connect_complete(
 	 */
 
 	m_peer_ifc_insts.clear();
+	m_peer_ifc_insts_pl.clear();
 	unpack_ifinsts(
 			m_peer_ifc_insts,
+			m_peer_ifc_insts_pl,
 			params->getValT<IParamValMap>("ifinsts"));
 
 	IParamValMap *result = m_transport->mkValMap();
@@ -1184,6 +1191,7 @@ void EndpointMsgTransport::unpack_iftypes(
 
 void EndpointMsgTransport::unpack_ifinsts(
 		std::unordered_map<std::string,InterfaceInstMsgTransportUP>	&ifinsts,
+		std::vector<IInterfaceInst*>								&ifinsts_l,
 		IParamValMap 												*ifinsts_p) {
 	std::vector<InterfaceInstUP> ret;
 
@@ -1205,6 +1213,7 @@ void EndpointMsgTransport::unpack_ifinsts(
 					*k_it,
 					is_mirror);
 			ifinsts.insert({*k_it, InterfaceInstMsgTransportUP(ifinst)});
+			ifinsts_l.push_back(ifinst);
 		}
 	} else {
 		fprintf(stdout, "unpack_ifinsts: null ifinsts_p\n");

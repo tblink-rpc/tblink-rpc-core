@@ -92,11 +92,13 @@ public:
 	 */
 	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
 
+	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
+
 	/**
 	 * Returns the available interface instances registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
+	virtual const std::vector<IInterfaceInst *> &getPeerInterfaceInsts() override;
 
 private:
 	bool							m_primary;

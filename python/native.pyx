@@ -6,12 +6,16 @@
 from libcpp.pair cimport pair as cpp_pair
 from libcpp.string cimport string as cpp_string
 from libcpp.vector cimport vector as cpp_vector
+from cython.operator cimport dereference as deref, preincrement as inc
 
 cimport native_decl 
 
 ctypedef native_decl.IEndpoint *IEndpointP
 ctypedef native_decl.ILaunchType *ILaunchTypeP        
 
+#********************************************************************
+#*  LaunchParams
+#********************************************************************
 cdef class LaunchParams(object):
     cdef native_decl.ILaunchParams *_hndl
     
@@ -29,12 +33,61 @@ cdef class LaunchParams(object):
             key.encode(),
             val.encode())
         
+#********************************************************************
+#* InterfaceInst
+#********************************************************************
+cdef class InterfaceInst(object):
+
+    cdef native_decl.IInterfaceInst *_hndl
+    
+    def __init__(self):
+        pass
+    
+    def name(self):
+        return self._hndl.name().decode()
+
+    @staticmethod
+    cdef _mk(native_decl.IInterfaceInst *hndl):
+        ret = InterfaceInst()
+        ret._hndl = hndl
+        return ret
+        
+#********************************************************************
+#* Endpoint
+#********************************************************************
 cdef class Endpoint(object):
     cdef native_decl.IEndpoint *_hndl
     
     def __init__(self):
         pass
+    
+    cpdef build_complete(self):
+        return self._hndl.build_complete()
+    
+    cpdef is_build_complete(self):
+        return self._hndl.is_build_complete()
+    
+    cpdef connect_complete(self):
+        return self._hndl.connect_complete()
+    
+    cpdef is_connect_complete(self):
+        return self._hndl.is_connect_complete()
+    
+    cpdef getInterfaceInsts(self):
+        ret = []
+        for i in range(self._hndl.getInterfaceInsts().size()):
+            ret.append(InterfaceInst._mk(self._hndl.getInterfaceInsts().at(i)))
+        return ret
+    
+    cpdef getPeerInterfaceInsts(self):
+        ret = []
+        for i in range(self._hndl.getPeerInterfaceInsts().size()):
+            ret.append(InterfaceInst._mk(self._hndl.getPeerInterfaceInsts().at(i)))
+        return ret
         
+#********************************************************************
+#* LaunchType
+#********************************************************************
 cdef class LaunchType(object):
     cdef native_decl.ILaunchType *_hndl
     
@@ -61,6 +114,9 @@ cdef class LaunchType(object):
         ret._hndl = self._hndl.newLaunchParams()
         return ret
 
+#********************************************************************
+#* TbLink
+#********************************************************************
 cdef class TbLink(object):
     cdef native_decl.ITbLink *_hndl
     

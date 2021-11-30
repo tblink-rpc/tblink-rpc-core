@@ -119,6 +119,12 @@ public:
 	 */
 	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
 
+	/**
+	 * Returns the available interface instances registered by the
+	 * endpoint peer. Only valid after 'build' is complete
+	 */
+	virtual const std::vector<IInterfaceInst *> &getPeerInterfaceInsts() override;
+
 	virtual IParamValBool *mkValBool(bool val) override;
 
 	virtual IParamValInt *mkValIntU(uint64_t val, int32_t width) override;
@@ -234,6 +240,7 @@ private:
 
 	void unpack_ifinsts(
 			std::unordered_map<std::string,InterfaceInstMsgTransportUP>	&ifinsts,
+			std::vector<IInterfaceInst*>								&ifinsts_l,
 			IParamValMap  												*ifinsts_p);
 
 private:
@@ -273,6 +280,7 @@ private:
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
 
 	std::unordered_map<std::string, InterfaceInstMsgTransportUP>	m_peer_ifc_insts;
+	std::vector<IInterfaceInst*>									m_peer_ifc_insts_pl;
 	std::unordered_map<std::string, InterfaceInstMsgTransportUP>	m_local_ifc_insts;
 	std::vector<IInterfaceInst*>									m_local_ifc_insts_pl;
 
