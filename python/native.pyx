@@ -8,8 +8,9 @@ from libcpp.pair cimport pair as cpp_pair
 from libcpp.string cimport string as cpp_string
 from libcpp.vector cimport vector as cpp_vector
 from cython.operator cimport dereference as deref, preincrement as inc
+cimport cpython.ref as cpy_ref
 
-cimport native_decl 
+cimport tblink_rpc_core.native_decl as native_decl
 
 ctypedef native_decl.IEndpoint *IEndpointP
 ctypedef native_decl.ILaunchType *ILaunchTypeP        
@@ -170,13 +171,19 @@ cdef class InterfaceTypeBuilder(object):
         
     cpdef mkTypeVec(self, Type etype):
         return Type._mk(self._hndl.mkTypeVec(etype._hndl))
-    
+
+#********************************************************************
+#* invoke_req_closure
+#********************************************************************
+cdef extern native_decl.invoke_req_f invoke_req_closure(cpy_ref.PyObject *)
         
 #********************************************************************
 #* Endpoint
 #********************************************************************
 cdef class Endpoint(object):
     cdef native_decl.IEndpoint *_hndl
+    
+    _req_l = []
     
     def __init__(self):
         pass
@@ -216,13 +223,17 @@ cdef class Endpoint(object):
             name, 
             is_mirror, 
             req_f):
-            # Create a class instance that binds interface_inst_req_f and
-            # req_f together
+        # Create a class instance that binds interface_inst_req_f and
+        # req_f together
+        
+        # Hold the closure to prevent garbage collection
+        Endpoint._req_l.append(req_f)
+        
         self._hndl.defineInterfaceInst(
             t._hndl,
             name.encode(),
             is_mirror,
-            native_decl.wrapper())
+            invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
         pass
     
     cpdef getInterfaceTypes(self):
@@ -242,7 +253,12 @@ cdef class Endpoint(object):
         for i in range(self._hndl.getPeerInterfaceInsts().size()):
             ret.append(InterfaceInst._mk(self._hndl.getPeerInterfaceInsts().at(i)))
         return ret
-    
+
+#********************************************************************
+#* interface_inst_req_f()
+#*
+#* Callback method for invocation requets
+#********************************************************************
 cdef public void interface_inst_req_f(
     obj, 
     native_decl.IInterfaceInst  *inst,

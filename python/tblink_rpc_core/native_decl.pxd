@@ -12,6 +12,7 @@ from libc.stdint cimport uint32_t
 from libc.stdint cimport uint64_t
 from libc.stdint cimport int64_t
 from libcpp cimport bool
+cimport cpython.ref as cpy_ref
 
 #********************************************************************
 #* ILaunchParams
@@ -165,13 +166,7 @@ cdef extern from "tblink_rpc/IInterfaceTypeBuilder.h" namespace "tblink_rpc_core
         
 ctypedef IInterfaceTypeBuilder *IInterfaceTypeBuilderP
 
-#********************************************************************
-#* invoke_req_closure
-#********************************************************************
-#ctypedef int invoke_req_f
-#ctypedef "std::function<void()>" invoke_req_f
-cdef invoke_req_f wrapper()
-#cdef extern from "invoke_req_closure.h":
+
 
 #********************************************************************
 #* IEndpoint
