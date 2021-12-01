@@ -86,11 +86,13 @@ public:
 			bool					is_mirror,
 			const invoke_req_f		&req_f) override;
 
+	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
+
 	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
+	virtual const std::vector<IInterfaceType *> &getPeerInterfaceTypes() override;
 
 	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
 

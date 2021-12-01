@@ -58,20 +58,12 @@ IInterfaceType *EndpointLoopback::findInterfaceType(
 
 IInterfaceTypeBuilder *EndpointLoopback::newInterfaceTypeBuilder(
 		const std::string		&name) {
-	if (m_primary) {
-		return EndpointBase::newInterfaceTypeBuilder(name);
-	} else {
-		return m_peer->newInterfaceTypeBuilder(name);
-	}
+	return EndpointBase::newInterfaceTypeBuilder(name);
 }
 
 IInterfaceType *EndpointLoopback::defineInterfaceType(
 		IInterfaceTypeBuilder	*type) {
-	if (m_primary) {
-		return EndpointBase::defineInterfaceType(type);
-	} else {
-		return m_peer->defineInterfaceType(type);
-	}
+	return EndpointBase::defineInterfaceType(type);
 }
 
 IInterfaceInst *EndpointLoopback::defineInterfaceInst(
@@ -94,16 +86,16 @@ IInterfaceInst *EndpointLoopback::defineInterfaceInst(
 	return ifinst;
 }
 
+const std::vector<IInterfaceType *> &EndpointLoopback::getInterfaceTypes() {
+	return EndpointBase::getInterfaceTypes();
+}
+
 /**
  * Returns the available interface types registered by the
  * endpoint peer. Only valid after 'build' is complete
  */
-const std::vector<IInterfaceType *> &EndpointLoopback::getInterfaceTypes() {
-	if (m_primary) {
-		return EndpointBase::getInterfaceTypes();
-	} else {
-		return m_peer->getInterfaceTypes();
-	}
+const std::vector<IInterfaceType *> &EndpointLoopback::getPeerInterfaceTypes() {
+	return m_peer->getInterfaceTypes();
 }
 
 /**

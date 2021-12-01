@@ -550,6 +550,10 @@ const std::vector<IInterfaceType *> &EndpointMsgTransport::getInterfaceTypes() {
 	return m_local_ifc_type_pl;
 }
 
+const std::vector<IInterfaceType *> &EndpointMsgTransport::getPeerInterfaceTypes() {
+	return m_peer_ifc_types_pl;
+}
+
 const std::vector<IInterfaceInst *> &EndpointMsgTransport::getInterfaceInsts() {
 	return m_local_ifc_insts_pl;
 }
@@ -606,6 +610,7 @@ EndpointMsgTransport::rsp_t EndpointMsgTransport::req_build_complete(
 
 	unpack_iftypes(
 			m_peer_ifc_types,
+			m_peer_ifc_types_pl,
 			params->getValT<IParamValMap>("iftypes"));
 
 #ifdef UNDEFINED
@@ -1158,6 +1163,7 @@ IParamValMap *EndpointMsgTransport::pack_type(IType *t) {
 
 void EndpointMsgTransport::unpack_iftypes(
 		std::unordered_map<std::string, InterfaceTypeUP>	&iftypes,
+		std::vector<IInterfaceType *>						&iftypes_l,
 		IParamValMap 										*iftypes_p) {
 	std::vector<InterfaceTypeUP> ret;
 
@@ -1185,6 +1191,7 @@ void EndpointMsgTransport::unpack_iftypes(
 		}
 
 		iftypes.insert({*k_it, InterfaceTypeUP(iftype)});
+		iftypes_l.push_back(iftype);
 	}
 
 }

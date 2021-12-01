@@ -107,11 +107,13 @@ public:
 	 */
 	virtual int32_t process_one_message() override;
 
+	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
+
 	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
+	virtual const std::vector<IInterfaceType *> &getPeerInterfaceTypes() override;
 
 	/**
 	 * Returns the available interface instances registered by the
@@ -236,6 +238,7 @@ private:
 
 	void unpack_iftypes(
 			std::unordered_map<std::string,InterfaceTypeUP>		&iftypes,
+			std::vector<IInterfaceType *>						&iftypes_l,
 			IParamValMap 										*iftypes_p);
 
 	void unpack_ifinsts(
@@ -276,6 +279,7 @@ private:
 	int32_t															m_time_precision;
 
 	std::unordered_map<std::string, InterfaceTypeUP>				m_peer_ifc_types;
+	std::vector<IInterfaceType*>									m_peer_ifc_types_pl;
 	std::unordered_map<std::string, InterfaceTypeUP>				m_local_ifc_types;
 	std::vector<IInterfaceType*>									m_local_ifc_type_pl;
 

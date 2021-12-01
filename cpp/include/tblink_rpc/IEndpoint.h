@@ -119,11 +119,13 @@ public:
 	 */
 	virtual int32_t process_one_message() = 0;
 
+	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() = 0;
+
 	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() = 0;
+	virtual const std::vector<IInterfaceType *> &getPeerInterfaceTypes() = 0;
 
 	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() = 0;
 
