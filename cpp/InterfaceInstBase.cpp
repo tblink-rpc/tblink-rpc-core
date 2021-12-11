@@ -7,7 +7,7 @@
 
 #include "InterfaceInstBase.h"
 
-#include "EndpointMsgTransport.h"
+#include "EndpointMsgBase.h"
 
 namespace tblink_rpc_core {
 

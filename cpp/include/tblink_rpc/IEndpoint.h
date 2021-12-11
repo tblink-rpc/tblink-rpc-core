@@ -18,32 +18,23 @@
 
 namespace tblink_rpc_core {
 
+using time_cb_f=std::function<void()>;
+
 class IEndpoint;
 typedef std::unique_ptr<IEndpoint> IEndpointUP;
 class IEndpoint : public virtual IParamValFactory {
 public:
-	enum State {
-		Init,
-		Built,
-		Connected,
-		Running,
-		Shutdown
-	};
 
-	enum Type {
-		Active,
-		Passive
+	enum CommState {
+		Waiting,
+		Released
 	};
-
-public:
 
 	virtual ~IEndpoint() { }
 
 	virtual int32_t init(
 			IEndpointServices		*ep_services,
 			IEndpointListener		*ep_listener) = 0;
-
-	virtual State state() = 0;
 
 	virtual int32_t is_init() = 0;
 
@@ -55,6 +46,12 @@ public:
 
 	virtual int32_t is_connect_complete() = 0;
 
+	virtual IEndpointListener *addListener(const endpoint_ev_f &) = 0;
+
+	virtual void addListener(IEndpointListener *l) = 0;
+
+	virtual void removeListener(IEndpointListener *l) = 0;
+
 	/**
 	 * Process messages until a run-until-event
 	 * request is received
@@ -62,6 +59,8 @@ public:
 	virtual int32_t await_run_until_event() = 0;
 
 	virtual bool shutdown() = 0;
+
+//	virtual CommState comm_state() = 0;
 
 	/**
 	 * Yield control to enable message processing.

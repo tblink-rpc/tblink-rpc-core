@@ -9,6 +9,7 @@
 #include <vector>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IEndpointServices.h"
+#include "tblink_rpc/IEndpointServicesFactory.h"
 #include "tblink_rpc/ILaunchParams.h"
 #include "tblink_rpc/ILaunchType.h"
 #include "tblink_rpc/ISymFinder.h"
@@ -24,6 +25,10 @@ public:
 	virtual IEndpoint *getDefaultEP() const = 0;
 
 	virtual void setDefaultEP(IEndpoint *) = 0;
+
+	virtual IEndpointServicesFactory *getDefaultServicesFactory() = 0;
+
+	virtual void setDefaultServicesFactory(IEndpointServicesFactory *f) = 0;
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
 

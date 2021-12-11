@@ -5,6 +5,7 @@
  *      Author: mballance
  */
 
+#include "tblink_rpc/IEndpointLoopback.h"
 #include "EndpointLoopback.h"
 #include "LaunchParams.h"
 #include "LaunchTypeConnectNativeLoopback.h"
@@ -22,7 +23,9 @@ LaunchTypeConnectNativeLoopback::~LaunchTypeConnectNativeLoopback() {
 	// TODO Auto-generated destructor stub
 }
 
-ILaunchType::result_t LaunchTypeConnectNativeLoopback::launch(ILaunchParams *params) {
+ILaunchType::result_t LaunchTypeConnectNativeLoopback::launch(
+		ILaunchParams 		*params,
+		IEndpointServices	*services) {
 	IEndpoint *ep = 0;
 	std::string msg;
 
@@ -31,7 +34,11 @@ ILaunchType::result_t LaunchTypeConnectNativeLoopback::launch(ILaunchParams *par
 	if (!tblink->getDefaultEP()) {
 		msg = "No default endpoint registered";
 	} else {
-		ep = static_cast<EndpointLoopback *>(tblink->getDefaultEP())->peer();
+		IEndpointLoopback *lb_ep = dynamic_cast<IEndpointLoopback *>(tblink->getDefaultEP());
+		fprintf(stdout, "Default EP: %p\n", tblink->getDefaultEP());
+		fprintf(stdout, "lb_ep=%p\n", lb_ep);
+		ep = lb_ep->peer();
+		fprintf(stdout, "Peer EP: %p\n", ep);
 	}
 
 	delete params;

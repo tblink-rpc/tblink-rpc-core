@@ -30,6 +30,10 @@ public:
 
 	virtual ~InterfaceInstLoopback();
 
+	InterfaceInstLoopback *peer() const { return m_peer; }
+
+	void peer(InterfaceInstLoopback *p);
+
 	virtual IParamVal *invoke(
 			IMethodType									*method,
 			IParamValVec								*params) override;
@@ -38,6 +42,21 @@ public:
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;
+
+	int32_t req_invoke_nb(
+			IMethodType									*method,
+			intptr_t									call_id,
+			IParamValVec								*params);
+
+	void rsp_invoke(
+			intptr_t									call_id,
+			IParamVal									*retval);
+
+private:
+	InterfaceInstLoopback								*m_peer;
+	std::unordered_map<IMethodType*,IMethodType*>		m_method_m;
+	std::unordered_map<intptr_t,invoke_rsp_f>			m_rsp_m;
+	intptr_t											m_call_id;
 
 };
 

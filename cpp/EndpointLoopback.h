@@ -13,6 +13,8 @@ namespace tblink_rpc_core {
 class EndpointLoopback;
 using EndpointLoopbackUP=std::unique_ptr<EndpointLoopback>;
 
+using time_cb_f=std::function<void()>;
+
 class EndpointLoopback : public EndpointBase {
 public:
 	EndpointLoopback();
@@ -21,21 +23,31 @@ public:
 
 	virtual ~EndpointLoopback();
 
+	virtual int32_t init(
+			IEndpointServices		*ep_services,
+			IEndpointListener		*ep_listener) override;
+
 	bool primary() const { return m_primary; }
 
 	EndpointLoopback *peer() const { return m_peer; }
-
-	virtual State state() override { return IEndpoint::Connected; }
 
 	virtual int32_t is_init() { return 1; }
 
 	virtual int32_t build_complete() override;
 
-	virtual int32_t is_build_complete() { return 1; }
+	int32_t peer_build_complete();
 
-	virtual int32_t connect_complete() { return 1; }
+	int32_t process_build_complete();
 
-	virtual int32_t is_connect_complete() { return 1; }
+	virtual int32_t is_build_complete() override;
+
+	virtual int32_t connect_complete() override;
+
+	int32_t peer_connect_complete();
+
+	int32_t process_connect_complete();
+
+	virtual int32_t is_connect_complete() override;
 
 	/**
 	 * Process messages until a run-until-event
@@ -56,7 +68,7 @@ public:
 
 	virtual int32_t await_req() { return 0; }
 
-	virtual void notify_callback(intptr_t   id) { }
+	virtual void notify_callback(intptr_t id) { }
 
 	virtual int32_t process_one_message() { return 1; }
 
@@ -67,7 +79,7 @@ public:
 
 	virtual intptr_t add_time_callback(
 			uint64_t						time,
-			const std::function<void()>		&cb_f) { return 0; }
+			const time_cb_f					&cb_f) override;
 
 	virtual void cancel_callback(intptr_t	id) { }
 
@@ -103,9 +115,17 @@ public:
 	virtual const std::vector<IInterfaceInst *> &getPeerInterfaceInsts() override;
 
 private:
-	bool							m_primary;
-	EndpointLoopback				*m_peer;
-	EndpointLoopbackUP				m_peer_u;
+	bool													m_primary;
+	EndpointLoopback										*m_peer;
+	EndpointLoopbackUP										m_peer_u;
+
+	std::unordered_map<intptr_t, std::function<void()>>		m_cb_m;
+	intptr_t												m_cb_id;
+
+	bool													m_build_complete;
+	bool													m_peer_build_complete;
+	bool													m_connect_complete;
+	bool													m_peer_connect_complete;
 
 };
 

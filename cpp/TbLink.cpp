@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 
-#include "EndpointMsgTransport.h"
+#include "EndpointMsgBase.h"
 #include "LaunchParams.h"
 #include "TransportJsonSocket.h"
 

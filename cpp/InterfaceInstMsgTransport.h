@@ -10,18 +10,19 @@
 
 namespace tblink_rpc_core {
 
+class EndpointMsgBase;
 class InterfaceInstMsgTransport;
 using InterfaceInstMsgTransportUP=std::unique_ptr<InterfaceInstMsgTransport>;
 class InterfaceInstMsgTransport : public InterfaceInstBase {
 public:
 	InterfaceInstMsgTransport(
-			EndpointMsgTransport		*endpoint,
+			EndpointMsgBase				*endpoint,
 			IInterfaceType				*type,
 			const std::string			&inst_name,
 			bool						is_mirror);
 
 	InterfaceInstMsgTransport(
-			EndpointMsgTransport		*endpoint,
+			EndpointMsgBase				*endpoint,
 			IInterfaceType				*type,
 			const std::string			&inst_name,
 			bool						is_mirror,

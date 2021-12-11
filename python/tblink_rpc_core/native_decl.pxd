@@ -30,7 +30,15 @@ cdef extern from "tblink_rpc/ILaunchParams.h" namespace "tblink_rpc_core":
 #* IParamVal
 #********************************************************************
 cdef extern from "tblink_rpc/IParamVal.h" namespace "tblink_rpc_core":
+    cdef enum TypeE:
+        Bool "tblink_rpc_core::IParamVal::Bool",
+        Int "tblink_rpc_core::IParamVal::Int",
+        Map "tblink_rpc_core::IParamVal::Map",
+        Str "tblink_rpc_core::IParamVal::Str",
+        Vec "tblink_rpc_core::IParamVal::Vec"
+        
     cdef cppclass IParamVal:
+        TypeE type()
         pass
 ctypedef IParamVal *IParamValP
     
@@ -84,16 +92,14 @@ cdef extern from "tblink_rpc/IParamValVec.h" namespace "tblink_rpc_core":
         void push_back(IParamVal *)
         IParamValVec *clone()
 ctypedef IParamValVec *IParamValVecP
-                
+
 #********************************************************************
-#* IInterfaceInst
+#* IMethod
 #********************************************************************
-cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
-    cdef cppclass IInterfaceInst:
-        const cpp_string &name()
-    cdef cppclass invoke_req_f:
+cdef extern from "tblink_rpc/IMethodType.h" namespace "tblink_rpc_core":
+    cdef cppclass IMethodType:
         pass
-ctypedef IInterfaceInst *IInterfaceInstP
+ctypedef IMethodType *IMethodTypeP
 
 #********************************************************************
 #* IInterfaceType
@@ -101,7 +107,25 @@ ctypedef IInterfaceInst *IInterfaceInstP
 cdef extern from "tblink_rpc/IInterfaceType.h" namespace "tblink_rpc_core":
     cdef cppclass IInterfaceType:
         const cpp_string &name()
+        const cpp_vector[IMethodTypeP] &methods()
+        IMethodType *findMethod(const cpp_string &)
 ctypedef IInterfaceType *IInterfaceTypeP
+                
+#********************************************************************
+#* IInterfaceInst
+#********************************************************************
+cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
+    cdef cppclass invoke_req_f:
+        pass
+    cdef cppclass invoke_rsp_f:
+        pass
+    cdef cppclass IInterfaceInst:
+        const cpp_string &name()
+        IInterfaceType *type()
+        bool is_mirror()
+        int invoke_nb(
+            IMethodType *, IParamValVec *, const invoke_rsp_f &)
+ctypedef IInterfaceInst *IInterfaceInstP
 
 #********************************************************************
 #* IType
@@ -132,13 +156,6 @@ cdef extern from "tblink_rpc/ITypeVec.h" namespace "tblink_rpc_core":
 cdef extern from "tblink_rpc/IMethodTypeBuilder.h" namespace "tblink_rpc_core":
     cdef cppclass IMethodTypeBuilder:
         void add_param(const cpp_string &, IType *)
-    
-#********************************************************************
-#* IMethod
-#********************************************************************
-cdef extern from "tblink_rpc/IMethodType.h" namespace "tblink_rpc_core":
-    cdef cppclass IMethodType:
-        pass
 
 #********************************************************************
 #* IInterfaceTypeBuilder
@@ -166,13 +183,44 @@ cdef extern from "tblink_rpc/IInterfaceTypeBuilder.h" namespace "tblink_rpc_core
         
 ctypedef IInterfaceTypeBuilder *IInterfaceTypeBuilderP
 
-
+#********************************************************************
+#* IEndpointEvent
+#********************************************************************
+cdef extern from "tblink_rpc/IEndpointEvent.h" namespace "tblink_rpc_core":
+    cdef enum EventTypeE:
+        Unknown "tblink_rpc_core::IEndpointEvent::Unknown"
+        
+    cdef cppclass IEndpointEvent:
+        EventTypeE kind() const
+        
+#********************************************************************
+#* IEndpointListener
+#********************************************************************
+cdef extern from "tblink_rpc/IEndpointListener.h" namespace "tblink_rpc_core":
+    cdef cppclass endpoint_ev_f:
+        pass
+    
+    cdef cppclass IEndpointListener:
+        void event(const IEndpointEvent *)
+        
+#********************************************************************
+#* IEndpointServices
+#********************************************************************
+cdef extern from "tblink_rpc/IEndpointServices.h" namespace "tblink_rpc_core":
+    cdef cppclass IEndpointServices:
+        void init(IEndpoint *)
 
 #********************************************************************
 #* IEndpoint
 #********************************************************************
 cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
+    cdef cppclass time_cb_f:
+        pass
     cdef cppclass IEndpoint:
+    
+        int init(IEndpointServices *, IEndpointListener *)
+        
+        int is_init()
     
         int build_complete()
         
@@ -181,6 +229,14 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         int connect_complete()
         
         int is_connect_complete()
+        
+        IEndpointListener *addListener(const endpoint_ev_f &)
+        
+        void removeListener(IEndpointListener *)
+        
+        intptr_t add_time_callback(uint64_t, const time_cb_f &)
+        
+        void cancel_callback(intptr_t)
         
         IInterfaceType *findInterfaceType(const cpp_string &)
         
@@ -215,7 +271,7 @@ ctypedef IEndpoint *IEndpointP
 cdef extern from "tblink_rpc/ILaunchType.h" namespace "tblink_rpc_core":
     cdef cppclass ILaunchType:
         cpp_string name()
-        cpp_pair[IEndpointP,cpp_string] launch(ILaunchParams *)
+        cpp_pair[IEndpointP,cpp_string] launch(ILaunchParams *, IEndpointServices *)
         ILaunchParams *newLaunchParams()
 
 ctypedef ILaunchType *ILaunchTypeP        

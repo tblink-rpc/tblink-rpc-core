@@ -28,6 +28,14 @@ public:
 		m_default_ep = ep;
 	}
 
+	virtual IEndpointServicesFactory *getDefaultServicesFactory() override {
+		return m_default_services_f.get();
+	}
+
+	virtual void setDefaultServicesFactory(IEndpointServicesFactory *f) override {
+		m_default_services_f = IEndpointServicesFactoryUP(f);
+	}
+
 	virtual const std::vector<ILaunchType *> &launchTypes() const override {
 		return m_launch_types;
 	}
@@ -44,6 +52,7 @@ public:
 
 private:
 	IEndpoint								*m_default_ep;
+	IEndpointServicesFactoryUP				m_default_services_f;
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
 	std::string								m_libpath;

@@ -42,7 +42,9 @@ LaunchTypeConnectSocket::~LaunchTypeConnectSocket() {
 	// TODO Auto-generated destructor stub
 }
 
-ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
+ILaunchType::result_t LaunchTypeConnectSocket::launch(
+		ILaunchParams 			*params,
+		IEndpointServices		*services) {
 
 	// TODO: need to handle non-localhost hosts
 	if (params->params().find("host") == params->params().end()) {
@@ -57,19 +59,19 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(ILaunchParams *params) {
 
 	int32_t port = strtol(params->params().find("port")->second.c_str(), 0, 0);
 
-    int sock = socket (AF_INET, SOCK_STREAM, 0);
-     if (sock == -1) {
-    	 delete params;
-         return {0, "socket creation failed"};
-     }
+	int sock = socket (AF_INET, SOCK_STREAM, 0);
+	if (sock == -1) {
+		delete params;
+		return {0, "socket creation failed"};
+	}
 
-     struct sockaddr_in addr;
+	struct sockaddr_in addr;
 
-     memset(&addr, 0, sizeof(addr));
+	memset(&addr, 0, sizeof(addr));
 
-     addr.sin_family = AF_INET;
-     addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-     addr.sin_port = htons(port);
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+	addr.sin_port = htons(port);
 
      if (connect(sock, (struct sockaddr*) &addr, sizeof(addr)) == -1) {
          fprintf(stdout, "Error: Connection error\n");

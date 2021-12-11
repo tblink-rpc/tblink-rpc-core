@@ -5,11 +5,12 @@
  *      Author: mballance
  */
 
-#include "EndpointMsgTransport.h"
 #include "Env.h"
 #include "LaunchParams.h"
 #include "TransportJsonSocket.h"
 #include "LaunchTypeProcessSocket.h"
+
+#include "EndpointMsgTransport.h"
 #include "LaunchTypeRegistration.h"
 
 #ifndef _WIN32
@@ -31,8 +32,6 @@ static const char PS = ';';
 #include <spawn.h>
 #include <string.h>
 
-extern char **environ;
-
 
 namespace tblink_rpc_core {
 
@@ -45,7 +44,9 @@ LaunchTypeProcessSocket::~LaunchTypeProcessSocket() {
 	// TODO Auto-generated destructor stub
 }
 
-ILaunchType::result_t LaunchTypeProcessSocket::launch(ILaunchParams *params) {
+ILaunchType::result_t LaunchTypeProcessSocket::launch(
+		ILaunchParams 			*params,
+		IEndpointServices		*services) {
 	// Create the socket server
 	struct sockaddr_in serv_addr;
 

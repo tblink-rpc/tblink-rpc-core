@@ -25,6 +25,16 @@ public:
 			IEndpointServices		*ep_services,
 			IEndpointListener		*ep_listener) override;
 
+	virtual IEndpointListener *addListener(const endpoint_ev_f &) override;
+
+	virtual void addListener(IEndpointListener *l) override;
+
+	virtual void removeListener(IEndpointListener *l) override;
+
+	void sendEvent(IEndpointEvent::kind_t kind);
+
+	void sendEvent(const IEndpointEvent *ev);
+
 	virtual const std::vector<std::string> &args() override;
 
 	virtual uint64_t time() override;
@@ -80,6 +90,8 @@ protected:
 	std::unordered_map<std::string, IInterfaceTypeUP>	m_iftype_m;
 	std::vector<IInterfaceInst *>						m_ifinsts;
 	std::unordered_map<std::string, IInterfaceInstUP>	m_ifinst_m;
+	std::vector<IEndpointListenerUP>					m_listeners;
+	std::vector<IEndpointListener *>					m_listeners_p;
 
 	std::string											m_last_error;
 };

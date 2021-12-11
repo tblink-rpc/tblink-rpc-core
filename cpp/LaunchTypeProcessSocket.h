@@ -30,7 +30,9 @@ public:
 	 * endpoint. In the case of an error, the string will
 	 * contain an error message
 	 */
-	virtual result_t launch(ILaunchParams *params) override;
+	virtual result_t launch(
+			ILaunchParams 			*params,
+			IEndpointServices		*services) override;
 
 	virtual ILaunchParams *newLaunchParams() override;
 

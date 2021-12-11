@@ -22,7 +22,9 @@ LaunchTypeNativeLoopback::~LaunchTypeNativeLoopback() {
 	// TODO Auto-generated destructor stub
 }
 
-ILaunchType::result_t LaunchTypeNativeLoopback::launch(ILaunchParams *params) {
+ILaunchType::result_t LaunchTypeNativeLoopback::launch(
+		ILaunchParams 			*params,
+		IEndpointServices		*services) {
 	IEndpoint *ep = 0;
 	std::string msg;
 
@@ -38,6 +40,12 @@ ILaunchType::result_t LaunchTypeNativeLoopback::launch(ILaunchParams *params) {
 	}
 
 	delete params;
+
+	if (!services) {
+		services = TbLink::inst()->getDefaultServicesFactory()->create();
+	}
+
+	ep->init(services, 0);
 
 	return {ep, msg};
 }

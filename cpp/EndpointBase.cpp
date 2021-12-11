@@ -5,7 +5,10 @@
  *      Author: mballance
  */
 
+#include "Debug.h"
 #include "EndpointBase.h"
+#include "EndpointEventBase.h"
+#include "EndpointListenerBase.h"
 
 #include "InterfaceInstBase.h"
 #include "InterfaceType.h"
@@ -15,6 +18,21 @@
 #include "ParamValMap.h"
 #include "ParamValStr.h"
 #include "ParamValVec.h"
+
+#define EN_DEBUG_ENDPOINT_BASE
+
+#ifdef EN_DEBUG_ENDPOINT_BASE
+#define DEBUG_ENTER(fmt, ...) \
+	DEBUG_ENTER_BASE(EndpointBase, fmt, ##__VA_ARGS__)
+#define DEBUG_LEAVE(fmt, ...) \
+	DEBUG_LEAVE_BASE(EndpointBase, fmt, ##__VA_ARGS__)
+#define DEBUG(fmt, ...) \
+	DEBUG_BASE(EndpointBase, fmt, ##__VA_ARGS__)
+#else
+#define DEBUG_ENTER(fmt, ...)
+#define DEBUG_LEAVE(fmt, ...)
+#define DEBUG(fmt, ...)
+#endif
 
 namespace tblink_rpc_core {
 
@@ -34,6 +52,56 @@ int32_t EndpointBase::init(
 	m_listener = ep_listener;
 
 	return 0;
+}
+
+IEndpointListener *EndpointBase::addListener(const endpoint_ev_f &ev_f) {
+	DEBUG_ENTER("addListener");
+	EndpointListenerBase *l = new EndpointListenerBase(ev_f);
+	m_listeners.push_back(IEndpointListenerUP(l));
+	m_listeners_p.push_back(l);
+	DEBUG_LEAVE("addListener %d", m_listeners_p.size());
+	return l;
+}
+
+void EndpointBase::addListener(IEndpointListener *l) {
+	DEBUG_ENTER("addListener");
+	m_listeners_p.push_back(l);
+	DEBUG_LEAVE("addListener %d", m_listeners_p.size());
+}
+
+void EndpointBase::removeListener(IEndpointListener *l) {
+	for (auto it=m_listeners.begin(); it!=m_listeners.end(); it++) {
+		if (it->get() == l) {
+			m_listeners.erase(it);
+			break;
+		}
+	}
+	for (auto it=m_listeners_p.begin(); it!=m_listeners_p.end(); it++) {
+		if (*it == l) {
+			m_listeners_p.erase(it);
+			break;
+		}
+	}
+}
+
+void EndpointBase::sendEvent(IEndpointEvent::kind_t kind) {
+	EndpointEventBase ev(kind);
+	sendEvent(&ev);
+}
+
+void EndpointBase::sendEvent(const IEndpointEvent *ev) {
+	DEBUG_ENTER("sendEvent: %d", ev->kind());
+	for (int32_t i=0; i<m_listeners_p.size(); i++) {
+		IEndpointListener *l = m_listeners_p.at(i);
+		DEBUG_ENTER("--> Send to %d", i);
+		l->event(ev);
+		DEBUG_ENTER("<-- Send to %d", i);
+		if (i < m_listeners_p.size() && m_listeners_p.at(i) != l) {
+			// list has changed
+			i--;
+		}
+	}
+	DEBUG_LEAVE("sendEvent: %d", ev->kind());
 }
 
 const std::vector<std::string> &EndpointBase::args() {

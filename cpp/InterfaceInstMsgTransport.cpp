@@ -5,13 +5,13 @@
  *      Author: mballance
  */
 
-#include "EndpointMsgTransport.h"
 #include "InterfaceInstMsgTransport.h"
+#include "EndpointMsgTransport.h"
 
 namespace tblink_rpc_core {
 
 InterfaceInstMsgTransport::InterfaceInstMsgTransport(
-		EndpointMsgTransport		*endpoint,
+		EndpointMsgBase				*endpoint,
 		IInterfaceType				*type,
 		const std::string			&inst_name,
 		bool						is_mirror) : InterfaceInstBase(
@@ -19,7 +19,7 @@ InterfaceInstMsgTransport::InterfaceInstMsgTransport(
 }
 
 InterfaceInstMsgTransport::InterfaceInstMsgTransport(
-		EndpointMsgTransport		*endpoint,
+		EndpointMsgBase				*endpoint,
 		IInterfaceType				*type,
 		const std::string			&inst_name,
 		bool						is_mirror,
@@ -55,7 +55,7 @@ IParamVal *InterfaceInstMsgTransport::invoke(
 	}});
 
 	if (method->is_blocking()) {
-		intptr_t id = dynamic_cast<EndpointMsgTransport *>(m_endpoint)->send_req(
+		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-b",
 				r_params);
 
@@ -70,7 +70,7 @@ IParamVal *InterfaceInstMsgTransport::invoke(
 	} else {
 		bool recv_rsp = false;
 
-		intptr_t id = dynamic_cast<EndpointMsgTransport *>(m_endpoint)->send_req(
+		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
 				r_params,
 				std::bind(&InterfaceInstBase::invoke_nb_rsp, this,
@@ -105,11 +105,11 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 	r_params->setVal("params", params);
 
 	if (method->is_blocking()) {
-		intptr_t id = dynamic_cast<EndpointMsgTransport *>(m_endpoint)->send_req(
+		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
 				r_params);
 	} else {
-		intptr_t id = dynamic_cast<EndpointMsgTransport *>(m_endpoint)->send_req(
+		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
 				r_params);
 	}

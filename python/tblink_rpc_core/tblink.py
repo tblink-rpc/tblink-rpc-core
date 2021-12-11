@@ -7,6 +7,7 @@ from tblink_rpc_core import native
 import os
 from ctypes import CDLL
 from tblink_rpc_core.launch_type import LaunchType
+import asyncio
 
 class TbLink(object):
     
@@ -17,6 +18,13 @@ class TbLink(object):
         self.launchtypes = []
         self.native_tblink = None
         self._setup_native()
+        
+        def dflt_mk_ev():
+            return asyncio.Event()
+        self.mk_ev = dflt_mk_ev()
+        
+    def mkEvent(self):
+        return self.mk_ev()
     
     @classmethod
     def inst(cls):

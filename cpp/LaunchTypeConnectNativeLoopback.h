@@ -18,7 +18,9 @@ public:
 
 	virtual std::string name() override { return "connect.native.loopback"; }
 
-	virtual result_t launch(ILaunchParams *params) override;
+	virtual result_t launch(
+			ILaunchParams 		*params,
+			IEndpointServices 	*services) override;
 
 	virtual ILaunchParams *newLaunchParams() override;
 };
