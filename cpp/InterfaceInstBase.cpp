@@ -5,9 +5,24 @@
  *      Author: mballance
  */
 
+#include "Debug.h"
+#include "EndpointMsgBase.h"
 #include "InterfaceInstBase.h"
 
-#include "EndpointMsgBase.h"
+#define DEBUG_INTERFACE_INST_BASE
+
+#ifdef DEBUG_INTERFACE_INST_BASE
+#define DEBUG_ENTER(fmt, ...) \
+	DEBUG_ENTER_BASE(InterfaceInstBase, fmt, ##__VA_ARGS__)
+#define DEBUG_LEAVE(fmt, ...) \
+	DEBUG_LEAVE_BASE(InterfaceInstBase, fmt, ##__VA_ARGS__)
+#define DEBUG(fmt, ...) \
+	DEBUG_BASE(InterfaceInstBase, fmt, ##__VA_ARGS__)
+#else
+#define DEBUG_ENTER(fmt, ...)
+#define DEBUG_LEAVE(fmt, ...)
+#define DEBUG(fmt, ...)
+#endif
 
 namespace tblink_rpc_core {
 
@@ -48,10 +63,12 @@ void InterfaceInstBase::invoke_req(
 			IMethodType				*method,
 			IParamValVec			*params,
 			const invoke_rsp_f		&response_f) {
+	DEBUG_ENTER("invoke_req");
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
 	m_invoke_m.insert({call_id, response_f});
 	m_req_f(this, method, call_id, params);
+	DEBUG_LEAVE("invoke_req");
 }
 
 /**
@@ -60,6 +77,7 @@ void InterfaceInstBase::invoke_req(
 void InterfaceInstBase::invoke_rsp(
 		intptr_t									call_id,
 		IParamVal									*ret) {
+	DEBUG_ENTER("invoke_rsp");
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 
 	if ((it=m_invoke_m.find(call_id)) != m_invoke_m.end()) {
@@ -69,6 +87,7 @@ void InterfaceInstBase::invoke_rsp(
 		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
 		fflush(stdout);
 	}
+	DEBUG_LEAVE("invoke_rsp");
 }
 
 /**
@@ -78,6 +97,7 @@ void InterfaceInstBase::invoke_nb_rsp(
 		intptr_t									id,
 		IParamValMap								*result,
 		IParamValMap								*error) {
+	DEBUG_ENTER("invoke_nb_rsp");
 	int64_t call_id = result->getValT<IParamValInt>("call-id")->val_s();
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 
@@ -95,6 +115,7 @@ void InterfaceInstBase::invoke_nb_rsp(
 		fprintf(stdout, "Error: unknown call-id %lld\n", call_id);
 		fflush(stdout);
 	}
+	DEBUG_LEAVE("invoke_nb_rsp");
 }
 
 /**
@@ -104,6 +125,7 @@ void InterfaceInstBase::invoke_nb_rsp(
 void InterfaceInstBase::invoke_b_rsp(
 			intptr_t									call_id,
 			IParamVal									*ret) {
+	DEBUG_ENTER("invoke_b_rsp");
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 	if ((it=m_outbound_invoke_m.find(call_id)) != m_outbound_invoke_m.end()) {
 		fprintf(stdout, "--> Receive response\n");
@@ -129,6 +151,7 @@ void InterfaceInstBase::invoke_b_rsp(
 		fflush(stdout);
 	}
 #endif
+	DEBUG_LEAVE("invoke_b_rsp");
 }
 
 IParamValBool *InterfaceInstBase::mkValBool(bool val) {

@@ -50,6 +50,8 @@ public:
 
 	virtual bool shutdown() override;
 
+	virtual IEndpoint::comm_state_e comm_state() override;
+
 	virtual IEndpointListener *addListener(const endpoint_ev_f &) override;
 
 	virtual void addListener(IEndpointListener *l) override;

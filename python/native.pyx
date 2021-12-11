@@ -46,7 +46,9 @@ cdef class ParamVal(object):
     @staticmethod
     cdef _mk(native_decl.IParamVal *hndl):
         ret = None
-        if hndl.type() == native_decl.TypeE.Bool:
+        if hndl == NULL:
+            return None
+        elif hndl.type() == native_decl.TypeE.Bool:
             ret = ParamValBool()
         elif hndl.type() == native_decl.TypeE.Int:
             ret = ParamValInt()
@@ -103,16 +105,24 @@ cdef class ParamValVec(ParamVal):
         ret._hndl = hndl
         return ret
     
+    cpdef size(self):
+        return self.asVec().size()
+    
+    cpdef at(self, idx):
+        return ParamVal._mk(self.asVec().at(idx))
+    
+    cpdef push_back(self, ParamVal val):
+        self.asVec().push_back(val._hndl)
+    
     cdef native_decl.IParamValVec *asVec(self):
         return dynamic_cast[native_decl.IParamValVecP](self._hndl)
-    pass
 
 #********************************************************************
 #* interface_inst_rsp_f()
 #*
 #* Callback method for invocation responses
 #********************************************************************
-cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params):
+cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:
     obj(ParamVal._mk(params))
 
 #********************************************************************
@@ -148,6 +158,24 @@ cdef class InterfaceInst(object):
             method._hndl,
             params.asVec(),
             invoke_rsp_closure(<cpy_ref.PyObject *>(completion_f)))
+        
+    cpdef mkValBool(self, val):
+        return ParamValBool._mk(self._hndl.mkValBool(val))
+    
+    cpdef mkValIntU(self, val, width):
+        return ParamValInt._mk(self._hndl.mkValIntU(val, width))
+    
+    cpdef mkValIntS(self, val, width):
+        return ParamValInt._mk(self._hndl.mkValIntS(val, width))
+    
+    cpdef mkValMap(self):
+        return ParamValMap._mk(self._hndl.mkValMap())
+    
+    cpdef mkValStr(self, val):
+        return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
+    
+    cpdef mkValVec(self):
+        return ParamValVec._mk(self._hndl.mkValVec())
 
     @staticmethod
     cdef _mk(native_decl.IInterfaceInst *hndl):
@@ -405,12 +433,16 @@ cdef class Endpoint(object):
         # Hold the closure to prevent garbage collection
         Endpoint._req_l.append(req_f)
         
-        self._hndl.defineInterfaceInst(
+        ret_h = self._hndl.defineInterfaceInst(
             t._hndl,
             name.encode(),
             is_mirror,
             invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
-        pass
+        
+        if ret_h != NULL:
+            return InterfaceInst._mk(ret_h)
+        else:
+            return None
     
     cpdef getInterfaceTypes(self):
         ret = []
@@ -451,6 +483,24 @@ cdef class Endpoint(object):
     
     cpdef process_one_message(self):
         pass
+    
+    cpdef mkValBool(self, val):
+        return ParamValBool._mk(self._hndl.mkValBool(val))
+    
+    cpdef mkValIntU(self, val, width):
+        return ParamValInt._mk(self._hndl.mkValIntU(val, width))
+    
+    cpdef mkValIntS(self, val, width):
+        return ParamValInt._mk(self._hndl.mkValIntS(val, width))
+    
+    cpdef mkValMap(self):
+        return ParamValMap._mk(self._hndl.mkValMap())
+    
+    cpdef mkValStr(self, val):
+        return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
+    
+    cpdef mkValVec(self):
+        return ParamValVec._mk(self._hndl.mkValVec())
 
 #********************************************************************
 #* endpoint_ev_f

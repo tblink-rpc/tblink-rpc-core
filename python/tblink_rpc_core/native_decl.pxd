@@ -121,10 +121,25 @@ cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
         pass
     cdef cppclass IInterfaceInst:
         const cpp_string &name()
+        
         IInterfaceType *type()
+        
         bool is_mirror()
+        
         int invoke_nb(
             IMethodType *, IParamValVec *, const invoke_rsp_f &)
+        
+        IParamValBool *mkValBool(bool)
+        
+        IParamValInt *mkValIntU(uint64_t, int width)
+        
+        IParamValInt *mkValIntS(int64_t, int width)
+        
+        IParamValMap *mkValMap()
+        
+        IParamValStr *mkValStr(const cpp_string &)
+        
+        IParamValVec *mkValVec()
 ctypedef IInterfaceInst *IInterfaceInstP
 
 #********************************************************************
@@ -260,6 +275,18 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         const cpp_vector[IInterfaceInstP] &getInterfaceInsts()
         
         const cpp_vector[IInterfaceInstP] &getPeerInterfaceInsts()
+
+        IParamValBool *mkValBool(bool)
+        
+        IParamValInt *mkValIntU(uint64_t, int width)
+        
+        IParamValInt *mkValIntS(int64_t, int width)
+        
+        IParamValMap *mkValMap()
+        
+        IParamValStr *mkValStr(const cpp_string &)
+        
+        IParamValVec *mkValVec()
         
         pass
 

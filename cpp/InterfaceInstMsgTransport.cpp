@@ -5,8 +5,24 @@
  *      Author: mballance
  */
 
-#include "InterfaceInstMsgTransport.h"
+#include "Debug.h"
 #include "EndpointMsgTransport.h"
+#include "InterfaceInstMsgTransport.h"
+
+#define DEBUG_INTERFACE_INST_MSG_TRANSPORT
+
+#ifdef DEBUG_INTERFACE_INST_MSG_TRANSPORT
+#define DEBUG_ENTER(fmt, ...) \
+	DEBUG_ENTER_BASE(InterfaceInstMsgTransport, fmt, ##__VA_ARGS__)
+#define DEBUG_LEAVE(fmt, ...) \
+	DEBUG_LEAVE_BASE(InterfaceInstMsgTransport, fmt, ##__VA_ARGS__)
+#define DEBUG(fmt, ...) \
+	DEBUG_BASE(InterfaceInstMsgTransport, fmt, ##__VA_ARGS__)
+#else
+#define DEBUG_ENTER(fmt, ...)
+#define DEBUG_LEAVE(fmt, ...)
+#define DEBUG(fmt, ...)
+#endif
 
 namespace tblink_rpc_core {
 
@@ -92,6 +108,7 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 		IMethodType									*method,
 		IParamValVec								*params,
 		const invoke_rsp_f							&completion_f) {
+	DEBUG_ENTER("invoke_nb");
 	IParamValMap *r_params = m_endpoint->mkValMap();
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -106,14 +123,21 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 
 	if (method->is_blocking()) {
 		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
-				"tblink.invoke-nb",
+				"tblink.invoke-b",
 				r_params);
 	} else {
+		DEBUG("Insert call-id %lld in outbound_invoke_m", call_id);
+		m_outbound_invoke_m.insert({call_id, completion_f});
 		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
-				r_params);
+				r_params,
+				std::bind(&InterfaceInstBase::invoke_nb_rsp, this,
+						std::placeholders::_1,
+						std::placeholders::_2,
+						std::placeholders::_3));
 	}
 
+	DEBUG_LEAVE("invoke_nb");
 	return 0;
 }
 

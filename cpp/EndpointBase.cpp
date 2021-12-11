@@ -54,6 +54,11 @@ int32_t EndpointBase::init(
 	return 0;
 }
 
+IEndpoint::comm_state_e EndpointBase::comm_state() {
+	// TODO:
+	return Released;
+}
+
 IEndpointListener *EndpointBase::addListener(const endpoint_ev_f &ev_f) {
 	DEBUG_ENTER("addListener");
 	EndpointListenerBase *l = new EndpointListenerBase(ev_f);

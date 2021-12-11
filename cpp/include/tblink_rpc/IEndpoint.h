@@ -25,7 +25,7 @@ typedef std::unique_ptr<IEndpoint> IEndpointUP;
 class IEndpoint : public virtual IParamValFactory {
 public:
 
-	enum CommState {
+	enum comm_state_e {
 		Waiting,
 		Released
 	};
@@ -60,7 +60,7 @@ public:
 
 	virtual bool shutdown() = 0;
 
-//	virtual CommState comm_state() = 0;
+	virtual comm_state_e comm_state() = 0;
 
 	/**
 	 * Yield control to enable message processing.

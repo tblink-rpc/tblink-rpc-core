@@ -143,6 +143,11 @@ int32_t EndpointMsgBase::is_init() {
 	}
 }
 
+IEndpoint::comm_state_e EndpointMsgBase::comm_state() {
+	// TODO:
+	return Released;
+}
+
 IEndpointListener *EndpointMsgBase::addListener(const endpoint_ev_f &ev_f) {
 	DEBUG_ENTER("addListener");
 	EndpointListenerBase *l = new EndpointListenerBase(ev_f);
@@ -1043,16 +1048,20 @@ int32_t EndpointMsgBase::recv_rsp(
 intptr_t EndpointMsgBase::send_req(
 		const std::string 	&method,
 		IParamValMap		*params) {
+	DEBUG_ENTER("send_req: %s", method.c_str());
 	intptr_t id = m_id;
 	m_id += 1;
 
-	return send_req(method, id, params);
+	intptr_t ret = send_req(method, id, params);
+	DEBUG_LEAVE("send_req: %s", method.c_str());
+	return ret;
 }
 
 intptr_t EndpointMsgBase::send_req(
 		const std::string 	&method,
 		IParamValMap		*params,
 		const response_f	&rsp_f) {
+	DEBUG_ENTER("send_req(rsp_f): %s", method.c_str());
 	// Insert a placeholder for the response we will receive
 	intptr_t id = m_id;
 	m_id += 1;
@@ -1061,7 +1070,7 @@ intptr_t EndpointMsgBase::send_req(
 
 	intptr_t ret = send_req(method, id, params);
 
-
+	DEBUG_LEAVE("send_req(rsp_f): %s", method.c_str());
 	return ret;
 }
 
