@@ -18,8 +18,7 @@ public:
 
 	virtual ~IEndpointEvent() { }
 
-	virtual kind_t kind() const;
-
+	virtual kind_t kind() const = 0;
 
 };
 
