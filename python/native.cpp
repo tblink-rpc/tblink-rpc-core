@@ -658,6 +658,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "tblink_rpc/IParamValMap.h"
 #include "tblink_rpc/IParamValStr.h"
 #include "tblink_rpc/IParamValVec.h"
+#include "tblink_rpc/IParamDecl.h"
 #include "tblink_rpc/IMethodType.h"
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IInterfaceInst.h"
@@ -912,6 +913,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType;
 struct __pyx_obj_15tblink_rpc_core_6native_Type;
 struct __pyx_obj_15tblink_rpc_core_6native_TypeInt;
 struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder;
+struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl;
 struct __pyx_obj_15tblink_rpc_core_6native_MethodType;
 struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder;
 struct __pyx_obj_15tblink_rpc_core_6native_EndpointEvent;
@@ -975,8 +977,17 @@ typedef tblink_rpc_core::IParamValStr *__pyx_t_15tblink_rpc_core_11native_decl_I
  */
 typedef tblink_rpc_core::IParamValVec *__pyx_t_15tblink_rpc_core_11native_decl_IParamValVecP;
 
-/* "tblink_rpc_core/native_decl.pxd":102
- *     cdef cppclass IMethodType:
+/* "tblink_rpc_core/native_decl.pxd":103
+ *         const cpp_string &name()
+ *         IType *type()
+ * ctypedef IParamDecl *IParamDeclP             # <<<<<<<<<<<<<<
+ * 
+ * #********************************************************************
+ */
+typedef tblink_rpc_core::IParamDecl *__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP;
+
+/* "tblink_rpc_core/native_decl.pxd":117
+ *         const cpp_vector[IParamDeclP] &params()
  *         pass
  * ctypedef IMethodType *IMethodTypeP             # <<<<<<<<<<<<<<
  * 
@@ -984,7 +995,7 @@ typedef tblink_rpc_core::IParamValVec *__pyx_t_15tblink_rpc_core_11native_decl_I
  */
 typedef tblink_rpc_core::IMethodType *__pyx_t_15tblink_rpc_core_11native_decl_IMethodTypeP;
 
-/* "tblink_rpc_core/native_decl.pxd":112
+/* "tblink_rpc_core/native_decl.pxd":127
  *         const cpp_vector[IMethodTypeP] &methods()
  *         IMethodType *findMethod(const cpp_string &)
  * ctypedef IInterfaceType *IInterfaceTypeP             # <<<<<<<<<<<<<<
@@ -993,7 +1004,7 @@ typedef tblink_rpc_core::IMethodType *__pyx_t_15tblink_rpc_core_11native_decl_IM
  */
 typedef tblink_rpc_core::IInterfaceType *__pyx_t_15tblink_rpc_core_11native_decl_IInterfaceTypeP;
 
-/* "tblink_rpc_core/native_decl.pxd":143
+/* "tblink_rpc_core/native_decl.pxd":158
  * 
  *         IParamValVec *mkValVec()
  * ctypedef IInterfaceInst *IInterfaceInstP             # <<<<<<<<<<<<<<
@@ -1002,7 +1013,7 @@ typedef tblink_rpc_core::IInterfaceType *__pyx_t_15tblink_rpc_core_11native_decl
  */
 typedef tblink_rpc_core::IInterfaceInst *__pyx_t_15tblink_rpc_core_11native_decl_IInterfaceInstP;
 
-/* "tblink_rpc_core/native_decl.pxd":199
+/* "tblink_rpc_core/native_decl.pxd":222
  *         ITypeVec *mkTypeVec(IType *)
  * 
  * ctypedef IInterfaceTypeBuilder *IInterfaceTypeBuilderP             # <<<<<<<<<<<<<<
@@ -1011,7 +1022,7 @@ typedef tblink_rpc_core::IInterfaceInst *__pyx_t_15tblink_rpc_core_11native_decl
  */
 typedef tblink_rpc_core::IInterfaceTypeBuilder *__pyx_t_15tblink_rpc_core_11native_decl_IInterfaceTypeBuilderP;
 
-/* "tblink_rpc_core/native_decl.pxd":293
+/* "tblink_rpc_core/native_decl.pxd":316
  *         pass
  * 
  * ctypedef IEndpoint *IEndpointP             # <<<<<<<<<<<<<<
@@ -1020,7 +1031,7 @@ typedef tblink_rpc_core::IInterfaceTypeBuilder *__pyx_t_15tblink_rpc_core_11nati
  */
 typedef tblink_rpc_core::IEndpoint *__pyx_t_15tblink_rpc_core_11native_decl_IEndpointP;
 
-/* "tblink_rpc_core/native_decl.pxd":304
+/* "tblink_rpc_core/native_decl.pxd":327
  *         ILaunchParams *newLaunchParams()
  * 
  * ctypedef ILaunchType *ILaunchTypeP             # <<<<<<<<<<<<<<
@@ -1029,7 +1040,7 @@ typedef tblink_rpc_core::IEndpoint *__pyx_t_15tblink_rpc_core_11native_decl_IEnd
  */
 typedef tblink_rpc_core::ILaunchType *__pyx_t_15tblink_rpc_core_11native_decl_ILaunchTypeP;
 
-/* "python/native.pyx":18
+/* "python/native.pyx":19
  * cimport tblink_rpc_core.native_decl as native_decl
  * 
  * ctypedef native_decl.IEndpoint *IEndpointP             # <<<<<<<<<<<<<<
@@ -1038,7 +1049,7 @@ typedef tblink_rpc_core::ILaunchType *__pyx_t_15tblink_rpc_core_11native_decl_IL
  */
 typedef tblink_rpc_core::IEndpoint *__pyx_t_15tblink_rpc_core_6native_IEndpointP;
 
-/* "python/native.pyx":19
+/* "python/native.pyx":20
  * 
  * ctypedef native_decl.IEndpoint *IEndpointP
  * ctypedef native_decl.ILaunchType *ILaunchTypeP             # <<<<<<<<<<<<<<
@@ -1047,7 +1058,7 @@ typedef tblink_rpc_core::IEndpoint *__pyx_t_15tblink_rpc_core_6native_IEndpointP
  */
 typedef tblink_rpc_core::ILaunchType *__pyx_t_15tblink_rpc_core_6native_ILaunchTypeP;
 
-/* "python/native.pyx":24
+/* "python/native.pyx":25
  * #*  LaunchParams
  * #********************************************************************
  * cdef class LaunchParams(object):             # <<<<<<<<<<<<<<
@@ -1061,7 +1072,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams {
 };
 
 
-/* "python/native.pyx":44
+/* "python/native.pyx":45
  * #* ParamVal
  * #********************************************************************
  * cdef class ParamVal(object):             # <<<<<<<<<<<<<<
@@ -1075,7 +1086,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamVal {
 };
 
 
-/* "python/native.pyx":76
+/* "python/native.pyx":77
  * #* ParamValBool
  * #********************************************************************
  * cdef class ParamValBool(ParamVal):             # <<<<<<<<<<<<<<
@@ -1087,7 +1098,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamValBool {
 };
 
 
-/* "python/native.pyx":82
+/* "python/native.pyx":83
  * #* ParamValInt
  * #********************************************************************
  * cdef class ParamValInt(ParamVal):             # <<<<<<<<<<<<<<
@@ -1099,7 +1110,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamValInt {
 };
 
 
-/* "python/native.pyx":88
+/* "python/native.pyx":89
  * #* ParamValMap
  * #********************************************************************
  * cdef class ParamValMap(ParamVal):             # <<<<<<<<<<<<<<
@@ -1111,7 +1122,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamValMap {
 };
 
 
-/* "python/native.pyx":94
+/* "python/native.pyx":95
  * #* ParamValStr
  * #********************************************************************
  * cdef class ParamValStr(ParamVal):             # <<<<<<<<<<<<<<
@@ -1123,7 +1134,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamValStr {
 };
 
 
-/* "python/native.pyx":100
+/* "python/native.pyx":101
  * #* ParamValVec
  * #********************************************************************
  * cdef class ParamValVec(ParamVal):             # <<<<<<<<<<<<<<
@@ -1135,7 +1146,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_ParamValVec {
 };
 
 
-/* "python/native.pyx":136
+/* "python/native.pyx":137
  * #* InterfaceInst
  * #********************************************************************
  * cdef class InterfaceInst(object):             # <<<<<<<<<<<<<<
@@ -1149,7 +1160,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst {
 };
 
 
-/* "python/native.pyx":189
+/* "python/native.pyx":190
  * #* InterfaceType
  * #********************************************************************
  * cdef class InterfaceType(object):             # <<<<<<<<<<<<<<
@@ -1163,7 +1174,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType {
 };
 
 
-/* "python/native.pyx":217
+/* "python/native.pyx":218
  * #* Type
  * #********************************************************************
  * cdef class Type(object):             # <<<<<<<<<<<<<<
@@ -1177,7 +1188,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_Type {
 };
 
 
-/* "python/native.pyx":226
+/* "python/native.pyx":238
  *         return ret
  * 
  * cdef class TypeInt(Type):             # <<<<<<<<<<<<<<
@@ -1189,7 +1200,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_TypeInt {
 };
 
 
-/* "python/native.pyx":232
+/* "python/native.pyx":244
  * #* MethodTypeBuilder
  * #********************************************************************
  * cdef class MethodTypeBuilder(object):             # <<<<<<<<<<<<<<
@@ -1203,7 +1214,21 @@ struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder {
 };
 
 
-/* "python/native.pyx":247
+/* "python/native.pyx":259
+ * #* ParamDecl
+ * #********************************************************************
+ * cdef class ParamDecl(object):             # <<<<<<<<<<<<<<
+ *     cdef native_decl.IParamDecl *_hndl
+ * 
+ */
+struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamDecl *__pyx_vtab;
+  tblink_rpc_core::IParamDecl *_hndl;
+};
+
+
+/* "python/native.pyx":277
  * #* MethodType
  * #********************************************************************
  * cdef class MethodType(object):             # <<<<<<<<<<<<<<
@@ -1217,7 +1242,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_MethodType {
 };
 
 
-/* "python/native.pyx":259
+/* "python/native.pyx":307
  * #* InterfaceTypeBuilder
  * #********************************************************************
  * cdef class InterfaceTypeBuilder(object):             # <<<<<<<<<<<<<<
@@ -1231,7 +1256,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder {
 };
 
 
-/* "python/native.pyx":316
+/* "python/native.pyx":364
  * #* EndpointEvent
  * #********************************************************************
  * cdef class EndpointEvent(object):             # <<<<<<<<<<<<<<
@@ -1245,7 +1270,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_EndpointEvent {
 };
 
 
-/* "python/native.pyx":328
+/* "python/native.pyx":376
  * #* EndpointListener
  * #********************************************************************
  * cdef class EndpointListener(object):             # <<<<<<<<<<<<<<
@@ -1260,7 +1285,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener {
 };
 
 
-/* "python/native.pyx":348
+/* "python/native.pyx":396
  * #* Endpoint
  * #********************************************************************
  * cdef class Endpoint(object):             # <<<<<<<<<<<<<<
@@ -1275,7 +1300,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_Endpoint {
 };
 
 
-/* "python/native.pyx":547
+/* "python/native.pyx":595
  * #* LaunchType
  * #********************************************************************
  * cdef class LaunchType(object):             # <<<<<<<<<<<<<<
@@ -1289,7 +1314,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_LaunchType {
 };
 
 
-/* "python/native.pyx":576
+/* "python/native.pyx":624
  * #* TbLink
  * #********************************************************************
  * cdef class TbLink(object):             # <<<<<<<<<<<<<<
@@ -1303,7 +1328,7 @@ struct __pyx_obj_15tblink_rpc_core_6native_TbLink {
 };
 
 
-/* "python/native.pyx":465
+/* "python/native.pyx":513
  *         return ret
  * 
  *     async def process_one_message_a(self):             # <<<<<<<<<<<<<<
@@ -1322,7 +1347,7 @@ struct __pyx_obj_15tblink_rpc_core_6native___pyx_scope_struct__process_one_messa
 
 
 
-/* "python/native.pyx":24
+/* "python/native.pyx":25
  * #*  LaunchParams
  * #********************************************************************
  * cdef class LaunchParams(object):             # <<<<<<<<<<<<<<
@@ -1337,7 +1362,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_LaunchParams {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_LaunchParams *__pyx_vtabptr_15tblink_rpc_core_6native_LaunchParams;
 
 
-/* "python/native.pyx":44
+/* "python/native.pyx":45
  * #* ParamVal
  * #********************************************************************
  * cdef class ParamVal(object):             # <<<<<<<<<<<<<<
@@ -1354,7 +1379,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamVal {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamVal *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
 
 
-/* "python/native.pyx":76
+/* "python/native.pyx":77
  * #* ParamValBool
  * #********************************************************************
  * cdef class ParamValBool(ParamVal):             # <<<<<<<<<<<<<<
@@ -1368,7 +1393,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValBool {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValBool *__pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool;
 
 
-/* "python/native.pyx":82
+/* "python/native.pyx":83
  * #* ParamValInt
  * #********************************************************************
  * cdef class ParamValInt(ParamVal):             # <<<<<<<<<<<<<<
@@ -1382,7 +1407,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValInt {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValInt *__pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt;
 
 
-/* "python/native.pyx":88
+/* "python/native.pyx":89
  * #* ParamValMap
  * #********************************************************************
  * cdef class ParamValMap(ParamVal):             # <<<<<<<<<<<<<<
@@ -1396,7 +1421,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValMap {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValMap *__pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap;
 
 
-/* "python/native.pyx":94
+/* "python/native.pyx":95
  * #* ParamValStr
  * #********************************************************************
  * cdef class ParamValStr(ParamVal):             # <<<<<<<<<<<<<<
@@ -1410,7 +1435,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValStr {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValStr *__pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr;
 
 
-/* "python/native.pyx":100
+/* "python/native.pyx":101
  * #* ParamValVec
  * #********************************************************************
  * cdef class ParamValVec(ParamVal):             # <<<<<<<<<<<<<<
@@ -1428,7 +1453,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *__pyx_vtabptr_15tblink_rpc_core_6native_ParamValVec;
 
 
-/* "python/native.pyx":136
+/* "python/native.pyx":137
  * #* InterfaceInst
  * #********************************************************************
  * cdef class InterfaceInst(object):             # <<<<<<<<<<<<<<
@@ -1452,7 +1477,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceInst {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceInst *__pyx_vtabptr_15tblink_rpc_core_6native_InterfaceInst;
 
 
-/* "python/native.pyx":189
+/* "python/native.pyx":190
  * #* InterfaceType
  * #********************************************************************
  * cdef class InterfaceType(object):             # <<<<<<<<<<<<<<
@@ -1469,7 +1494,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceType {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceType *__pyx_vtabptr_15tblink_rpc_core_6native_InterfaceType;
 
 
-/* "python/native.pyx":217
+/* "python/native.pyx":218
  * #* Type
  * #********************************************************************
  * cdef class Type(object):             # <<<<<<<<<<<<<<
@@ -1478,12 +1503,13 @@ static struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceType *__pyx_vt
  */
 
 struct __pyx_vtabstruct_15tblink_rpc_core_6native_Type {
+  PyObject *(*kind)(struct __pyx_obj_15tblink_rpc_core_6native_Type *, int __pyx_skip_dispatch);
   PyObject *(*_mk)(tblink_rpc_core::IType *);
 };
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_Type *__pyx_vtabptr_15tblink_rpc_core_6native_Type;
 
 
-/* "python/native.pyx":226
+/* "python/native.pyx":238
  *         return ret
  * 
  * cdef class TypeInt(Type):             # <<<<<<<<<<<<<<
@@ -1497,7 +1523,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_TypeInt {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_TypeInt *__pyx_vtabptr_15tblink_rpc_core_6native_TypeInt;
 
 
-/* "python/native.pyx":232
+/* "python/native.pyx":244
  * #* MethodTypeBuilder
  * #********************************************************************
  * cdef class MethodTypeBuilder(object):             # <<<<<<<<<<<<<<
@@ -1512,7 +1538,23 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodTypeBuilder {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_vtabptr_15tblink_rpc_core_6native_MethodTypeBuilder;
 
 
-/* "python/native.pyx":247
+/* "python/native.pyx":259
+ * #* ParamDecl
+ * #********************************************************************
+ * cdef class ParamDecl(object):             # <<<<<<<<<<<<<<
+ *     cdef native_decl.IParamDecl *_hndl
+ * 
+ */
+
+struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamDecl {
+  PyObject *(*name)(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *, int __pyx_skip_dispatch);
+  PyObject *(*type)(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *, int __pyx_skip_dispatch);
+  PyObject *(*_mk)(tblink_rpc_core::IParamDecl *);
+};
+static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamDecl *__pyx_vtabptr_15tblink_rpc_core_6native_ParamDecl;
+
+
+/* "python/native.pyx":277
  * #* MethodType
  * #********************************************************************
  * cdef class MethodType(object):             # <<<<<<<<<<<<<<
@@ -1521,12 +1563,17 @@ static struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodTypeBuilder *__py
  */
 
 struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodType {
+  PyObject *(*name)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch);
+  PyObject *(*id)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch);
+  PyObject *(*is_export)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch);
+  PyObject *(*is_blocking)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch);
+  PyObject *(*params)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch);
   PyObject *(*_mk)(tblink_rpc_core::IMethodType *);
 };
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodType *__pyx_vtabptr_15tblink_rpc_core_6native_MethodType;
 
 
-/* "python/native.pyx":259
+/* "python/native.pyx":307
  * #* InterfaceTypeBuilder
  * #********************************************************************
  * cdef class InterfaceTypeBuilder(object):             # <<<<<<<<<<<<<<
@@ -1546,7 +1593,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceTypeBuilder {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_vtabptr_15tblink_rpc_core_6native_InterfaceTypeBuilder;
 
 
-/* "python/native.pyx":316
+/* "python/native.pyx":364
  * #* EndpointEvent
  * #********************************************************************
  * cdef class EndpointEvent(object):             # <<<<<<<<<<<<<<
@@ -1560,7 +1607,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_EndpointEvent {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_EndpointEvent *__pyx_vtabptr_15tblink_rpc_core_6native_EndpointEvent;
 
 
-/* "python/native.pyx":328
+/* "python/native.pyx":376
  * #* EndpointListener
  * #********************************************************************
  * cdef class EndpointListener(object):             # <<<<<<<<<<<<<<
@@ -1574,7 +1621,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_EndpointListener {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_EndpointListener *__pyx_vtabptr_15tblink_rpc_core_6native_EndpointListener;
 
 
-/* "python/native.pyx":348
+/* "python/native.pyx":396
  * #* Endpoint
  * #********************************************************************
  * cdef class Endpoint(object):             # <<<<<<<<<<<<<<
@@ -1610,7 +1657,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint *__pyx_vtabptr_15tblink_rpc_core_6native_Endpoint;
 
 
-/* "python/native.pyx":547
+/* "python/native.pyx":595
  * #* LaunchType
  * #********************************************************************
  * cdef class LaunchType(object):             # <<<<<<<<<<<<<<
@@ -1626,7 +1673,7 @@ struct __pyx_vtabstruct_15tblink_rpc_core_6native_LaunchType {
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_LaunchType *__pyx_vtabptr_15tblink_rpc_core_6native_LaunchType;
 
 
-/* "python/native.pyx":576
+/* "python/native.pyx":624
  * #* TbLink
  * #********************************************************************
  * cdef class TbLink(object):             # <<<<<<<<<<<<<<
@@ -1939,6 +1986,35 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
+/* GetItemInt.proto */
+#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
+               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
+#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
+                                                     int is_list, int wraparound, int boundscheck);
+
+/* ObjectGetItem.proto */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
+#else
+#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
+#endif
+
 /* PyObjectGetMethod.proto */
 static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
 
@@ -2195,6 +2271,27 @@ static PyObject* __Pyx_patch_inspect(PyObject* module);
 /* PatchAsyncIO.proto */
 static PyObject* __Pyx_patch_asyncio(PyObject* module);
 
+/* GetModuleGlobalName.proto */
+#if CYTHON_USE_DICT_VERSIONS
+#define __Pyx_GetModuleGlobalName(var, name)  {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
+        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
+        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
+    PY_UINT64_T __pyx_dict_version;\
+    PyObject *__pyx_dict_cached_value;\
+    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
+#else
+#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
+#endif
+
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -2220,6 +2317,11 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 /* AddTraceback.proto */
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
+
+/* GCCDiagnostics.proto */
+#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#define __Pyx_HAS_GCC_DIAGNOSTIC
+#endif
 
 /* CppExceptionConversion.proto */
 #ifndef __Pyx_CppExn2PyErr
@@ -2263,17 +2365,15 @@ static void __Pyx_CppExn2PyErr() {
 }
 #endif
 
-/* GCCDiagnostics.proto */
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
-#define __Pyx_HAS_GCC_DIAGNOSTIC
-#endif
-
 /* Print.proto */
 static int __Pyx_Print(PyObject*, PyObject *, int);
 #if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
 static PyObject* __pyx_print = 0;
 static PyObject* __pyx_print_kwargs = 0;
 #endif
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(enum tblink_rpc_core::TypeE value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
@@ -2350,9 +2450,18 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(struct _
 static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *__pyx_v_self, PyObject *__pyx_v_name, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(tblink_rpc_core::IInterfaceType *__pyx_v_hndl); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type_kind(struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type__mk(tblink_rpc_core::IType *__pyx_v_hndl); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param(struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_self, PyObject *__pyx_v_name, struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_t, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(tblink_rpc_core::IMethodTypeBuilder *__pyx_v_hndl); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl_name(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl_type(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl__mk(tblink_rpc_core::IParamDecl *__pyx_v_hndl); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_name(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_id(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_is_export(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_is_blocking(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_params(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_core::IMethodType *__pyx_v_hndl); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_id, struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_rtype, PyObject *__pyx_v_is_export, PyObject *__pyx_v_is_blocking, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_method(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_v_self, struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_mtb, int __pyx_skip_dispatch); /* proto*/
@@ -2439,6 +2548,7 @@ static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_InterfaceType = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_Type = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_TypeInt = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder = 0;
+static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_ParamDecl = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_MethodType = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder = 0;
 static PyTypeObject *__pyx_ptype_15tblink_rpc_core_6native_EndpointEvent = 0;
@@ -2473,17 +2583,23 @@ static const char __pyx_k_t[] = "t";
 static const char __pyx_k_at[] = "at";
 static const char __pyx_k_cb[] = "cb";
 static const char __pyx_k_id[] = "id";
+static const char __pyx_k_Int[] = "Int";
+static const char __pyx_k_Map[] = "Map";
+static const char __pyx_k_Str[] = "Str";
+static const char __pyx_k_Vec[] = "Vec";
 static const char __pyx_k_end[] = "end";
 static const char __pyx_k_key[] = "key";
 static const char __pyx_k_set[] = "set";
 static const char __pyx_k_sys[] = "sys";
 static const char __pyx_k_val[] = "val";
+static const char __pyx_k_Bool[] = "Bool";
 static const char __pyx_k_Type[] = "Type";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_ev_f[] = "ev_f";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_init[] = "init";
 static const char __pyx_k_inst[] = "inst";
+static const char __pyx_k_kind[] = "kind";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "name";
 static const char __pyx_k_send[] = "send";
@@ -2492,6 +2608,7 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_time[] = "time";
 static const char __pyx_k_type[] = "type";
 static const char __pyx_k_wait[] = "wait";
+static const char __pyx_k_TypeE[] = "TypeE";
 static const char __pyx_k_await[] = "__await__";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_etype[] = "etype";
@@ -2507,11 +2624,13 @@ static const char __pyx_k_TbLink[] = "TbLink";
 static const char __pyx_k_append[] = "append";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_import[] = "__import__";
+static const char __pyx_k_kind_m[] = "_kind_m";
 static const char __pyx_k_launch[] = "launch";
 static const char __pyx_k_method[] = "method";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_params[] = "params";
 static const char __pyx_k_reduce[] = "__reduce__";
+static const char __pyx_k_type_e[] = "type_e";
 static const char __pyx_k_TypeInt[] = "TypeInt";
 static const char __pyx_k_add_arg[] = "add_arg";
 static const char __pyx_k_asyncio[] = "asyncio";
@@ -2528,6 +2647,7 @@ static const char __pyx_k_mkValMap[] = "mkValMap";
 static const char __pyx_k_mkValStr[] = "mkValStr";
 static const char __pyx_k_mkValVec[] = "mkValVec";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_ParamDecl[] = "ParamDecl";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_add_param[] = "add_param";
 static const char __pyx_k_ev_wait_2[] = "<-- ev.wait()";
@@ -2571,6 +2691,7 @@ static const char __pyx_k_findLaunchType[] = "findLaunchType";
 static const char __pyx_k_removeListener[] = "removeListener";
 static const char __pyx_k_newLaunchParams[] = "newLaunchParams";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_tblink_rpc_core[] = "tblink_rpc_core";
 static const char __pyx_k_time_callback_f[] = "time_callback_f";
 static const char __pyx_k_EndpointListener[] = "EndpointListener";
 static const char __pyx_k_connect_complete[] = "connect_complete";
@@ -2600,29 +2721,36 @@ static const char __pyx_k_Endpoint_process_one_message_a[] = "Endpoint.process_o
 static const char __pyx_k_Null_type_defined_for_interface[] = "Null type defined for interface %s";
 static const char __pyx_k_process_one_message_a_locals_ev[] = "process_one_message_a.<locals>.ev_f";
 static const char __pyx_k_self__hndl_cannot_be_converted_t[] = "self._hndl cannot be converted to a Python object for pickling";
+static PyObject *__pyx_n_s_Bool;
 static PyObject *__pyx_n_s_Endpoint;
 static PyObject *__pyx_n_s_EndpointEvent;
 static PyObject *__pyx_n_s_EndpointListener;
 static PyObject *__pyx_n_s_Endpoint_process_one_message_a;
+static PyObject *__pyx_n_s_Int;
 static PyObject *__pyx_n_s_InterfaceInst;
 static PyObject *__pyx_n_s_InterfaceType;
 static PyObject *__pyx_n_s_InterfaceTypeBuilder;
 static PyObject *__pyx_n_s_LaunchParams;
 static PyObject *__pyx_n_s_LaunchType;
+static PyObject *__pyx_n_s_Map;
 static PyObject *__pyx_n_s_MethodType;
 static PyObject *__pyx_n_s_MethodTypeBuilder;
 static PyObject *__pyx_kp_s_Null_type_defined_for_interface;
+static PyObject *__pyx_n_s_ParamDecl;
 static PyObject *__pyx_n_s_ParamVal;
 static PyObject *__pyx_n_s_ParamValBool;
 static PyObject *__pyx_n_s_ParamValInt;
 static PyObject *__pyx_n_s_ParamValMap;
 static PyObject *__pyx_n_s_ParamValStr;
 static PyObject *__pyx_n_s_ParamValVec;
+static PyObject *__pyx_n_s_Str;
 static PyObject *__pyx_n_s_TbLink;
 static PyObject *__pyx_n_s_Type;
+static PyObject *__pyx_n_s_TypeE;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_TypeInt;
 static PyObject *__pyx_kp_s_Unknown_ParamVal_type;
+static PyObject *__pyx_n_s_Vec;
 static PyObject *__pyx_n_s_addListener;
 static PyObject *__pyx_n_s_add_arg;
 static PyObject *__pyx_n_s_add_method;
@@ -2673,6 +2801,8 @@ static PyObject *__pyx_n_s_is_init;
 static PyObject *__pyx_n_s_is_mirror;
 static PyObject *__pyx_n_s_is_signed;
 static PyObject *__pyx_n_s_key;
+static PyObject *__pyx_n_s_kind;
+static PyObject *__pyx_n_s_kind_m;
 static PyObject *__pyx_n_s_ktype;
 static PyObject *__pyx_n_s_launch;
 static PyObject *__pyx_n_s_launchTypes;
@@ -2722,6 +2852,7 @@ static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_t;
+static PyObject *__pyx_n_s_tblink_rpc_core;
 static PyObject *__pyx_n_s_tblink_rpc_core_native;
 static PyObject *__pyx_n_s_tblink_rpc_core_tblink;
 static PyObject *__pyx_n_s_test;
@@ -2729,6 +2860,7 @@ static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_n_s_time_callback_f;
 static PyObject *__pyx_n_s_type;
+static PyObject *__pyx_n_s_type_e;
 static PyObject *__pyx_n_s_val;
 static PyObject *__pyx_n_s_wait;
 static PyObject *__pyx_n_s_width;
@@ -2771,15 +2903,25 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_2methods(str
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_4findMethod(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *__pyx_v_self, PyObject *__pyx_v_name); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type___reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_kind(struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_7TypeInt___reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_TypeInt *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_7TypeInt_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_TypeInt *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param(struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_self, PyObject *__pyx_v_name, struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_t); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType___reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_name(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_2type(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_name(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2id(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_4is_export(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_6is_blocking(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_8params(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_id, struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_rtype, PyObject *__pyx_v_is_export, PyObject *__pyx_v_is_blocking); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_2add_method(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_v_self, struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *__pyx_v_mtb); /* proto */
 static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_4mkTypeBool(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *__pyx_v_self); /* proto */
@@ -2847,6 +2989,7 @@ static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_InterfaceType(PyTypeObje
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_Type(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_TypeInt(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_MethodTypeBuilder(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_ParamDecl(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_MethodType(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_InterfaceTypeBuilder(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_EndpointEvent(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -2891,16 +3034,18 @@ static PyObject *__pyx_tuple__31;
 static PyObject *__pyx_tuple__32;
 static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__34;
+static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__36;
-static PyObject *__pyx_tuple__37;
 static PyObject *__pyx_tuple__38;
 static PyObject *__pyx_tuple__39;
 static PyObject *__pyx_tuple__40;
 static PyObject *__pyx_tuple__41;
-static PyObject *__pyx_codeobj__35;
+static PyObject *__pyx_tuple__42;
+static PyObject *__pyx_tuple__43;
+static PyObject *__pyx_codeobj__37;
 /* Late includes */
 
-/* "python/native.pyx":27
+/* "python/native.pyx":28
  *     cdef native_decl.ILaunchParams *_hndl
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -2935,7 +3080,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_12LaunchParams___init__(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "python/native.pyx":30
+/* "python/native.pyx":31
  *         pass
  * 
  *     def __dealloc(self):             # <<<<<<<<<<<<<<
@@ -2968,7 +3113,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_12LaunchParams_2__dealloc(CY
   return __pyx_r;
 }
 
-/* "python/native.pyx":33
+/* "python/native.pyx":34
  *         pass
  * 
  *     cpdef add_arg(self, arg : str):             # <<<<<<<<<<<<<<
@@ -2998,7 +3143,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg(struct
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_arg); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 33, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_arg); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 34, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_12LaunchParams_5add_arg)) {
         __Pyx_XDECREF(__pyx_r);
@@ -3015,7 +3160,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg(struct
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_arg) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_arg);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 33, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -3036,20 +3181,20 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg(struct
     #endif
   }
 
-  /* "python/native.pyx":34
+  /* "python/native.pyx":35
  * 
  *     cpdef add_arg(self, arg : str):
  *         self._hndl.add_arg(arg.encode())             # <<<<<<<<<<<<<<
  * 
  *     cpdef add_param(self, key : str, val : str):
  */
-  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_arg); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 34, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_arg); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 34, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->_hndl->add_arg(__pyx_t_5);
 
-  /* "python/native.pyx":33
+  /* "python/native.pyx":34
  *         pass
  * 
  *     cpdef add_arg(self, arg : str):             # <<<<<<<<<<<<<<
@@ -3082,7 +3227,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_12LaunchParams_5add_arg(PyOb
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("add_arg (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arg), (&PyString_Type), 1, "arg", 1))) __PYX_ERR(1, 33, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arg), (&PyString_Type), 1, "arg", 1))) __PYX_ERR(1, 34, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_12LaunchParams_4add_arg(((struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *)__pyx_v_self), ((PyObject*)__pyx_v_arg));
 
   /* function exit code */
@@ -3103,7 +3248,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_12LaunchParams_4add_arg(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_arg", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg(__pyx_v_self, __pyx_v_arg, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 33, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg(__pyx_v_self, __pyx_v_arg, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3120,7 +3265,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_12LaunchParams_4add_arg(stru
   return __pyx_r;
 }
 
-/* "python/native.pyx":36
+/* "python/native.pyx":37
  *         self._hndl.add_arg(arg.encode())
  * 
  *     cpdef add_param(self, key : str, val : str):             # <<<<<<<<<<<<<<
@@ -3153,7 +3298,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 36, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 37, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_12LaunchParams_7add_param)) {
         __Pyx_XDECREF(__pyx_r);
@@ -3173,7 +3318,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_key, __pyx_v_val};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 36, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 37, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -3181,13 +3326,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_key, __pyx_v_val};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 36, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 37, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 36, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 37, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -3198,7 +3343,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
           __Pyx_INCREF(__pyx_v_val);
           __Pyx_GIVEREF(__pyx_v_val);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_val);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 36, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 37, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -3221,31 +3366,31 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
     #endif
   }
 
-  /* "python/native.pyx":38
+  /* "python/native.pyx":39
  *     cpdef add_param(self, key : str, val : str):
  *         self._hndl.add_param(
  *             key.encode(),             # <<<<<<<<<<<<<<
  *             val.encode())
  * 
  */
-  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 38, __pyx_L1_error)
+  __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":39
+  /* "python/native.pyx":40
  *         self._hndl.add_param(
  *             key.encode(),
  *             val.encode())             # <<<<<<<<<<<<<<
  * 
  * #********************************************************************
  */
-  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_val); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyString_Type_encode, __pyx_v_val); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":37
+  /* "python/native.pyx":38
  * 
  *     cpdef add_param(self, key : str, val : str):
  *         self._hndl.add_param(             # <<<<<<<<<<<<<<
@@ -3254,7 +3399,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(stru
  */
   __pyx_v_self->_hndl->add_param(__pyx_t_7, __pyx_t_8);
 
-  /* "python/native.pyx":36
+  /* "python/native.pyx":37
  *         self._hndl.add_arg(arg.encode())
  * 
  *     cpdef add_param(self, key : str, val : str):             # <<<<<<<<<<<<<<
@@ -3313,11 +3458,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_12LaunchParams_7add_param(Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_val)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, 1); __PYX_ERR(1, 36, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, 1); __PYX_ERR(1, 37, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_param") < 0)) __PYX_ERR(1, 36, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_param") < 0)) __PYX_ERR(1, 37, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3330,14 +3475,14 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_12LaunchParams_7add_param(Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 36, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 37, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.LaunchParams.add_param", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyString_Type), 1, "key", 1))) __PYX_ERR(1, 36, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(1, 36, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyString_Type), 1, "key", 1))) __PYX_ERR(1, 37, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(1, 37, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_12LaunchParams_6add_param(((struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *)__pyx_v_self), __pyx_v_key, __pyx_v_val);
 
   /* function exit code */
@@ -3358,7 +3503,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_12LaunchParams_6add_param(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_param", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(__pyx_v_self, __pyx_v_key, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 36, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param(__pyx_v_self, __pyx_v_key, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3488,7 +3633,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_12LaunchParams_10__setstate_
   return __pyx_r;
 }
 
-/* "python/native.pyx":47
+/* "python/native.pyx":48
  *     cdef native_decl.IParamVal *_hndl
  *     @staticmethod
  *     cdef _mk(native_decl.IParamVal *hndl):             # <<<<<<<<<<<<<<
@@ -3507,7 +3652,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":48
+  /* "python/native.pyx":49
  *     @staticmethod
  *     cdef _mk(native_decl.IParamVal *hndl):
  *         ret = None             # <<<<<<<<<<<<<<
@@ -3517,7 +3662,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __Pyx_INCREF(Py_None);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)Py_None);
 
-  /* "python/native.pyx":49
+  /* "python/native.pyx":50
  *     cdef _mk(native_decl.IParamVal *hndl):
  *         ret = None
  *         if hndl == NULL:             # <<<<<<<<<<<<<<
@@ -3527,7 +3672,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "python/native.pyx":50
+    /* "python/native.pyx":51
  *         ret = None
  *         if hndl == NULL:
  *             return None             # <<<<<<<<<<<<<<
@@ -3538,7 +3683,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "python/native.pyx":49
+    /* "python/native.pyx":50
  *     cdef _mk(native_decl.IParamVal *hndl):
  *         ret = None
  *         if hndl == NULL:             # <<<<<<<<<<<<<<
@@ -3547,7 +3692,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
  */
   }
 
-  /* "python/native.pyx":51
+  /* "python/native.pyx":52
  *         if hndl == NULL:
  *             return None
  *         elif hndl.type() == native_decl.TypeE.Bool:             # <<<<<<<<<<<<<<
@@ -3557,19 +3702,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl->type() == tblink_rpc_core::IParamVal::Bool) != 0);
   if (__pyx_t_1) {
 
-    /* "python/native.pyx":52
+    /* "python/native.pyx":53
  *             return None
  *         elif hndl.type() == native_decl.TypeE.Bool:
  *             ret = ParamValBool()             # <<<<<<<<<<<<<<
  *         elif hndl.type() == native_decl.TypeE.Int:
  *             ret = ParamValInt()
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValBool)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 52, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValBool)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 53, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_ret, ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "python/native.pyx":51
+    /* "python/native.pyx":52
  *         if hndl == NULL:
  *             return None
  *         elif hndl.type() == native_decl.TypeE.Bool:             # <<<<<<<<<<<<<<
@@ -3579,7 +3724,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     goto __pyx_L3;
   }
 
-  /* "python/native.pyx":53
+  /* "python/native.pyx":54
  *         elif hndl.type() == native_decl.TypeE.Bool:
  *             ret = ParamValBool()
  *         elif hndl.type() == native_decl.TypeE.Int:             # <<<<<<<<<<<<<<
@@ -3589,19 +3734,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl->type() == tblink_rpc_core::IParamVal::Int) != 0);
   if (__pyx_t_1) {
 
-    /* "python/native.pyx":54
+    /* "python/native.pyx":55
  *             ret = ParamValBool()
  *         elif hndl.type() == native_decl.TypeE.Int:
  *             ret = ParamValInt()             # <<<<<<<<<<<<<<
  *         elif hndl.type() == native_decl.TypeE.Map:
  *             ret = ParamValMap()
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValInt)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 54, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValInt)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_ret, ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "python/native.pyx":53
+    /* "python/native.pyx":54
  *         elif hndl.type() == native_decl.TypeE.Bool:
  *             ret = ParamValBool()
  *         elif hndl.type() == native_decl.TypeE.Int:             # <<<<<<<<<<<<<<
@@ -3611,7 +3756,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     goto __pyx_L3;
   }
 
-  /* "python/native.pyx":55
+  /* "python/native.pyx":56
  *         elif hndl.type() == native_decl.TypeE.Int:
  *             ret = ParamValInt()
  *         elif hndl.type() == native_decl.TypeE.Map:             # <<<<<<<<<<<<<<
@@ -3621,19 +3766,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl->type() == tblink_rpc_core::IParamVal::Map) != 0);
   if (__pyx_t_1) {
 
-    /* "python/native.pyx":56
+    /* "python/native.pyx":57
  *             ret = ParamValInt()
  *         elif hndl.type() == native_decl.TypeE.Map:
  *             ret = ParamValMap()             # <<<<<<<<<<<<<<
  *         elif hndl.type() == native_decl.TypeE.Str:
  *             ret = ParamValStr()
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValMap)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 56, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValMap)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_ret, ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "python/native.pyx":55
+    /* "python/native.pyx":56
  *         elif hndl.type() == native_decl.TypeE.Int:
  *             ret = ParamValInt()
  *         elif hndl.type() == native_decl.TypeE.Map:             # <<<<<<<<<<<<<<
@@ -3643,7 +3788,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     goto __pyx_L3;
   }
 
-  /* "python/native.pyx":57
+  /* "python/native.pyx":58
  *         elif hndl.type() == native_decl.TypeE.Map:
  *             ret = ParamValMap()
  *         elif hndl.type() == native_decl.TypeE.Str:             # <<<<<<<<<<<<<<
@@ -3653,19 +3798,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl->type() == tblink_rpc_core::IParamVal::Str) != 0);
   if (__pyx_t_1) {
 
-    /* "python/native.pyx":58
+    /* "python/native.pyx":59
  *             ret = ParamValMap()
  *         elif hndl.type() == native_decl.TypeE.Str:
  *             ret = ParamValStr()             # <<<<<<<<<<<<<<
  *         elif hndl.type() == native_decl.TypeE.Vec:
  *             ret = ParamValVec()
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValStr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValStr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_ret, ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "python/native.pyx":57
+    /* "python/native.pyx":58
  *         elif hndl.type() == native_decl.TypeE.Map:
  *             ret = ParamValMap()
  *         elif hndl.type() == native_decl.TypeE.Str:             # <<<<<<<<<<<<<<
@@ -3675,7 +3820,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     goto __pyx_L3;
   }
 
-  /* "python/native.pyx":59
+  /* "python/native.pyx":60
  *         elif hndl.type() == native_decl.TypeE.Str:
  *             ret = ParamValStr()
  *         elif hndl.type() == native_decl.TypeE.Vec:             # <<<<<<<<<<<<<<
@@ -3685,19 +3830,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_t_1 = ((__pyx_v_hndl->type() == tblink_rpc_core::IParamVal::Vec) != 0);
   if (likely(__pyx_t_1)) {
 
-    /* "python/native.pyx":60
+    /* "python/native.pyx":61
  *             ret = ParamValStr()
  *         elif hndl.type() == native_decl.TypeE.Vec:
  *             ret = ParamValVec()             # <<<<<<<<<<<<<<
  *         else:
  *             raise Exception("Unknown ParamVal type")
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValVec)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 60, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValVec)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_ret, ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "python/native.pyx":59
+    /* "python/native.pyx":60
  *         elif hndl.type() == native_decl.TypeE.Str:
  *             ret = ParamValStr()
  *         elif hndl.type() == native_decl.TypeE.Vec:             # <<<<<<<<<<<<<<
@@ -3707,7 +3852,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
     goto __pyx_L3;
   }
 
-  /* "python/native.pyx":62
+  /* "python/native.pyx":63
  *             ret = ParamValVec()
  *         else:
  *             raise Exception("Unknown ParamVal type")             # <<<<<<<<<<<<<<
@@ -3715,15 +3860,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
  *         return ret
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 62, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 62, __pyx_L1_error)
+    __PYX_ERR(1, 63, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "python/native.pyx":63
+  /* "python/native.pyx":64
  *         else:
  *             raise Exception("Unknown ParamVal type")
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -3732,7 +3877,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":64
+  /* "python/native.pyx":65
  *             raise Exception("Unknown ParamVal type")
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -3744,7 +3889,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":47
+  /* "python/native.pyx":48
  *     cdef native_decl.IParamVal *_hndl
  *     @staticmethod
  *     cdef _mk(native_decl.IParamVal *hndl):             # <<<<<<<<<<<<<<
@@ -3764,7 +3909,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(tblink_rpc_core
   return __pyx_r;
 }
 
-/* "python/native.pyx":66
+/* "python/native.pyx":67
  *         return ret
  * 
  *     cdef native_decl.IParamValBool *asBool(self):             # <<<<<<<<<<<<<<
@@ -3781,7 +3926,7 @@ static tblink_rpc_core::IParamValBool *__pyx_f_15tblink_rpc_core_6native_8ParamV
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("asBool", 0);
 
-  /* "python/native.pyx":67
+  /* "python/native.pyx":68
  * 
  *     cdef native_decl.IParamValBool *asBool(self):
  *         return dynamic_cast[native_decl.IParamValBoolP](self._hndl)             # <<<<<<<<<<<<<<
@@ -3792,12 +3937,12 @@ static tblink_rpc_core::IParamValBool *__pyx_f_15tblink_rpc_core_6native_8ParamV
     __pyx_t_1 = dynamic_cast<__pyx_t_15tblink_rpc_core_11native_decl_IParamValBoolP>(__pyx_v_self->_hndl);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 67, __pyx_L1_error)
+    __PYX_ERR(1, 68, __pyx_L1_error)
   }
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "python/native.pyx":66
+  /* "python/native.pyx":67
  *         return ret
  * 
  *     cdef native_decl.IParamValBool *asBool(self):             # <<<<<<<<<<<<<<
@@ -3814,7 +3959,7 @@ static tblink_rpc_core::IParamValBool *__pyx_f_15tblink_rpc_core_6native_8ParamV
   return __pyx_r;
 }
 
-/* "python/native.pyx":68
+/* "python/native.pyx":69
  *     cdef native_decl.IParamValBool *asBool(self):
  *         return dynamic_cast[native_decl.IParamValBoolP](self._hndl)
  *     cdef native_decl.IParamValInt *asInt(self):             # <<<<<<<<<<<<<<
@@ -3831,7 +3976,7 @@ static tblink_rpc_core::IParamValInt *__pyx_f_15tblink_rpc_core_6native_8ParamVa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("asInt", 0);
 
-  /* "python/native.pyx":69
+  /* "python/native.pyx":70
  *         return dynamic_cast[native_decl.IParamValBoolP](self._hndl)
  *     cdef native_decl.IParamValInt *asInt(self):
  *         return dynamic_cast[native_decl.IParamValIntP](self._hndl)             # <<<<<<<<<<<<<<
@@ -3842,12 +3987,12 @@ static tblink_rpc_core::IParamValInt *__pyx_f_15tblink_rpc_core_6native_8ParamVa
     __pyx_t_1 = dynamic_cast<__pyx_t_15tblink_rpc_core_11native_decl_IParamValIntP>(__pyx_v_self->_hndl);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 69, __pyx_L1_error)
+    __PYX_ERR(1, 70, __pyx_L1_error)
   }
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "python/native.pyx":68
+  /* "python/native.pyx":69
  *     cdef native_decl.IParamValBool *asBool(self):
  *         return dynamic_cast[native_decl.IParamValBoolP](self._hndl)
  *     cdef native_decl.IParamValInt *asInt(self):             # <<<<<<<<<<<<<<
@@ -3864,7 +4009,7 @@ static tblink_rpc_core::IParamValInt *__pyx_f_15tblink_rpc_core_6native_8ParamVa
   return __pyx_r;
 }
 
-/* "python/native.pyx":70
+/* "python/native.pyx":71
  *     cdef native_decl.IParamValInt *asInt(self):
  *         return dynamic_cast[native_decl.IParamValIntP](self._hndl)
  *     cdef native_decl.IParamValVec *asStr(self):             # <<<<<<<<<<<<<<
@@ -3881,7 +4026,7 @@ static tblink_rpc_core::IParamValVec *__pyx_f_15tblink_rpc_core_6native_8ParamVa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("asStr", 0);
 
-  /* "python/native.pyx":71
+  /* "python/native.pyx":72
  *         return dynamic_cast[native_decl.IParamValIntP](self._hndl)
  *     cdef native_decl.IParamValVec *asStr(self):
  *         return dynamic_cast[native_decl.IParamValVecP](self._hndl)             # <<<<<<<<<<<<<<
@@ -3892,12 +4037,12 @@ static tblink_rpc_core::IParamValVec *__pyx_f_15tblink_rpc_core_6native_8ParamVa
     __pyx_t_1 = dynamic_cast<__pyx_t_15tblink_rpc_core_11native_decl_IParamValVecP>(__pyx_v_self->_hndl);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 71, __pyx_L1_error)
+    __PYX_ERR(1, 72, __pyx_L1_error)
   }
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "python/native.pyx":70
+  /* "python/native.pyx":71
  *     cdef native_decl.IParamValInt *asInt(self):
  *         return dynamic_cast[native_decl.IParamValIntP](self._hndl)
  *     cdef native_decl.IParamValVec *asStr(self):             # <<<<<<<<<<<<<<
@@ -4479,7 +4624,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValStr_2__setstate_cy
   return __pyx_r;
 }
 
-/* "python/native.pyx":103
+/* "python/native.pyx":104
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IParamValVec *hndl):             # <<<<<<<<<<<<<<
@@ -4497,19 +4642,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(tblink_rpc_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":104
+  /* "python/native.pyx":105
  *     @staticmethod
  *     cdef _mk(native_decl.IParamValVec *hndl):
  *         ret = ParamValVec()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValVec)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamValVec)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_ParamValVec *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":105
+  /* "python/native.pyx":106
  *     cdef _mk(native_decl.IParamValVec *hndl):
  *         ret = ParamValVec()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -4518,7 +4663,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(tblink_rpc_
  */
   __pyx_v_ret->__pyx_base._hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":106
+  /* "python/native.pyx":107
  *         ret = ParamValVec()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -4530,7 +4675,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(tblink_rpc_
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":103
+  /* "python/native.pyx":104
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IParamValVec *hndl):             # <<<<<<<<<<<<<<
@@ -4550,7 +4695,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(tblink_rpc_
   return __pyx_r;
 }
 
-/* "python/native.pyx":108
+/* "python/native.pyx":109
  *         return ret
  * 
  *     cpdef size(self):             # <<<<<<<<<<<<<<
@@ -4579,7 +4724,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(struct __p
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 108, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 109, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_11ParamValVec_1size)) {
         __Pyx_XDECREF(__pyx_r);
@@ -4596,7 +4741,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(struct __p
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 108, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 109, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -4617,7 +4762,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(struct __p
     #endif
   }
 
-  /* "python/native.pyx":109
+  /* "python/native.pyx":110
  * 
  *     cpdef size(self):
  *         return self.asVec().size()             # <<<<<<<<<<<<<<
@@ -4625,13 +4770,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(struct __p
  *     cpdef at(self, idx):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self->__pyx_base.__pyx_vtab)->asVec(__pyx_v_self)->size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self->__pyx_base.__pyx_vtab)->asVec(__pyx_v_self)->size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":108
+  /* "python/native.pyx":109
  *         return ret
  * 
  *     cpdef size(self):             # <<<<<<<<<<<<<<
@@ -4675,7 +4820,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_size(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("size", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 108, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_size(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4692,7 +4837,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_size(struct __
   return __pyx_r;
 }
 
-/* "python/native.pyx":111
+/* "python/native.pyx":112
  *         return self.asVec().size()
  * 
  *     cpdef at(self, idx):             # <<<<<<<<<<<<<<
@@ -4722,7 +4867,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(struct __pyx
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_at); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 111, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_at); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_11ParamValVec_3at)) {
         __Pyx_XDECREF(__pyx_r);
@@ -4739,7 +4884,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(struct __pyx
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_idx) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_idx);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 111, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 112, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -4760,7 +4905,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(struct __pyx
     #endif
   }
 
-  /* "python/native.pyx":112
+  /* "python/native.pyx":113
  * 
  *     cpdef at(self, idx):
  *         return ParamVal._mk(self.asVec().at(idx))             # <<<<<<<<<<<<<<
@@ -4768,14 +4913,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(struct __pyx
  *     cpdef push_back(self, ParamVal val):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyInt_As_uint32_t(__pyx_v_idx); if (unlikely((__pyx_t_5 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 112, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self->__pyx_base.__pyx_vtab)->asVec(__pyx_v_self)->at(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 112, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_uint32_t(__pyx_v_idx); if (unlikely((__pyx_t_5 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 113, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self->__pyx_base.__pyx_vtab)->asVec(__pyx_v_self)->at(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":111
+  /* "python/native.pyx":112
  *         return self.asVec().size()
  * 
  *     cpdef at(self, idx):             # <<<<<<<<<<<<<<
@@ -4819,7 +4964,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_2at(struct __p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("at", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(__pyx_v_self, __pyx_v_idx, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_at(__pyx_v_self, __pyx_v_idx, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4836,7 +4981,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_2at(struct __p
   return __pyx_r;
 }
 
-/* "python/native.pyx":114
+/* "python/native.pyx":115
  *         return ParamVal._mk(self.asVec().at(idx))
  * 
  *     cpdef push_back(self, ParamVal val):             # <<<<<<<<<<<<<<
@@ -4865,7 +5010,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(struc
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_push_back); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 114, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_push_back); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 115, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_11ParamValVec_5push_back)) {
         __Pyx_XDECREF(__pyx_r);
@@ -4882,7 +5027,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(struc
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_val)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_val));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 114, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 115, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -4903,7 +5048,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(struc
     #endif
   }
 
-  /* "python/native.pyx":115
+  /* "python/native.pyx":116
  * 
  *     cpdef push_back(self, ParamVal val):
  *         self.asVec().push_back(val._hndl)             # <<<<<<<<<<<<<<
@@ -4912,7 +5057,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(struc
  */
   ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self->__pyx_base.__pyx_vtab)->asVec(__pyx_v_self)->push_back(__pyx_v_val->_hndl);
 
-  /* "python/native.pyx":114
+  /* "python/native.pyx":115
  *         return ParamVal._mk(self.asVec().at(idx))
  * 
  *     cpdef push_back(self, ParamVal val):             # <<<<<<<<<<<<<<
@@ -4945,7 +5090,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_11ParamValVec_5push_back(PyO
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("push_back (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), __pyx_ptype_15tblink_rpc_core_6native_ParamVal, 1, "val", 0))) __PYX_ERR(1, 114, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), __pyx_ptype_15tblink_rpc_core_6native_ParamVal, 1, "val", 0))) __PYX_ERR(1, 115, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_11ParamValVec_4push_back(((struct __pyx_obj_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *)__pyx_v_val));
 
   /* function exit code */
@@ -4966,7 +5111,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_4push_back(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("push_back", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 114, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4983,7 +5128,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_4push_back(str
   return __pyx_r;
 }
 
-/* "python/native.pyx":117
+/* "python/native.pyx":118
  *         self.asVec().push_back(val._hndl)
  * 
  *     cdef native_decl.IParamValVec *asVec(self):             # <<<<<<<<<<<<<<
@@ -5000,7 +5145,7 @@ static tblink_rpc_core::IParamValVec *__pyx_f_15tblink_rpc_core_6native_11ParamV
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("asVec", 0);
 
-  /* "python/native.pyx":118
+  /* "python/native.pyx":119
  * 
  *     cdef native_decl.IParamValVec *asVec(self):
  *         return dynamic_cast[native_decl.IParamValVecP](self._hndl)             # <<<<<<<<<<<<<<
@@ -5011,12 +5156,12 @@ static tblink_rpc_core::IParamValVec *__pyx_f_15tblink_rpc_core_6native_11ParamV
     __pyx_t_1 = dynamic_cast<__pyx_t_15tblink_rpc_core_11native_decl_IParamValVecP>(__pyx_v_self->__pyx_base._hndl);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 118, __pyx_L1_error)
+    __PYX_ERR(1, 119, __pyx_L1_error)
   }
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "python/native.pyx":117
+  /* "python/native.pyx":118
  *         self.asVec().push_back(val._hndl)
  * 
  *     cdef native_decl.IParamValVec *asVec(self):             # <<<<<<<<<<<<<<
@@ -5146,7 +5291,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_11ParamValVec_8__setstate_cy
   return __pyx_r;
 }
 
-/* "python/native.pyx":125
+/* "python/native.pyx":126
  * #* Callback method for invocation responses
  * #********************************************************************
  * cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:             # <<<<<<<<<<<<<<
@@ -5169,14 +5314,14 @@ void interface_inst_rsp_f(PyObject *__pyx_v_obj, tblink_rpc_core::IParamVal *__p
   __Pyx_RefNannySetupContext("interface_inst_rsp_f", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "python/native.pyx":126
+  /* "python/native.pyx":127
  * #********************************************************************
  * cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:
  *     obj(ParamVal._mk(params))             # <<<<<<<<<<<<<<
  * 
  * #********************************************************************
  */
-  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(__pyx_v_params); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 126, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_8ParamVal__mk(__pyx_v_params); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_obj);
   __pyx_t_3 = __pyx_v_obj; __pyx_t_4 = NULL;
@@ -5192,12 +5337,12 @@ void interface_inst_rsp_f(PyObject *__pyx_v_obj, tblink_rpc_core::IParamVal *__p
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 126, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":125
+  /* "python/native.pyx":126
  * #* Callback method for invocation responses
  * #********************************************************************
  * cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:             # <<<<<<<<<<<<<<
@@ -5221,7 +5366,7 @@ void interface_inst_rsp_f(PyObject *__pyx_v_obj, tblink_rpc_core::IParamVal *__p
   #endif
 }
 
-/* "python/native.pyx":140
+/* "python/native.pyx":141
  *     cdef native_decl.IInterfaceInst *_hndl
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -5256,7 +5401,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_13InterfaceInst___init__(CYTHON_UN
   return __pyx_r;
 }
 
-/* "python/native.pyx":143
+/* "python/native.pyx":144
  *         pass
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -5285,7 +5430,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(struct _
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 143, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 144, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_3name)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5302,7 +5447,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(struct _
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 143, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 144, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -5323,7 +5468,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(struct _
     #endif
   }
 
-  /* "python/native.pyx":144
+  /* "python/native.pyx":145
  * 
  *     cpdef name(self):
  *         return self._hndl.name().decode()             # <<<<<<<<<<<<<<
@@ -5331,13 +5476,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(struct _
  *     cpdef type(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":143
+  /* "python/native.pyx":144
  *         pass
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -5381,7 +5526,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_2name(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("name", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 143, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5398,7 +5543,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_2name(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":146
+/* "python/native.pyx":147
  *         return self._hndl.name().decode()
  * 
  *     cpdef type(self):             # <<<<<<<<<<<<<<
@@ -5427,7 +5572,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(struct _
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 146, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_5type)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5444,7 +5589,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(struct _
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 146, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 147, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -5465,7 +5610,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(struct _
     #endif
   }
 
-  /* "python/native.pyx":147
+  /* "python/native.pyx":148
  * 
  *     cpdef type(self):
  *         return InterfaceType._mk(self._hndl.type())             # <<<<<<<<<<<<<<
@@ -5473,13 +5618,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(struct _
  *     cpdef is_mirror(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_self->_hndl->type()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_self->_hndl->type()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":146
+  /* "python/native.pyx":147
  *         return self._hndl.name().decode()
  * 
  *     cpdef type(self):             # <<<<<<<<<<<<<<
@@ -5523,7 +5668,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_4type(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("type", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 146, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_type(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5540,7 +5685,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_4type(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":149
+/* "python/native.pyx":150
  *         return InterfaceType._mk(self._hndl.type())
  * 
  *     cpdef is_mirror(self):             # <<<<<<<<<<<<<<
@@ -5569,7 +5714,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(str
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_mirror); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 149, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_mirror); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 150, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_7is_mirror)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5586,7 +5731,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(str
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 149, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 150, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -5607,7 +5752,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(str
     #endif
   }
 
-  /* "python/native.pyx":150
+  /* "python/native.pyx":151
  * 
  *     cpdef is_mirror(self):
  *         return self._hndl.is_mirror()             # <<<<<<<<<<<<<<
@@ -5615,13 +5760,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(str
  *     cpdef invoke_nb(
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_hndl->is_mirror()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 150, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_hndl->is_mirror()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":149
+  /* "python/native.pyx":150
  *         return InterfaceType._mk(self._hndl.type())
  * 
  *     cpdef is_mirror(self):             # <<<<<<<<<<<<<<
@@ -5665,7 +5810,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_6is_mirror(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_mirror", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 149, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_is_mirror(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5682,7 +5827,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_6is_mirror(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":152
+/* "python/native.pyx":153
  *         return self._hndl.is_mirror()
  * 
  *     cpdef invoke_nb(             # <<<<<<<<<<<<<<
@@ -5713,7 +5858,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_invoke_nb); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 152, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_invoke_nb); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 153, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_9invoke_nb)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5733,7 +5878,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[4] = {__pyx_t_4, ((PyObject *)__pyx_v_method), ((PyObject *)__pyx_v_params), __pyx_v_completion_f};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 152, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 153, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -5741,13 +5886,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[4] = {__pyx_t_4, ((PyObject *)__pyx_v_method), ((PyObject *)__pyx_v_params), __pyx_v_completion_f};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 152, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 153, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 152, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -5761,7 +5906,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
           __Pyx_INCREF(__pyx_v_completion_f);
           __Pyx_GIVEREF(__pyx_v_completion_f);
           PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_v_completion_f);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 152, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -5784,7 +5929,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
     #endif
   }
 
-  /* "python/native.pyx":157
+  /* "python/native.pyx":158
  *         ParamValVec params,
  *         completion_f):
  *         self._hndl.invoke_nb(             # <<<<<<<<<<<<<<
@@ -5793,7 +5938,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(str
  */
   (void)(__pyx_v_self->_hndl->invoke_nb(__pyx_v_method->_hndl, ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamValVec *)__pyx_v_params->__pyx_base.__pyx_vtab)->asVec(__pyx_v_params), invoke_rsp_closure(((PyObject *)__pyx_v_completion_f))));
 
-  /* "python/native.pyx":152
+  /* "python/native.pyx":153
  *         return self._hndl.is_mirror()
  * 
  *     cpdef invoke_nb(             # <<<<<<<<<<<<<<
@@ -5855,17 +6000,17 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_9invoke_nb(P
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_params)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, 1); __PYX_ERR(1, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, 1); __PYX_ERR(1, 153, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_completion_f)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, 2); __PYX_ERR(1, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, 2); __PYX_ERR(1, 153, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "invoke_nb") < 0)) __PYX_ERR(1, 152, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "invoke_nb") < 0)) __PYX_ERR(1, 153, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -5880,14 +6025,14 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_9invoke_nb(P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 152, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("invoke_nb", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 153, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceInst.invoke_nb", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_method), __pyx_ptype_15tblink_rpc_core_6native_MethodType, 1, "method", 0))) __PYX_ERR(1, 154, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_params), __pyx_ptype_15tblink_rpc_core_6native_ParamValVec, 1, "params", 0))) __PYX_ERR(1, 155, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_method), __pyx_ptype_15tblink_rpc_core_6native_MethodType, 1, "method", 0))) __PYX_ERR(1, 155, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_params), __pyx_ptype_15tblink_rpc_core_6native_ParamValVec, 1, "params", 0))) __PYX_ERR(1, 156, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_8invoke_nb(((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst *)__pyx_v_self), __pyx_v_method, __pyx_v_params, __pyx_v_completion_f);
 
   /* function exit code */
@@ -5908,7 +6053,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_8invoke_nb(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("invoke_nb", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(__pyx_v_self, __pyx_v_method, __pyx_v_params, __pyx_v_completion_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 152, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_invoke_nb(__pyx_v_self, __pyx_v_method, __pyx_v_params, __pyx_v_completion_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5925,7 +6070,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_8invoke_nb(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":162
+/* "python/native.pyx":163
  *             invoke_rsp_closure(<cpy_ref.PyObject *>(completion_f)))
  * 
  *     cpdef mkValBool(self, val):             # <<<<<<<<<<<<<<
@@ -5955,7 +6100,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(str
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 162, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 163, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_11mkValBool)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5972,7 +6117,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(str
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_val) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_val);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 162, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 163, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -5993,7 +6138,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(str
     #endif
   }
 
-  /* "python/native.pyx":163
+  /* "python/native.pyx":164
  * 
  *     cpdef mkValBool(self, val):
  *         return ParamValBool._mk(self._hndl.mkValBool(val))             # <<<<<<<<<<<<<<
@@ -6001,14 +6146,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(str
  *     cpdef mkValIntU(self, val, width):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_val); if (unlikely((__pyx_t_5 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 163, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool->__pyx_base._mk(__pyx_v_self->_hndl->mkValBool(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 163, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_val); if (unlikely((__pyx_t_5 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 164, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool->__pyx_base._mk(__pyx_v_self->_hndl->mkValBool(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":162
+  /* "python/native.pyx":163
  *             invoke_rsp_closure(<cpy_ref.PyObject *>(completion_f)))
  * 
  *     cpdef mkValBool(self, val):             # <<<<<<<<<<<<<<
@@ -6052,7 +6197,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_10mkValBool(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValBool", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 162, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValBool(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6069,7 +6214,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_10mkValBool(
   return __pyx_r;
 }
 
-/* "python/native.pyx":165
+/* "python/native.pyx":166
  *         return ParamValBool._mk(self._hndl.mkValBool(val))
  * 
  *     cpdef mkValIntU(self, val, width):             # <<<<<<<<<<<<<<
@@ -6101,7 +6246,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntU); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 165, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntU); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_13mkValIntU)) {
         __Pyx_XDECREF(__pyx_r);
@@ -6121,7 +6266,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 165, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 166, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -6129,13 +6274,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 165, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 166, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 165, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 166, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6146,7 +6291,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
           __Pyx_INCREF(__pyx_v_width);
           __Pyx_GIVEREF(__pyx_v_width);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_width);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 165, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 166, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -6169,7 +6314,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
     #endif
   }
 
-  /* "python/native.pyx":166
+  /* "python/native.pyx":167
  * 
  *     cpdef mkValIntU(self, val, width):
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))             # <<<<<<<<<<<<<<
@@ -6177,15 +6322,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(str
  *     cpdef mkValIntS(self, val, width):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 166, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 166, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntU(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 167, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 167, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntU(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":165
+  /* "python/native.pyx":166
  *         return ParamValBool._mk(self._hndl.mkValBool(val))
  * 
  *     cpdef mkValIntU(self, val, width):             # <<<<<<<<<<<<<<
@@ -6242,11 +6387,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_13mkValIntU(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, 1); __PYX_ERR(1, 165, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, 1); __PYX_ERR(1, 166, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntU") < 0)) __PYX_ERR(1, 165, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntU") < 0)) __PYX_ERR(1, 166, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6259,7 +6404,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_13mkValIntU(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 165, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 166, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceInst.mkValIntU", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6281,7 +6426,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_12mkValIntU(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValIntU", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 165, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntU(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6298,7 +6443,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_12mkValIntU(
   return __pyx_r;
 }
 
-/* "python/native.pyx":168
+/* "python/native.pyx":169
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))
  * 
  *     cpdef mkValIntS(self, val, width):             # <<<<<<<<<<<<<<
@@ -6330,7 +6475,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntS); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 168, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntS); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_15mkValIntS)) {
         __Pyx_XDECREF(__pyx_r);
@@ -6350,7 +6495,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 168, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 169, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -6358,13 +6503,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 168, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 169, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 168, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 169, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6375,7 +6520,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
           __Pyx_INCREF(__pyx_v_width);
           __Pyx_GIVEREF(__pyx_v_width);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_width);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 168, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 169, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -6398,7 +6543,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
     #endif
   }
 
-  /* "python/native.pyx":169
+  /* "python/native.pyx":170
  * 
  *     cpdef mkValIntS(self, val, width):
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))             # <<<<<<<<<<<<<<
@@ -6406,15 +6551,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(str
  *     cpdef mkValMap(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyInt_As_int64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 169, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 169, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntS(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_int64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 170, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 170, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntS(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":168
+  /* "python/native.pyx":169
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))
  * 
  *     cpdef mkValIntS(self, val, width):             # <<<<<<<<<<<<<<
@@ -6471,11 +6616,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_15mkValIntS(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, 1); __PYX_ERR(1, 168, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, 1); __PYX_ERR(1, 169, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntS") < 0)) __PYX_ERR(1, 168, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntS") < 0)) __PYX_ERR(1, 169, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6488,7 +6633,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_15mkValIntS(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 168, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 169, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceInst.mkValIntS", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6510,7 +6655,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_14mkValIntS(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValIntS", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 168, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValIntS(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 169, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6527,7 +6672,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_14mkValIntS(
   return __pyx_r;
 }
 
-/* "python/native.pyx":171
+/* "python/native.pyx":172
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))
  * 
  *     cpdef mkValMap(self):             # <<<<<<<<<<<<<<
@@ -6556,7 +6701,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 171, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 172, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_17mkValMap)) {
         __Pyx_XDECREF(__pyx_r);
@@ -6573,7 +6718,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 171, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 172, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -6594,7 +6739,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(stru
     #endif
   }
 
-  /* "python/native.pyx":172
+  /* "python/native.pyx":173
  * 
  *     cpdef mkValMap(self):
  *         return ParamValMap._mk(self._hndl.mkValMap())             # <<<<<<<<<<<<<<
@@ -6602,13 +6747,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(stru
  *     cpdef mkValStr(self, val):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap->__pyx_base._mk(__pyx_v_self->_hndl->mkValMap()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 172, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap->__pyx_base._mk(__pyx_v_self->_hndl->mkValMap()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":171
+  /* "python/native.pyx":172
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))
  * 
  *     cpdef mkValMap(self):             # <<<<<<<<<<<<<<
@@ -6652,7 +6797,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_16mkValMap(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValMap", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 171, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValMap(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6669,7 +6814,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_16mkValMap(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":174
+/* "python/native.pyx":175
  *         return ParamValMap._mk(self._hndl.mkValMap())
  * 
  *     cpdef mkValStr(self, val):             # <<<<<<<<<<<<<<
@@ -6699,7 +6844,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 174, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_19mkValStr)) {
         __Pyx_XDECREF(__pyx_r);
@@ -6716,7 +6861,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_val) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_val);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 174, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -6737,7 +6882,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(stru
     #endif
   }
 
-  /* "python/native.pyx":175
+  /* "python/native.pyx":176
  * 
  *     cpdef mkValStr(self, val):
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))             # <<<<<<<<<<<<<<
@@ -6745,7 +6890,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(stru
  *     cpdef mkValVec(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6759,18 +6904,18 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(stru
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr->__pyx_base._mk(__pyx_v_self->_hndl->mkValStr(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr->__pyx_base._mk(__pyx_v_self->_hndl->mkValStr(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":174
+  /* "python/native.pyx":175
  *         return ParamValMap._mk(self._hndl.mkValMap())
  * 
  *     cpdef mkValStr(self, val):             # <<<<<<<<<<<<<<
@@ -6814,7 +6959,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_18mkValStr(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValStr", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 174, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6831,7 +6976,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_18mkValStr(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":177
+/* "python/native.pyx":178
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
  * 
  *     cpdef mkValVec(self):             # <<<<<<<<<<<<<<
@@ -6860,7 +7005,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceInst_21mkValVec)) {
         __Pyx_XDECREF(__pyx_r);
@@ -6877,7 +7022,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 177, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 178, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -6898,7 +7043,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(stru
     #endif
   }
 
-  /* "python/native.pyx":178
+  /* "python/native.pyx":179
  * 
  *     cpdef mkValVec(self):
  *         return ParamValVec._mk(self._hndl.mkValVec())             # <<<<<<<<<<<<<<
@@ -6906,13 +7051,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(stru
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_self->_hndl->mkValVec()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_self->_hndl->mkValVec()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":177
+  /* "python/native.pyx":178
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
  * 
  *     cpdef mkValVec(self):             # <<<<<<<<<<<<<<
@@ -6956,7 +7101,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_20mkValVec(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValVec", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6973,7 +7118,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_20mkValVec(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":181
+/* "python/native.pyx":182
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceInst *hndl):             # <<<<<<<<<<<<<<
@@ -6991,19 +7136,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(tblink_rp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":182
+  /* "python/native.pyx":183
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceInst *hndl):
  *         ret = InterfaceInst()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceInst)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 182, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceInst)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":183
+  /* "python/native.pyx":184
  *     cdef _mk(native_decl.IInterfaceInst *hndl):
  *         ret = InterfaceInst()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -7012,7 +7157,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(tblink_rp
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":184
+  /* "python/native.pyx":185
  *         ret = InterfaceInst()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -7024,7 +7169,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(tblink_rp
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":181
+  /* "python/native.pyx":182
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceInst *hndl):             # <<<<<<<<<<<<<<
@@ -7157,7 +7302,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceInst_24__setstate
   return __pyx_r;
 }
 
-/* "python/native.pyx":192
+/* "python/native.pyx":193
  *     cdef native_decl.IInterfaceType *_hndl
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -7186,7 +7331,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(struct _
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceType_1name)) {
         __Pyx_XDECREF(__pyx_r);
@@ -7203,7 +7348,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(struct _
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 192, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -7224,7 +7369,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(struct _
     #endif
   }
 
-  /* "python/native.pyx":193
+  /* "python/native.pyx":194
  * 
  *     cpdef name(self):
  *         return self._hndl.name().decode()             # <<<<<<<<<<<<<<
@@ -7232,13 +7377,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(struct _
  *     cpdef methods(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":192
+  /* "python/native.pyx":193
  *     cdef native_decl.IInterfaceType *_hndl
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -7282,7 +7427,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_name(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("name", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7299,7 +7444,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_name(struct 
   return __pyx_r;
 }
 
-/* "python/native.pyx":195
+/* "python/native.pyx":196
  *         return self._hndl.name().decode()
  * 
  *     cpdef methods(self):             # <<<<<<<<<<<<<<
@@ -7335,7 +7480,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_methods); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 195, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_methods); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceType_3methods)) {
         __Pyx_XDECREF(__pyx_r);
@@ -7352,7 +7497,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 195, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 196, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -7373,19 +7518,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
     #endif
   }
 
-  /* "python/native.pyx":196
+  /* "python/native.pyx":197
  * 
  *     cpdef methods(self):
  *         ret = []             # <<<<<<<<<<<<<<
  *         for i in range(self._hndl.methods().size()):
  *             ret.append(MethodType._mk(self._hndl.methods().at(i)))
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":197
+  /* "python/native.pyx":198
  *     cpdef methods(self):
  *         ret = []
  *         for i in range(self._hndl.methods().size()):             # <<<<<<<<<<<<<<
@@ -7397,7 +7542,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "python/native.pyx":198
+    /* "python/native.pyx":199
  *         ret = []
  *         for i in range(self._hndl.methods().size()):
  *             ret.append(MethodType._mk(self._hndl.methods().at(i)))             # <<<<<<<<<<<<<<
@@ -7408,15 +7553,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
       __pyx_t_8 = __pyx_v_self->_hndl->methods().at(__pyx_v_i);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 198, __pyx_L1_error)
+      __PYX_ERR(1, 199, __pyx_L1_error)
     }
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 198, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 198, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 199, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "python/native.pyx":199
+  /* "python/native.pyx":200
  *         for i in range(self._hndl.methods().size()):
  *             ret.append(MethodType._mk(self._hndl.methods().at(i)))
  *         return ret             # <<<<<<<<<<<<<<
@@ -7428,7 +7573,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(struc
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":195
+  /* "python/native.pyx":196
  *         return self._hndl.name().decode()
  * 
  *     cpdef methods(self):             # <<<<<<<<<<<<<<
@@ -7473,7 +7618,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_2methods(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("methods", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 195, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7490,7 +7635,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_2methods(str
   return __pyx_r;
 }
 
-/* "python/native.pyx":201
+/* "python/native.pyx":202
  *         return ret
  * 
  *     cpdef findMethod(self, name):             # <<<<<<<<<<<<<<
@@ -7522,7 +7667,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findMethod); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 201, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findMethod); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_13InterfaceType_5findMethod)) {
         __Pyx_XDECREF(__pyx_r);
@@ -7539,7 +7684,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_name) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_name);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 201, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 202, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -7560,14 +7705,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
     #endif
   }
 
-  /* "python/native.pyx":202
+  /* "python/native.pyx":203
  * 
  *     cpdef findMethod(self, name):
  *         cdef native_decl.IMethodType *m = self._hndl.findMethod(name.encode())             # <<<<<<<<<<<<<<
  *         if m:
  *             return MethodType._mk(m)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 202, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7581,14 +7726,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 202, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 202, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 203, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_m = __pyx_v_self->_hndl->findMethod(__pyx_t_5);
 
-  /* "python/native.pyx":203
+  /* "python/native.pyx":204
  *     cpdef findMethod(self, name):
  *         cdef native_decl.IMethodType *m = self._hndl.findMethod(name.encode())
  *         if m:             # <<<<<<<<<<<<<<
@@ -7598,7 +7743,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
   __pyx_t_6 = (__pyx_v_m != 0);
   if (__pyx_t_6) {
 
-    /* "python/native.pyx":204
+    /* "python/native.pyx":205
  *         cdef native_decl.IMethodType *m = self._hndl.findMethod(name.encode())
  *         if m:
  *             return MethodType._mk(m)             # <<<<<<<<<<<<<<
@@ -7606,13 +7751,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_m); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 204, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_m); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "python/native.pyx":203
+    /* "python/native.pyx":204
  *     cpdef findMethod(self, name):
  *         cdef native_decl.IMethodType *m = self._hndl.findMethod(name.encode())
  *         if m:             # <<<<<<<<<<<<<<
@@ -7621,7 +7766,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
  */
   }
 
-  /* "python/native.pyx":206
+  /* "python/native.pyx":207
  *             return MethodType._mk(m)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -7634,7 +7779,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(st
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":201
+  /* "python/native.pyx":202
  *         return ret
  * 
  *     cpdef findMethod(self, name):             # <<<<<<<<<<<<<<
@@ -7678,7 +7823,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_4findMethod(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("findMethod", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 201, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7695,7 +7840,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_4findMethod(
   return __pyx_r;
 }
 
-/* "python/native.pyx":209
+/* "python/native.pyx":210
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceType *hndl):             # <<<<<<<<<<<<<<
@@ -7713,19 +7858,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(tblink_rp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":210
+  /* "python/native.pyx":211
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceType *hndl):
  *         ret = InterfaceType()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 210, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":211
+  /* "python/native.pyx":212
  *     cdef _mk(native_decl.IInterfaceType *hndl):
  *         ret = InterfaceType()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -7734,7 +7879,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(tblink_rp
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":212
+  /* "python/native.pyx":213
  *         ret = InterfaceType()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -7746,7 +7891,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(tblink_rp
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":209
+  /* "python/native.pyx":210
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IInterfaceType *hndl):             # <<<<<<<<<<<<<<
@@ -7879,7 +8024,155 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13InterfaceType_8__setstate_
   return __pyx_r;
 }
 
-/* "python/native.pyx":221
+/* "python/native.pyx":229
+ *         }
+ * 
+ *     cpdef kind(self):             # <<<<<<<<<<<<<<
+ *         return Type._kind_m[self._hndl.kind()]
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_1kind(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type_kind(struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("kind", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kind); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_4Type_1kind)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 229, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":230
+ * 
+ *     cpdef kind(self):
+ *         return Type._kind_m[self._hndl.kind()]             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Type), __pyx_n_s_kind_m); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 230, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(__pyx_v_self->_hndl->kind()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 230, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 230, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":229
+ *         }
+ * 
+ *     cpdef kind(self):             # <<<<<<<<<<<<<<
+ *         return Type._kind_m[self._hndl.kind()]
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.Type.kind", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_1kind(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_1kind(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("kind (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_4Type_kind(((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_kind(struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("kind", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type_kind(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.Type.kind", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":233
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IType *hndl):             # <<<<<<<<<<<<<<
@@ -7897,19 +8190,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type__mk(tblink_rpc_core::IT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":222
+  /* "python/native.pyx":234
  *     @staticmethod
  *     cdef _mk(native_decl.IType *hndl):
  *         ret = Type()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":223
+  /* "python/native.pyx":235
  *     cdef _mk(native_decl.IType *hndl):
  *         ret = Type()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -7918,7 +8211,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type__mk(tblink_rpc_core::IT
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":224
+  /* "python/native.pyx":236
  *         ret = Type()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -7930,7 +8223,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type__mk(tblink_rpc_core::IT
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":221
+  /* "python/native.pyx":233
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IType *hndl):             # <<<<<<<<<<<<<<
@@ -7957,19 +8250,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_4Type__mk(tblink_rpc_core::IT
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_4Type___reduce_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_self));
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_4Type_2__reduce_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type___reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self) {
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8014,19 +8307,19 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type___reduce_cython__(CYTH
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_4Type_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_4Type_2__setstate_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_4Type_4__setstate_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_4Type_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_Type *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8176,7 +8469,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_7TypeInt_2__setstate_cython_
   return __pyx_r;
 }
 
-/* "python/native.pyx":235
+/* "python/native.pyx":247
  *     cdef native_decl.IMethodTypeBuilder *_hndl
  * 
  *     cpdef add_param(self, name, Type t):             # <<<<<<<<<<<<<<
@@ -8208,7 +8501,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 235, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 247, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_17MethodTypeBuilder_1add_param)) {
         __Pyx_XDECREF(__pyx_r);
@@ -8228,7 +8521,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_name, ((PyObject *)__pyx_v_t)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 235, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -8236,13 +8529,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_name, ((PyObject *)__pyx_v_t)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 235, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 235, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 247, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -8253,7 +8546,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
           __Pyx_INCREF(((PyObject *)__pyx_v_t));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_t));
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, ((PyObject *)__pyx_v_t));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 235, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -8276,7 +8569,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
     #endif
   }
 
-  /* "python/native.pyx":236
+  /* "python/native.pyx":248
  * 
  *     cpdef add_param(self, name, Type t):
  *         return self._hndl.add_param(name.encode(), t._hndl)             # <<<<<<<<<<<<<<
@@ -8284,7 +8577,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -8298,18 +8591,18 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 236, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 236, __pyx_L1_error)
+  __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 248, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_v_self->_hndl->add_param(__pyx_t_7, __pyx_v_t->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 236, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_v_self->_hndl->add_param(__pyx_t_7, __pyx_v_t->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":235
+  /* "python/native.pyx":247
  *     cdef native_decl.IMethodTypeBuilder *_hndl
  * 
  *     cpdef add_param(self, name, Type t):             # <<<<<<<<<<<<<<
@@ -8366,11 +8659,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_17MethodTypeBuilder_1add_par
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_t)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, 1); __PYX_ERR(1, 235, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, 1); __PYX_ERR(1, 247, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_param") < 0)) __PYX_ERR(1, 235, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_param") < 0)) __PYX_ERR(1, 247, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8383,13 +8676,13 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_17MethodTypeBuilder_1add_par
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 235, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_param", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 247, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.MethodTypeBuilder.add_param", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "t", 0))) __PYX_ERR(1, 235, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "t", 0))) __PYX_ERR(1, 247, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param(((struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *)__pyx_v_self), __pyx_v_name, __pyx_v_t);
 
   /* function exit code */
@@ -8410,7 +8703,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_add_para
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_param", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param(__pyx_v_self, __pyx_v_name, __pyx_v_t, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 235, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param(__pyx_v_self, __pyx_v_name, __pyx_v_t, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8427,7 +8720,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_add_para
   return __pyx_r;
 }
 
-/* "python/native.pyx":239
+/* "python/native.pyx":251
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IMethodTypeBuilder *hndl):             # <<<<<<<<<<<<<<
@@ -8445,19 +8738,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(tblin
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":240
+  /* "python/native.pyx":252
  *     @staticmethod
  *     cdef _mk(native_decl.IMethodTypeBuilder *hndl):
  *         ret = MethodTypeBuilder()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 240, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":241
+  /* "python/native.pyx":253
  *     cdef _mk(native_decl.IMethodTypeBuilder *hndl):
  *         ret = MethodTypeBuilder()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -8466,7 +8759,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(tblin
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":242
+  /* "python/native.pyx":254
  *         ret = MethodTypeBuilder()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -8478,7 +8771,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(tblin
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":239
+  /* "python/native.pyx":251
  * 
  *     @staticmethod
  *     cdef _mk(native_decl.IMethodTypeBuilder *hndl):             # <<<<<<<<<<<<<<
@@ -8611,16 +8904,318 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_17MethodTypeBuilder_4__setst
   return __pyx_r;
 }
 
-/* "python/native.pyx":251
+/* "python/native.pyx":262
+ *     cdef native_decl.IParamDecl *_hndl
+ * 
+ *     cpdef name(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.name().encode()
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl_name(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("name", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_1name)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 262, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":263
+ * 
+ *     cpdef name(self):
+ *         return self._hndl.name().encode()             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef type(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->_hndl->name()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 263, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 263, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 263, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":262
+ *     cdef native_decl.IParamDecl *_hndl
+ * 
+ *     cpdef name(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.name().encode()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("name (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_9ParamDecl_name(((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_name(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("name", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_9ParamDecl_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":265
+ *         return self._hndl.name().encode()
+ * 
+ *     cpdef type(self):             # <<<<<<<<<<<<<<
+ *         return Type._mk(self._hndl.type())
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_3type(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl_type(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("type", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 265, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_3type)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 265, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":266
+ * 
+ *     cpdef type(self):
+ *         return Type._mk(self._hndl.type())             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
- *     cdef _mk(native_decl.IMethodType *hndl):             # <<<<<<<<<<<<<<
- *         ret = MethodType()
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->type()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 266, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":265
+ *         return self._hndl.name().encode()
+ * 
+ *     cpdef type(self):             # <<<<<<<<<<<<<<
+ *         return Type._mk(self._hndl.type())
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.type", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_3type(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_3type(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("type (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_9ParamDecl_2type(((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_2type(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("type", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_9ParamDecl_type(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 265, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.type", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":269
+ * 
+ *     @staticmethod
+ *     cdef _mk(native_decl.IParamDecl *hndl):             # <<<<<<<<<<<<<<
+ *         ret = ParamDecl()
  *         ret._hndl = hndl
  */
 
-static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_core::IMethodType *__pyx_v_hndl) {
-  struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_ret = NULL;
+static PyObject *__pyx_f_15tblink_rpc_core_6native_9ParamDecl__mk(tblink_rpc_core::IParamDecl *__pyx_v_hndl) {
+  struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_ret = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8629,29 +9224,29 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_c
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":252
+  /* "python/native.pyx":270
  *     @staticmethod
- *     cdef _mk(native_decl.IMethodType *hndl):
- *         ret = MethodType()             # <<<<<<<<<<<<<<
+ *     cdef _mk(native_decl.IParamDecl *hndl):
+ *         ret = ParamDecl()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_MethodType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 252, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_ParamDecl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 270, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_t_1);
+  __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":253
- *     cdef _mk(native_decl.IMethodType *hndl):
- *         ret = MethodType()
+  /* "python/native.pyx":271
+ *     cdef _mk(native_decl.IParamDecl *hndl):
+ *         ret = ParamDecl()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
  *         return ret
  * 
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":254
- *         ret = MethodType()
+  /* "python/native.pyx":272
+ *         ret = ParamDecl()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
  * 
@@ -8662,18 +9257,18 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_c
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":251
+  /* "python/native.pyx":269
  * 
  *     @staticmethod
- *     cdef _mk(native_decl.IMethodType *hndl):             # <<<<<<<<<<<<<<
- *         ret = MethodType()
+ *     cdef _mk(native_decl.IParamDecl *hndl):             # <<<<<<<<<<<<<<
+ *         ret = ParamDecl()
  *         ret._hndl = hndl
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType._mk", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl._mk", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_ret);
@@ -8689,19 +9284,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_c
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType___reduce_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_9ParamDecl_4__reduce_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType___reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8731,7 +9326,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType___reduce_cython
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -8746,19 +9341,19 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType___reduce_cython
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_2__setstate_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_9ParamDecl_6__setstate_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_9ParamDecl_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8788,6 +9383,949 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2__setstate_cyt
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.ParamDecl.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":280
+ *     cdef native_decl.IMethodType *_hndl
+ * 
+ *     cpdef name(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.name().decode()
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_name(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("name", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 280, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10MethodType_1name)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 280, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":281
+ * 
+ *     cpdef name(self):
+ *         return self._hndl.name().decode()             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef id(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":280
+ *     cdef native_decl.IMethodType *_hndl
+ * 
+ *     cpdef name(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.name().decode()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_1name(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("name (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_name(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_name(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("name", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 280, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":283
+ *         return self._hndl.name().decode()
+ * 
+ *     cpdef id(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.id()
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_3id(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_id(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("id", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 283, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10MethodType_3id)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 283, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":284
+ * 
+ *     cpdef id(self):
+ *         return self._hndl.id()             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef is_export(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->_hndl->id()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 284, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":283
+ *         return self._hndl.name().decode()
+ * 
+ *     cpdef id(self):             # <<<<<<<<<<<<<<
+ *         return self._hndl.id()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.id", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_3id(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_3id(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("id (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_2id(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2id(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("id", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType_id(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 283, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.id", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":286
+ *         return self._hndl.id()
+ * 
+ *     cpdef is_export(self):             # <<<<<<<<<<<<<<
+ *         return self.is_export()
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_5is_export(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_is_export(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("is_export", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_export); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 286, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10MethodType_5is_export)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 286, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":287
+ * 
+ *     cpdef is_export(self):
+ *         return self.is_export()             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef is_blocking(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodType *)__pyx_v_self->__pyx_vtab)->is_export(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":286
+ *         return self._hndl.id()
+ * 
+ *     cpdef is_export(self):             # <<<<<<<<<<<<<<
+ *         return self.is_export()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.is_export", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_5is_export(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_5is_export(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_export (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_4is_export(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_4is_export(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("is_export", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType_is_export(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.is_export", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":289
+ *         return self.is_export()
+ * 
+ *     cpdef is_blocking(self):             # <<<<<<<<<<<<<<
+ *         return self.is_blocking()
+ * 
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_7is_blocking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_is_blocking(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("is_blocking", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_blocking); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 289, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10MethodType_7is_blocking)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 289, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":290
+ * 
+ *     cpdef is_blocking(self):
+ *         return self.is_blocking()             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef params(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodType *)__pyx_v_self->__pyx_vtab)->is_blocking(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 290, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":289
+ *         return self.is_export()
+ * 
+ *     cpdef is_blocking(self):             # <<<<<<<<<<<<<<
+ *         return self.is_blocking()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.is_blocking", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_7is_blocking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_7is_blocking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_blocking (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_6is_blocking(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_6is_blocking(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("is_blocking", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType_is_blocking(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.is_blocking", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":292
+ *         return self.is_blocking()
+ * 
+ *     cpdef params(self):             # <<<<<<<<<<<<<<
+ *         ret = []
+ *         for i in range(self._hndl.params().size()):
+ */
+
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_9params(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType_params(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_v_ret = NULL;
+  std::vector<__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP> ::size_type __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::vector<__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP> ::size_type __pyx_t_5;
+  std::vector<__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP> ::size_type __pyx_t_6;
+  std::vector<__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP> ::size_type __pyx_t_7;
+  __Pyx_FakeReference<__pyx_t_15tblink_rpc_core_11native_decl_IParamDeclP> __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("params", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_params); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 292, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10MethodType_9params)) {
+        __Pyx_XDECREF(__pyx_r);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "python/native.pyx":293
+ * 
+ *     cpdef params(self):
+ *         ret = []             # <<<<<<<<<<<<<<
+ *         for i in range(self._hndl.params().size()):
+ *             ret.append(ParamDecl._mk(self._hndl.params().at(i)))
+ */
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_ret = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "python/native.pyx":294
+ *     cpdef params(self):
+ *         ret = []
+ *         for i in range(self._hndl.params().size()):             # <<<<<<<<<<<<<<
+ *             ret.append(ParamDecl._mk(self._hndl.params().at(i)))
+ *         return ret
+ */
+  __pyx_t_5 = __pyx_v_self->_hndl->params().size();
+  __pyx_t_6 = __pyx_t_5;
+  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+    __pyx_v_i = __pyx_t_7;
+
+    /* "python/native.pyx":295
+ *         ret = []
+ *         for i in range(self._hndl.params().size()):
+ *             ret.append(ParamDecl._mk(self._hndl.params().at(i)))             # <<<<<<<<<<<<<<
+ *         return ret
+ * 
+ */
+    try {
+      __pyx_t_8 = __pyx_v_self->_hndl->params().at(__pyx_v_i);
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(1, 295, __pyx_L1_error)
+    }
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_9ParamDecl__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 295, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "python/native.pyx":296
+ *         for i in range(self._hndl.params().size()):
+ *             ret.append(ParamDecl._mk(self._hndl.params().at(i)))
+ *         return ret             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_ret);
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "python/native.pyx":292
+ *         return self.is_blocking()
+ * 
+ *     cpdef params(self):             # <<<<<<<<<<<<<<
+ *         ret = []
+ *         for i in range(self._hndl.params().size()):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.params", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_ret);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_9params(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_9params(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("params (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_8params(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_8params(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("params", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType_params(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.params", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/native.pyx":299
+ * 
+ *     @staticmethod
+ *     cdef _mk(native_decl.IMethodType *hndl):             # <<<<<<<<<<<<<<
+ *         ret = MethodType()
+ *         ret._hndl = hndl
+ */
+
+static PyObject *__pyx_f_15tblink_rpc_core_6native_10MethodType__mk(tblink_rpc_core::IMethodType *__pyx_v_hndl) {
+  struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_ret = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("_mk", 0);
+
+  /* "python/native.pyx":300
+ *     @staticmethod
+ *     cdef _mk(native_decl.IMethodType *hndl):
+ *         ret = MethodType()             # <<<<<<<<<<<<<<
+ *         ret._hndl = hndl
+ *         return ret
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_MethodType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 300, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "python/native.pyx":301
+ *     cdef _mk(native_decl.IMethodType *hndl):
+ *         ret = MethodType()
+ *         ret._hndl = hndl             # <<<<<<<<<<<<<<
+ *         return ret
+ * 
+ */
+  __pyx_v_ret->_hndl = __pyx_v_hndl;
+
+  /* "python/native.pyx":302
+ *         ret = MethodType()
+ *         ret._hndl = hndl
+ *         return ret             # <<<<<<<<<<<<<<
+ * 
+ * #********************************************************************
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = ((PyObject *)__pyx_v_ret);
+  goto __pyx_L0;
+
+  /* "python/native.pyx":299
+ * 
+ *     @staticmethod
+ *     cdef _mk(native_decl.IMethodType *hndl):             # <<<<<<<<<<<<<<
+ *         ret = MethodType()
+ *         ret._hndl = hndl
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType._mk", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_10__reduce_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(0, 2, __pyx_L1_error)
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_15tblink_rpc_core_6native_10MethodType_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10MethodType_12__setstate_cython__(((struct __pyx_obj_15tblink_rpc_core_6native_MethodType *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_15tblink_rpc_core_6native_MethodType *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(0, 4, __pyx_L1_error)
+
+  /* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("tblink_rpc_core.native.MethodType.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8795,7 +10333,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10MethodType_2__setstate_cyt
   return __pyx_r;
 }
 
-/* "python/native.pyx":262
+/* "python/native.pyx":310
  *     cdef native_decl.IInterfaceTypeBuilder *_hndl
  * 
  *     cpdef newMethodTypeBuilder(             # <<<<<<<<<<<<<<
@@ -8834,7 +10372,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newMethodTypeBuilder); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newMethodTypeBuilder); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 310, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_1newMethodTypeBuilder)) {
         __Pyx_XDECREF(__pyx_r);
@@ -8854,7 +10392,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[6] = {__pyx_t_4, __pyx_v_name, __pyx_v_id, ((PyObject *)__pyx_v_rtype), __pyx_v_is_export, __pyx_v_is_blocking};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 262, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 310, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -8862,13 +10400,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[6] = {__pyx_t_4, __pyx_v_name, __pyx_v_id, ((PyObject *)__pyx_v_rtype), __pyx_v_is_export, __pyx_v_is_blocking};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 262, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 310, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(5+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 262, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(5+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 310, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -8888,7 +10426,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
           __Pyx_INCREF(__pyx_v_is_blocking);
           __Pyx_GIVEREF(__pyx_v_is_blocking);
           PyTuple_SET_ITEM(__pyx_t_6, 4+__pyx_t_5, __pyx_v_is_blocking);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 262, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 310, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -8911,7 +10449,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
     #endif
   }
 
-  /* "python/native.pyx":269
+  /* "python/native.pyx":317
  *         is_export,
  *         is_blocking):
  *         cdef native_decl.IType *rtype_h = NULL             # <<<<<<<<<<<<<<
@@ -8920,7 +10458,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
  */
   __pyx_v_rtype_h = NULL;
 
-  /* "python/native.pyx":271
+  /* "python/native.pyx":319
  *         cdef native_decl.IType *rtype_h = NULL
  * 
  *         if rtype is not None:             # <<<<<<<<<<<<<<
@@ -8931,7 +10469,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (__pyx_t_8) {
 
-    /* "python/native.pyx":272
+    /* "python/native.pyx":320
  * 
  *         if rtype is not None:
  *             rtype_h = rtype._hndl             # <<<<<<<<<<<<<<
@@ -8941,7 +10479,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
     __pyx_t_9 = __pyx_v_rtype->_hndl;
     __pyx_v_rtype_h = __pyx_t_9;
 
-    /* "python/native.pyx":271
+    /* "python/native.pyx":319
  *         cdef native_decl.IType *rtype_h = NULL
  * 
  *         if rtype is not None:             # <<<<<<<<<<<<<<
@@ -8950,7 +10488,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
  */
   }
 
-  /* "python/native.pyx":274
+  /* "python/native.pyx":322
  *             rtype_h = rtype._hndl
  * 
  *         return MethodTypeBuilder._mk(             # <<<<<<<<<<<<<<
@@ -8959,14 +10497,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "python/native.pyx":276
+  /* "python/native.pyx":324
  *         return MethodTypeBuilder._mk(
  *             self._hndl.newMethodTypeBuilder(
  *                 name.encode(), id, rtype_h,             # <<<<<<<<<<<<<<
  *                 is_export, is_blocking))
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 276, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -8980,37 +10518,37 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMet
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 276, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 276, __pyx_L1_error)
+  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 324, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_11 = PyInt_AsSsize_t(__pyx_v_id); if (unlikely((__pyx_t_11 == ((intptr_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 276, __pyx_L1_error)
+  __pyx_t_11 = PyInt_AsSsize_t(__pyx_v_id); if (unlikely((__pyx_t_11 == ((intptr_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 324, __pyx_L1_error)
 
-  /* "python/native.pyx":277
+  /* "python/native.pyx":325
  *             self._hndl.newMethodTypeBuilder(
  *                 name.encode(), id, rtype_h,
  *                 is_export, is_blocking))             # <<<<<<<<<<<<<<
  * 
  *     cpdef add_method(self, MethodTypeBuilder mtb):
  */
-  __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_v_is_export); if (unlikely((__pyx_t_12 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 277, __pyx_L1_error)
-  __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_is_blocking); if (unlikely((__pyx_t_13 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 277, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_v_is_export); if (unlikely((__pyx_t_12 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 325, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_is_blocking); if (unlikely((__pyx_t_13 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 325, __pyx_L1_error)
 
-  /* "python/native.pyx":274
+  /* "python/native.pyx":322
  *             rtype_h = rtype._hndl
  * 
  *         return MethodTypeBuilder._mk(             # <<<<<<<<<<<<<<
  *             self._hndl.newMethodTypeBuilder(
  *                 name.encode(), id, rtype_h,
  */
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(__pyx_v_self->_hndl->newMethodTypeBuilder(__pyx_t_10, __pyx_t_11, __pyx_v_rtype_h, __pyx_t_12, __pyx_t_13)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 274, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk(__pyx_v_self->_hndl->newMethodTypeBuilder(__pyx_t_10, __pyx_t_11, __pyx_v_rtype_h, __pyx_t_12, __pyx_t_13)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 322, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":262
+  /* "python/native.pyx":310
  *     cdef native_decl.IInterfaceTypeBuilder *_hndl
  * 
  *     cpdef newMethodTypeBuilder(             # <<<<<<<<<<<<<<
@@ -9076,29 +10614,29 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_1newM
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_id)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 1); __PYX_ERR(1, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 1); __PYX_ERR(1, 310, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_rtype)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 2); __PYX_ERR(1, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 2); __PYX_ERR(1, 310, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_is_export)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 3); __PYX_ERR(1, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 3); __PYX_ERR(1, 310, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_is_blocking)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 4); __PYX_ERR(1, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, 4); __PYX_ERR(1, 310, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "newMethodTypeBuilder") < 0)) __PYX_ERR(1, 262, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "newMethodTypeBuilder") < 0)) __PYX_ERR(1, 310, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -9117,13 +10655,13 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_1newM
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 262, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("newMethodTypeBuilder", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 310, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceTypeBuilder.newMethodTypeBuilder", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_rtype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "rtype", 0))) __PYX_ERR(1, 266, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_rtype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "rtype", 0))) __PYX_ERR(1, 314, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder(((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_v_self), __pyx_v_name, __pyx_v_id, __pyx_v_rtype, __pyx_v_is_export, __pyx_v_is_blocking);
 
   /* function exit code */
@@ -9144,7 +10682,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMe
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("newMethodTypeBuilder", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder(__pyx_v_self, __pyx_v_name, __pyx_v_id, __pyx_v_rtype, __pyx_v_is_export, __pyx_v_is_blocking, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder(__pyx_v_self, __pyx_v_name, __pyx_v_id, __pyx_v_rtype, __pyx_v_is_export, __pyx_v_is_blocking, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 310, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9161,7 +10699,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMe
   return __pyx_r;
 }
 
-/* "python/native.pyx":279
+/* "python/native.pyx":327
  *                 is_export, is_blocking))
  * 
  *     cpdef add_method(self, MethodTypeBuilder mtb):             # <<<<<<<<<<<<<<
@@ -9190,7 +10728,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_me
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_method); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 279, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_method); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 327, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_3add_method)) {
         __Pyx_XDECREF(__pyx_r);
@@ -9207,7 +10745,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_me
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_mtb)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_mtb));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 279, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 327, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -9228,7 +10766,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_me
     #endif
   }
 
-  /* "python/native.pyx":280
+  /* "python/native.pyx":328
  * 
  *     cpdef add_method(self, MethodTypeBuilder mtb):
  *         return MethodType._mk(self._hndl.add_method(mtb._hndl))             # <<<<<<<<<<<<<<
@@ -9236,13 +10774,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_me
  *     cpdef mkTypeBool(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_self->_hndl->add_method(__pyx_v_mtb->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 280, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_self->_hndl->add_method(__pyx_v_mtb->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":279
+  /* "python/native.pyx":327
  *                 is_export, is_blocking))
  * 
  *     cpdef add_method(self, MethodTypeBuilder mtb):             # <<<<<<<<<<<<<<
@@ -9273,7 +10811,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_3add_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("add_method (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mtb), __pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder, 1, "mtb", 0))) __PYX_ERR(1, 279, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mtb), __pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder, 1, "mtb", 0))) __PYX_ERR(1, 327, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_2add_method(((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *)__pyx_v_mtb));
 
   /* function exit code */
@@ -9294,7 +10832,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_2add_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_method", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_method(__pyx_v_self, __pyx_v_mtb, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 279, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_add_method(__pyx_v_self, __pyx_v_mtb, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 327, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9311,7 +10849,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_2add_
   return __pyx_r;
 }
 
-/* "python/native.pyx":282
+/* "python/native.pyx":330
  *         return MethodType._mk(self._hndl.add_method(mtb._hndl))
  * 
  *     cpdef mkTypeBool(self):             # <<<<<<<<<<<<<<
@@ -9340,7 +10878,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 282, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 330, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_5mkTypeBool)) {
         __Pyx_XDECREF(__pyx_r);
@@ -9357,7 +10895,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 282, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 330, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -9378,7 +10916,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     #endif
   }
 
-  /* "python/native.pyx":283
+  /* "python/native.pyx":331
  * 
  *     cpdef mkTypeBool(self):
  *         return Type._mk(self._hndl.mkTypeBool())             # <<<<<<<<<<<<<<
@@ -9386,13 +10924,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
  *     cpdef mkTypeInt(self, is_signed, width):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeBool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 283, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeBool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 331, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":282
+  /* "python/native.pyx":330
  *         return MethodType._mk(self._hndl.add_method(mtb._hndl))
  * 
  *     cpdef mkTypeBool(self):             # <<<<<<<<<<<<<<
@@ -9436,7 +10974,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_4mkTy
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkTypeBool", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeBool(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 282, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeBool(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 330, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9453,7 +10991,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_4mkTy
   return __pyx_r;
 }
 
-/* "python/native.pyx":285
+/* "python/native.pyx":333
  *         return Type._mk(self._hndl.mkTypeBool())
  * 
  *     cpdef mkTypeInt(self, is_signed, width):             # <<<<<<<<<<<<<<
@@ -9485,7 +11023,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeInt); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 285, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeInt); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 333, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_7mkTypeInt)) {
         __Pyx_XDECREF(__pyx_r);
@@ -9505,7 +11043,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_is_signed, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 285, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 333, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -9513,13 +11051,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_is_signed, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 285, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 333, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 285, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 333, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -9530,7 +11068,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
           __Pyx_INCREF(__pyx_v_width);
           __Pyx_GIVEREF(__pyx_v_width);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_width);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 285, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 333, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -9553,7 +11091,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     #endif
   }
 
-  /* "python/native.pyx":286
+  /* "python/native.pyx":334
  * 
  *     cpdef mkTypeInt(self, is_signed, width):
  *         return Type._mk(self._hndl.mkTypeInt(is_signed, width))             # <<<<<<<<<<<<<<
@@ -9561,15 +11099,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
  *     cpdef mkTypeMap(self, Type ktype, Type etype):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_is_signed); if (unlikely((__pyx_t_7 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 286, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 286, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeInt(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_is_signed); if (unlikely((__pyx_t_7 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 334, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 334, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeInt(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":285
+  /* "python/native.pyx":333
  *         return Type._mk(self._hndl.mkTypeBool())
  * 
  *     cpdef mkTypeInt(self, is_signed, width):             # <<<<<<<<<<<<<<
@@ -9626,11 +11164,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_7mkTy
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkTypeInt", 1, 2, 2, 1); __PYX_ERR(1, 285, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkTypeInt", 1, 2, 2, 1); __PYX_ERR(1, 333, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkTypeInt") < 0)) __PYX_ERR(1, 285, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkTypeInt") < 0)) __PYX_ERR(1, 333, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9643,7 +11181,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_7mkTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkTypeInt", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 285, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkTypeInt", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 333, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceTypeBuilder.mkTypeInt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9665,7 +11203,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_6mkTy
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkTypeInt", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeInt(__pyx_v_self, __pyx_v_is_signed, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 285, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeInt(__pyx_v_self, __pyx_v_is_signed, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 333, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9682,7 +11220,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_6mkTy
   return __pyx_r;
 }
 
-/* "python/native.pyx":288
+/* "python/native.pyx":336
  *         return Type._mk(self._hndl.mkTypeInt(is_signed, width))
  * 
  *     cpdef mkTypeMap(self, Type ktype, Type etype):             # <<<<<<<<<<<<<<
@@ -9713,7 +11251,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 288, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 336, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_9mkTypeMap)) {
         __Pyx_XDECREF(__pyx_r);
@@ -9733,7 +11271,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, ((PyObject *)__pyx_v_ktype), ((PyObject *)__pyx_v_etype)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 336, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -9741,13 +11279,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, ((PyObject *)__pyx_v_ktype), ((PyObject *)__pyx_v_etype)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 336, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 288, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 336, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -9758,7 +11296,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
           __Pyx_INCREF(((PyObject *)__pyx_v_etype));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_etype));
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, ((PyObject *)__pyx_v_etype));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 336, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -9781,7 +11319,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     #endif
   }
 
-  /* "python/native.pyx":289
+  /* "python/native.pyx":337
  * 
  *     cpdef mkTypeMap(self, Type ktype, Type etype):
  *         return Type._mk(self._hndl.mkTypeMap(             # <<<<<<<<<<<<<<
@@ -9790,20 +11328,20 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "python/native.pyx":290
+  /* "python/native.pyx":338
  *     cpdef mkTypeMap(self, Type ktype, Type etype):
  *         return Type._mk(self._hndl.mkTypeMap(
  *             ktype._hndl, etype._hndl))             # <<<<<<<<<<<<<<
  * 
  *     cpdef mkTypeStr(self):
  */
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeMap(__pyx_v_ktype->_hndl, __pyx_v_etype->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeMap(__pyx_v_ktype->_hndl, __pyx_v_etype->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 337, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":288
+  /* "python/native.pyx":336
  *         return Type._mk(self._hndl.mkTypeInt(is_signed, width))
  * 
  *     cpdef mkTypeMap(self, Type ktype, Type etype):             # <<<<<<<<<<<<<<
@@ -9860,11 +11398,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_9mkTy
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_etype)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkTypeMap", 1, 2, 2, 1); __PYX_ERR(1, 288, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkTypeMap", 1, 2, 2, 1); __PYX_ERR(1, 336, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkTypeMap") < 0)) __PYX_ERR(1, 288, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkTypeMap") < 0)) __PYX_ERR(1, 336, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9877,14 +11415,14 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_9mkTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkTypeMap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 288, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkTypeMap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 336, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.InterfaceTypeBuilder.mkTypeMap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ktype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "ktype", 0))) __PYX_ERR(1, 288, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_etype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "etype", 0))) __PYX_ERR(1, 288, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ktype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "ktype", 0))) __PYX_ERR(1, 336, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_etype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "etype", 0))) __PYX_ERR(1, 336, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_8mkTypeMap(((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_v_self), __pyx_v_ktype, __pyx_v_etype);
 
   /* function exit code */
@@ -9905,7 +11443,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_8mkTy
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkTypeMap", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeMap(__pyx_v_self, __pyx_v_ktype, __pyx_v_etype, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeMap(__pyx_v_self, __pyx_v_ktype, __pyx_v_etype, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 336, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9922,7 +11460,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_8mkTy
   return __pyx_r;
 }
 
-/* "python/native.pyx":292
+/* "python/native.pyx":340
  *             ktype._hndl, etype._hndl))
  * 
  *     cpdef mkTypeStr(self):             # <<<<<<<<<<<<<<
@@ -9951,7 +11489,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 292, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_11mkTypeStr)) {
         __Pyx_XDECREF(__pyx_r);
@@ -9968,7 +11506,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 340, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -9989,7 +11527,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     #endif
   }
 
-  /* "python/native.pyx":293
+  /* "python/native.pyx":341
  * 
  *     cpdef mkTypeStr(self):
  *         return Type._mk(self._hndl.mkTypeStr())             # <<<<<<<<<<<<<<
@@ -9997,13 +11535,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
  *     cpdef mkTypeVec(self, Type etype):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeStr()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeStr()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":292
+  /* "python/native.pyx":340
  *             ktype._hndl, etype._hndl))
  * 
  *     cpdef mkTypeStr(self):             # <<<<<<<<<<<<<<
@@ -10047,7 +11585,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_10mkT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkTypeStr", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeStr(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeStr(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10064,7 +11602,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_10mkT
   return __pyx_r;
 }
 
-/* "python/native.pyx":295
+/* "python/native.pyx":343
  *         return Type._mk(self._hndl.mkTypeStr())
  * 
  *     cpdef mkTypeVec(self, Type etype):             # <<<<<<<<<<<<<<
@@ -10093,7 +11631,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkTypeVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 343, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_13mkTypeVec)) {
         __Pyx_XDECREF(__pyx_r);
@@ -10110,7 +11648,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_etype)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_etype));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 295, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 343, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -10131,7 +11669,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
     #endif
   }
 
-  /* "python/native.pyx":296
+  /* "python/native.pyx":344
  * 
  *     cpdef mkTypeVec(self, Type etype):
  *         return Type._mk(self._hndl.mkTypeVec(etype._hndl))             # <<<<<<<<<<<<<<
@@ -10139,13 +11677,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkType
  * #********************************************************************
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeVec(__pyx_v_etype->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 296, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_4Type__mk(__pyx_v_self->_hndl->mkTypeVec(__pyx_v_etype->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":295
+  /* "python/native.pyx":343
  *         return Type._mk(self._hndl.mkTypeStr())
  * 
  *     cpdef mkTypeVec(self, Type etype):             # <<<<<<<<<<<<<<
@@ -10176,7 +11714,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_20InterfaceTypeBuilder_13mkT
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("mkTypeVec (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_etype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "etype", 0))) __PYX_ERR(1, 295, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_etype), __pyx_ptype_15tblink_rpc_core_6native_Type, 1, "etype", 0))) __PYX_ERR(1, 343, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_12mkTypeVec(((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_Type *)__pyx_v_etype));
 
   /* function exit code */
@@ -10197,7 +11735,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_12mkT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkTypeVec", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeVec(__pyx_v_self, __pyx_v_etype, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeVec(__pyx_v_self, __pyx_v_etype, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10248,7 +11786,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_14__r
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10304,7 +11842,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_16__s
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10327,7 +11865,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_20InterfaceTypeBuilder_16__s
   return __pyx_r;
 }
 
-/* "python/native.pyx":320
+/* "python/native.pyx":368
  * 
  *     @staticmethod
  *     cdef _mk(const native_decl.IEndpointEvent *hndl):             # <<<<<<<<<<<<<<
@@ -10345,19 +11883,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk(tblink_rp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":321
+  /* "python/native.pyx":369
  *     @staticmethod
  *     cdef _mk(const native_decl.IEndpointEvent *hndl):
  *         ret = EndpointEvent()             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointEvent)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 321, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointEvent)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 369, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointEvent *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":322
+  /* "python/native.pyx":370
  *     cdef _mk(const native_decl.IEndpointEvent *hndl):
  *         ret = EndpointEvent()
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -10366,7 +11904,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk(tblink_rp
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":323
+  /* "python/native.pyx":371
  *         ret = EndpointEvent()
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -10378,7 +11916,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk(tblink_rp
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":320
+  /* "python/native.pyx":368
  * 
  *     @staticmethod
  *     cdef _mk(const native_decl.IEndpointEvent *hndl):             # <<<<<<<<<<<<<<
@@ -10432,7 +11970,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13EndpointEvent___reduce_cyt
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10488,7 +12026,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13EndpointEvent_2__setstate_
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10511,7 +12049,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_13EndpointEvent_2__setstate_
   return __pyx_r;
 }
 
-/* "python/native.pyx":332
+/* "python/native.pyx":380
  *     cdef object                          ev_f
  * 
  *     def __init__(self, ev_f):             # <<<<<<<<<<<<<<
@@ -10548,7 +12086,7 @@ static int __pyx_pw_15tblink_rpc_core_6native_16EndpointListener_1__init__(PyObj
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 332, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 380, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -10559,7 +12097,7 @@ static int __pyx_pw_15tblink_rpc_core_6native_16EndpointListener_1__init__(PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 332, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 380, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.EndpointListener.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10577,7 +12115,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_16EndpointListener___init__(struct
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/native.pyx":333
+  /* "python/native.pyx":381
  * 
  *     def __init__(self, ev_f):
  *         self.ev_f = ev_f             # <<<<<<<<<<<<<<
@@ -10590,7 +12128,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_16EndpointListener___init__(struct
   __Pyx_DECREF(__pyx_v_self->ev_f);
   __pyx_v_self->ev_f = __pyx_v_ev_f;
 
-  /* "python/native.pyx":332
+  /* "python/native.pyx":380
  *     cdef object                          ev_f
  * 
  *     def __init__(self, ev_f):             # <<<<<<<<<<<<<<
@@ -10604,7 +12142,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_16EndpointListener___init__(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":335
+/* "python/native.pyx":383
  *         self.ev_f = ev_f
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -10627,7 +12165,7 @@ static void __pyx_pf_15tblink_rpc_core_6native_16EndpointListener_2__dealloc__(s
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "python/native.pyx":336
+  /* "python/native.pyx":384
  * 
  *     def __dealloc__(self):
  *         del self._hndl             # <<<<<<<<<<<<<<
@@ -10636,7 +12174,7 @@ static void __pyx_pf_15tblink_rpc_core_6native_16EndpointListener_2__dealloc__(s
  */
   delete __pyx_v_self->_hndl;
 
-  /* "python/native.pyx":335
+  /* "python/native.pyx":383
  *         self.ev_f = ev_f
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -10648,7 +12186,7 @@ static void __pyx_pf_15tblink_rpc_core_6native_16EndpointListener_2__dealloc__(s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "python/native.pyx":339
+/* "python/native.pyx":387
  * 
  *     @staticmethod
  *     cdef _mk(ev_f, native_decl.IEndpointListener *hndl):             # <<<<<<<<<<<<<<
@@ -10666,19 +12204,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_16EndpointListener__mk(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mk", 0);
 
-  /* "python/native.pyx":340
+  /* "python/native.pyx":388
  *     @staticmethod
  *     cdef _mk(ev_f, native_decl.IEndpointListener *hndl):
  *         ret = EndpointListener(ev_f)             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointListener), ((PyObject *)__pyx_v_ev_f)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 340, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointListener), ((PyObject *)__pyx_v_ev_f)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 388, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":341
+  /* "python/native.pyx":389
  *     cdef _mk(ev_f, native_decl.IEndpointListener *hndl):
  *         ret = EndpointListener(ev_f)
  *         ret._hndl = hndl             # <<<<<<<<<<<<<<
@@ -10687,7 +12225,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_16EndpointListener__mk(struct
  */
   __pyx_v_ret->_hndl = __pyx_v_hndl;
 
-  /* "python/native.pyx":342
+  /* "python/native.pyx":390
  *         ret = EndpointListener(ev_f)
  *         ret._hndl = hndl
  *         return ret             # <<<<<<<<<<<<<<
@@ -10699,7 +12237,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_16EndpointListener__mk(struct
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":339
+  /* "python/native.pyx":387
  * 
  *     @staticmethod
  *     cdef _mk(ev_f, native_decl.IEndpointListener *hndl):             # <<<<<<<<<<<<<<
@@ -10753,7 +12291,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_16EndpointListener_4__reduce
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__34, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10809,7 +12347,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_16EndpointListener_6__setsta
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__35, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10832,7 +12370,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_16EndpointListener_6__setsta
   return __pyx_r;
 }
 
-/* "python/native.pyx":354
+/* "python/native.pyx":402
  *     _req_l = []
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -10865,14 +12403,14 @@ static int __pyx_pf_15tblink_rpc_core_6native_8Endpoint___init__(struct __pyx_ob
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/native.pyx":356
+  /* "python/native.pyx":404
  *     def __init__(self):
  * #        self.cb_m = {}
  *         self.ev_listener_m = {}             # <<<<<<<<<<<<<<
  *         pass
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 356, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->ev_listener_m);
@@ -10880,7 +12418,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_8Endpoint___init__(struct __pyx_ob
   __pyx_v_self->ev_listener_m = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":354
+  /* "python/native.pyx":402
  *     _req_l = []
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -10900,7 +12438,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_8Endpoint___init__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "python/native.pyx":359
+/* "python/native.pyx":407
  *         pass
  * 
  *     cpdef init(self):             # <<<<<<<<<<<<<<
@@ -10929,7 +12467,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_init(struct __pyx_o
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 359, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 407, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_3init)) {
         __Pyx_XDECREF(__pyx_r);
@@ -10946,7 +12484,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_init(struct __pyx_o
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 359, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 407, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -10967,7 +12505,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_init(struct __pyx_o
     #endif
   }
 
-  /* "python/native.pyx":360
+  /* "python/native.pyx":408
  * 
  *     cpdef init(self):
  *         return self._hndl.init(NULL, NULL)             # <<<<<<<<<<<<<<
@@ -10975,13 +12513,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_init(struct __pyx_o
  *     cpdef is_init(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->init(NULL, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 360, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->init(NULL, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":359
+  /* "python/native.pyx":407
  *         pass
  * 
  *     cpdef init(self):             # <<<<<<<<<<<<<<
@@ -11025,7 +12563,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_2init(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("init", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_init(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 359, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_init(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11042,7 +12580,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_2init(struct __pyx
   return __pyx_r;
 }
 
-/* "python/native.pyx":362
+/* "python/native.pyx":410
  *         return self._hndl.init(NULL, NULL)
  * 
  *     cpdef is_init(self):             # <<<<<<<<<<<<<<
@@ -11071,7 +12609,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(struct __py
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 362, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 410, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_5is_init)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11088,7 +12626,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(struct __py
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 362, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 410, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11109,7 +12647,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(struct __py
     #endif
   }
 
-  /* "python/native.pyx":363
+  /* "python/native.pyx":411
  * 
  *     cpdef is_init(self):
  *         return self._hndl.is_init()             # <<<<<<<<<<<<<<
@@ -11117,13 +12655,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(struct __py
  *     cpdef build_complete(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_init()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 363, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_init()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":362
+  /* "python/native.pyx":410
  *         return self._hndl.init(NULL, NULL)
  * 
  *     cpdef is_init(self):             # <<<<<<<<<<<<<<
@@ -11167,7 +12705,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_4is_init(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_init", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 362, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_init(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11184,7 +12722,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_4is_init(struct __
   return __pyx_r;
 }
 
-/* "python/native.pyx":365
+/* "python/native.pyx":413
  *         return self._hndl.is_init()
  * 
  *     cpdef build_complete(self):             # <<<<<<<<<<<<<<
@@ -11213,7 +12751,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_build_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 365, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_build_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 413, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_7build_complete)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11230,7 +12768,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 365, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 413, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11251,7 +12789,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(stru
     #endif
   }
 
-  /* "python/native.pyx":366
+  /* "python/native.pyx":414
  * 
  *     cpdef build_complete(self):
  *         return self._hndl.build_complete()             # <<<<<<<<<<<<<<
@@ -11259,13 +12797,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(stru
  *     cpdef is_build_complete(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->build_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 366, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->build_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":365
+  /* "python/native.pyx":413
  *         return self._hndl.is_init()
  * 
  *     cpdef build_complete(self):             # <<<<<<<<<<<<<<
@@ -11309,7 +12847,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_6build_complete(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("build_complete", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 365, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_build_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11326,7 +12864,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_6build_complete(st
   return __pyx_r;
 }
 
-/* "python/native.pyx":368
+/* "python/native.pyx":416
  *         return self._hndl.build_complete()
  * 
  *     cpdef is_build_complete(self):             # <<<<<<<<<<<<<<
@@ -11355,7 +12893,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_build_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 368, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_build_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 416, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_9is_build_complete)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11372,7 +12910,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(s
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 368, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 416, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11393,7 +12931,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(s
     #endif
   }
 
-  /* "python/native.pyx":369
+  /* "python/native.pyx":417
  * 
  *     cpdef is_build_complete(self):
  *         return self._hndl.is_build_complete()             # <<<<<<<<<<<<<<
@@ -11401,13 +12939,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(s
  *     cpdef connect_complete(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_build_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 369, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_build_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 417, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":368
+  /* "python/native.pyx":416
  *         return self._hndl.build_complete()
  * 
  *     cpdef is_build_complete(self):             # <<<<<<<<<<<<<<
@@ -11451,7 +12989,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_8is_build_complete
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_build_complete", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 368, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_build_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 416, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11468,7 +13006,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_8is_build_complete
   return __pyx_r;
 }
 
-/* "python/native.pyx":371
+/* "python/native.pyx":419
  *         return self._hndl.is_build_complete()
  * 
  *     cpdef connect_complete(self):             # <<<<<<<<<<<<<<
@@ -11497,7 +13035,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(st
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_connect_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 371, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_connect_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 419, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_11connect_complete)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11514,7 +13052,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(st
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 371, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 419, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11535,7 +13073,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(st
     #endif
   }
 
-  /* "python/native.pyx":372
+  /* "python/native.pyx":420
  * 
  *     cpdef connect_complete(self):
  *         return self._hndl.connect_complete()             # <<<<<<<<<<<<<<
@@ -11543,13 +13081,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(st
  *     cpdef is_connect_complete(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->connect_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 372, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->connect_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 420, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":371
+  /* "python/native.pyx":419
  *         return self._hndl.is_build_complete()
  * 
  *     cpdef connect_complete(self):             # <<<<<<<<<<<<<<
@@ -11593,7 +13131,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_10connect_complete
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect_complete", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 371, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_connect_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 419, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11610,7 +13148,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_10connect_complete
   return __pyx_r;
 }
 
-/* "python/native.pyx":374
+/* "python/native.pyx":422
  *         return self._hndl.connect_complete()
  * 
  *     cpdef is_connect_complete(self):             # <<<<<<<<<<<<<<
@@ -11639,7 +13177,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_connect_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 374, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_connect_complete); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 422, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_13is_connect_complete)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11656,7 +13194,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 374, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 422, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11677,7 +13215,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete
     #endif
   }
 
-  /* "python/native.pyx":375
+  /* "python/native.pyx":423
  * 
  *     cpdef is_connect_complete(self):
  *         return self._hndl.is_connect_complete()             # <<<<<<<<<<<<<<
@@ -11685,13 +13223,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete
  *     cpdef addListener(self, ev_f):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_connect_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 375, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_hndl->is_connect_complete()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 423, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":374
+  /* "python/native.pyx":422
  *         return self._hndl.connect_complete()
  * 
  *     cpdef is_connect_complete(self):             # <<<<<<<<<<<<<<
@@ -11735,7 +13273,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_12is_connect_compl
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_connect_complete", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 374, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_is_connect_complete(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 422, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11752,7 +13290,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_12is_connect_compl
   return __pyx_r;
 }
 
-/* "python/native.pyx":377
+/* "python/native.pyx":425
  *         return self._hndl.is_connect_complete()
  * 
  *     cpdef addListener(self, ev_f):             # <<<<<<<<<<<<<<
@@ -11783,7 +13321,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addListener); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 377, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addListener); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 425, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_15addListener)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11800,7 +13338,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_ev_f) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_ev_f);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 377, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 425, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -11821,7 +13359,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
     #endif
   }
 
-  /* "python/native.pyx":380
+  /* "python/native.pyx":428
  *         cdef native_decl.IEndpointListener *l
  * 
  *         l = self._hndl.addListener(             # <<<<<<<<<<<<<<
@@ -11830,19 +13368,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
  */
   __pyx_v_l = __pyx_v_self->_hndl->addListener(endpoint_ev_closure(((PyObject *)__pyx_v_ev_f)));
 
-  /* "python/native.pyx":382
+  /* "python/native.pyx":430
  *         l = self._hndl.addListener(
  *             endpoint_ev_closure(<cpy_ref.PyObject *>(ev_f)))
  *         ep_l = EndpointListener(ev_f)             # <<<<<<<<<<<<<<
  *         ep_l._hndl = l
  * #        ret = EndpointListener._mk(ev_f, l)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointListener), __pyx_v_ev_f); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 382, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_EndpointListener), __pyx_v_ev_f); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ep_l = ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":383
+  /* "python/native.pyx":431
  *             endpoint_ev_closure(<cpy_ref.PyObject *>(ev_f)))
  *         ep_l = EndpointListener(ev_f)
  *         ep_l._hndl = l             # <<<<<<<<<<<<<<
@@ -11851,16 +13389,16 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
  */
   __pyx_v_ep_l->_hndl = __pyx_v_l;
 
-  /* "python/native.pyx":385
+  /* "python/native.pyx":433
  *         ep_l._hndl = l
  * #        ret = EndpointListener._mk(ev_f, l)
  *         self.ev_listener_m[ev_f] = ep_l             # <<<<<<<<<<<<<<
  * 
  *         return ep_l
  */
-  if (unlikely(PyObject_SetItem(__pyx_v_self->ev_listener_m, __pyx_v_ev_f, ((PyObject *)__pyx_v_ep_l)) < 0)) __PYX_ERR(1, 385, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_v_self->ev_listener_m, __pyx_v_ev_f, ((PyObject *)__pyx_v_ep_l)) < 0)) __PYX_ERR(1, 433, __pyx_L1_error)
 
-  /* "python/native.pyx":387
+  /* "python/native.pyx":435
  *         self.ev_listener_m[ev_f] = ep_l
  * 
  *         return ep_l             # <<<<<<<<<<<<<<
@@ -11872,7 +13410,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(struct 
   __pyx_r = ((PyObject *)__pyx_v_ep_l);
   goto __pyx_L0;
 
-  /* "python/native.pyx":377
+  /* "python/native.pyx":425
  *         return self._hndl.is_connect_complete()
  * 
  *     cpdef addListener(self, ev_f):             # <<<<<<<<<<<<<<
@@ -11917,7 +13455,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_14addListener(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("addListener", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(__pyx_v_self, __pyx_v_ev_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 377, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_addListener(__pyx_v_self, __pyx_v_ev_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 425, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11934,7 +13472,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_14addListener(stru
   return __pyx_r;
 }
 
-/* "python/native.pyx":389
+/* "python/native.pyx":437
  *         return ep_l
  * 
  *     cpdef removeListener(self, EndpointListener l):             # <<<<<<<<<<<<<<
@@ -11963,7 +13501,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_removeListener); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 389, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_removeListener); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 437, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_17removeListener)) {
         __Pyx_XDECREF(__pyx_r);
@@ -11980,7 +13518,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_l)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_l));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 389, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 437, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -12001,7 +13539,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(stru
     #endif
   }
 
-  /* "python/native.pyx":390
+  /* "python/native.pyx":438
  * 
  *     cpdef removeListener(self, EndpointListener l):
  *         self._hndl.removeListener(l._hndl)             # <<<<<<<<<<<<<<
@@ -12010,7 +13548,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(stru
  */
   __pyx_v_self->_hndl->removeListener(__pyx_v_l->_hndl);
 
-  /* "python/native.pyx":389
+  /* "python/native.pyx":437
  *         return ep_l
  * 
  *     cpdef removeListener(self, EndpointListener l):             # <<<<<<<<<<<<<<
@@ -12043,7 +13581,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_17removeListener(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("removeListener (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_l), __pyx_ptype_15tblink_rpc_core_6native_EndpointListener, 1, "l", 0))) __PYX_ERR(1, 389, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_l), __pyx_ptype_15tblink_rpc_core_6native_EndpointListener, 1, "l", 0))) __PYX_ERR(1, 437, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_8Endpoint_16removeListener(((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *)__pyx_v_l));
 
   /* function exit code */
@@ -12064,7 +13602,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_16removeListener(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("removeListener", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(__pyx_v_self, __pyx_v_l, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 389, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_removeListener(__pyx_v_self, __pyx_v_l, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 437, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12081,7 +13619,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_16removeListener(s
   return __pyx_r;
 }
 
-/* "python/native.pyx":392
+/* "python/native.pyx":440
  *         self._hndl.removeListener(l._hndl)
  * 
  *     cpdef add_time_callback(self, time, cb):             # <<<<<<<<<<<<<<
@@ -12114,7 +13652,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_time_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 392, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_time_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 440, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_19add_time_callback)) {
         __Pyx_XDECREF(__pyx_r);
@@ -12134,7 +13672,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_time, __pyx_v_cb};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 392, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 440, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -12142,13 +13680,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_time, __pyx_v_cb};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 392, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 440, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 392, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 440, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -12159,7 +13697,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
           __Pyx_INCREF(__pyx_v_cb);
           __Pyx_GIVEREF(__pyx_v_cb);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_cb);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 392, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 440, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -12182,25 +13720,25 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
     #endif
   }
 
-  /* "python/native.pyx":395
+  /* "python/native.pyx":443
  *         cdef intptr_t ret;
  * 
  *         print("add_time_callback")             # <<<<<<<<<<<<<<
  *         ret = self._hndl.add_time_callback(
  *             time,
  */
-  if (__Pyx_PrintOne(0, __pyx_n_s_add_time_callback) < 0) __PYX_ERR(1, 395, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_n_s_add_time_callback) < 0) __PYX_ERR(1, 443, __pyx_L1_error)
 
-  /* "python/native.pyx":397
+  /* "python/native.pyx":445
  *         print("add_time_callback")
  *         ret = self._hndl.add_time_callback(
  *             time,             # <<<<<<<<<<<<<<
  *             time_callback_closure(<cpy_ref.PyObject *>(cb)))
  * 
  */
-  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_time); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 397, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_time); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 445, __pyx_L1_error)
 
-  /* "python/native.pyx":396
+  /* "python/native.pyx":444
  * 
  *         print("add_time_callback")
  *         ret = self._hndl.add_time_callback(             # <<<<<<<<<<<<<<
@@ -12209,7 +13747,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
  */
   __pyx_v_ret = __pyx_v_self->_hndl->add_time_callback(__pyx_t_7, time_callback_closure(((PyObject *)__pyx_v_cb)));
 
-  /* "python/native.pyx":402
+  /* "python/native.pyx":450
  * #        self.cb_m[ret] = cb
  * 
  *         return ret             # <<<<<<<<<<<<<<
@@ -12217,13 +13755,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(s
  *     cpdef findInterfaceType(self, name):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_ret); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 402, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_ret); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":392
+  /* "python/native.pyx":440
  *         self._hndl.removeListener(l._hndl)
  * 
  *     cpdef add_time_callback(self, time, cb):             # <<<<<<<<<<<<<<
@@ -12280,11 +13818,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_19add_time_callbac
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_cb)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_time_callback", 1, 2, 2, 1); __PYX_ERR(1, 392, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_time_callback", 1, 2, 2, 1); __PYX_ERR(1, 440, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_time_callback") < 0)) __PYX_ERR(1, 392, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_time_callback") < 0)) __PYX_ERR(1, 440, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -12297,7 +13835,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_19add_time_callbac
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_time_callback", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 392, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_time_callback", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 440, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.Endpoint.add_time_callback", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -12319,7 +13857,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_18add_time_callbac
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_time_callback", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(__pyx_v_self, __pyx_v_time, __pyx_v_cb, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 392, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_add_time_callback(__pyx_v_self, __pyx_v_time, __pyx_v_cb, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 440, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12336,7 +13874,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_18add_time_callbac
   return __pyx_r;
 }
 
-/* "python/native.pyx":404
+/* "python/native.pyx":452
  *         return ret
  * 
  *     cpdef findInterfaceType(self, name):             # <<<<<<<<<<<<<<
@@ -12368,7 +13906,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findInterfaceType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 404, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findInterfaceType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 452, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_21findInterfaceType)) {
         __Pyx_XDECREF(__pyx_r);
@@ -12385,7 +13923,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_name) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_name);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 404, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 452, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -12406,14 +13944,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
     #endif
   }
 
-  /* "python/native.pyx":405
+  /* "python/native.pyx":453
  * 
  *     cpdef findInterfaceType(self, name):
  *         cdef native_decl.IInterfaceType *iftype = self._hndl.findInterfaceType(name.encode())             # <<<<<<<<<<<<<<
  *         if iftype:
  *             return InterfaceType._mk(iftype)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 405, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -12427,14 +13965,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 405, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 405, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 453, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_iftype = __pyx_v_self->_hndl->findInterfaceType(__pyx_t_5);
 
-  /* "python/native.pyx":406
+  /* "python/native.pyx":454
  *     cpdef findInterfaceType(self, name):
  *         cdef native_decl.IInterfaceType *iftype = self._hndl.findInterfaceType(name.encode())
  *         if iftype:             # <<<<<<<<<<<<<<
@@ -12444,7 +13982,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
   __pyx_t_6 = (__pyx_v_iftype != 0);
   if (__pyx_t_6) {
 
-    /* "python/native.pyx":407
+    /* "python/native.pyx":455
  *         cdef native_decl.IInterfaceType *iftype = self._hndl.findInterfaceType(name.encode())
  *         if iftype:
  *             return InterfaceType._mk(iftype)             # <<<<<<<<<<<<<<
@@ -12452,13 +13990,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_iftype); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 407, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_iftype); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 455, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "python/native.pyx":406
+    /* "python/native.pyx":454
  *     cpdef findInterfaceType(self, name):
  *         cdef native_decl.IInterfaceType *iftype = self._hndl.findInterfaceType(name.encode())
  *         if iftype:             # <<<<<<<<<<<<<<
@@ -12467,7 +14005,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
  */
   }
 
-  /* "python/native.pyx":409
+  /* "python/native.pyx":457
  *             return InterfaceType._mk(iftype)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -12480,7 +14018,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(s
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":404
+  /* "python/native.pyx":452
  *         return ret
  * 
  *     cpdef findInterfaceType(self, name):             # <<<<<<<<<<<<<<
@@ -12524,7 +14062,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_20findInterfaceTyp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("findInterfaceType", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 404, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_findInterfaceType(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 452, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12541,7 +14079,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_20findInterfaceTyp
   return __pyx_r;
 }
 
-/* "python/native.pyx":411
+/* "python/native.pyx":459
  *             return None
  * 
  *     cpdef newInterfaceTypeBuilder(self, name):             # <<<<<<<<<<<<<<
@@ -12572,7 +14110,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newInterfaceTypeBuilder); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 411, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newInterfaceTypeBuilder); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 459, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_23newInterfaceTypeBuilder)) {
         __Pyx_XDECREF(__pyx_r);
@@ -12589,7 +14127,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_name) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_name);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 411, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 459, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -12610,26 +14148,26 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
     #endif
   }
 
-  /* "python/native.pyx":412
+  /* "python/native.pyx":460
  * 
  *     cpdef newInterfaceTypeBuilder(self, name):
  *         ret = InterfaceTypeBuilder()             # <<<<<<<<<<<<<<
  *         ret._hndl = self._hndl.newInterfaceTypeBuilder(
  *             name.encode())
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 412, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 460, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":414
+  /* "python/native.pyx":462
  *         ret = InterfaceTypeBuilder()
  *         ret._hndl = self._hndl.newInterfaceTypeBuilder(
  *             name.encode())             # <<<<<<<<<<<<<<
  *         return ret
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 414, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 462, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -12643,13 +14181,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 414, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 462, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 414, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 462, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":413
+  /* "python/native.pyx":461
  *     cpdef newInterfaceTypeBuilder(self, name):
  *         ret = InterfaceTypeBuilder()
  *         ret._hndl = self._hndl.newInterfaceTypeBuilder(             # <<<<<<<<<<<<<<
@@ -12658,7 +14196,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
  */
   __pyx_v_ret->_hndl = __pyx_v_self->_hndl->newInterfaceTypeBuilder(__pyx_t_5);
 
-  /* "python/native.pyx":415
+  /* "python/native.pyx":463
  *         ret._hndl = self._hndl.newInterfaceTypeBuilder(
  *             name.encode())
  *         return ret             # <<<<<<<<<<<<<<
@@ -12670,7 +14208,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBui
   __pyx_r = ((PyObject *)__pyx_v_ret);
   goto __pyx_L0;
 
-  /* "python/native.pyx":411
+  /* "python/native.pyx":459
  *             return None
  * 
  *     cpdef newInterfaceTypeBuilder(self, name):             # <<<<<<<<<<<<<<
@@ -12715,7 +14253,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_22newInterfaceType
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("newInterfaceTypeBuilder", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBuilder(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 411, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_newInterfaceTypeBuilder(__pyx_v_self, __pyx_v_name, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 459, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12732,7 +14270,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_22newInterfaceType
   return __pyx_r;
 }
 
-/* "python/native.pyx":417
+/* "python/native.pyx":465
  *         return ret
  * 
  *     cpdef defineInterfaceType(self, InterfaceTypeBuilder iftype_b):             # <<<<<<<<<<<<<<
@@ -12761,7 +14299,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_defineInterfaceType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 417, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_defineInterfaceType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 465, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_25defineInterfaceType)) {
         __Pyx_XDECREF(__pyx_r);
@@ -12778,7 +14316,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_iftype_b)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_iftype_b));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 417, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 465, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -12799,7 +14337,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType
     #endif
   }
 
-  /* "python/native.pyx":418
+  /* "python/native.pyx":466
  * 
  *     cpdef defineInterfaceType(self, InterfaceTypeBuilder iftype_b):
  *         return InterfaceType._mk(             # <<<<<<<<<<<<<<
@@ -12808,20 +14346,20 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "python/native.pyx":419
+  /* "python/native.pyx":467
  *     cpdef defineInterfaceType(self, InterfaceTypeBuilder iftype_b):
  *         return InterfaceType._mk(
  *             self._hndl.defineInterfaceType(iftype_b._hndl))             # <<<<<<<<<<<<<<
  * 
  *     cpdef defineInterfaceInst(
  */
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_self->_hndl->defineInterfaceType(__pyx_v_iftype_b->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 418, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_v_self->_hndl->defineInterfaceType(__pyx_v_iftype_b->_hndl)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 466, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":417
+  /* "python/native.pyx":465
  *         return ret
  * 
  *     cpdef defineInterfaceType(self, InterfaceTypeBuilder iftype_b):             # <<<<<<<<<<<<<<
@@ -12852,7 +14390,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_25defineInterfaceT
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("defineInterfaceType (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_iftype_b), __pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder, 1, "iftype_b", 0))) __PYX_ERR(1, 417, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_iftype_b), __pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder, 1, "iftype_b", 0))) __PYX_ERR(1, 465, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_8Endpoint_24defineInterfaceType(((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *)__pyx_v_iftype_b));
 
   /* function exit code */
@@ -12873,7 +14411,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_24defineInterfaceT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("defineInterfaceType", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType(__pyx_v_self, __pyx_v_iftype_b, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 417, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceType(__pyx_v_self, __pyx_v_iftype_b, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 465, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12890,7 +14428,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_24defineInterfaceT
   return __pyx_r;
 }
 
-/* "python/native.pyx":421
+/* "python/native.pyx":469
  *             self._hndl.defineInterfaceType(iftype_b._hndl))
  * 
  *     cpdef defineInterfaceInst(             # <<<<<<<<<<<<<<
@@ -12927,7 +14465,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_defineInterfaceInst); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 421, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_defineInterfaceInst); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 469, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_27defineInterfaceInst)) {
         __Pyx_XDECREF(__pyx_r);
@@ -12947,7 +14485,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[5] = {__pyx_t_4, ((PyObject *)__pyx_v_t), __pyx_v_name, __pyx_v_is_mirror, __pyx_v_req_f};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 421, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 469, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -12955,13 +14493,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[5] = {__pyx_t_4, ((PyObject *)__pyx_v_t), __pyx_v_name, __pyx_v_is_mirror, __pyx_v_req_f};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 421, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 469, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 421, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 469, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -12978,7 +14516,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
           __Pyx_INCREF(__pyx_v_req_f);
           __Pyx_GIVEREF(__pyx_v_req_f);
           PyTuple_SET_ITEM(__pyx_t_6, 3+__pyx_t_5, __pyx_v_req_f);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 421, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 469, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -13001,7 +14539,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
     #endif
   }
 
-  /* "python/native.pyx":430
+  /* "python/native.pyx":478
  *         # req_f together
  * 
  *         if t is None:             # <<<<<<<<<<<<<<
@@ -13012,23 +14550,23 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (unlikely(__pyx_t_8)) {
 
-    /* "python/native.pyx":431
+    /* "python/native.pyx":479
  * 
  *         if t is None:
  *             raise Exception("Null type defined for interface %s" % name)             # <<<<<<<<<<<<<<
  * 
  *         # Hold the closure to prevent garbage collection
  */
-    __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Null_type_defined_for_interface, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 431, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Null_type_defined_for_interface, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 479, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 431, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 479, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 431, __pyx_L1_error)
+    __PYX_ERR(1, 479, __pyx_L1_error)
 
-    /* "python/native.pyx":430
+    /* "python/native.pyx":478
  *         # req_f together
  * 
  *         if t is None:             # <<<<<<<<<<<<<<
@@ -13037,26 +14575,26 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
  */
   }
 
-  /* "python/native.pyx":434
+  /* "python/native.pyx":482
  * 
  *         # Hold the closure to prevent garbage collection
  *         Endpoint._req_l.append(req_f)             # <<<<<<<<<<<<<<
  * 
  *         ret_h = self._hndl.defineInterfaceInst(
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint), __pyx_n_s_req_l); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 434, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint), __pyx_n_s_req_l); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 482, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_9 = __Pyx_PyObject_Append(__pyx_t_2, __pyx_v_req_f); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 434, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_Append(__pyx_t_2, __pyx_v_req_f); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 482, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/native.pyx":438
+  /* "python/native.pyx":486
  *         ret_h = self._hndl.defineInterfaceInst(
  *             t._hndl,
  *             name.encode(),             # <<<<<<<<<<<<<<
  *             is_mirror,
  *             invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 438, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_encode); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -13070,22 +14608,22 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 438, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 438, __pyx_L1_error)
+  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 486, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/native.pyx":439
+  /* "python/native.pyx":487
  *             t._hndl,
  *             name.encode(),
  *             is_mirror,             # <<<<<<<<<<<<<<
  *             invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
  * 
  */
-  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_is_mirror); if (unlikely((__pyx_t_11 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 439, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_is_mirror); if (unlikely((__pyx_t_11 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 487, __pyx_L1_error)
 
-  /* "python/native.pyx":436
+  /* "python/native.pyx":484
  *         Endpoint._req_l.append(req_f)
  * 
  *         ret_h = self._hndl.defineInterfaceInst(             # <<<<<<<<<<<<<<
@@ -13094,7 +14632,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
  */
   __pyx_v_ret_h = __pyx_v_self->_hndl->defineInterfaceInst(__pyx_v_t->_hndl, __pyx_t_10, __pyx_t_11, invoke_req_closure(((PyObject *)__pyx_v_req_f)));
 
-  /* "python/native.pyx":442
+  /* "python/native.pyx":490
  *             invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
  * 
  *         if ret_h != NULL:             # <<<<<<<<<<<<<<
@@ -13104,7 +14642,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
   __pyx_t_8 = ((__pyx_v_ret_h != NULL) != 0);
   if (__pyx_t_8) {
 
-    /* "python/native.pyx":443
+    /* "python/native.pyx":491
  * 
  *         if ret_h != NULL:
  *             return InterfaceInst._mk(ret_h)             # <<<<<<<<<<<<<<
@@ -13112,13 +14650,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_v_ret_h); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 443, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_v_ret_h); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 491, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "python/native.pyx":442
+    /* "python/native.pyx":490
  *             invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
  * 
  *         if ret_h != NULL:             # <<<<<<<<<<<<<<
@@ -13127,7 +14665,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
  */
   }
 
-  /* "python/native.pyx":445
+  /* "python/native.pyx":493
  *             return InterfaceInst._mk(ret_h)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -13140,7 +14678,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":421
+  /* "python/native.pyx":469
  *             self._hndl.defineInterfaceType(iftype_b._hndl))
  * 
  *     cpdef defineInterfaceInst(             # <<<<<<<<<<<<<<
@@ -13203,23 +14741,23 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_27defineInterfaceI
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 1); __PYX_ERR(1, 421, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 1); __PYX_ERR(1, 469, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_is_mirror)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 2); __PYX_ERR(1, 421, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 2); __PYX_ERR(1, 469, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_req_f)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 3); __PYX_ERR(1, 421, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, 3); __PYX_ERR(1, 469, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "defineInterfaceInst") < 0)) __PYX_ERR(1, 421, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "defineInterfaceInst") < 0)) __PYX_ERR(1, 469, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -13236,13 +14774,13 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_27defineInterfaceI
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 421, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("defineInterfaceInst", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 469, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.Endpoint.defineInterfaceInst", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_15tblink_rpc_core_6native_InterfaceType, 1, "t", 0))) __PYX_ERR(1, 423, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_15tblink_rpc_core_6native_InterfaceType, 1, "t", 0))) __PYX_ERR(1, 471, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_8Endpoint_26defineInterfaceInst(((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_v_self), __pyx_v_t, __pyx_v_name, __pyx_v_is_mirror, __pyx_v_req_f);
 
   /* function exit code */
@@ -13263,7 +14801,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_26defineInterfaceI
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("defineInterfaceInst", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst(__pyx_v_self, __pyx_v_t, __pyx_v_name, __pyx_v_is_mirror, __pyx_v_req_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 421, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_defineInterfaceInst(__pyx_v_self, __pyx_v_t, __pyx_v_name, __pyx_v_is_mirror, __pyx_v_req_f, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 469, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13280,7 +14818,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_26defineInterfaceI
   return __pyx_r;
 }
 
-/* "python/native.pyx":447
+/* "python/native.pyx":495
  *             return None
  * 
  *     cpdef getInterfaceTypes(self):             # <<<<<<<<<<<<<<
@@ -13316,7 +14854,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getInterfaceTypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 447, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getInterfaceTypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 495, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_29getInterfaceTypes)) {
         __Pyx_XDECREF(__pyx_r);
@@ -13333,7 +14871,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 447, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 495, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -13354,19 +14892,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
     #endif
   }
 
-  /* "python/native.pyx":448
+  /* "python/native.pyx":496
  * 
  *     cpdef getInterfaceTypes(self):
  *         ret = []             # <<<<<<<<<<<<<<
  *         for i in range(self._hndl.getInterfaceTypes().size()):
  *             ret.append(InterfaceType._mk(self._hndl.getInterfaceTypes().at(i)))
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 448, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 496, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":449
+  /* "python/native.pyx":497
  *     cpdef getInterfaceTypes(self):
  *         ret = []
  *         for i in range(self._hndl.getInterfaceTypes().size()):             # <<<<<<<<<<<<<<
@@ -13378,7 +14916,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "python/native.pyx":450
+    /* "python/native.pyx":498
  *         ret = []
  *         for i in range(self._hndl.getInterfaceTypes().size()):
  *             ret.append(InterfaceType._mk(self._hndl.getInterfaceTypes().at(i)))             # <<<<<<<<<<<<<<
@@ -13389,15 +14927,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
       __pyx_t_8 = __pyx_v_self->_hndl->getInterfaceTypes().at(__pyx_v_i);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 450, __pyx_L1_error)
+      __PYX_ERR(1, 498, __pyx_L1_error)
     }
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 450, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 498, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 450, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 498, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "python/native.pyx":451
+  /* "python/native.pyx":499
  *         for i in range(self._hndl.getInterfaceTypes().size()):
  *             ret.append(InterfaceType._mk(self._hndl.getInterfaceTypes().at(i)))
  *         return ret             # <<<<<<<<<<<<<<
@@ -13409,7 +14947,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(s
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":447
+  /* "python/native.pyx":495
  *             return None
  * 
  *     cpdef getInterfaceTypes(self):             # <<<<<<<<<<<<<<
@@ -13454,7 +14992,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_28getInterfaceType
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getInterfaceTypes", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 447, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceTypes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 495, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13471,7 +15009,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_28getInterfaceType
   return __pyx_r;
 }
 
-/* "python/native.pyx":453
+/* "python/native.pyx":501
  *         return ret
  * 
  *     cpdef getInterfaceInsts(self):             # <<<<<<<<<<<<<<
@@ -13507,7 +15045,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getInterfaceInsts); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 453, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getInterfaceInsts); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 501, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_31getInterfaceInsts)) {
         __Pyx_XDECREF(__pyx_r);
@@ -13524,7 +15062,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 453, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 501, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -13545,19 +15083,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
     #endif
   }
 
-  /* "python/native.pyx":454
+  /* "python/native.pyx":502
  * 
  *     cpdef getInterfaceInsts(self):
  *         ret = []             # <<<<<<<<<<<<<<
  *         for i in range(self._hndl.getInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getInterfaceInsts().at(i)))
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 454, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 502, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":455
+  /* "python/native.pyx":503
  *     cpdef getInterfaceInsts(self):
  *         ret = []
  *         for i in range(self._hndl.getInterfaceInsts().size()):             # <<<<<<<<<<<<<<
@@ -13569,7 +15107,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "python/native.pyx":456
+    /* "python/native.pyx":504
  *         ret = []
  *         for i in range(self._hndl.getInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getInterfaceInsts().at(i)))             # <<<<<<<<<<<<<<
@@ -13580,15 +15118,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
       __pyx_t_8 = __pyx_v_self->_hndl->getInterfaceInsts().at(__pyx_v_i);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 456, __pyx_L1_error)
+      __PYX_ERR(1, 504, __pyx_L1_error)
     }
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 456, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 504, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 456, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 504, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "python/native.pyx":457
+  /* "python/native.pyx":505
  *         for i in range(self._hndl.getInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getInterfaceInsts().at(i)))
  *         return ret             # <<<<<<<<<<<<<<
@@ -13600,7 +15138,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(s
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":453
+  /* "python/native.pyx":501
  *         return ret
  * 
  *     cpdef getInterfaceInsts(self):             # <<<<<<<<<<<<<<
@@ -13645,7 +15183,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_30getInterfaceInst
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getInterfaceInsts", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 453, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getInterfaceInsts(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 501, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13662,7 +15200,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_30getInterfaceInst
   return __pyx_r;
 }
 
-/* "python/native.pyx":459
+/* "python/native.pyx":507
  *         return ret
  * 
  *     cpdef getPeerInterfaceInsts(self):             # <<<<<<<<<<<<<<
@@ -13698,7 +15236,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getPeerInterfaceInsts); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 459, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getPeerInterfaceInsts); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 507, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_33getPeerInterfaceInsts)) {
         __Pyx_XDECREF(__pyx_r);
@@ -13715,7 +15253,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 459, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 507, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -13736,19 +15274,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
     #endif
   }
 
-  /* "python/native.pyx":460
+  /* "python/native.pyx":508
  * 
  *     cpdef getPeerInterfaceInsts(self):
  *         ret = []             # <<<<<<<<<<<<<<
  *         for i in range(self._hndl.getPeerInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getPeerInterfaceInsts().at(i)))
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 460, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 508, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":461
+  /* "python/native.pyx":509
  *     cpdef getPeerInterfaceInsts(self):
  *         ret = []
  *         for i in range(self._hndl.getPeerInterfaceInsts().size()):             # <<<<<<<<<<<<<<
@@ -13760,7 +15298,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "python/native.pyx":462
+    /* "python/native.pyx":510
  *         ret = []
  *         for i in range(self._hndl.getPeerInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getPeerInterfaceInsts().at(i)))             # <<<<<<<<<<<<<<
@@ -13771,15 +15309,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
       __pyx_t_8 = __pyx_v_self->_hndl->getPeerInterfaceInsts().at(__pyx_v_i);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 462, __pyx_L1_error)
+      __PYX_ERR(1, 510, __pyx_L1_error)
     }
-    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 462, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 510, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 462, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 510, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "python/native.pyx":463
+  /* "python/native.pyx":511
  *         for i in range(self._hndl.getPeerInterfaceInsts().size()):
  *             ret.append(InterfaceInst._mk(self._hndl.getPeerInterfaceInsts().at(i)))
  *         return ret             # <<<<<<<<<<<<<<
@@ -13791,7 +15329,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceIns
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":459
+  /* "python/native.pyx":507
  *         return ret
  * 
  *     cpdef getPeerInterfaceInsts(self):             # <<<<<<<<<<<<<<
@@ -13836,7 +15374,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_32getPeerInterface
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getPeerInterfaceInsts", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceInsts(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 459, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_getPeerInterfaceInsts(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 507, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13854,7 +15392,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_32getPeerInterface
 }
 static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "python/native.pyx":465
+/* "python/native.pyx":513
  *         return ret
  * 
  *     async def process_one_message_a(self):             # <<<<<<<<<<<<<<
@@ -13887,7 +15425,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_34process_one_mess
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_15tblink_rpc_core_6native___pyx_scope_struct__process_one_message_a *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(1, 465, __pyx_L1_error)
+    __PYX_ERR(1, 513, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -13895,7 +15433,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_34process_one_mess
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Coroutine_New((__pyx_coroutine_body_t) __pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_process_one_message_a, __pyx_n_s_Endpoint_process_one_message_a, __pyx_n_s_tblink_rpc_core_native); if (unlikely(!gen)) __PYX_ERR(1, 465, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Coroutine_New((__pyx_coroutine_body_t) __pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_process_one_message_a, __pyx_n_s_Endpoint_process_one_message_a, __pyx_n_s_tblink_rpc_core_native); if (unlikely(!gen)) __PYX_ERR(1, 513, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -13911,7 +15449,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_34process_one_mess
   return __pyx_r;
 }
 
-/* "python/native.pyx":472
+/* "python/native.pyx":520
  *         ev = tblink.mkEvent()
  * 
  *         def ev_f(e):             # <<<<<<<<<<<<<<
@@ -13948,24 +15486,24 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_21process_one_mess
   __pyx_outer_scope = (struct __pyx_obj_15tblink_rpc_core_6native___pyx_scope_struct__process_one_message_a *) __Pyx_CyFunction_GetClosure(__pyx_self);
   __pyx_cur_scope = __pyx_outer_scope;
 
-  /* "python/native.pyx":474
+  /* "python/native.pyx":522
  *         def ev_f(e):
  *             nonlocal ev
  *             print("process_one_message_a: event")             # <<<<<<<<<<<<<<
  *             ev.set()
  * 
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_process_one_message_a_event) < 0) __PYX_ERR(1, 474, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_process_one_message_a_event) < 0) __PYX_ERR(1, 522, __pyx_L1_error)
 
-  /* "python/native.pyx":475
+  /* "python/native.pyx":523
  *             nonlocal ev
  *             print("process_one_message_a: event")
  *             ev.set()             # <<<<<<<<<<<<<<
  * 
  *         l = self.addListener(ev_f)
  */
-  if (unlikely(!__pyx_cur_scope->__pyx_v_ev)) { __Pyx_RaiseClosureNameError("ev"); __PYX_ERR(1, 475, __pyx_L1_error) }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_ev, __pyx_n_s_set); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 475, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_v_ev)) { __Pyx_RaiseClosureNameError("ev"); __PYX_ERR(1, 523, __pyx_L1_error) }
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_ev, __pyx_n_s_set); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 523, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -13979,12 +15517,12 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_21process_one_mess
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 475, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 523, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":472
+  /* "python/native.pyx":520
  *         ev = tblink.mkEvent()
  * 
  *         def ev_f(e):             # <<<<<<<<<<<<<<
@@ -14007,7 +15545,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_21process_one_mess
   return __pyx_r;
 }
 
-/* "python/native.pyx":465
+/* "python/native.pyx":513
  *         return ret
  * 
  *     async def process_one_message_a(self):             # <<<<<<<<<<<<<<
@@ -14035,24 +15573,24 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(1, 465, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(1, 513, __pyx_L1_error)
 
-  /* "python/native.pyx":468
+  /* "python/native.pyx":516
  *         # TODO: need a more-complementary approach for
  *         # non-direct endpoint backends
  *         from tblink_rpc_core.tblink import TbLink             # <<<<<<<<<<<<<<
  *         tblink = TbLink.inst()
  *         ev = tblink.mkEvent()
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 468, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 516, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_TbLink);
   __Pyx_GIVEREF(__pyx_n_s_TbLink);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_TbLink);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_tblink_rpc_core_tblink, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 468, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_tblink_rpc_core_tblink, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 516, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_TbLink); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 468, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_TbLink); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 516, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -14060,14 +15598,14 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/native.pyx":469
+  /* "python/native.pyx":517
  *         # non-direct endpoint backends
  *         from tblink_rpc_core.tblink import TbLink
  *         tblink = TbLink.inst()             # <<<<<<<<<<<<<<
  *         ev = tblink.mkEvent()
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_TbLink, __pyx_n_s_inst); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 469, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_TbLink, __pyx_n_s_inst); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 517, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -14081,21 +15619,21 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 469, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 517, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_cur_scope->__pyx_v_tblink = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "python/native.pyx":470
+  /* "python/native.pyx":518
  *         from tblink_rpc_core.tblink import TbLink
  *         tblink = TbLink.inst()
  *         ev = tblink.mkEvent()             # <<<<<<<<<<<<<<
  * 
  *         def ev_f(e):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_tblink, __pyx_n_s_mkEvent); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 470, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_tblink, __pyx_n_s_mkEvent); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 518, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -14109,56 +15647,56 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 470, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 518, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_cur_scope->__pyx_v_ev = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "python/native.pyx":472
+  /* "python/native.pyx":520
  *         ev = tblink.mkEvent()
  * 
  *         def ev_f(e):             # <<<<<<<<<<<<<<
  *             nonlocal ev
  *             print("process_one_message_a: event")
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_15tblink_rpc_core_6native_8Endpoint_21process_one_message_a_1ev_f, 0, __pyx_n_s_process_one_message_a_locals_ev, ((PyObject*)__pyx_cur_scope), __pyx_n_s_tblink_rpc_core_native, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 472, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_15tblink_rpc_core_6native_8Endpoint_21process_one_message_a_1ev_f, 0, __pyx_n_s_process_one_message_a_locals_ev, ((PyObject*)__pyx_cur_scope), __pyx_n_s_tblink_rpc_core_native, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 520, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_cur_scope->__pyx_v_ev_f = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "python/native.pyx":477
+  /* "python/native.pyx":525
  *             ev.set()
  * 
  *         l = self.addListener(ev_f)             # <<<<<<<<<<<<<<
  *         print("--> ev.wait()")
  *         await ev.wait()
  */
-  __pyx_t_2 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->addListener(__pyx_cur_scope->__pyx_v_self, __pyx_cur_scope->__pyx_v_ev_f, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 477, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->addListener(__pyx_cur_scope->__pyx_v_self, __pyx_cur_scope->__pyx_v_ev_f, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 525, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_cur_scope->__pyx_v_l = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "python/native.pyx":478
+  /* "python/native.pyx":526
  * 
  *         l = self.addListener(ev_f)
  *         print("--> ev.wait()")             # <<<<<<<<<<<<<<
  *         await ev.wait()
  *         print("<-- ev.wait()")
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_ev_wait) < 0) __PYX_ERR(1, 478, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_ev_wait) < 0) __PYX_ERR(1, 526, __pyx_L1_error)
 
-  /* "python/native.pyx":479
+  /* "python/native.pyx":527
  *         l = self.addListener(ev_f)
  *         print("--> ev.wait()")
  *         await ev.wait()             # <<<<<<<<<<<<<<
  *         print("<-- ev.wait()")
  *         self.removeListener(l)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_ev, __pyx_n_s_wait); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 479, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_ev, __pyx_n_s_wait); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -14172,7 +15710,7 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 479, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __Pyx_Coroutine_Yield_From(__pyx_generator, __pyx_t_2);
@@ -14186,37 +15724,37 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
     __pyx_generator->resume_label = 1;
     return __pyx_r;
     __pyx_L4_resume_from_await:;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(1, 479, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(1, 527, __pyx_L1_error)
   } else {
     PyObject* exc_type = __Pyx_PyErr_Occurred();
     if (exc_type) {
       if (likely(exc_type == PyExc_StopIteration || (exc_type != PyExc_GeneratorExit && __Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)))) PyErr_Clear();
-      else __PYX_ERR(1, 479, __pyx_L1_error)
+      else __PYX_ERR(1, 527, __pyx_L1_error)
     }
   }
 
-  /* "python/native.pyx":480
+  /* "python/native.pyx":528
  *         print("--> ev.wait()")
  *         await ev.wait()
  *         print("<-- ev.wait()")             # <<<<<<<<<<<<<<
  *         self.removeListener(l)
  *         return 1
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_ev_wait_2) < 0) __PYX_ERR(1, 480, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_ev_wait_2) < 0) __PYX_ERR(1, 528, __pyx_L1_error)
 
-  /* "python/native.pyx":481
+  /* "python/native.pyx":529
  *         await ev.wait()
  *         print("<-- ev.wait()")
  *         self.removeListener(l)             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
-  if (!(likely(((__pyx_cur_scope->__pyx_v_l) == Py_None) || likely(__Pyx_TypeTest(__pyx_cur_scope->__pyx_v_l, __pyx_ptype_15tblink_rpc_core_6native_EndpointListener))))) __PYX_ERR(1, 481, __pyx_L1_error)
-  __pyx_t_2 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->removeListener(__pyx_cur_scope->__pyx_v_self, ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *)__pyx_cur_scope->__pyx_v_l), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 481, __pyx_L1_error)
+  if (!(likely(((__pyx_cur_scope->__pyx_v_l) == Py_None) || likely(__Pyx_TypeTest(__pyx_cur_scope->__pyx_v_l, __pyx_ptype_15tblink_rpc_core_6native_EndpointListener))))) __PYX_ERR(1, 529, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_15tblink_rpc_core_6native_Endpoint *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->removeListener(__pyx_cur_scope->__pyx_v_self, ((struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *)__pyx_cur_scope->__pyx_v_l), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 529, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/native.pyx":482
+  /* "python/native.pyx":530
  *         print("<-- ev.wait()")
  *         self.removeListener(l)
  *         return 1             # <<<<<<<<<<<<<<
@@ -14228,7 +15766,7 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   goto __pyx_L0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "python/native.pyx":465
+  /* "python/native.pyx":513
  *         return ret
  * 
  *     async def process_one_message_a(self):             # <<<<<<<<<<<<<<
@@ -14253,7 +15791,7 @@ static PyObject *__pyx_gb_15tblink_rpc_core_6native_8Endpoint_36generator(__pyx_
   return __pyx_r;
 }
 
-/* "python/native.pyx":484
+/* "python/native.pyx":532
  *         return 1
  * 
  *     cpdef process_one_message(self):             # <<<<<<<<<<<<<<
@@ -14282,7 +15820,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_process_one_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 484, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_process_one_message); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 532, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_38process_one_message)) {
         __Pyx_XDECREF(__pyx_r);
@@ -14299,7 +15837,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 484, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 532, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -14320,7 +15858,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message
     #endif
   }
 
-  /* "python/native.pyx":485
+  /* "python/native.pyx":533
  * 
  *     cpdef process_one_message(self):
  *         pass             # <<<<<<<<<<<<<<
@@ -14344,7 +15882,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message
   return __pyx_r;
 }
 
-/* "python/native.pyx":484
+/* "python/native.pyx":532
  *         return 1
  * 
  *     cpdef process_one_message(self):             # <<<<<<<<<<<<<<
@@ -14374,7 +15912,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_37process_one_mess
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("process_one_message", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 484, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_process_one_message(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14391,7 +15929,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_37process_one_mess
   return __pyx_r;
 }
 
-/* "python/native.pyx":487
+/* "python/native.pyx":535
  *         pass
  * 
  *     cpdef mkValBool(self, val):             # <<<<<<<<<<<<<<
@@ -14421,7 +15959,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 487, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValBool); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 535, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_40mkValBool)) {
         __Pyx_XDECREF(__pyx_r);
@@ -14438,7 +15976,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(struct __
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_val) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_val);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 487, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 535, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -14459,7 +15997,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(struct __
     #endif
   }
 
-  /* "python/native.pyx":488
+  /* "python/native.pyx":536
  * 
  *     cpdef mkValBool(self, val):
  *         return ParamValBool._mk(self._hndl.mkValBool(val))             # <<<<<<<<<<<<<<
@@ -14467,14 +16005,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(struct __
  *     cpdef mkValIntU(self, val, width):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_val); if (unlikely((__pyx_t_5 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 488, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool->__pyx_base._mk(__pyx_v_self->_hndl->mkValBool(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 488, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_val); if (unlikely((__pyx_t_5 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 536, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool->__pyx_base._mk(__pyx_v_self->_hndl->mkValBool(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 536, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":487
+  /* "python/native.pyx":535
  *         pass
  * 
  *     cpdef mkValBool(self, val):             # <<<<<<<<<<<<<<
@@ -14518,7 +16056,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_39mkValBool(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValBool", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 487, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValBool(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14535,7 +16073,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_39mkValBool(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":490
+/* "python/native.pyx":538
  *         return ParamValBool._mk(self._hndl.mkValBool(val))
  * 
  *     cpdef mkValIntU(self, val, width):             # <<<<<<<<<<<<<<
@@ -14567,7 +16105,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntU); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 490, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntU); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 538, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_42mkValIntU)) {
         __Pyx_XDECREF(__pyx_r);
@@ -14587,7 +16125,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 490, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 538, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -14595,13 +16133,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 490, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 538, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 490, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 538, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -14612,7 +16150,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
           __Pyx_INCREF(__pyx_v_width);
           __Pyx_GIVEREF(__pyx_v_width);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_width);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 490, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 538, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -14635,7 +16173,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
     #endif
   }
 
-  /* "python/native.pyx":491
+  /* "python/native.pyx":539
  * 
  *     cpdef mkValIntU(self, val, width):
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))             # <<<<<<<<<<<<<<
@@ -14643,15 +16181,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(struct __
  *     cpdef mkValIntS(self, val, width):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 491, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 491, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntU(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 491, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_uint64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 539, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 539, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntU(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 539, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":490
+  /* "python/native.pyx":538
  *         return ParamValBool._mk(self._hndl.mkValBool(val))
  * 
  *     cpdef mkValIntU(self, val, width):             # <<<<<<<<<<<<<<
@@ -14708,11 +16246,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_42mkValIntU(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, 1); __PYX_ERR(1, 490, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, 1); __PYX_ERR(1, 538, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntU") < 0)) __PYX_ERR(1, 490, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntU") < 0)) __PYX_ERR(1, 538, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -14725,7 +16263,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_42mkValIntU(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 490, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkValIntU", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 538, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.Endpoint.mkValIntU", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14747,7 +16285,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_41mkValIntU(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValIntU", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 490, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntU(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 538, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14764,7 +16302,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_41mkValIntU(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":493
+/* "python/native.pyx":541
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))
  * 
  *     cpdef mkValIntS(self, val, width):             # <<<<<<<<<<<<<<
@@ -14796,7 +16334,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntS); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 493, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValIntS); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 541, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_44mkValIntS)) {
         __Pyx_XDECREF(__pyx_r);
@@ -14816,7 +16354,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 493, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 541, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -14824,13 +16362,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_val, __pyx_v_width};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 493, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 541, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 493, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 541, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_4) {
             __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -14841,7 +16379,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
           __Pyx_INCREF(__pyx_v_width);
           __Pyx_GIVEREF(__pyx_v_width);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_width);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 493, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 541, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -14864,7 +16402,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
     #endif
   }
 
-  /* "python/native.pyx":494
+  /* "python/native.pyx":542
  * 
  *     cpdef mkValIntS(self, val, width):
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))             # <<<<<<<<<<<<<<
@@ -14872,15 +16410,15 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(struct __
  *     cpdef mkValMap(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyInt_As_int64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 494, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 494, __pyx_L1_error)
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntS(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 494, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_int64_t(__pyx_v_val); if (unlikely((__pyx_t_7 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_width); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt->__pyx_base._mk(__pyx_v_self->_hndl->mkValIntS(__pyx_t_7, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 542, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":493
+  /* "python/native.pyx":541
  *         return ParamValInt._mk(self._hndl.mkValIntU(val, width))
  * 
  *     cpdef mkValIntS(self, val, width):             # <<<<<<<<<<<<<<
@@ -14937,11 +16475,11 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_44mkValIntS(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, 1); __PYX_ERR(1, 493, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, 1); __PYX_ERR(1, 541, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntS") < 0)) __PYX_ERR(1, 493, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "mkValIntS") < 0)) __PYX_ERR(1, 541, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -14954,7 +16492,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_8Endpoint_44mkValIntS(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 493, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("mkValIntS", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 541, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.Endpoint.mkValIntS", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14976,7 +16514,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_43mkValIntS(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValIntS", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 493, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValIntS(__pyx_v_self, __pyx_v_val, __pyx_v_width, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14993,7 +16531,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_43mkValIntS(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":496
+/* "python/native.pyx":544
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))
  * 
  *     cpdef mkValMap(self):             # <<<<<<<<<<<<<<
@@ -15022,7 +16560,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(struct __p
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 496, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValMap); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 544, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_46mkValMap)) {
         __Pyx_XDECREF(__pyx_r);
@@ -15039,7 +16577,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(struct __p
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 496, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 544, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -15060,7 +16598,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(struct __p
     #endif
   }
 
-  /* "python/native.pyx":497
+  /* "python/native.pyx":545
  * 
  *     cpdef mkValMap(self):
  *         return ParamValMap._mk(self._hndl.mkValMap())             # <<<<<<<<<<<<<<
@@ -15068,13 +16606,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(struct __p
  *     cpdef mkValStr(self, val):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap->__pyx_base._mk(__pyx_v_self->_hndl->mkValMap()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 497, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap->__pyx_base._mk(__pyx_v_self->_hndl->mkValMap()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 545, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":496
+  /* "python/native.pyx":544
  *         return ParamValInt._mk(self._hndl.mkValIntS(val, width))
  * 
  *     cpdef mkValMap(self):             # <<<<<<<<<<<<<<
@@ -15118,7 +16656,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_45mkValMap(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValMap", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 496, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 544, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15135,7 +16673,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_45mkValMap(struct 
   return __pyx_r;
 }
 
-/* "python/native.pyx":499
+/* "python/native.pyx":547
  *         return ParamValMap._mk(self._hndl.mkValMap())
  * 
  *     cpdef mkValStr(self, val):             # <<<<<<<<<<<<<<
@@ -15165,7 +16703,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(struct __p
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 499, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValStr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 547, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_48mkValStr)) {
         __Pyx_XDECREF(__pyx_r);
@@ -15182,7 +16720,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(struct __p
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_val) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_val);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 499, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 547, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -15203,7 +16741,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(struct __p
     #endif
   }
 
-  /* "python/native.pyx":500
+  /* "python/native.pyx":548
  * 
  *     cpdef mkValStr(self, val):
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))             # <<<<<<<<<<<<<<
@@ -15211,7 +16749,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(struct __p
  *     cpdef mkValVec(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 500, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 548, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -15225,18 +16763,18 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(struct __p
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 500, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 548, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 500, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 548, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr->__pyx_base._mk(__pyx_v_self->_hndl->mkValStr(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 500, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr->__pyx_base._mk(__pyx_v_self->_hndl->mkValStr(__pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 548, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":499
+  /* "python/native.pyx":547
  *         return ParamValMap._mk(self._hndl.mkValMap())
  * 
  *     cpdef mkValStr(self, val):             # <<<<<<<<<<<<<<
@@ -15280,7 +16818,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_47mkValStr(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValStr", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 499, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 547, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15297,7 +16835,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_47mkValStr(struct 
   return __pyx_r;
 }
 
-/* "python/native.pyx":502
+/* "python/native.pyx":550
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
  * 
  *     cpdef mkValVec(self):             # <<<<<<<<<<<<<<
@@ -15326,7 +16864,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(struct __p
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 502, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_mkValVec); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 550, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_8Endpoint_50mkValVec)) {
         __Pyx_XDECREF(__pyx_r);
@@ -15343,7 +16881,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(struct __p
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 502, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 550, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -15364,7 +16902,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(struct __p
     #endif
   }
 
-  /* "python/native.pyx":503
+  /* "python/native.pyx":551
  * 
  *     cpdef mkValVec(self):
  *         return ParamValVec._mk(self._hndl.mkValVec())             # <<<<<<<<<<<<<<
@@ -15372,13 +16910,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(struct __p
  * #********************************************************************
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_self->_hndl->mkValVec()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 503, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_self->_hndl->mkValVec()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":502
+  /* "python/native.pyx":550
  *         return ParamValStr._mk(self._hndl.mkValStr(val.encode()))
  * 
  *     cpdef mkValVec(self):             # <<<<<<<<<<<<<<
@@ -15422,7 +16960,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_49mkValVec(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mkValVec", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 502, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 550, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15473,7 +17011,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_51__reduce_cython_
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -15529,7 +17067,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_53__setstate_cytho
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__37, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -15552,7 +17090,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_8Endpoint_53__setstate_cytho
   return __pyx_r;
 }
 
-/* "python/native.pyx":508
+/* "python/native.pyx":556
  * #* endpoint_ev_f
  * #********************************************************************
  * cdef public void endpoint_ev_callback_f(             # <<<<<<<<<<<<<<
@@ -15575,14 +17113,14 @@ void endpoint_ev_callback_f(PyObject *__pyx_v_obj, tblink_rpc_core::IEndpointEve
   __Pyx_RefNannySetupContext("endpoint_ev_callback_f", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "python/native.pyx":516
+  /* "python/native.pyx":564
  * #    sys.stdout.flush()
  *     obj(
  *         EndpointEvent._mk(ev))             # <<<<<<<<<<<<<<
  * #    print("<-- endpoint_ev_f")
  * 
  */
-  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk(__pyx_v_ev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 516, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk(__pyx_v_ev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 564, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_obj);
   __pyx_t_3 = __pyx_v_obj; __pyx_t_4 = NULL;
@@ -15598,12 +17136,12 @@ void endpoint_ev_callback_f(PyObject *__pyx_v_obj, tblink_rpc_core::IEndpointEve
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 515, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 563, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":508
+  /* "python/native.pyx":556
  * #* endpoint_ev_f
  * #********************************************************************
  * cdef public void endpoint_ev_callback_f(             # <<<<<<<<<<<<<<
@@ -15627,7 +17165,7 @@ void endpoint_ev_callback_f(PyObject *__pyx_v_obj, tblink_rpc_core::IEndpointEve
   #endif
 }
 
-/* "python/native.pyx":522
+/* "python/native.pyx":570
  * #* time_callback_f
  * #********************************************************************
  * cdef public void time_callback_f(obj) with gil:             # <<<<<<<<<<<<<<
@@ -15649,16 +17187,16 @@ void time_callback_f(PyObject *__pyx_v_obj) {
   __Pyx_RefNannySetupContext("time_callback_f", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "python/native.pyx":523
+  /* "python/native.pyx":571
  * #********************************************************************
  * cdef public void time_callback_f(obj) with gil:
  *     print("time_callback_f")             # <<<<<<<<<<<<<<
  *     # TODO: Must deal with
  *     obj()
  */
-  if (__Pyx_PrintOne(0, __pyx_n_s_time_callback_f) < 0) __PYX_ERR(1, 523, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_n_s_time_callback_f) < 0) __PYX_ERR(1, 571, __pyx_L1_error)
 
-  /* "python/native.pyx":525
+  /* "python/native.pyx":573
  *     print("time_callback_f")
  *     # TODO: Must deal with
  *     obj()             # <<<<<<<<<<<<<<
@@ -15678,12 +17216,12 @@ void time_callback_f(PyObject *__pyx_v_obj) {
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 525, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 573, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":522
+  /* "python/native.pyx":570
  * #* time_callback_f
  * #********************************************************************
  * cdef public void time_callback_f(obj) with gil:             # <<<<<<<<<<<<<<
@@ -15706,7 +17244,7 @@ void time_callback_f(PyObject *__pyx_v_obj) {
   #endif
 }
 
-/* "python/native.pyx":532
+/* "python/native.pyx":580
  * #* Callback method for invocation requets
  * #********************************************************************
  * cdef public void interface_inst_req_f(             # <<<<<<<<<<<<<<
@@ -15734,44 +17272,44 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
   __Pyx_RefNannySetupContext("interface_inst_req_f", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "python/native.pyx":539
+  /* "python/native.pyx":587
  *     native_decl.IParamValVec    *params) with gil:
  *     obj(
  *         InterfaceInst._mk(inst),             # <<<<<<<<<<<<<<
  *         MethodType._mk(method),
  *         call_id,
  */
-  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_v_inst); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 539, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk(__pyx_v_inst); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 587, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "python/native.pyx":540
+  /* "python/native.pyx":588
  *     obj(
  *         InterfaceInst._mk(inst),
  *         MethodType._mk(method),             # <<<<<<<<<<<<<<
  *         call_id,
  *         ParamValVec._mk(params))
  */
-  __pyx_t_3 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_method); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 540, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_15tblink_rpc_core_6native_10MethodType__mk(__pyx_v_method); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 588, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "python/native.pyx":541
+  /* "python/native.pyx":589
  *         InterfaceInst._mk(inst),
  *         MethodType._mk(method),
  *         call_id,             # <<<<<<<<<<<<<<
  *         ParamValVec._mk(params))
  * 
  */
-  __pyx_t_4 = PyInt_FromSsize_t(__pyx_v_call_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 541, __pyx_L1_error)
+  __pyx_t_4 = PyInt_FromSsize_t(__pyx_v_call_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 589, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "python/native.pyx":542
+  /* "python/native.pyx":590
  *         MethodType._mk(method),
  *         call_id,
  *         ParamValVec._mk(params))             # <<<<<<<<<<<<<<
  * 
  * #********************************************************************
  */
-  __pyx_t_5 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_params); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_5 = __pyx_f_15tblink_rpc_core_6native_11ParamValVec__mk(__pyx_v_params); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 590, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_v_obj);
   __pyx_t_6 = __pyx_v_obj; __pyx_t_7 = NULL;
@@ -15789,7 +17327,7 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[5] = {__pyx_t_7, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 4+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 538, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 4+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 586, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -15801,7 +17339,7 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[5] = {__pyx_t_7, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 4+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 538, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 4+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 586, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -15811,7 +17349,7 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
   } else
   #endif
   {
-    __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 538, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 586, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     if (__pyx_t_7) {
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -15828,14 +17366,14 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 538, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 586, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":532
+  /* "python/native.pyx":580
  * #* Callback method for invocation requets
  * #********************************************************************
  * cdef public void interface_inst_req_f(             # <<<<<<<<<<<<<<
@@ -15863,7 +17401,7 @@ void interface_inst_req_f(PyObject *__pyx_v_obj, tblink_rpc_core::IInterfaceInst
   #endif
 }
 
-/* "python/native.pyx":550
+/* "python/native.pyx":598
  *     cdef native_decl.ILaunchType *_hndl
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -15898,7 +17436,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_10LaunchType___init__(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "python/native.pyx":553
+/* "python/native.pyx":601
  *         pass
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -15927,7 +17465,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_name(struct __py
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 553, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 601, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10LaunchType_3name)) {
         __Pyx_XDECREF(__pyx_r);
@@ -15944,7 +17482,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_name(struct __py
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 553, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 601, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -15965,7 +17503,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_name(struct __py
     #endif
   }
 
-  /* "python/native.pyx":554
+  /* "python/native.pyx":602
  * 
  *     cpdef name(self):
  *         return self._hndl.name().decode()             # <<<<<<<<<<<<<<
@@ -15973,13 +17511,13 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_name(struct __py
  *     cpdef launch(self, params : LaunchParams):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 554, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->_hndl->name(), 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 602, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/native.pyx":553
+  /* "python/native.pyx":601
  *         pass
  * 
  *     cpdef name(self):             # <<<<<<<<<<<<<<
@@ -16023,7 +17561,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_2name(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("name", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10LaunchType_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 553, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10LaunchType_name(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 601, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16040,7 +17578,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_2name(struct __
   return __pyx_r;
 }
 
-/* "python/native.pyx":556
+/* "python/native.pyx":604
  *         return self._hndl.name().decode()
  * 
  *     cpdef launch(self, params : LaunchParams):             # <<<<<<<<<<<<<<
@@ -16073,7 +17611,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_launch); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 556, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_launch); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 604, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10LaunchType_5launch)) {
         __Pyx_XDECREF(__pyx_r);
@@ -16090,7 +17628,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_params)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_params));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 556, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 604, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -16111,7 +17649,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
     #endif
   }
 
-  /* "python/native.pyx":557
+  /* "python/native.pyx":605
  * 
  *     cpdef launch(self, params : LaunchParams):
  *         cdef cpp_pair[IEndpointP,cpp_string] result = self._hndl.launch(params._hndl, NULL)             # <<<<<<<<<<<<<<
@@ -16120,7 +17658,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
  */
   __pyx_v_result = __pyx_v_self->_hndl->launch(__pyx_v_params->_hndl, NULL);
 
-  /* "python/native.pyx":558
+  /* "python/native.pyx":606
  *     cpdef launch(self, params : LaunchParams):
  *         cdef cpp_pair[IEndpointP,cpp_string] result = self._hndl.launch(params._hndl, NULL)
  *         params._hndl = NULL             # <<<<<<<<<<<<<<
@@ -16129,7 +17667,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
  */
   __pyx_v_params->_hndl = NULL;
 
-  /* "python/native.pyx":560
+  /* "python/native.pyx":608
  *         params._hndl = NULL
  * 
  *         if result.first:             # <<<<<<<<<<<<<<
@@ -16139,19 +17677,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
   __pyx_t_5 = (__pyx_v_result.first != 0);
   if (__pyx_t_5) {
 
-    /* "python/native.pyx":562
+    /* "python/native.pyx":610
  *         if result.first:
  *             # Valid return
  *             ep = Endpoint()             # <<<<<<<<<<<<<<
  *             ep._hndl = result.first
  *             return (ep, result.second.decode())
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 562, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 610, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_ep = ((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "python/native.pyx":563
+    /* "python/native.pyx":611
  *             # Valid return
  *             ep = Endpoint()
  *             ep._hndl = result.first             # <<<<<<<<<<<<<<
@@ -16161,7 +17699,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
     __pyx_t_6 = __pyx_v_result.first;
     __pyx_v_ep->_hndl = __pyx_t_6;
 
-    /* "python/native.pyx":564
+    /* "python/native.pyx":612
  *             ep = Endpoint()
  *             ep._hndl = result.first
  *             return (ep, result.second.decode())             # <<<<<<<<<<<<<<
@@ -16169,9 +17707,9 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
  *             return (None, result.second.decode())
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_result.second, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 564, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_result.second, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 612, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 564, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 612, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(((PyObject *)__pyx_v_ep));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_ep));
@@ -16183,7 +17721,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "python/native.pyx":560
+    /* "python/native.pyx":608
  *         params._hndl = NULL
  * 
  *         if result.first:             # <<<<<<<<<<<<<<
@@ -16192,7 +17730,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
  */
   }
 
-  /* "python/native.pyx":566
+  /* "python/native.pyx":614
  *             return (ep, result.second.decode())
  *         else:
  *             return (None, result.second.decode())             # <<<<<<<<<<<<<<
@@ -16201,9 +17739,9 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_decode_cpp_string(__pyx_v_result.second, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 566, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_decode_cpp_string(__pyx_v_result.second, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 614, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 566, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 614, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(Py_None);
     __Pyx_GIVEREF(Py_None);
@@ -16216,7 +17754,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(struct __
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":556
+  /* "python/native.pyx":604
  *         return self._hndl.name().decode()
  * 
  *     cpdef launch(self, params : LaunchParams):             # <<<<<<<<<<<<<<
@@ -16248,7 +17786,7 @@ static PyObject *__pyx_pw_15tblink_rpc_core_6native_10LaunchType_5launch(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("launch (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_params), __pyx_ptype_15tblink_rpc_core_6native_LaunchParams, 1, "params", 0))) __PYX_ERR(1, 556, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_params), __pyx_ptype_15tblink_rpc_core_6native_LaunchParams, 1, "params", 0))) __PYX_ERR(1, 604, __pyx_L1_error)
   __pyx_r = __pyx_pf_15tblink_rpc_core_6native_10LaunchType_4launch(((struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *)__pyx_v_self), ((struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *)__pyx_v_params));
 
   /* function exit code */
@@ -16269,7 +17807,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_4launch(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("launch", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(__pyx_v_self, __pyx_v_params, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 556, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_10LaunchType_launch(__pyx_v_self, __pyx_v_params, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 604, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16286,7 +17824,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_4launch(struct 
   return __pyx_r;
 }
 
-/* "python/native.pyx":568
+/* "python/native.pyx":616
  *             return (None, result.second.decode())
  * 
  *     cpdef LaunchParams newLaunchParams(self):             # <<<<<<<<<<<<<<
@@ -16316,7 +17854,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *__pyx_f_15tblink
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newLaunchParams); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 568, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newLaunchParams); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 616, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_10LaunchType_7newLaunchParams)) {
         __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -16333,10 +17871,10 @@ static struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *__pyx_f_15tblink
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 568, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 616, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_15tblink_rpc_core_6native_LaunchParams))))) __PYX_ERR(1, 568, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_15tblink_rpc_core_6native_LaunchParams))))) __PYX_ERR(1, 616, __pyx_L1_error)
         __pyx_r = ((struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -16355,19 +17893,19 @@ static struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *__pyx_f_15tblink
     #endif
   }
 
-  /* "python/native.pyx":569
+  /* "python/native.pyx":617
  * 
  *     cpdef LaunchParams newLaunchParams(self):
  *         ret = LaunchParams()             # <<<<<<<<<<<<<<
  *         ret._hndl = self._hndl.newLaunchParams()
  *         return ret
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchParams)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 569, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchParams)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":570
+  /* "python/native.pyx":618
  *     cpdef LaunchParams newLaunchParams(self):
  *         ret = LaunchParams()
  *         ret._hndl = self._hndl.newLaunchParams()             # <<<<<<<<<<<<<<
@@ -16376,7 +17914,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *__pyx_f_15tblink
  */
   __pyx_v_ret->_hndl = __pyx_v_self->_hndl->newLaunchParams();
 
-  /* "python/native.pyx":571
+  /* "python/native.pyx":619
  *         ret = LaunchParams()
  *         ret._hndl = self._hndl.newLaunchParams()
  *         return ret             # <<<<<<<<<<<<<<
@@ -16388,7 +17926,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *__pyx_f_15tblink
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":568
+  /* "python/native.pyx":616
  *             return (None, result.second.decode())
  * 
  *     cpdef LaunchParams newLaunchParams(self):             # <<<<<<<<<<<<<<
@@ -16433,7 +17971,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_6newLaunchParam
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("newLaunchParams", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_15tblink_rpc_core_6native_10LaunchType_newLaunchParams(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 568, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_15tblink_rpc_core_6native_10LaunchType_newLaunchParams(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 616, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16484,7 +18022,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_8__reduce_cytho
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -16540,7 +18078,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_10__setstate_cy
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -16563,7 +18101,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_10LaunchType_10__setstate_cy
   return __pyx_r;
 }
 
-/* "python/native.pyx":579
+/* "python/native.pyx":627
  *     cdef native_decl.ITbLink *_hndl
  * 
  *     def __init__(self, lib_path):             # <<<<<<<<<<<<<<
@@ -16600,7 +18138,7 @@ static int __pyx_pw_15tblink_rpc_core_6native_6TbLink_1__init__(PyObject *__pyx_
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 579, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 627, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -16611,7 +18149,7 @@ static int __pyx_pw_15tblink_rpc_core_6native_6TbLink_1__init__(PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 579, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 627, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tblink_rpc_core.native.TbLink.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -16636,14 +18174,14 @@ static int __pyx_pf_15tblink_rpc_core_6native_6TbLink___init__(struct __pyx_obj_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/native.pyx":580
+  /* "python/native.pyx":628
  * 
  *     def __init__(self, lib_path):
  *         self._hndl = native_decl.get_tblink(lib_path.encode())             # <<<<<<<<<<<<<<
  * 
  *     cpdef Endpoint getDefaultEP(self):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_lib_path, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 580, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_lib_path, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -16657,14 +18195,14 @@ static int __pyx_pf_15tblink_rpc_core_6native_6TbLink___init__(struct __pyx_obj_
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 580, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_4) && PyErr_Occurred())) __PYX_ERR(1, 580, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_4) && PyErr_Occurred())) __PYX_ERR(1, 628, __pyx_L1_error)
   __pyx_v_self->_hndl = get_tblink(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":579
+  /* "python/native.pyx":627
  *     cdef native_decl.ITbLink *_hndl
  * 
  *     def __init__(self, lib_path):             # <<<<<<<<<<<<<<
@@ -16686,7 +18224,7 @@ static int __pyx_pf_15tblink_rpc_core_6native_6TbLink___init__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "python/native.pyx":582
+/* "python/native.pyx":630
  *         self._hndl = native_decl.get_tblink(lib_path.encode())
  * 
  *     cpdef Endpoint getDefaultEP(self):             # <<<<<<<<<<<<<<
@@ -16718,7 +18256,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getDefaultEP); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 582, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getDefaultEP); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 630, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_6TbLink_3getDefaultEP)) {
         __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -16735,10 +18273,10 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 582, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_15tblink_rpc_core_6native_Endpoint))))) __PYX_ERR(1, 582, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_15tblink_rpc_core_6native_Endpoint))))) __PYX_ERR(1, 630, __pyx_L1_error)
         __pyx_r = ((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -16757,7 +18295,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
     #endif
   }
 
-  /* "python/native.pyx":583
+  /* "python/native.pyx":631
  * 
  *     cpdef Endpoint getDefaultEP(self):
  *         cdef IEndpointP ep = self._hndl.getDefaultEP()             # <<<<<<<<<<<<<<
@@ -16766,7 +18304,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
  */
   __pyx_v_ep = __pyx_v_self->_hndl->getDefaultEP();
 
-  /* "python/native.pyx":584
+  /* "python/native.pyx":632
  *     cpdef Endpoint getDefaultEP(self):
  *         cdef IEndpointP ep = self._hndl.getDefaultEP()
  *         if ep:             # <<<<<<<<<<<<<<
@@ -16776,19 +18314,19 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
   __pyx_t_5 = (__pyx_v_ep != 0);
   if (__pyx_t_5) {
 
-    /* "python/native.pyx":585
+    /* "python/native.pyx":633
  *         cdef IEndpointP ep = self._hndl.getDefaultEP()
  *         if ep:
  *             ret = Endpoint()             # <<<<<<<<<<<<<<
  *             ret._hndl = ep
  *             return ret
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 585, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 633, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "python/native.pyx":586
+    /* "python/native.pyx":634
  *         if ep:
  *             ret = Endpoint()
  *             ret._hndl = ep             # <<<<<<<<<<<<<<
@@ -16797,7 +18335,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
  */
     __pyx_v_ret->_hndl = __pyx_v_ep;
 
-    /* "python/native.pyx":587
+    /* "python/native.pyx":635
  *             ret = Endpoint()
  *             ret._hndl = ep
  *             return ret             # <<<<<<<<<<<<<<
@@ -16809,7 +18347,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
     __pyx_r = __pyx_v_ret;
     goto __pyx_L0;
 
-    /* "python/native.pyx":584
+    /* "python/native.pyx":632
  *     cpdef Endpoint getDefaultEP(self):
  *         cdef IEndpointP ep = self._hndl.getDefaultEP()
  *         if ep:             # <<<<<<<<<<<<<<
@@ -16818,7 +18356,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
  */
   }
 
-  /* "python/native.pyx":589
+  /* "python/native.pyx":637
  *             return ret
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -16831,7 +18369,7 @@ static struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *__pyx_f_15tblink_rpc
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":582
+  /* "python/native.pyx":630
  *         self._hndl = native_decl.get_tblink(lib_path.encode())
  * 
  *     cpdef Endpoint getDefaultEP(self):             # <<<<<<<<<<<<<<
@@ -16876,7 +18414,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_2getDefaultEP(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getDefaultEP", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_15tblink_rpc_core_6native_6TbLink_getDefaultEP(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 582, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_15tblink_rpc_core_6native_6TbLink_getDefaultEP(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 630, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16893,7 +18431,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_2getDefaultEP(struct
   return __pyx_r;
 }
 
-/* "python/native.pyx":591
+/* "python/native.pyx":639
  *             return None
  * 
  *     cpdef findLaunchType(self, id):             # <<<<<<<<<<<<<<
@@ -16925,7 +18463,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findLaunchType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 591, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_findLaunchType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 639, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_6TbLink_5findLaunchType)) {
         __Pyx_XDECREF(__pyx_r);
@@ -16942,7 +18480,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_id) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_id);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 591, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 639, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -16963,26 +18501,26 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
     #endif
   }
 
-  /* "python/native.pyx":592
+  /* "python/native.pyx":640
  * 
  *     cpdef findLaunchType(self, id):
  *         ret = LaunchType()             # <<<<<<<<<<<<<<
  *         ret._hndl = self._hndl.findLaunchType(id.encode())
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 592, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 640, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":593
+  /* "python/native.pyx":641
  *     cpdef findLaunchType(self, id):
  *         ret = LaunchType()
  *         ret._hndl = self._hndl.findLaunchType(id.encode())             # <<<<<<<<<<<<<<
  * 
  *         if ret._hndl:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_id, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 593, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_id, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 641, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -16996,14 +18534,14 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 593, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 641, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 593, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 641, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ret->_hndl = __pyx_v_self->_hndl->findLaunchType(__pyx_t_5);
 
-  /* "python/native.pyx":595
+  /* "python/native.pyx":643
  *         ret._hndl = self._hndl.findLaunchType(id.encode())
  * 
  *         if ret._hndl:             # <<<<<<<<<<<<<<
@@ -17013,7 +18551,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
   __pyx_t_6 = (__pyx_v_ret->_hndl != 0);
   if (__pyx_t_6) {
 
-    /* "python/native.pyx":596
+    /* "python/native.pyx":644
  * 
  *         if ret._hndl:
  *             return ret             # <<<<<<<<<<<<<<
@@ -17025,7 +18563,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
     __pyx_r = ((PyObject *)__pyx_v_ret);
     goto __pyx_L0;
 
-    /* "python/native.pyx":595
+    /* "python/native.pyx":643
  *         ret._hndl = self._hndl.findLaunchType(id.encode())
  * 
  *         if ret._hndl:             # <<<<<<<<<<<<<<
@@ -17034,7 +18572,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
  */
   }
 
-  /* "python/native.pyx":598
+  /* "python/native.pyx":646
  *             return ret
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -17047,7 +18585,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(struct
     goto __pyx_L0;
   }
 
-  /* "python/native.pyx":591
+  /* "python/native.pyx":639
  *             return None
  * 
  *     cpdef findLaunchType(self, id):             # <<<<<<<<<<<<<<
@@ -17092,7 +18630,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_4findLaunchType(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("findLaunchType", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(__pyx_v_self, __pyx_v_id, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 591, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType(__pyx_v_self, __pyx_v_id, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 639, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17109,7 +18647,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_4findLaunchType(stru
   return __pyx_r;
 }
 
-/* "python/native.pyx":600
+/* "python/native.pyx":648
  *             return None
  * 
  *     cpdef launchTypes(self):             # <<<<<<<<<<<<<<
@@ -17146,7 +18684,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_launchTypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 600, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_launchTypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 648, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_15tblink_rpc_core_6native_6TbLink_7launchTypes)) {
         __Pyx_XDECREF(__pyx_r);
@@ -17163,7 +18701,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 600, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 648, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -17184,19 +18722,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
     #endif
   }
 
-  /* "python/native.pyx":601
+  /* "python/native.pyx":649
  * 
  *     cpdef launchTypes(self):
  *         ret = []             # <<<<<<<<<<<<<<
  *         for i in range(self._hndl.launchTypes().size()):
  *             t = LaunchType()
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 601, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 649, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ret = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/native.pyx":602
+  /* "python/native.pyx":650
  *     cpdef launchTypes(self):
  *         ret = []
  *         for i in range(self._hndl.launchTypes().size()):             # <<<<<<<<<<<<<<
@@ -17208,19 +18746,19 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "python/native.pyx":603
+    /* "python/native.pyx":651
  *         ret = []
  *         for i in range(self._hndl.launchTypes().size()):
  *             t = LaunchType()             # <<<<<<<<<<<<<<
  *             t._hndl = self._hndl.launchTypes().at(i)
  *             ret.append(t)
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 603, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_LaunchType)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 651, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_t, ((struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "python/native.pyx":604
+    /* "python/native.pyx":652
  *         for i in range(self._hndl.launchTypes().size()):
  *             t = LaunchType()
  *             t._hndl = self._hndl.launchTypes().at(i)             # <<<<<<<<<<<<<<
@@ -17231,21 +18769,21 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
       __pyx_t_8 = __pyx_v_self->_hndl->launchTypes().at(__pyx_v_i);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 604, __pyx_L1_error)
+      __PYX_ERR(1, 652, __pyx_L1_error)
     }
     __pyx_v_t->_hndl = __pyx_t_8;
 
-    /* "python/native.pyx":605
+    /* "python/native.pyx":653
  *             t = LaunchType()
  *             t._hndl = self._hndl.launchTypes().at(i)
  *             ret.append(t)             # <<<<<<<<<<<<<<
  * 
  *         return ret
  */
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, ((PyObject *)__pyx_v_t)); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 605, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_ret, ((PyObject *)__pyx_v_t)); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 653, __pyx_L1_error)
   }
 
-  /* "python/native.pyx":607
+  /* "python/native.pyx":655
  *             ret.append(t)
  * 
  *         return ret             # <<<<<<<<<<<<<<
@@ -17257,7 +18795,7 @@ static PyObject *__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(struct __
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "python/native.pyx":600
+  /* "python/native.pyx":648
  *             return None
  * 
  *     cpdef launchTypes(self):             # <<<<<<<<<<<<<<
@@ -17303,7 +18841,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_6launchTypes(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("launchTypes", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 600, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 648, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17354,7 +18892,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_8__reduce_cython__(C
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__42, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -17410,7 +18948,7 @@ static PyObject *__pyx_pf_15tblink_rpc_core_6native_6TbLink_10__setstate_cython_
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__43, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -18612,8 +20150,9 @@ static void __pyx_tp_dealloc_15tblink_rpc_core_6native_Type(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_15tblink_rpc_core_6native_Type[] = {
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_4Type_1__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_4Type_3__setstate_cython__, METH_O, 0},
+  {"kind", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_4Type_1kind, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_4Type_3__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_4Type_5__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -18870,6 +20409,107 @@ static PyTypeObject __pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder = {
   0, /*tp_print*/
   #endif
 };
+static struct __pyx_vtabstruct_15tblink_rpc_core_6native_ParamDecl __pyx_vtable_15tblink_rpc_core_6native_ParamDecl;
+
+static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_ParamDecl(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *)o);
+  p->__pyx_vtab = __pyx_vtabptr_15tblink_rpc_core_6native_ParamDecl;
+  return o;
+}
+
+static void __pyx_tp_dealloc_15tblink_rpc_core_6native_ParamDecl(PyObject *o) {
+  #if CYTHON_USE_TP_FINALIZE
+  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyMethodDef __pyx_methods_15tblink_rpc_core_6native_ParamDecl[] = {
+  {"name", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_1name, METH_NOARGS, 0},
+  {"type", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_3type, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_9ParamDecl_7__setstate_cython__, METH_O, 0},
+  {0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_15tblink_rpc_core_6native_ParamDecl = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "tblink_rpc_core.native.ParamDecl", /*tp_name*/
+  sizeof(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_15tblink_rpc_core_6native_ParamDecl, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_15tblink_rpc_core_6native_ParamDecl, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_15tblink_rpc_core_6native_ParamDecl, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+};
 static struct __pyx_vtabstruct_15tblink_rpc_core_6native_MethodType __pyx_vtable_15tblink_rpc_core_6native_MethodType;
 
 static PyObject *__pyx_tp_new_15tblink_rpc_core_6native_MethodType(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
@@ -18896,8 +20536,13 @@ static void __pyx_tp_dealloc_15tblink_rpc_core_6native_MethodType(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_15tblink_rpc_core_6native_MethodType[] = {
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_1__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_3__setstate_cython__, METH_O, 0},
+  {"name", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_1name, METH_NOARGS, 0},
+  {"id", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_3id, METH_NOARGS, 0},
+  {"is_export", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_5is_export, METH_NOARGS, 0},
+  {"is_blocking", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_7is_blocking, METH_NOARGS, 0},
+  {"params", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_9params, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_11__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_15tblink_rpc_core_6native_10MethodType_13__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -19825,29 +21470,36 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_n_s_Bool, __pyx_k_Bool, sizeof(__pyx_k_Bool), 0, 0, 1, 1},
   {&__pyx_n_s_Endpoint, __pyx_k_Endpoint, sizeof(__pyx_k_Endpoint), 0, 0, 1, 1},
   {&__pyx_n_s_EndpointEvent, __pyx_k_EndpointEvent, sizeof(__pyx_k_EndpointEvent), 0, 0, 1, 1},
   {&__pyx_n_s_EndpointListener, __pyx_k_EndpointListener, sizeof(__pyx_k_EndpointListener), 0, 0, 1, 1},
   {&__pyx_n_s_Endpoint_process_one_message_a, __pyx_k_Endpoint_process_one_message_a, sizeof(__pyx_k_Endpoint_process_one_message_a), 0, 0, 1, 1},
+  {&__pyx_n_s_Int, __pyx_k_Int, sizeof(__pyx_k_Int), 0, 0, 1, 1},
   {&__pyx_n_s_InterfaceInst, __pyx_k_InterfaceInst, sizeof(__pyx_k_InterfaceInst), 0, 0, 1, 1},
   {&__pyx_n_s_InterfaceType, __pyx_k_InterfaceType, sizeof(__pyx_k_InterfaceType), 0, 0, 1, 1},
   {&__pyx_n_s_InterfaceTypeBuilder, __pyx_k_InterfaceTypeBuilder, sizeof(__pyx_k_InterfaceTypeBuilder), 0, 0, 1, 1},
   {&__pyx_n_s_LaunchParams, __pyx_k_LaunchParams, sizeof(__pyx_k_LaunchParams), 0, 0, 1, 1},
   {&__pyx_n_s_LaunchType, __pyx_k_LaunchType, sizeof(__pyx_k_LaunchType), 0, 0, 1, 1},
+  {&__pyx_n_s_Map, __pyx_k_Map, sizeof(__pyx_k_Map), 0, 0, 1, 1},
   {&__pyx_n_s_MethodType, __pyx_k_MethodType, sizeof(__pyx_k_MethodType), 0, 0, 1, 1},
   {&__pyx_n_s_MethodTypeBuilder, __pyx_k_MethodTypeBuilder, sizeof(__pyx_k_MethodTypeBuilder), 0, 0, 1, 1},
   {&__pyx_kp_s_Null_type_defined_for_interface, __pyx_k_Null_type_defined_for_interface, sizeof(__pyx_k_Null_type_defined_for_interface), 0, 0, 1, 0},
+  {&__pyx_n_s_ParamDecl, __pyx_k_ParamDecl, sizeof(__pyx_k_ParamDecl), 0, 0, 1, 1},
   {&__pyx_n_s_ParamVal, __pyx_k_ParamVal, sizeof(__pyx_k_ParamVal), 0, 0, 1, 1},
   {&__pyx_n_s_ParamValBool, __pyx_k_ParamValBool, sizeof(__pyx_k_ParamValBool), 0, 0, 1, 1},
   {&__pyx_n_s_ParamValInt, __pyx_k_ParamValInt, sizeof(__pyx_k_ParamValInt), 0, 0, 1, 1},
   {&__pyx_n_s_ParamValMap, __pyx_k_ParamValMap, sizeof(__pyx_k_ParamValMap), 0, 0, 1, 1},
   {&__pyx_n_s_ParamValStr, __pyx_k_ParamValStr, sizeof(__pyx_k_ParamValStr), 0, 0, 1, 1},
   {&__pyx_n_s_ParamValVec, __pyx_k_ParamValVec, sizeof(__pyx_k_ParamValVec), 0, 0, 1, 1},
+  {&__pyx_n_s_Str, __pyx_k_Str, sizeof(__pyx_k_Str), 0, 0, 1, 1},
   {&__pyx_n_s_TbLink, __pyx_k_TbLink, sizeof(__pyx_k_TbLink), 0, 0, 1, 1},
   {&__pyx_n_s_Type, __pyx_k_Type, sizeof(__pyx_k_Type), 0, 0, 1, 1},
+  {&__pyx_n_s_TypeE, __pyx_k_TypeE, sizeof(__pyx_k_TypeE), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeInt, __pyx_k_TypeInt, sizeof(__pyx_k_TypeInt), 0, 0, 1, 1},
   {&__pyx_kp_s_Unknown_ParamVal_type, __pyx_k_Unknown_ParamVal_type, sizeof(__pyx_k_Unknown_ParamVal_type), 0, 0, 1, 0},
+  {&__pyx_n_s_Vec, __pyx_k_Vec, sizeof(__pyx_k_Vec), 0, 0, 1, 1},
   {&__pyx_n_s_addListener, __pyx_k_addListener, sizeof(__pyx_k_addListener), 0, 0, 1, 1},
   {&__pyx_n_s_add_arg, __pyx_k_add_arg, sizeof(__pyx_k_add_arg), 0, 0, 1, 1},
   {&__pyx_n_s_add_method, __pyx_k_add_method, sizeof(__pyx_k_add_method), 0, 0, 1, 1},
@@ -19898,6 +21550,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_is_mirror, __pyx_k_is_mirror, sizeof(__pyx_k_is_mirror), 0, 0, 1, 1},
   {&__pyx_n_s_is_signed, __pyx_k_is_signed, sizeof(__pyx_k_is_signed), 0, 0, 1, 1},
   {&__pyx_n_s_key, __pyx_k_key, sizeof(__pyx_k_key), 0, 0, 1, 1},
+  {&__pyx_n_s_kind, __pyx_k_kind, sizeof(__pyx_k_kind), 0, 0, 1, 1},
+  {&__pyx_n_s_kind_m, __pyx_k_kind_m, sizeof(__pyx_k_kind_m), 0, 0, 1, 1},
   {&__pyx_n_s_ktype, __pyx_k_ktype, sizeof(__pyx_k_ktype), 0, 0, 1, 1},
   {&__pyx_n_s_launch, __pyx_k_launch, sizeof(__pyx_k_launch), 0, 0, 1, 1},
   {&__pyx_n_s_launchTypes, __pyx_k_launchTypes, sizeof(__pyx_k_launchTypes), 0, 0, 1, 1},
@@ -19947,6 +21601,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
   {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
   {&__pyx_n_s_t, __pyx_k_t, sizeof(__pyx_k_t), 0, 0, 1, 1},
+  {&__pyx_n_s_tblink_rpc_core, __pyx_k_tblink_rpc_core, sizeof(__pyx_k_tblink_rpc_core), 0, 0, 1, 1},
   {&__pyx_n_s_tblink_rpc_core_native, __pyx_k_tblink_rpc_core_native, sizeof(__pyx_k_tblink_rpc_core_native), 0, 0, 1, 1},
   {&__pyx_n_s_tblink_rpc_core_tblink, __pyx_k_tblink_rpc_core_tblink, sizeof(__pyx_k_tblink_rpc_core_tblink), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
@@ -19954,6 +21609,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_n_s_time_callback_f, __pyx_k_time_callback_f, sizeof(__pyx_k_time_callback_f), 0, 0, 1, 1},
   {&__pyx_n_s_type, __pyx_k_type, sizeof(__pyx_k_type), 0, 0, 1, 1},
+  {&__pyx_n_s_type_e, __pyx_k_type_e, sizeof(__pyx_k_type_e), 0, 0, 1, 1},
   {&__pyx_n_s_val, __pyx_k_val, sizeof(__pyx_k_val), 0, 0, 1, 1},
   {&__pyx_n_s_wait, __pyx_k_wait, sizeof(__pyx_k_wait), 0, 0, 1, 1},
   {&__pyx_n_s_width, __pyx_k_width, sizeof(__pyx_k_width), 0, 0, 1, 1},
@@ -19961,7 +21617,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 197, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 198, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -19990,14 +21646,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "python/native.pyx":62
+  /* "python/native.pyx":63
  *             ret = ParamValVec()
  *         else:
  *             raise Exception("Unknown ParamVal type")             # <<<<<<<<<<<<<<
  *         ret._hndl = hndl
  *         return ret
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Unknown_ParamVal_type); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 62, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Unknown_ParamVal_type); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
@@ -20286,36 +21942,36 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__33);
   __Pyx_GIVEREF(__pyx_tuple__33);
 
-  /* "python/native.pyx":472
- *         ev = tblink.mkEvent()
- * 
- *         def ev_f(e):             # <<<<<<<<<<<<<<
- *             nonlocal ev
- *             print("process_one_message_a: event")
- */
-  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_n_s_e); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 472, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__34);
-  __Pyx_GIVEREF(__pyx_tuple__34);
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_python_native_pyx, __pyx_n_s_ev_f, 472, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 472, __pyx_L1_error)
-
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  */
-  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
 
   /* "(tree fragment)":4
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__37 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__37);
-  __Pyx_GIVEREF(__pyx_tuple__37);
+  __pyx_tuple__35 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__35);
+  __Pyx_GIVEREF(__pyx_tuple__35);
+
+  /* "python/native.pyx":520
+ *         ev = tblink.mkEvent()
+ * 
+ *         def ev_f(e):             # <<<<<<<<<<<<<<
+ *             nonlocal ev
+ *             print("process_one_message_a: event")
+ */
+  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_n_s_e); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 520, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_python_native_pyx, __pyx_n_s_ev_f, 520, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 520, __pyx_L1_error)
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -20354,6 +22010,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ */
+  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("self._hndl cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__43 = PyTuple_Pack(1, __pyx_kp_s_self__hndl_cannot_be_converted_t); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__43);
+  __Pyx_GIVEREF(__pyx_tuple__43);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -20412,88 +22087,88 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtabptr_15tblink_rpc_core_6native_LaunchParams = &__pyx_vtable_15tblink_rpc_core_6native_LaunchParams;
   __pyx_vtable_15tblink_rpc_core_6native_LaunchParams.add_arg = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_arg;
   __pyx_vtable_15tblink_rpc_core_6native_LaunchParams.add_param = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *, PyObject *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_12LaunchParams_add_param;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 24, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 24, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_LaunchParams, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 24, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 24, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_LaunchParams.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_LaunchParams, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_LaunchParams) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_LaunchParams = &__pyx_type_15tblink_rpc_core_6native_LaunchParams;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamVal = &__pyx_vtable_15tblink_rpc_core_6native_ParamVal;
   __pyx_vtable_15tblink_rpc_core_6native_ParamVal._mk = (PyObject *(*)(tblink_rpc_core::IParamVal *))__pyx_f_15tblink_rpc_core_6native_8ParamVal__mk;
   __pyx_vtable_15tblink_rpc_core_6native_ParamVal.asBool = (tblink_rpc_core::IParamValBool *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *))__pyx_f_15tblink_rpc_core_6native_8ParamVal_asBool;
   __pyx_vtable_15tblink_rpc_core_6native_ParamVal.asInt = (tblink_rpc_core::IParamValInt *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *))__pyx_f_15tblink_rpc_core_6native_8ParamVal_asInt;
   __pyx_vtable_15tblink_rpc_core_6native_ParamVal.asStr = (tblink_rpc_core::IParamValVec *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *))__pyx_f_15tblink_rpc_core_6native_8ParamVal_asStr;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 44, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 45, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamVal.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamVal.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamVal.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamVal.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamVal.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 44, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamVal, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 44, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 44, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamVal.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 45, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamVal, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 45, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamVal) < 0) __PYX_ERR(1, 45, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamVal = &__pyx_type_15tblink_rpc_core_6native_ParamVal;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool = &__pyx_vtable_15tblink_rpc_core_6native_ParamValBool;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValBool.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
   __pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_base = __pyx_ptype_15tblink_rpc_core_6native_ParamVal;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 76, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 77, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 76, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValBool, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 76, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 76, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValBool.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 77, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValBool, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 77, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValBool) < 0) __PYX_ERR(1, 77, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamValBool = &__pyx_type_15tblink_rpc_core_6native_ParamValBool;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt = &__pyx_vtable_15tblink_rpc_core_6native_ParamValInt;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValInt.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
   __pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_base = __pyx_ptype_15tblink_rpc_core_6native_ParamVal;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 83, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValInt, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValInt.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 83, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValInt, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 83, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValInt) < 0) __PYX_ERR(1, 83, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamValInt = &__pyx_type_15tblink_rpc_core_6native_ParamValInt;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap = &__pyx_vtable_15tblink_rpc_core_6native_ParamValMap;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValMap.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
   __pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_base = __pyx_ptype_15tblink_rpc_core_6native_ParamVal;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 89, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValMap, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValMap.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 89, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValMap, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 89, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValMap) < 0) __PYX_ERR(1, 89, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamValMap = &__pyx_type_15tblink_rpc_core_6native_ParamValMap;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr = &__pyx_vtable_15tblink_rpc_core_6native_ParamValStr;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValStr.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
   __pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_base = __pyx_ptype_15tblink_rpc_core_6native_ParamVal;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 94, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 95, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 94, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValStr, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 94, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 94, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValStr.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 95, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValStr, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 95, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValStr) < 0) __PYX_ERR(1, 95, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamValStr = &__pyx_type_15tblink_rpc_core_6native_ParamValStr;
   __pyx_vtabptr_15tblink_rpc_core_6native_ParamValVec = &__pyx_vtable_15tblink_rpc_core_6native_ParamValVec;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValVec.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_ParamVal;
@@ -20503,16 +22178,16 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_15tblink_rpc_core_6native_ParamValVec.push_back = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamValVec *, struct __pyx_obj_15tblink_rpc_core_6native_ParamVal *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_11ParamValVec_push_back;
   __pyx_vtable_15tblink_rpc_core_6native_ParamValVec.asVec = (tblink_rpc_core::IParamValVec *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamValVec *))__pyx_f_15tblink_rpc_core_6native_11ParamValVec_asVec;
   __pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_base = __pyx_ptype_15tblink_rpc_core_6native_ParamVal;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 100, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 100, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValVec, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 100, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 100, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamValVec.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamValVec, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamValVec) < 0) __PYX_ERR(1, 101, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_ParamValVec = &__pyx_type_15tblink_rpc_core_6native_ParamValVec;
   __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceInst = &__pyx_vtable_15tblink_rpc_core_6native_InterfaceInst;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceInst.name = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_name;
@@ -20526,86 +22201,107 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceInst.mkValStr = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValStr;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceInst.mkValVec = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceInst *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceInst_mkValVec;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceInst._mk = (PyObject *(*)(tblink_rpc_core::IInterfaceInst *))__pyx_f_15tblink_rpc_core_6native_13InterfaceInst__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 136, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 137, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 136, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceInst, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 136, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 136, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceInst.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 137, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceInst, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 137, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceInst) < 0) __PYX_ERR(1, 137, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_InterfaceInst = &__pyx_type_15tblink_rpc_core_6native_InterfaceInst;
   __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceType = &__pyx_vtable_15tblink_rpc_core_6native_InterfaceType;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceType.name = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceType_name;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceType.methods = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceType_methods;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceType.findMethod = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceType *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_13InterfaceType_findMethod;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceType._mk = (PyObject *(*)(tblink_rpc_core::IInterfaceType *))__pyx_f_15tblink_rpc_core_6native_13InterfaceType__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 189, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 190, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 189, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 189, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 189, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 190, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 190, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceType) < 0) __PYX_ERR(1, 190, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_InterfaceType = &__pyx_type_15tblink_rpc_core_6native_InterfaceType;
   __pyx_vtabptr_15tblink_rpc_core_6native_Type = &__pyx_vtable_15tblink_rpc_core_6native_Type;
+  __pyx_vtable_15tblink_rpc_core_6native_Type.kind = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_Type *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_4Type_kind;
   __pyx_vtable_15tblink_rpc_core_6native_Type._mk = (PyObject *(*)(tblink_rpc_core::IType *))__pyx_f_15tblink_rpc_core_6native_4Type__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_Type.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_Type.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_Type.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_Type.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_Type.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Type, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_Type.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Type, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_Type) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_Type = &__pyx_type_15tblink_rpc_core_6native_Type;
   __pyx_vtabptr_15tblink_rpc_core_6native_TypeInt = &__pyx_vtable_15tblink_rpc_core_6native_TypeInt;
   __pyx_vtable_15tblink_rpc_core_6native_TypeInt.__pyx_base = *__pyx_vtabptr_15tblink_rpc_core_6native_Type;
   __pyx_type_15tblink_rpc_core_6native_TypeInt.tp_base = __pyx_ptype_15tblink_rpc_core_6native_Type;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 226, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 238, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_TypeInt.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_TypeInt.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_TypeInt.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_TypeInt.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_TypeInt.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 226, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_TypeInt, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 226, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 226, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_TypeInt.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 238, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_TypeInt, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 238, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_TypeInt) < 0) __PYX_ERR(1, 238, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_TypeInt = &__pyx_type_15tblink_rpc_core_6native_TypeInt;
   __pyx_vtabptr_15tblink_rpc_core_6native_MethodTypeBuilder = &__pyx_vtable_15tblink_rpc_core_6native_MethodTypeBuilder;
   __pyx_vtable_15tblink_rpc_core_6native_MethodTypeBuilder.add_param = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodTypeBuilder *, PyObject *, struct __pyx_obj_15tblink_rpc_core_6native_Type *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder_add_param;
   __pyx_vtable_15tblink_rpc_core_6native_MethodTypeBuilder._mk = (PyObject *(*)(tblink_rpc_core::IMethodTypeBuilder *))__pyx_f_15tblink_rpc_core_6native_17MethodTypeBuilder__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 232, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 244, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 232, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MethodTypeBuilder, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 232, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 232, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 244, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MethodTypeBuilder, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 244, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder) < 0) __PYX_ERR(1, 244, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_MethodTypeBuilder = &__pyx_type_15tblink_rpc_core_6native_MethodTypeBuilder;
+  __pyx_vtabptr_15tblink_rpc_core_6native_ParamDecl = &__pyx_vtable_15tblink_rpc_core_6native_ParamDecl;
+  __pyx_vtable_15tblink_rpc_core_6native_ParamDecl.name = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_9ParamDecl_name;
+  __pyx_vtable_15tblink_rpc_core_6native_ParamDecl.type = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_ParamDecl *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_9ParamDecl_type;
+  __pyx_vtable_15tblink_rpc_core_6native_ParamDecl._mk = (PyObject *(*)(tblink_rpc_core::IParamDecl *))__pyx_f_15tblink_rpc_core_6native_9ParamDecl__mk;
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_ParamDecl) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_15tblink_rpc_core_6native_ParamDecl.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_ParamDecl.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_ParamDecl.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_15tblink_rpc_core_6native_ParamDecl.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_ParamDecl.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_ParamDecl) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ParamDecl, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_ParamDecl) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_ParamDecl) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  __pyx_ptype_15tblink_rpc_core_6native_ParamDecl = &__pyx_type_15tblink_rpc_core_6native_ParamDecl;
   __pyx_vtabptr_15tblink_rpc_core_6native_MethodType = &__pyx_vtable_15tblink_rpc_core_6native_MethodType;
+  __pyx_vtable_15tblink_rpc_core_6native_MethodType.name = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10MethodType_name;
+  __pyx_vtable_15tblink_rpc_core_6native_MethodType.id = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10MethodType_id;
+  __pyx_vtable_15tblink_rpc_core_6native_MethodType.is_export = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10MethodType_is_export;
+  __pyx_vtable_15tblink_rpc_core_6native_MethodType.is_blocking = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10MethodType_is_blocking;
+  __pyx_vtable_15tblink_rpc_core_6native_MethodType.params = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_MethodType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10MethodType_params;
   __pyx_vtable_15tblink_rpc_core_6native_MethodType._mk = (PyObject *(*)(tblink_rpc_core::IMethodType *))__pyx_f_15tblink_rpc_core_6native_10MethodType__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 277, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_MethodType.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_MethodType.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_MethodType.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_MethodType.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_MethodType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MethodType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_MethodType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 277, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MethodType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 277, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_MethodType) < 0) __PYX_ERR(1, 277, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_MethodType = &__pyx_type_15tblink_rpc_core_6native_MethodType;
   __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceTypeBuilder = &__pyx_vtable_15tblink_rpc_core_6native_InterfaceTypeBuilder;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceTypeBuilder.newMethodTypeBuilder = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *, PyObject *, PyObject *, struct __pyx_obj_15tblink_rpc_core_6native_Type *, PyObject *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_newMethodTypeBuilder;
@@ -20615,42 +22311,42 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceTypeBuilder.mkTypeMap = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *, struct __pyx_obj_15tblink_rpc_core_6native_Type *, struct __pyx_obj_15tblink_rpc_core_6native_Type *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeMap;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceTypeBuilder.mkTypeStr = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeStr;
   __pyx_vtable_15tblink_rpc_core_6native_InterfaceTypeBuilder.mkTypeVec = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_InterfaceTypeBuilder *, struct __pyx_obj_15tblink_rpc_core_6native_Type *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_20InterfaceTypeBuilder_mkTypeVec;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 307, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceTypeBuilder, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 259, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 307, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_InterfaceTypeBuilder, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 307, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder) < 0) __PYX_ERR(1, 307, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_InterfaceTypeBuilder = &__pyx_type_15tblink_rpc_core_6native_InterfaceTypeBuilder;
   __pyx_vtabptr_15tblink_rpc_core_6native_EndpointEvent = &__pyx_vtable_15tblink_rpc_core_6native_EndpointEvent;
   __pyx_vtable_15tblink_rpc_core_6native_EndpointEvent._mk = (PyObject *(*)(tblink_rpc_core::IEndpointEvent const *))__pyx_f_15tblink_rpc_core_6native_13EndpointEvent__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 316, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 364, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 316, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_EndpointEvent, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 316, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 316, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_EndpointEvent.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 364, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_EndpointEvent, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 364, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_EndpointEvent) < 0) __PYX_ERR(1, 364, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_EndpointEvent = &__pyx_type_15tblink_rpc_core_6native_EndpointEvent;
   __pyx_vtabptr_15tblink_rpc_core_6native_EndpointListener = &__pyx_vtable_15tblink_rpc_core_6native_EndpointListener;
   __pyx_vtable_15tblink_rpc_core_6native_EndpointListener._mk = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_EndpointListener *, tblink_rpc_core::IEndpointListener *))__pyx_f_15tblink_rpc_core_6native_16EndpointListener__mk;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 328, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 376, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 328, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_EndpointListener, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 328, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 328, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_EndpointListener.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 376, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_EndpointListener, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 376, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_EndpointListener) < 0) __PYX_ERR(1, 376, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_EndpointListener = &__pyx_type_15tblink_rpc_core_6native_EndpointListener;
   __pyx_vtabptr_15tblink_rpc_core_6native_Endpoint = &__pyx_vtable_15tblink_rpc_core_6native_Endpoint;
   __pyx_vtable_15tblink_rpc_core_6native_Endpoint.init = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_8Endpoint_init;
@@ -20676,48 +22372,48 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_15tblink_rpc_core_6native_Endpoint.mkValMap = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValMap;
   __pyx_vtable_15tblink_rpc_core_6native_Endpoint.mkValStr = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValStr;
   __pyx_vtable_15tblink_rpc_core_6native_Endpoint.mkValVec = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_8Endpoint_mkValVec;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 348, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 396, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_Endpoint.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_Endpoint.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_Endpoint.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_Endpoint.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_Endpoint.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 348, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Endpoint, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 348, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 348, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_Endpoint.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 396, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Endpoint, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 396, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_Endpoint) < 0) __PYX_ERR(1, 396, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_Endpoint = &__pyx_type_15tblink_rpc_core_6native_Endpoint;
   __pyx_vtabptr_15tblink_rpc_core_6native_LaunchType = &__pyx_vtable_15tblink_rpc_core_6native_LaunchType;
   __pyx_vtable_15tblink_rpc_core_6native_LaunchType.name = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10LaunchType_name;
   __pyx_vtable_15tblink_rpc_core_6native_LaunchType.launch = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *, struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10LaunchType_launch;
   __pyx_vtable_15tblink_rpc_core_6native_LaunchType.newLaunchParams = (struct __pyx_obj_15tblink_rpc_core_6native_LaunchParams *(*)(struct __pyx_obj_15tblink_rpc_core_6native_LaunchType *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_10LaunchType_newLaunchParams;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 547, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 595, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_LaunchType.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_LaunchType.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_LaunchType.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_LaunchType.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_LaunchType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 547, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_LaunchType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 547, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 547, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_LaunchType.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 595, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_LaunchType, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 595, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_LaunchType) < 0) __PYX_ERR(1, 595, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_LaunchType = &__pyx_type_15tblink_rpc_core_6native_LaunchType;
   __pyx_vtabptr_15tblink_rpc_core_6native_TbLink = &__pyx_vtable_15tblink_rpc_core_6native_TbLink;
   __pyx_vtable_15tblink_rpc_core_6native_TbLink.getDefaultEP = (struct __pyx_obj_15tblink_rpc_core_6native_Endpoint *(*)(struct __pyx_obj_15tblink_rpc_core_6native_TbLink *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_6TbLink_getDefaultEP;
   __pyx_vtable_15tblink_rpc_core_6native_TbLink.findLaunchType = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_TbLink *, PyObject *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_6TbLink_findLaunchType;
   __pyx_vtable_15tblink_rpc_core_6native_TbLink.launchTypes = (PyObject *(*)(struct __pyx_obj_15tblink_rpc_core_6native_TbLink *, int __pyx_skip_dispatch))__pyx_f_15tblink_rpc_core_6native_6TbLink_launchTypes;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 624, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native_TbLink.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_15tblink_rpc_core_6native_TbLink.tp_dictoffset && __pyx_type_15tblink_rpc_core_6native_TbLink.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_15tblink_rpc_core_6native_TbLink.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_TbLink.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_TbLink, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_15tblink_rpc_core_6native_TbLink.tp_dict, __pyx_vtabptr_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 624, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_TbLink, (PyObject *)&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 624, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_15tblink_rpc_core_6native_TbLink) < 0) __PYX_ERR(1, 624, __pyx_L1_error)
   __pyx_ptype_15tblink_rpc_core_6native_TbLink = &__pyx_type_15tblink_rpc_core_6native_TbLink;
-  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native___pyx_scope_struct__process_one_message_a) < 0) __PYX_ERR(1, 465, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_15tblink_rpc_core_6native___pyx_scope_struct__process_one_message_a) < 0) __PYX_ERR(1, 513, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_15tblink_rpc_core_6native___pyx_scope_struct__process_one_message_a.tp_print = 0;
   #endif
@@ -20870,6 +22566,9 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_native(PyObject *__pyx_pyinit_modu
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20999,16 +22698,153 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_1) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/native.pyx":352
+  /* "python/native.pyx":16
+ * cimport cpython.ref as cpy_ref
+ * 
+ * import tblink_rpc_core             # <<<<<<<<<<<<<<
+ * cimport tblink_rpc_core.native_decl as native_decl
+ * 
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_tblink_rpc_core, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tblink_rpc_core, __pyx_t_1) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "python/native.pyx":222
+ * 
+ *     _kind_m = {
+ *         native_decl.TypeKindE.TypeKindBool : tblink_rpc_core.type_e.TypeE.Bool,             # <<<<<<<<<<<<<<
+ *         native_decl.TypeKindE.TypeKindInt  : tblink_rpc_core.type_e.TypeE.Int,
+ *         native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,
+ */
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(tblink_rpc_core::TypeE::Bool); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_tblink_rpc_core); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_type_e); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_TypeE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Bool); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_t_4) < 0) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "python/native.pyx":223
+ *     _kind_m = {
+ *         native_decl.TypeKindE.TypeKindBool : tblink_rpc_core.type_e.TypeE.Bool,
+ *         native_decl.TypeKindE.TypeKindInt  : tblink_rpc_core.type_e.TypeE.Int,             # <<<<<<<<<<<<<<
+ *         native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,
+ *         native_decl.TypeKindE.TypeKindVec  : tblink_rpc_core.type_e.TypeE.Vec,
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(tblink_rpc_core::TypeE::Int); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_tblink_rpc_core); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_type_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_TypeE); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Int); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_4, __pyx_t_3) < 0) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "python/native.pyx":224
+ *         native_decl.TypeKindE.TypeKindBool : tblink_rpc_core.type_e.TypeE.Bool,
+ *         native_decl.TypeKindE.TypeKindInt  : tblink_rpc_core.type_e.TypeE.Int,
+ *         native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,             # <<<<<<<<<<<<<<
+ *         native_decl.TypeKindE.TypeKindVec  : tblink_rpc_core.type_e.TypeE.Vec,
+ *         native_decl.TypeKindE.TypeKindMap  : tblink_rpc_core.type_e.TypeE.Map
+ */
+  __pyx_t_3 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(tblink_rpc_core::TypeE::Str); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_tblink_rpc_core); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_type_e); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_TypeE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Str); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_3, __pyx_t_2) < 0) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "python/native.pyx":225
+ *         native_decl.TypeKindE.TypeKindInt  : tblink_rpc_core.type_e.TypeE.Int,
+ *         native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,
+ *         native_decl.TypeKindE.TypeKindVec  : tblink_rpc_core.type_e.TypeE.Vec,             # <<<<<<<<<<<<<<
+ *         native_decl.TypeKindE.TypeKindMap  : tblink_rpc_core.type_e.TypeE.Map
+ *         }
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(tblink_rpc_core::TypeE::Vec); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_tblink_rpc_core); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_type_e); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_TypeE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Vec); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_t_4) < 0) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "python/native.pyx":226
+ *         native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,
+ *         native_decl.TypeKindE.TypeKindVec  : tblink_rpc_core.type_e.TypeE.Vec,
+ *         native_decl.TypeKindE.TypeKindMap  : tblink_rpc_core.type_e.TypeE.Map             # <<<<<<<<<<<<<<
+ *         }
+ * 
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(tblink_rpc_core::TypeE::Map); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_tblink_rpc_core); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_type_e); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_TypeE); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Map); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_4, __pyx_t_3) < 0) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Type->tp_dict, __pyx_n_s_kind_m, __pyx_t_1) < 0) __PYX_ERR(1, 221, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_15tblink_rpc_core_6native_Type);
+
+  /* "python/native.pyx":400
  *     cdef object                 ev_listener_m
  * 
  *     _req_l = []             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 352, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 400, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint->tp_dict, __pyx_n_s_req_l, __pyx_t_1) < 0) __PYX_ERR(1, 352, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_15tblink_rpc_core_6native_Endpoint->tp_dict, __pyx_n_s_req_l, __pyx_t_1) < 0) __PYX_ERR(1, 400, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_15tblink_rpc_core_6native_Endpoint);
 
@@ -21035,6 +22871,9 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init tblink_rpc_core.native", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -21892,6 +23731,122 @@ static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
         return PyUnicode_Decode(cstring, length, encoding, errors);
     }
 }
+
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* ObjectGetItem */
+#if CYTHON_USE_TYPE_SLOTS
+static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
+    PyObject *runerr;
+    Py_ssize_t key_value;
+    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
+    if (unlikely(!(m && m->sq_item))) {
+        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
+        return NULL;
+    }
+    key_value = __Pyx_PyIndex_AsSsize_t(index);
+    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
+        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
+    }
+    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
+        PyErr_Clear();
+        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
+    }
+    return NULL;
+}
+static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
+    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
+    if (likely(m && m->mp_subscript)) {
+        return m->mp_subscript(obj, key);
+    }
+    return __Pyx_PyObject_GetIndex(obj, key);
+}
+#endif
 
 /* PyObjectGetMethod */
 static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
@@ -24576,6 +26531,41 @@ ignore:
     return module;
 }
 
+/* GetModuleGlobalName */
+#if CYTHON_USE_DICT_VERSIONS
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+#else
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+#endif
+{
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    } else if (unlikely(PyErr_Occurred())) {
+        return NULL;
+    }
+#else
+    result = PyDict_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+#endif
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+    PyErr_Clear();
+#endif
+    return __Pyx_GetBuiltinName(name);
+}
+
 /* CLineInTraceback */
 #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(CYTHON_NCP_UNUSED PyThreadState *tstate, int c_line) {
@@ -24910,6 +26900,44 @@ bad:
     return -1;
 }
 #endif
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__tblink_rpc_core_3a__3a_TypeE(enum tblink_rpc_core::TypeE value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum tblink_rpc_core::TypeE neg_one = (enum tblink_rpc_core::TypeE) -1, const_zero = (enum tblink_rpc_core::TypeE) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum tblink_rpc_core::TypeE) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum tblink_rpc_core::TypeE) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum tblink_rpc_core::TypeE) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(enum tblink_rpc_core::TypeE) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum tblink_rpc_core::TypeE) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum tblink_rpc_core::TypeE),
+                                     little, !is_unsigned);
+    }
+}
 
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
