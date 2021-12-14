@@ -16,6 +16,8 @@
 
 namespace tblink_rpc_core {
 
+class IEndpoint;
+
 class IInterfaceInst;
 using IInterfaceInstUP=std::unique_ptr<IInterfaceInst>;
 typedef std::function<void(
@@ -30,6 +32,8 @@ class IInterfaceInst : public virtual IParamValFactory {
 public:
 
 	virtual ~IInterfaceInst() { }
+
+	virtual IEndpoint *endpoint() const = 0;
 
 	virtual const std::string &name() = 0;
 

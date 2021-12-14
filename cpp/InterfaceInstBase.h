@@ -32,6 +32,10 @@ public:
 
 	virtual ~InterfaceInstBase();
 
+	virtual IEndpoint *endpoint() const override {
+		return m_endpoint;
+	}
+
 	virtual IInterfaceType *type() override { return m_type; }
 
 	virtual bool is_mirror() { return m_is_mirror; }
