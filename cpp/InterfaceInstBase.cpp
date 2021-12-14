@@ -128,12 +128,10 @@ void InterfaceInstBase::invoke_b_rsp(
 	DEBUG_ENTER("invoke_b_rsp");
 	std::unordered_map<intptr_t,invoke_rsp_f>::const_iterator it;
 	if ((it=m_outbound_invoke_m.find(call_id)) != m_outbound_invoke_m.end()) {
-		fprintf(stdout, "--> Receive response\n");
-		fflush(stdout);
+		DEBUG("--> Receive response\n");
 		it->second(ret);
 		m_outbound_invoke_m.erase(it);
-		fprintf(stdout, "<-- Receive response\n");
-		fflush(stdout);
+		DEBUG("<-- Receive response\n");
 	} else {
 		fprintf(stdout, "Error: unknown call-response id %lld\n", call_id);
 		fflush(stdout);
