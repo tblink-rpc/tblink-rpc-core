@@ -131,3 +131,6 @@ dmypy.json
 packages/
 rundir/
 cache/
+
+python/native.cpp
+python/native.h
