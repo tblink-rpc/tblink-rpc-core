@@ -121,13 +121,14 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 	r_params->setVal("call-id", m_endpoint->mkValIntU(call_id, 64));
 	r_params->setVal("params", params);
 
+	m_outbound_invoke_m.insert({call_id, completion_f});
+	DEBUG("Insert call-id %lld in outbound_invoke_m", call_id);
+
 	if (method->is_blocking()) {
 		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-b",
 				r_params);
 	} else {
-		DEBUG("Insert call-id %lld in outbound_invoke_m", call_id);
-		m_outbound_invoke_m.insert({call_id, completion_f});
 		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
 				r_params,

@@ -13,6 +13,7 @@ import asyncio
 import sys
 cimport cpython.ref as cpy_ref
 
+import tblink_rpc_core
 cimport tblink_rpc_core.native_decl as native_decl
 
 ctypedef native_decl.IEndpoint *IEndpointP
@@ -216,6 +217,17 @@ cdef class InterfaceType(object):
 #********************************************************************
 cdef class Type(object):
     cdef native_decl.IType *_hndl
+
+    _kind_m = {
+        native_decl.TypeKindE.TypeKindBool : tblink_rpc_core.type_e.TypeE.Bool,
+        native_decl.TypeKindE.TypeKindInt  : tblink_rpc_core.type_e.TypeE.Int,
+        native_decl.TypeKindE.TypeKindStr  : tblink_rpc_core.type_e.TypeE.Str,
+        native_decl.TypeKindE.TypeKindVec  : tblink_rpc_core.type_e.TypeE.Vec,
+        native_decl.TypeKindE.TypeKindMap  : tblink_rpc_core.type_e.TypeE.Map
+        }
+        
+    cpdef kind(self):
+        return Type._kind_m[self._hndl.kind()]
     
     @staticmethod
     cdef _mk(native_decl.IType *hndl):
@@ -242,10 +254,46 @@ cdef class MethodTypeBuilder(object):
         return ret
     
 #********************************************************************
+#* ParamDecl
+#********************************************************************
+cdef class ParamDecl(object):
+    cdef native_decl.IParamDecl *_hndl
+    
+    cpdef name(self):
+        return self._hndl.name().encode()
+    
+    cpdef type(self):
+        return Type._mk(self._hndl.type())
+    
+    @staticmethod
+    cdef _mk(native_decl.IParamDecl *hndl):
+        ret = ParamDecl()
+        ret._hndl = hndl
+        return ret
+    
+#********************************************************************
 #* MethodType
 #********************************************************************
 cdef class MethodType(object):
     cdef native_decl.IMethodType *_hndl
+    
+    cpdef name(self):
+        return self._hndl.name().decode()
+    
+    cpdef id(self):
+        return self._hndl.id()
+    
+    cpdef is_export(self):
+        return self.is_export()
+    
+    cpdef is_blocking(self):
+        return self.is_blocking()
+    
+    cpdef params(self):
+        ret = []
+        for i in range(self._hndl.params().size()):
+            ret.append(ParamDecl._mk(self._hndl.params().at(i)))
+        return ret
     
     @staticmethod
     cdef _mk(native_decl.IMethodType *hndl):

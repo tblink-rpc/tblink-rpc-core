@@ -94,10 +94,25 @@ cdef extern from "tblink_rpc/IParamValVec.h" namespace "tblink_rpc_core":
 ctypedef IParamValVec *IParamValVecP
 
 #********************************************************************
+#* IParamDecl
+#********************************************************************
+cdef extern from "tblink_rpc/IParamDecl.h" namespace "tblink_rpc_core":
+    cdef cppclass IParamDecl:
+        const cpp_string &name()
+        IType *type()
+ctypedef IParamDecl *IParamDeclP
+
+#********************************************************************
 #* IMethod
 #********************************************************************
 cdef extern from "tblink_rpc/IMethodType.h" namespace "tblink_rpc_core":
     cdef cppclass IMethodType:
+        const cpp_string &name()
+        intptr_t id()
+        IType *type()
+        bool is_export()
+        bool is_blocking()
+        const cpp_vector[IParamDeclP] &params()
         pass
 ctypedef IMethodType *IMethodTypeP
 
@@ -146,7 +161,15 @@ ctypedef IInterfaceInst *IInterfaceInstP
 #* IType
 #********************************************************************
 cdef extern from "tblink_rpc/IType.h" namespace "tblink_rpc_core":
+    cdef enum TypeKindE "tblink_rpc_core::TypeE":
+        TypeKindBool "tblink_rpc_core::TypeE::Bool",
+        TypeKindInt "tblink_rpc_core::TypeE::Int",
+        TypeKindMap "tblink_rpc_core::TypeE::Map",
+        TypeKindStr "tblink_rpc_core::TypeE::Str",
+        TypeKindVec "tblink_rpc_core::TypeE::Vec"
+        
     cdef cppclass IType:
+        TypeKindE kind()
         pass
     
 cdef extern from "tblink_rpc/ITypeInt.h" namespace "tblink_rpc_core":
