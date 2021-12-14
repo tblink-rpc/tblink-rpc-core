@@ -52,6 +52,10 @@ EndpointMsgBase::EndpointMsgBase() {
 	m_peer_connect_complete = 0;
 	m_peer_local_check_complete = 0;
 	m_callback_id = 0;
+	m_pending_blocking_calls = 0;
+	m_release_reqs = 0;
+	m_wait_reqs = 0;
+	m_comm_state = IEndpoint::Waiting;
 
 	m_req_m.insert({"tblink.init", std::bind(
 			&EndpointMsgBase::req_init, this,
@@ -91,6 +95,10 @@ EndpointMsgBase::EndpointMsgBase() {
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.run-until-event", std::bind(
 			&EndpointMsgBase::req_run_until_event, this,
+			std::placeholders::_1,
+			std::placeholders::_2)});
+	m_req_m.insert({"tblink.set-comm-state", std::bind(
+			&EndpointMsgBase::req_set_comm_state, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 }
@@ -144,8 +152,9 @@ int32_t EndpointMsgBase::is_init() {
 }
 
 IEndpoint::comm_state_e EndpointMsgBase::comm_state() {
-	// TODO:
-	return Released;
+	fprintf(stdout, "comm_state: %d\n", m_comm_state);
+	fflush(stdout);
+	return m_comm_state;
 }
 
 IEndpointListener *EndpointMsgBase::addListener(const endpoint_ev_f &ev_f) {
@@ -862,6 +871,11 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 
 		if (method_t) {
 			IParamValVec *m_params = params->getValT<IParamValVec>("params");
+
+			m_release_reqs++;
+			m_comm_state = IEndpoint::Released;
+			sendEvent(IEndpointEvent::Unknown);
+
 			i_it->second->invoke_req(
 					method_t,
 					m_params,
@@ -936,6 +950,20 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_run_until_event(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
+EndpointMsgBase::rsp_t EndpointMsgBase::req_set_comm_state(
+		intptr_t				id,
+		IParamValMap 			*params) {
+	DEBUG_ENTER("req_set_comm_state");
+
+	sendEvent(IEndpointEvent::Unknown);
+
+	IParamValMap *result = mkValMap();
+	IParamValMap *error = 0;
+
+	DEBUG_LEAVE("req_set_comm_state");
+	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
+}
+
 void EndpointMsgBase::call_completion_nb(
 			intptr_t		id,
 			intptr_t		call_id,
@@ -966,12 +994,22 @@ void EndpointMsgBase::call_completion_b(
 		params->setVal("return", retval);
 	}
 
-	intptr_t id = send_req("tblink.invoke-rsp-b",
-			params);
+	// Drop into 'wait' mode until we confirm
+	// receipt of the ack
+	m_comm_state = IEndpoint::Waiting;
+	sendEvent(IEndpointEvent::Unknown);
 
-#ifdef UNDEFINED
-	wait_rsp(id);
-#endif
+	m_release_reqs--;
+
+	intptr_t id = send_req(
+			"tblink.invoke-rsp-b",
+			params,
+			std::bind(
+					&EndpointMsgBase::rsp_call_completion_b,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2,
+					std::placeholders::_3));
 
 	// Let the services know that we've encountered a
 	// time-based event
@@ -981,6 +1019,22 @@ void EndpointMsgBase::call_completion_b(
 	// best to proceed
 	m_services->idle();
 	DEBUG_LEAVE("call_completion_b");
+}
+
+void EndpointMsgBase::rsp_call_completion_b(
+			intptr_t			rsp_id,
+			IParamValMap		*result,
+			IParamValMap		*error) {
+	DEBUG_ENTER("rsp_call_completion_b");
+
+	if (m_release_reqs) {
+		m_comm_state = IEndpoint::Released;
+	} else {
+		m_comm_state = IEndpoint::Waiting;
+	}
+	sendEvent(IEndpointEvent::Unknown);
+
+	DEBUG_LEAVE("rsp_call_completion_b");
 }
 
 int32_t EndpointMsgBase::recv_req(

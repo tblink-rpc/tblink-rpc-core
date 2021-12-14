@@ -232,6 +232,10 @@ private:
 			intptr_t		id,
 			IParamValMap 	*params);
 
+	rsp_t req_set_comm_state(
+			intptr_t		id,
+			IParamValMap 	*params);
+
 	void call_completion_nb(
 			intptr_t		id,
 			intptr_t		call_id,
@@ -241,6 +245,11 @@ private:
 			InterfaceInstBase	*ifinst,
 			intptr_t			call_id,
 			IParamVal			*retval);
+
+	void rsp_call_completion_b(
+			intptr_t			rsp_id,
+			IParamValMap		*result,
+			IParamValMap		*error);
 
 	IParamValMap *pack_iftypes(
 			const std::unordered_map<std::string,InterfaceTypeUP>	&iftypes);
@@ -304,6 +313,11 @@ private:
 	int32_t															m_event_received;
 	std::vector<IEndpointListenerUP>								m_listeners;
 	std::vector<IEndpointListener *>								m_listeners_p;
+	IEndpoint::comm_state_e											m_comm_state;
+	uint32_t														m_pending_blocking_calls;
+
+	int32_t															m_release_reqs;
+	int32_t															m_wait_reqs;
 
 };
 
