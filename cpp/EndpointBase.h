@@ -27,6 +27,8 @@ public:
 
 	virtual IEndpoint::comm_state_e comm_state() override;
 
+	virtual void update_comm_mode(comm_mode_e m, comm_state_e s) override;
+
 	virtual IEndpointListener *addListener(const endpoint_ev_f &) override;
 
 	virtual void addListener(IEndpointListener *l) override;

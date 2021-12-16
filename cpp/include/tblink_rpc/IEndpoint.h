@@ -30,6 +30,11 @@ public:
 		Released
 	};
 
+	enum comm_mode_e {
+		Automatic,
+		Explicit
+	};
+
 	virtual ~IEndpoint() { }
 
 	virtual int32_t init(
@@ -61,6 +66,8 @@ public:
 	virtual bool shutdown() = 0;
 
 	virtual comm_state_e comm_state() = 0;
+
+	virtual void update_comm_mode(comm_mode_e m, comm_state_e s) = 0;
 
 	/**
 	 * Yield control to enable message processing.

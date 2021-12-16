@@ -52,6 +52,8 @@ public:
 
 	virtual IEndpoint::comm_state_e comm_state() override;
 
+	virtual void update_comm_mode(comm_mode_e m, comm_state_e s) override;
+
 	virtual IEndpointListener *addListener(const endpoint_ev_f &) override;
 
 	virtual void addListener(IEndpointListener *l) override;
@@ -236,6 +238,10 @@ private:
 			intptr_t		id,
 			IParamValMap 	*params);
 
+	rsp_t req_set_comm_mode(
+			intptr_t		id,
+			IParamValMap 	*params);
+
 	void call_completion_nb(
 			intptr_t		id,
 			intptr_t		call_id,
@@ -314,6 +320,7 @@ private:
 	std::vector<IEndpointListenerUP>								m_listeners;
 	std::vector<IEndpointListener *>								m_listeners_p;
 	IEndpoint::comm_state_e											m_comm_state;
+	IEndpoint::comm_mode_e											m_comm_mode;
 	uint32_t														m_pending_blocking_calls;
 
 	int32_t															m_release_reqs;

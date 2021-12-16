@@ -59,6 +59,12 @@ IEndpoint::comm_state_e EndpointBase::comm_state() {
 	return Released;
 }
 
+void EndpointBase::update_comm_mode(
+		IEndpoint::comm_mode_e m,
+		IEndpoint::comm_state_e s) {
+	// TODO:
+}
+
 IEndpointListener *EndpointBase::addListener(const endpoint_ev_f &ev_f) {
 	DEBUG_ENTER("addListener");
 	EndpointListenerBase *l = new EndpointListenerBase(ev_f);

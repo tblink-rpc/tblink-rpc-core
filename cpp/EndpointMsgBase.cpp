@@ -56,6 +56,7 @@ EndpointMsgBase::EndpointMsgBase() {
 	m_release_reqs = 0;
 	m_wait_reqs = 0;
 	m_comm_state = IEndpoint::Waiting;
+	m_comm_mode = IEndpoint::Automatic;
 
 	m_req_m.insert({"tblink.init", std::bind(
 			&EndpointMsgBase::req_init, this,
@@ -99,6 +100,10 @@ EndpointMsgBase::EndpointMsgBase() {
 			std::placeholders::_2)});
 	m_req_m.insert({"tblink.set-comm-state", std::bind(
 			&EndpointMsgBase::req_set_comm_state, this,
+			std::placeholders::_1,
+			std::placeholders::_2)});
+	m_req_m.insert({"tblink.update-comm-mode", std::bind(
+			&EndpointMsgBase::req_update_comm_mode, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
 }
@@ -155,6 +160,14 @@ IEndpoint::comm_state_e EndpointMsgBase::comm_state() {
 	fprintf(stdout, "comm_state: %d\n", m_comm_state);
 	fflush(stdout);
 	return m_comm_state;
+}
+
+void EndpointMsgBase::update_comm_mode(
+		comm_mode_e 		m,
+		comm_state_e 		s) {
+	if (m_comm_state != s || m_comm_mode != m) {
+		// Send update
+	}
 }
 
 IEndpointListener *EndpointMsgBase::addListener(const endpoint_ev_f &ev_f) {
@@ -873,7 +886,9 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 			IParamValVec *m_params = params->getValT<IParamValVec>("params");
 
 			m_release_reqs++;
-			m_comm_state = IEndpoint::Released;
+			if (m_comm_mode == IEndpoint::Automatic) {
+				m_comm_state = IEndpoint::Released;
+			}
 			sendEvent(IEndpointEvent::Unknown);
 
 			i_it->second->invoke_req(
@@ -964,6 +979,21 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_set_comm_state(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
+EndpointMsgBase::rsp_t EndpointMsgBase::req_set_comm_mode(
+		intptr_t				id,
+		IParamValMap 			*params) {
+	DEBUG_ENTER("req_set_comm_mode");
+
+	sendEvent(IEndpointEvent::Unknown);
+
+	IParamValMap *result = mkValMap();
+	IParamValMap *error = 0;
+
+	DEBUG_LEAVE("req_set_comm_mode");
+	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
+}
+
+
 void EndpointMsgBase::call_completion_nb(
 			intptr_t		id,
 			intptr_t		call_id,
@@ -996,7 +1026,9 @@ void EndpointMsgBase::call_completion_b(
 
 	// Drop into 'wait' mode until we confirm
 	// receipt of the ack
-	m_comm_state = IEndpoint::Waiting;
+	if (m_comm_mode == Automatic) {
+		m_comm_state = IEndpoint::Waiting;
+	}
 	sendEvent(IEndpointEvent::Unknown);
 
 	m_release_reqs--;
@@ -1025,12 +1057,14 @@ void EndpointMsgBase::rsp_call_completion_b(
 			intptr_t			rsp_id,
 			IParamValMap		*result,
 			IParamValMap		*error) {
-	DEBUG_ENTER("rsp_call_completion_b");
+	DEBUG_ENTER("rsp_call_completion_b m_release_reqs=%d", m_release_reqs);
 
-	if (m_release_reqs) {
-		m_comm_state = IEndpoint::Released;
-	} else {
-		m_comm_state = IEndpoint::Waiting;
+	if (m_comm_mode == Automatic) {
+		if (m_release_reqs) {
+			m_comm_state = IEndpoint::Released;
+		} else {
+			m_comm_state = IEndpoint::Waiting;
+		}
 	}
 	sendEvent(IEndpointEvent::Unknown);
 
