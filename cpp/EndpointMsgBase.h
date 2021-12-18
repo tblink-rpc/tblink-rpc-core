@@ -177,13 +177,19 @@ public:
 
 	std::pair<IParamValMapUP,IParamValMapUP> wait_rsp(intptr_t id);
 
-private:
+//private:
 	// Methods used by InterfaceInst
 
-	IParamVal *invoke_nb(
+	int32_t invoke_nb(
 			InterfaceInstBase	*ifinst,
 			IMethodType 		*method,
-			IParamValVec 	*params);
+			IParamValVec 		*params,
+			const invoke_rsp_f	&rsp_f);
+
+	void invoke_nb_rsp(
+			intptr_t			msg_id,
+			IParamValMap		*result,
+			IParamValMap		*error);
 
 private:
 	typedef std::pair<IParamValMapUP,IParamValMapUP> rsp_t;
@@ -238,7 +244,7 @@ private:
 			intptr_t		id,
 			IParamValMap 	*params);
 
-	rsp_t req_set_comm_mode(
+	rsp_t req_update_comm_mode(
 			intptr_t		id,
 			IParamValMap 	*params);
 
@@ -283,6 +289,9 @@ protected:
 
 private:
 	intptr_t														m_id;
+	intptr_t														m_call_id;
+	std::unordered_map<intptr_t,invoke_rsp_f>						m_outbound_invoke_m;
+
 	std::string														m_last_error;
 
 	std::unordered_map<intptr_t, response_f>						m_rsp_m;

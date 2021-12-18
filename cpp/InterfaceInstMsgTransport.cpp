@@ -51,6 +51,7 @@ InterfaceInstMsgTransport::~InterfaceInstMsgTransport() {
 IParamVal *InterfaceInstMsgTransport::invoke(
 		IMethodType									*method,
 		IParamValVec								*params) {
+	DEBUG_ENTER("invoke");
 	IParamValMap *r_params = m_endpoint->mkValMap();
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -101,6 +102,8 @@ IParamVal *InterfaceInstMsgTransport::invoke(
 		}
 	}
 
+	DEBUG_LEAVE("invoke");
+
 	return ret;
 }
 
@@ -108,26 +111,40 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 		IMethodType									*method,
 		IParamValVec								*params,
 		const invoke_rsp_f							&completion_f) {
+	int32_t ret = 0;
 	DEBUG_ENTER("invoke_nb");
 	IParamValMap *r_params = m_endpoint->mkValMap();
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
 
-	// Register the completion function
-	m_invoke_m.insert({call_id, completion_f});
+	ret = dynamic_cast<EndpointMsgBase *>(m_endpoint)->invoke_nb(
+			this,
+			method,
+			params,
+			completion_f);
 
-	r_params->setVal("ifinst", m_endpoint->mkValStr(name()));
-	r_params->setVal("method", m_endpoint->mkValStr(method->name()));
-	r_params->setVal("call-id", m_endpoint->mkValIntU(call_id, 64));
-	r_params->setVal("params", params);
+	DEBUG_LEAVE("invoke_nb");
+	return ret;
+#ifdef UNDEFINED
+	// Register the completion function
+//	m_invoke_m.insert({call_id, completion_f});
+
+	if (method->is_blocking()) {
+		r_params->setVal("ifinst", m_endpoint->mkValStr(name()));
+		r_params->setVal("method", m_endpoint->mkValStr(method->name()));
+		r_params->setVal("call-id", m_endpoint->mkValIntU(call_id, 64));
+		r_params->setVal("params", params);
+
+		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
+				"tblink.invoke-b",
+				r_params);
+	}
+
 
 	m_outbound_invoke_m.insert({call_id, completion_f});
 	DEBUG("Insert call-id %lld in outbound_invoke_m", call_id);
 
 	if (method->is_blocking()) {
-		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
-				"tblink.invoke-b",
-				r_params);
 	} else {
 		intptr_t id = dynamic_cast<EndpointMsgBase *>(m_endpoint)->send_req(
 				"tblink.invoke-nb",
@@ -140,6 +157,7 @@ int32_t InterfaceInstMsgTransport::invoke_nb(
 
 	DEBUG_LEAVE("invoke_nb");
 	return 0;
+#endif
 }
 
 } /* namespace tblink_rpc_core */

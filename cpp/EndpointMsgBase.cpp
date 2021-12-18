@@ -165,8 +165,17 @@ IEndpoint::comm_state_e EndpointMsgBase::comm_state() {
 void EndpointMsgBase::update_comm_mode(
 		comm_mode_e 		m,
 		comm_state_e 		s) {
+	IParamValMap *params = mkValMap();
+
+	params->setVal("comm-mode",
+			mkValIntS(static_cast<int64_t>(m), 32));
+	params->setVal("comm-state",
+			mkValIntS(static_cast<int64_t>(s), 32));
+	send_req("tblink.update-comm-mode", params);
+
 	if (m_comm_state != s || m_comm_mode != m) {
 		// Send update
+
 	}
 }
 
@@ -928,6 +937,16 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 		retval = params->getVal("return");
 	}
 
+	auto rsp_it = m_outbound_invoke_m.find(call_id);
+
+	if (rsp_it != m_outbound_invoke_m.end()) {
+		rsp_it->second(retval);
+		m_outbound_invoke_m.erase(rsp_it);
+	} else {
+		fprintf(stdout, "TbLink Error: unexpected invoke_b response %lld\n", call_id);
+	}
+
+#ifdef UNDEFINED
 	std::unordered_map<std::string,InterfaceInstMsgTransportUP>::const_iterator i_it;
 
 	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
@@ -940,6 +959,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 		fprintf(stdout, "Error: failed to find interface\n");
 		fflush(stdout);
 	}
+#endif
 
 	// A blocking invoke response counts as an event
 	m_event_received = true;
@@ -979,17 +999,22 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_set_comm_state(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
-EndpointMsgBase::rsp_t EndpointMsgBase::req_set_comm_mode(
+EndpointMsgBase::rsp_t EndpointMsgBase::req_update_comm_mode(
 		intptr_t				id,
 		IParamValMap 			*params) {
-	DEBUG_ENTER("req_set_comm_mode");
+	DEBUG_ENTER("req_update_comm_mode");
+	IEndpoint::comm_mode_e m  = (IEndpoint::comm_mode_e)params->getValT<IParamValInt>("comm-mode")->val_s();
+	IEndpoint::comm_state_e s = (IEndpoint::comm_state_e)params->getValT<IParamValInt>("comm-state")->val_s();
+
+	m_comm_mode = m;
+	m_comm_state = s;
 
 	sendEvent(IEndpointEvent::Unknown);
 
 	IParamValMap *result = mkValMap();
 	IParamValMap *error = 0;
 
-	DEBUG_LEAVE("req_set_comm_mode");
+	DEBUG_LEAVE("req_update_comm_mode");
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
@@ -1222,30 +1247,69 @@ EndpointMsgBase::rsp_t EndpointMsgBase::wait_rsp(intptr_t id) {
 #endif
 }
 
-IParamVal *EndpointMsgBase::invoke_nb(
+int32_t EndpointMsgBase::invoke_nb(
 		InterfaceInstBase		*ifinst,
 		IMethodType 			*method,
-		IParamValVec 		*params) {
+		IParamValVec 			*params,
+		const invoke_rsp_f		&completion_f) {
+	DEBUG_ENTER("invoke_nb");
+	int ret = 0;
+	intptr_t call_id = m_call_id;
+	m_call_id += 1;
+
 	IParamValMap *r_params = mkValMap();
 	r_params->setVal("ifinst", mkValStr(ifinst->name()));
 	r_params->setVal("method", mkValStr(method->name()));
+	r_params->setVal("call-id", mkValIntU(call_id, 64));
 	r_params->setVal("params", params);
-	intptr_t id = send_req(
-			"tblink.invoke-nb",
-			r_params);
 
-	std::pair<IParamValMapSP,IParamValMapSP> rsp = wait_rsp(id);
+	// Notify clients that communication state is changing
+	if (m_comm_mode == IEndpoint::Automatic) {
+		if (m_comm_state == IEndpoint::Released) {
+			DEBUG("Back to Waiting state");
+			m_comm_state = IEndpoint::Waiting;
+			sendEvent(IEndpointEvent::Unknown);
+		}
+	}
 
-	// Notify services that there has been an event,
-	// and let services determine how best to handle
-	m_services->hit_event();
-	m_services->idle();
+	m_outbound_invoke_m.insert({call_id, completion_f});
 
-	if (rsp.first->hasKey("return")) {
-		// TODO: clone?
-		return rsp.first->getVal("return");
+	if (method->is_blocking()) {
+		ret = send_req(
+				"tblink.invoke-b",
+				r_params);
 	} else {
-		return 0;
+		ret = send_req(
+				"tblink.invoke-nb",
+				r_params,
+				std::bind(&EndpointMsgBase::invoke_nb_rsp, this,
+						std::placeholders::_1,
+						std::placeholders::_2,
+						std::placeholders::_3));
+	}
+
+	return ret;
+}
+
+void EndpointMsgBase::invoke_nb_rsp(
+			intptr_t			msg_id,
+			IParamValMap		*result,
+			IParamValMap		*error) {
+	intptr_t call_id = result->getValT<IParamValInt>("call-id")->val_s();
+	auto rsp_it = m_outbound_invoke_m.find(call_id);
+
+	if (rsp_it != m_outbound_invoke_m.end()) {
+		IParamVal *retval = 0;
+
+		if (result->hasKey("return")) {
+			retval = result->getVal("return");
+		}
+
+		rsp_it->second(retval);
+
+		m_outbound_invoke_m.erase(rsp_it);
+	} else {
+		fprintf(stdout, "TbLink Error: unexpected invoke response for %lld\n", call_id);
 	}
 }
 
