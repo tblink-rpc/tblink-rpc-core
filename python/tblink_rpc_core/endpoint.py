@@ -3,17 +3,17 @@ Created on Jul 2, 2021
 
 @author: mballance
 '''
-from enum import IntEnum
-
+from enum import IntEnum, Enum, auto
 from typing import List, Callable
+
+from tblink_rpc_core.interface_inst import InterfaceInst
 from tblink_rpc_core.interface_type import InterfaceType
 from tblink_rpc_core.interface_type_builder import InterfaceTypeBuilder
-from tblink_rpc_core.interface_inst import InterfaceInst
 from tblink_rpc_core.param_val_bool import ParamValBool
 from tblink_rpc_core.param_val_int import ParamValInt
 from tblink_rpc_core.param_val_map import ParamValMap
-from tblink_rpc_core.param_val_vec import ParamValVec
 from tblink_rpc_core.param_val_str import ParamValStr
+from tblink_rpc_core.param_val_vec import ParamValVec
 
 
 class TimeUnit(IntEnum):
@@ -22,6 +22,14 @@ class TimeUnit(IntEnum):
     us = -6
     ms = -3
     s = 1
+    
+class comm_state_e(Enum):
+    Waiting = auto()
+    Released = auto()
+    
+class comm_mode_e(Enum):
+    Automatic = auto()
+    Explicit = auto()
 
 class Endpoint(object):
     DEBUG_EN = False

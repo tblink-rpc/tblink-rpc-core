@@ -11,6 +11,7 @@ from libcpp.vector cimport vector as cpp_vector
 from cython.operator cimport dereference as deref, preincrement as inc
 import asyncio
 import sys
+from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e
 cimport cpython.ref as cpy_ref
 
 import tblink_rpc_core
@@ -160,6 +161,19 @@ cdef class InterfaceInst(object):
             params.asVec(),
             invoke_rsp_closure(<cpy_ref.PyObject *>(completion_f)))
         
+    cpdef invoke_rsp(
+        self,
+        intptr_t    call_id,
+        ParamVal    ret):
+        cdef native_decl.IParamVal *ret_p = NULL
+        
+        if ret is not None:
+            ret_p = ret._hndl
+            
+        self._hndl.invoke_rsp(
+            call_id,
+            ret_p)
+        
     cpdef mkValBool(self, val):
         return ParamValBool._mk(self._hndl.mkValBool(val))
     
@@ -231,9 +245,12 @@ cdef class Type(object):
     
     @staticmethod
     cdef _mk(native_decl.IType *hndl):
-        ret = Type()
-        ret._hndl = hndl
-        return ret
+        if hndl != NULL:
+            ret = Type()
+            ret._hndl = hndl
+            return ret
+        else:
+            return None
     
 cdef class TypeInt(Type):
     pass
@@ -283,11 +300,15 @@ cdef class MethodType(object):
     cpdef id(self):
         return self._hndl.id()
     
+    cpdef rtype(self):
+        return Type._mk(self._hndl.rtype())
+    
     cpdef is_export(self):
-        return self.is_export()
+        return self._hndl.is_export()
     
     cpdef is_blocking(self):
-        return self.is_blocking()
+        return self._hndl.is_blocking()
+    
     
     cpdef params(self):
         ret = []
@@ -315,6 +336,8 @@ cdef class InterfaceTypeBuilder(object):
         is_export,
         is_blocking):
         cdef native_decl.IType *rtype_h = NULL
+        
+        print("newMethodTypeBuilder: %s is_blocking=%s" % (name, str(is_blocking)))
 
         if rtype is not None:
             rtype_h = rtype._hndl
@@ -325,7 +348,9 @@ cdef class InterfaceTypeBuilder(object):
                 is_export, is_blocking))
         
     cpdef add_method(self, MethodTypeBuilder mtb):
-        return MethodType._mk(self._hndl.add_method(mtb._hndl))
+        ret = MethodType._mk(self._hndl.add_method(mtb._hndl))
+        print("add_method: %s is_blocking=%s" % (ret.name(), ret.is_blocking()))
+        return ret
         
     cpdef mkTypeBool(self):
         return Type._mk(self._hndl.mkTypeBool())
@@ -421,6 +446,21 @@ cdef class Endpoint(object):
     
     cpdef is_connect_complete(self):
         return self._hndl.is_connect_complete()
+    
+    _comm_mode_m = {
+        comm_mode_e.Automatic : native_decl.Automatic,
+        comm_mode_e.Explicit  : native_decl.Explicit
+    }
+    
+    _comm_state_m = {
+        comm_state_e.Waiting  : native_decl.Waiting,
+        comm_state_e.Released : native_decl.Released
+    }
+    
+    cpdef update_comm_mode(self, comm_mode, comm_state):
+        self._hndl.update_comm_mode(
+            Endpoint._comm_mode_m[comm_mode],
+            Endpoint._comm_state_m[comm_state])
     
     cpdef addListener(self, ev_f):
         cdef native_decl.IEndpointListener *l

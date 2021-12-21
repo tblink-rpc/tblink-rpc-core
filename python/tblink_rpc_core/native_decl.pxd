@@ -109,7 +109,7 @@ cdef extern from "tblink_rpc/IMethodType.h" namespace "tblink_rpc_core":
     cdef cppclass IMethodType:
         const cpp_string &name()
         intptr_t id()
-        IType *type()
+        IType *rtype()
         bool is_export()
         bool is_blocking()
         const cpp_vector[IParamDeclP] &params()
@@ -143,6 +143,8 @@ cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
         
         int invoke_nb(
             IMethodType *, IParamValVec *, const invoke_rsp_f &)
+        
+        void invoke_rsp(intptr_t, IParamVal *)
         
         IParamValBool *mkValBool(bool)
         
@@ -254,6 +256,13 @@ cdef extern from "tblink_rpc/IEndpointServices.h" namespace "tblink_rpc_core":
 cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
     cdef cppclass time_cb_f:
         pass
+    cdef enum comm_state_e "tblink_rpc_core::IEndpoint::comm_state_e":
+        Waiting  "tblink_rpc_core::IEndpoint::Waiting",
+        Released "tblink_rpc_core::IEndpoint::Released"
+    cdef enum comm_mode_e "tblink_rpc_core::IEndpoint::comm_mode_e":
+        Automatic "tblink_rpc_core::IEndpoint::Automatic",
+        Explicit  "tblink_rpc_core::IEndpoint::Explicit"
+        
     cdef cppclass IEndpoint:
     
         int init(IEndpointServices *, IEndpointListener *)
@@ -267,6 +276,8 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         int connect_complete()
         
         int is_connect_complete()
+        
+        void update_comm_mode(comm_mode_e, comm_state_e)
         
         IEndpointListener *addListener(const endpoint_ev_f &)
         

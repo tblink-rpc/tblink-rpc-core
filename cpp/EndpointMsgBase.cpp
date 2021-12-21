@@ -165,6 +165,7 @@ IEndpoint::comm_state_e EndpointMsgBase::comm_state() {
 void EndpointMsgBase::update_comm_mode(
 		comm_mode_e 		m,
 		comm_state_e 		s) {
+	DEBUG_ENTER("update_comm_mode");
 	IParamValMap *params = mkValMap();
 
 	params->setVal("comm-mode",
@@ -177,6 +178,7 @@ void EndpointMsgBase::update_comm_mode(
 		// Send update
 
 	}
+	DEBUG_LEAVE("update_comm_mode");
 }
 
 IEndpointListener *EndpointMsgBase::addListener(const endpoint_ev_f &ev_f) {
