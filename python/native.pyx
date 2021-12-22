@@ -146,6 +146,7 @@ cdef class InterfaceInst(object):
         return self._hndl.name().decode()
     
     cpdef type(self):
+        print("InterfaceInst.type 0x%08x" % <intptr_t>(self._hndl))
         return InterfaceType._mk(self._hndl.type())
     
     cpdef is_mirror(self):
@@ -205,6 +206,7 @@ cdef class InterfaceType(object):
     cdef native_decl.IInterfaceType *_hndl
     
     cpdef name(self):
+        print("InterfaceType.name 0x%08x" % <intptr_t>(self._hndl))
         return self._hndl.name().decode()
     
     cpdef methods(self):

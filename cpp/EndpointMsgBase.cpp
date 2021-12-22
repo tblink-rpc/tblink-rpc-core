@@ -39,6 +39,8 @@ namespace tblink_rpc_core {
 EndpointMsgBase::EndpointMsgBase() {
 	m_id = 1;
 
+	m_call_id = 0;
+
 	m_time = 0;
 	m_time_precision = 0;
 	m_run_until_event = 0;
@@ -305,7 +307,7 @@ int32_t EndpointMsgBase::is_connect_complete() {
 				InterfaceInstBase *local_ifinst = it->second.get();
 				InterfaceInstBase *peer_ifinst = peer_it->second.get();
 
-				if (local_ifinst->type() != peer_ifinst->type()) {
+				if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
 					fprintf(stdout, "local_ifinst::type=%p peer_ifinst::type=%p\n",
 							local_ifinst->type(), peer_ifinst->type());
 					fflush(stdout);
@@ -335,7 +337,7 @@ int32_t EndpointMsgBase::is_connect_complete() {
 					InterfaceInstBase *peer_ifinst = it->second.get();
 					InterfaceInstBase *local_ifinst = local_it->second.get();
 
-					if (local_ifinst->type() != peer_ifinst->type()) {
+					if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
 						fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
 								local_ifinst->name().c_str(),
 								local_ifinst->type()->name().c_str(),
@@ -702,10 +704,6 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_build_complete(
 			m_peer_ifc_types_pl,
 			params->getValT<IParamValMap>("iftypes"));
 
-#ifdef UNDEFINED
-
-#endif
-
 	// Now, unpack ifinsts. We need to have a consistent
 	// type system prior to doing so
 	std::unordered_map<std::string,InterfaceInstUP> ifinsts;
@@ -713,6 +711,11 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_build_complete(
 			m_peer_ifc_insts,
 			m_peer_ifc_insts_pl,
 			params->getValT<IParamValMap>("ifinsts"));
+
+	for (auto ifinst_it=m_peer_ifc_insts_pl.begin();
+			ifinst_it!=m_peer_ifc_insts_pl.end(); ifinst_it++) {
+		// Find the appropriate iftype
+	}
 
 #ifdef UNDEFINED
 	for (std::unordered_map<std::string,InterfaceInstUP>::iterator
@@ -1460,6 +1463,7 @@ void EndpointMsgBase::unpack_ifinsts(
 		std::vector<IInterfaceInst*>								&ifinsts_l,
 		IParamValMap 												*ifinsts_p) {
 	std::vector<InterfaceInstUP> ret;
+	DEBUG_ENTER("unpack_ifinsts");
 
 	if (ifinsts_p) {
 		for (std::set<std::string>::const_iterator
@@ -1470,16 +1474,20 @@ void EndpointMsgBase::unpack_ifinsts(
 			std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
 			bool is_mirror = ifinst_v->getValT<IParamValBool>("is-mirror")->val();
 			InterfaceType *type = 0;
-			if ((it=m_local_ifc_types.find(tname)) != m_local_ifc_types.end()) {
+			if ((it=m_peer_ifc_types.find(tname)) != m_peer_ifc_types.end()) {
 				type = it->second.get();
 			} else {
 				fprintf(stdout, "Error: failed to find type %s\n", tname.c_str());
 				fflush(stdout);
-				for (auto t_it=m_local_ifc_types.begin();
-						t_it!=m_local_ifc_types.end(); t_it++) {
+				for (auto t_it=m_peer_ifc_types.begin();
+						t_it!=m_peer_ifc_types.end(); t_it++) {
 					fprintf(stdout, "Type: %s\n", t_it->first.c_str());
 				}
 			}
+
+			fprintf(stdout, "InterfaceInst %s: type=%p\n",
+					k_it->c_str(), type);
+			fflush(stdout);
 
 			InterfaceInstMsgTransport *ifinst = new InterfaceInstMsgTransport(
 					this,
@@ -1490,8 +1498,9 @@ void EndpointMsgBase::unpack_ifinsts(
 			ifinsts_l.push_back(ifinst);
 		}
 	} else {
-		fprintf(stdout, "unpack_ifinsts: null ifinsts_p\n");
+		fprintf(stdout, "Error: unpack_ifinsts: null ifinsts_p\n");
 	}
+	DEBUG_LEAVE("unpack_ifinsts");
 }
 
 } /* namespace tblink_rpc_core */
