@@ -37,9 +37,7 @@ public:
 
 	virtual ~IEndpoint() { }
 
-	virtual int32_t init(
-			IEndpointServices		*ep_services,
-			IEndpointListener		*ep_listener) = 0;
+	virtual int32_t init(IEndpointServices	*services) = 0;
 
 	virtual int32_t is_init() = 0;
 
@@ -91,7 +89,7 @@ public:
 
 	virtual void cancel_callback(intptr_t	id) = 0;
 
-	virtual const std::vector<std::string> &args() = 0;
+	virtual std::vector<std::string> args() = 0;
 
 	virtual uint64_t time() = 0;
 

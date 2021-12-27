@@ -32,8 +32,6 @@ public:
 	 */
 	virtual std::vector<std::string> args() = 0;
 
-	virtual void shutdown() = 0;
-
 	virtual int32_t add_time_cb(
 			uint64_t 		time,
 			intptr_t		callback_id) = 0;
@@ -51,14 +49,6 @@ public:
 	 * -12: 1ps
 	 */
 	virtual int32_t time_precision() = 0;
-
-	// Release the environment to run
-	virtual void run_until_event() = 0;
-
-	// Notify that we've hit an event
-	virtual void hit_event() = 0;
-
-	virtual void idle() = 0;
 
 };
 

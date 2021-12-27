@@ -45,11 +45,12 @@ EndpointBase::~EndpointBase() {
 	// TODO Auto-generated destructor stub
 }
 
-int32_t EndpointBase::init(
-			IEndpointServices		*ep_services,
-			IEndpointListener		*ep_listener) {
-	m_services = ep_services;
-	m_listener = ep_listener;
+int32_t EndpointBase::init(IEndpointServices *services) {
+	m_services = services;
+
+	if (m_services) {
+		m_services->init(this);
+	}
 
 	return 0;
 }
@@ -115,8 +116,13 @@ void EndpointBase::sendEvent(const IEndpointEvent *ev) {
 	DEBUG_LEAVE("sendEvent: %d", ev->kind());
 }
 
-const std::vector<std::string> &EndpointBase::args() {
-	return m_services->args();
+std::vector<std::string> EndpointBase::args() {
+	if (m_services) {
+		return m_services->args();
+	} else {
+		// TODO:
+		return {};
+	}
 }
 
 uint64_t EndpointBase::time() {

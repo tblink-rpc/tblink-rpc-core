@@ -32,9 +32,7 @@ public:
 
 	virtual ~EndpointMsgBase();
 
-	virtual int32_t init(
-			IEndpointServices		*ep_services,
-			IEndpointListener		*ep_listener) override;
+	virtual int32_t init(IEndpointServices *services) override;
 
 	virtual int32_t is_init() override;
 
@@ -78,7 +76,7 @@ public:
 
 	virtual void cancel_callback(intptr_t	id) override;
 
-	virtual const std::vector<std::string> &args() override;
+	virtual std::vector<std::string> args() override;
 
 	virtual uint64_t time() override;
 

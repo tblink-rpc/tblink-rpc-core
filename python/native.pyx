@@ -432,7 +432,7 @@ cdef class Endpoint(object):
         pass
     
     cpdef init(self):
-        return self._hndl.init(NULL, NULL)
+        return self._hndl.init(NULL)
     
     cpdef is_init(self):
         return self._hndl.is_init()
@@ -478,6 +478,13 @@ cdef class Endpoint(object):
     
     cpdef removeListener(self, EndpointListener l):
         self._hndl.removeListener(l._hndl)
+        
+    cpdef args(self):
+        cdef cpp_vector[cpp_string] _args = self._hndl.args()
+        ret = []
+        for i in range(_args.size()):
+            ret.append(_args.at(i).decode())
+        return ret
     
     cpdef add_time_callback(self, time, cb):
         cdef intptr_t ret;
@@ -643,7 +650,7 @@ cdef class LaunchType(object):
     cpdef name(self):
         return self._hndl.name().decode()
     
-    cpdef launch(self, params : LaunchParams):
+    cpdef launch(self, params : LaunchParams, services=None):
         cdef cpp_pair[IEndpointP,cpp_string] result = self._hndl.launch(params._hndl, NULL)
         params._hndl = NULL
         

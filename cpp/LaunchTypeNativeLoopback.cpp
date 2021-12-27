@@ -45,7 +45,7 @@ ILaunchType::result_t LaunchTypeNativeLoopback::launch(
 		services = TbLink::inst()->getDefaultServicesFactory()->create();
 	}
 
-	ep->init(services, 0);
+	ep->init(services);
 
 	return {ep, msg};
 }

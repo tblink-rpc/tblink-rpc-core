@@ -265,7 +265,7 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         
     cdef cppclass IEndpoint:
     
-        int init(IEndpointServices *, IEndpointListener *)
+        int init(IEndpointServices *)
         
         int is_init()
     
@@ -282,6 +282,8 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         IEndpointListener *addListener(const endpoint_ev_f &)
         
         void removeListener(IEndpointListener *)
+        
+        const cpp_vector[cpp_string] &args()
         
         intptr_t add_time_callback(uint64_t, const time_cb_f &)
         

@@ -21,9 +21,7 @@ public:
 
 	virtual ~EndpointBase();
 
-	virtual int32_t init(
-			IEndpointServices		*ep_services,
-			IEndpointListener		*ep_listener) override;
+	virtual int32_t init(IEndpointServices *services) override;
 
 	virtual IEndpoint::comm_state_e comm_state() override;
 
@@ -39,7 +37,7 @@ public:
 
 	void sendEvent(const IEndpointEvent *ev);
 
-	virtual const std::vector<std::string> &args() override;
+	virtual std::vector<std::string> args() override;
 
 	virtual uint64_t time() override;
 

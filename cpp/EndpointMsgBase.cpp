@@ -114,27 +114,24 @@ EndpointMsgBase::~EndpointMsgBase() {
 	// TODO Auto-generated destructor stub
 }
 
-int32_t EndpointMsgBase::init(
-		IEndpointServices		*ep_services,
-		IEndpointListener		*ep_listener) {
-	m_services = IEndpointServicesUP(ep_services);
+int32_t EndpointMsgBase::init(IEndpointServices *services) {
+	m_services = IEndpointServicesUP(services);
 	if (m_services) {
 		m_services->init(this);
 	}
 
 	auto params = mkValMap();
 
-	auto args_p = mkValVec();
 	if (m_services) {
+		auto args_p = mkValVec();
 		for (auto arg : m_services->args()) {
 			args_p->push_back(mkValStr(arg));
 		}
-	}
-	params->setVal("args", args_p);
-	if (m_services) {
-		params->setVal("time-units", mkValIntS(m_services->time_precision(), 32));
-	} else {
-		params->setVal("time-units", mkValIntS(-9, 32));
+
+		params->setVal("args", args_p);
+		if (m_services) {
+			params->setVal("time-units", mkValIntS(m_services->time_precision(), 32));
+		}
 	}
 
 	m_init = 1;
@@ -551,12 +548,20 @@ intptr_t EndpointMsgBase::add_time_callback(
 #endif
 }
 
-const std::vector<std::string> &EndpointMsgBase::args() {
-	return m_args;
+std::vector<std::string> EndpointMsgBase::args() {
+	if (m_services) {
+		return m_services->args();
+	} else {
+		return m_args;
+	}
 }
 
 uint64_t EndpointMsgBase::time() {
-	return m_time;
+	if (m_services) {
+		return m_services->time();
+	} else {
+		return m_time;
+	}
 }
 
 void EndpointMsgBase::cancel_callback(intptr_t	callback_id) {
@@ -565,9 +570,6 @@ void EndpointMsgBase::cancel_callback(intptr_t	callback_id) {
 	params->setVal("callback-id", mkValIntU(callback_id, 64));
 
 	intptr_t id = send_req("tblink.cancel-callback", params);
-#ifdef UNDEFINED
-	rsp_t rsp = wait_rsp(id);
-#endif
 }
 
 /** Called by the environment to notify that
@@ -591,9 +593,6 @@ void EndpointMsgBase::notify_callback(intptr_t   callback_id) {
 #ifdef UNDEFINED
 	rsp_t rsp = wait_rsp(id);
 #endif
-
-	m_services->hit_event();
-	m_services->idle();
 }
 
 void EndpointMsgBase::last_error(const char *fmt, ...) {
@@ -674,18 +673,18 @@ const std::vector<IInterfaceInst *> &EndpointMsgBase::getPeerInterfaceInsts() {
 	return m_peer_ifc_insts_pl;
 }
 
-
-
 EndpointMsgBase::rsp_t EndpointMsgBase::req_init(
 			intptr_t		id,
 			IParamValMap 	*params) {
 	m_peer_init = 1;
 
-	m_time_precision = params->getValT<IParamValInt>("time-units")->val_s();
-	IParamValVec *args_p = params->getValT<IParamValVec>("args");
+	if (!m_services) {
+		m_time_precision = params->getValT<IParamValInt>("time-units")->val_s();
+		IParamValVec *args_p = params->getValT<IParamValVec>("args");
 
-	for (uint32_t i=0; i<args_p->size(); i++) {
-		m_args.push_back(args_p->atT<IParamValStr>(i)->val());
+		for (uint32_t i=0; i<args_p->size(); i++) {
+			m_args.push_back(args_p->atT<IParamValStr>(i)->val());
+		}
 	}
 
 	return {IParamValMapUP(mkValMap()), IParamValMapUP()};
@@ -982,7 +981,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_run_until_event(
 	m_run_until_event++;
 
 	// Tell the environment that it's free to run
-	m_services->run_until_event();
+//	m_services->run_until_event();
 
 	IParamValMap *result = mkValMap();
 	IParamValMap *error = 0;
@@ -1075,11 +1074,11 @@ void EndpointMsgBase::call_completion_b(
 
 	// Let the services know that we've encountered a
 	// time-based event
-	m_services->hit_event();
+//	m_services->hit_event();
 
 	// Give the endpoint services a chance to decide how
 	// best to proceed
-	m_services->idle();
+//	m_services->idle();
 	DEBUG_LEAVE("call_completion_b");
 }
 
