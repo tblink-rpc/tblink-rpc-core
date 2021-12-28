@@ -416,6 +416,11 @@ cdef class EndpointListener(object):
         ret._hndl = hndl
         return ret
         
+#********************************************************************
+#* EndpointServices
+#********************************************************************
+cdef class EndpointServices(object):
+    cdef native_decl.IEndpointServices *_hndl
 
 #********************************************************************
 #* Endpoint
@@ -431,8 +436,12 @@ cdef class Endpoint(object):
         self.ev_listener_m = {}
         pass
     
-    cpdef init(self):
-        return self._hndl.init(NULL)
+    cpdef init(self, EndpointServices services):
+        cdef native_decl.IEndpointServices *services_h = NULL
+        if services is not None:
+            services_h = services._hndl
+        
+        return self._hndl.init(services_h)
     
     cpdef is_init(self):
         return self._hndl.is_init()
@@ -579,6 +588,7 @@ cdef class Endpoint(object):
         return 1
     
     cpdef process_one_message(self):
+        return self._hndl.process_one_message()
         pass
     
     cpdef mkValBool(self, val):

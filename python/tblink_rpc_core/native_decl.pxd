@@ -311,6 +311,8 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         const cpp_vector[IInterfaceInstP] &getInterfaceInsts()
         
         const cpp_vector[IInterfaceInstP] &getPeerInterfaceInsts()
+        
+        int process_one_message() 
 
         IParamValBool *mkValBool(bool)
         
