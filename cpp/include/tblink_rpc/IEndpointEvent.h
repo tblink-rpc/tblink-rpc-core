@@ -13,7 +13,15 @@ class IEndpointEvent {
 public:
 
 	enum kind_t {
-		Unknown
+		Unknown,
+		OutInvokeReqB,
+		InInvokeRspB,
+		InInvokeReqB,
+		OutInvokeRspB,
+		OutInvokeReqNB,
+		InInvokeRspNB,
+		InInvokeReqNB,
+		OutInvokeRspNB
 	};
 
 	virtual ~IEndpointEvent() { }

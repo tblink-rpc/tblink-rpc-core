@@ -902,7 +902,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 			if (m_comm_mode == IEndpoint::Automatic) {
 				m_comm_state = IEndpoint::Released;
 			}
-			sendEvent(IEndpointEvent::Unknown);
+			sendEvent(IEndpointEvent::InInvokeReqB);
 
 			i_it->second->invoke_req(
 					method_t,
@@ -933,6 +933,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 		intptr_t				id,
 		IParamValMap 			*params) {
+	DEBUG_ENTER("req_invoke_rsp_b");
 	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
 	intptr_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 	IParamVal *retval = 0;
@@ -949,6 +950,8 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 	} else {
 		fprintf(stdout, "TbLink Error: unexpected invoke_b response %lld\n", call_id);
 	}
+
+	sendEvent(IEndpointEvent::InInvokeRspB);
 
 #ifdef UNDEFINED
 	std::unordered_map<std::string,InterfaceInstMsgTransportUP>::const_iterator i_it;
@@ -970,6 +973,8 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 
 	IParamValMap *result = mkValMap();
 	IParamValMap *error = 0;
+
+	DEBUG_LEAVE("req_invoke_rsp_b");
 
 	// Send an 'ok' response.
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
@@ -1058,9 +1063,11 @@ void EndpointMsgBase::call_completion_b(
 	if (m_comm_mode == Automatic) {
 		m_comm_state = IEndpoint::Waiting;
 	}
-	sendEvent(IEndpointEvent::Unknown);
+//	sendEvent(IEndpointEvent::Unknown);
 
 	m_release_reqs--;
+
+	sendEvent(IEndpointEvent::OutInvokeReqB);
 
 	intptr_t id = send_req(
 			"tblink.invoke-rsp-b",
@@ -1274,6 +1281,8 @@ int32_t EndpointMsgBase::invoke_nb(
 			m_comm_state = IEndpoint::Waiting;
 			sendEvent(IEndpointEvent::Unknown);
 		}
+	} else {
+		DEBUG("Retain state due to Automatic mode");
 	}
 
 	m_outbound_invoke_m.insert({call_id, completion_f});
@@ -1282,6 +1291,7 @@ int32_t EndpointMsgBase::invoke_nb(
 		ret = send_req(
 				"tblink.invoke-b",
 				r_params);
+		sendEvent(IEndpointEvent::OutInvokeReqB);
 	} else {
 		ret = send_req(
 				"tblink.invoke-nb",

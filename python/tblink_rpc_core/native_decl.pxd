@@ -227,8 +227,16 @@ ctypedef IInterfaceTypeBuilder *IInterfaceTypeBuilderP
 #* IEndpointEvent
 #********************************************************************
 cdef extern from "tblink_rpc/IEndpointEvent.h" namespace "tblink_rpc_core":
-    cdef enum EventTypeE:
+    cdef enum EventTypeE "tblink_rpc_core::IEndpointEvent::kind_t":
         Unknown "tblink_rpc_core::IEndpointEvent::Unknown"
+        OutInvokeReqB "tblink_rpc_core::IEndpointEvent::OutInvokeReqB"
+        InInvokeRspB "tblink_rpc_core::IEndpointEvent::InInvokeRspB"
+        InInvokeReqB "tblink_rpc_core::IEndpointEvent::InInvokeReqB"
+        OutInvokeRspB "tblink_rpc_core::IEndpointEvent::OutInvokeRspB"
+        OutInvokeReqNB "tblink_rpc_core::IEndpointEvent::OutInvokeReqNB"
+        InInvokeRspNB "tblink_rpc_core::IEndpointEvent::InInvokeRspNB"
+        InInvokeReqNB "tblink_rpc_core::IEndpointEvent::InInvokeReqNB"
+        OutInvokeRspNB "tblink_rpc_core::IEndpointEvent::OutInvokeRspNB"
         
     cdef cppclass IEndpointEvent:
         EventTypeE kind() const

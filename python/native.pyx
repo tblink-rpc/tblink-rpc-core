@@ -12,6 +12,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import asyncio
 import sys
 from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e
+from tblink_rpc_core.event_type_e import EventTypeE
 cimport cpython.ref as cpy_ref
 
 import tblink_rpc_core
@@ -125,8 +126,12 @@ cdef class ParamValVec(ParamVal):
 #* Callback method for invocation responses
 #********************************************************************
 cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:
+    print("--> interface_inst_rsp_f")
+    sys.stdout.flush()
     obj(ParamVal._mk(params))
-
+    print("<-- interface_inst_rsp_f")
+    sys.stdout.flush()
+    
 #********************************************************************
 #* invoke_rsp_closure
 #********************************************************************
@@ -390,6 +395,21 @@ cdef extern native_decl.endpoint_ev_f endpoint_ev_closure(cpy_ref.PyObject *)
 #********************************************************************
 cdef class EndpointEvent(object):
     cdef const native_decl.IEndpointEvent     *_hndl
+    
+    _kind_m = { 
+        native_decl.EventTypeE.Unknown : EventTypeE.Unknown,
+        native_decl.EventTypeE.OutInvokeReqB : EventTypeE.OutInvokeReqB,
+        native_decl.EventTypeE.InInvokeRspB : EventTypeE.InInvokeRspB,
+        native_decl.EventTypeE.InInvokeReqB : EventTypeE.InInvokeReqB,
+        native_decl.EventTypeE.OutInvokeRspB : EventTypeE.OutInvokeRspB,
+        native_decl.EventTypeE.OutInvokeReqNB : EventTypeE.OutInvokeReqNB,
+        native_decl.EventTypeE.InInvokeRspNB : EventTypeE.InInvokeRspNB,
+        native_decl.EventTypeE.InInvokeReqNB : EventTypeE.InInvokeReqNB,
+        native_decl.EventTypeE.OutInvokeRspNB : EventTypeE.OutInvokeRspNB
+        }
+    
+    cpdef kind(self):
+        return EndpointEvent._kind_m[self._hndl.kind()]
 
     @staticmethod
     cdef _mk(const native_decl.IEndpointEvent *hndl):
