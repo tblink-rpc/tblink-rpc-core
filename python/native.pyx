@@ -398,14 +398,15 @@ cdef class EndpointEvent(object):
     
     _kind_m = { 
         native_decl.EventTypeE.Unknown : EventTypeE.Unknown,
-        native_decl.EventTypeE.OutInvokeReqB : EventTypeE.OutInvokeReqB,
-        native_decl.EventTypeE.InInvokeRspB : EventTypeE.InInvokeRspB,
-        native_decl.EventTypeE.InInvokeReqB : EventTypeE.InInvokeReqB,
-        native_decl.EventTypeE.OutInvokeRspB : EventTypeE.OutInvokeRspB,
+        native_decl.EventTypeE.OutInvokeReqB  : EventTypeE.OutInvokeReqB,
+        native_decl.EventTypeE.InInvokeRspB   : EventTypeE.InInvokeRspB,
+        native_decl.EventTypeE.InInvokeReqB   : EventTypeE.InInvokeReqB,
+        native_decl.EventTypeE.OutInvokeRspB  : EventTypeE.OutInvokeRspB,
         native_decl.EventTypeE.OutInvokeReqNB : EventTypeE.OutInvokeReqNB,
-        native_decl.EventTypeE.InInvokeRspNB : EventTypeE.InInvokeRspNB,
-        native_decl.EventTypeE.InInvokeReqNB : EventTypeE.InInvokeReqNB,
-        native_decl.EventTypeE.OutInvokeRspNB : EventTypeE.OutInvokeRspNB
+        native_decl.EventTypeE.InInvokeRspNB  : EventTypeE.InInvokeRspNB,
+        native_decl.EventTypeE.InInvokeReqNB  : EventTypeE.InInvokeReqNB,
+        native_decl.EventTypeE.OutInvokeRspNB : EventTypeE.OutInvokeRspNB,
+        native_decl.EventTypeE.Terminate      : EventTypeE.Terminate
         }
     
     cpdef kind(self):

@@ -862,6 +862,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_nb(
 							id,
 							call_id,
 							std::placeholders::_1));
+			sendEvent(IEndpointEvent::InInvokeReqNB);
 		} else {
 			// TODO: error signaling
 			fprintf(stdout, "Error: failed to find method %s\n", method.c_str());
@@ -1293,6 +1294,7 @@ int32_t EndpointMsgBase::invoke_nb(
 				r_params);
 		sendEvent(IEndpointEvent::OutInvokeReqB);
 	} else {
+		sendEvent(IEndpointEvent::OutInvokeReqNB);
 		ret = send_req(
 				"tblink.invoke-nb",
 				r_params,
@@ -1320,6 +1322,7 @@ void EndpointMsgBase::invoke_nb_rsp(
 		}
 
 		rsp_it->second(retval);
+		sendEvent(IEndpointEvent::InInvokeRspNB);
 
 		m_outbound_invoke_m.erase(rsp_it);
 	} else {

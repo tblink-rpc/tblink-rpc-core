@@ -16,3 +16,4 @@ class EventTypeE(Enum):
     InInvokeRspNB = auto()
     InInvokeReqNB = auto()
     OutInvokeRspNB = auto()
+    Terminate = auto()

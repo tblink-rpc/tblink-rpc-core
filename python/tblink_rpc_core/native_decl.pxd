@@ -237,6 +237,7 @@ cdef extern from "tblink_rpc/IEndpointEvent.h" namespace "tblink_rpc_core":
         InInvokeRspNB "tblink_rpc_core::IEndpointEvent::InInvokeRspNB"
         InInvokeReqNB "tblink_rpc_core::IEndpointEvent::InInvokeReqNB"
         OutInvokeRspNB "tblink_rpc_core::IEndpointEvent::OutInvokeRspNB"
+        Terminate "tblink_rpc_core::IEndpointEvent::Terminate"
         
     cdef cppclass IEndpointEvent:
         EventTypeE kind() const

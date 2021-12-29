@@ -21,7 +21,8 @@ public:
 		OutInvokeReqNB,
 		InInvokeRspNB,
 		InInvokeReqNB,
-		OutInvokeRspNB
+		OutInvokeRspNB,
+		Terminate
 	};
 
 	virtual ~IEndpointEvent() { }
