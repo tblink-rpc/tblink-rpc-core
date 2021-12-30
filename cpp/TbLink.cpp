@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 
+#include "DynLibSymFinder.h"
 #include "EndpointMsgBase.h"
 #include "LaunchParams.h"
 #include "TransportJsonSocket.h"
@@ -46,71 +47,6 @@ ILaunchType *TbLink::findLaunchType(const std::string &id) {
 
 const std::string &TbLink::getLibPath() {
 	if (m_libpath == "") {
-#ifdef UNDEFINED
-		// Platform-specific discovery...
-		pid_t pid = getpid();
-		char mapfile_path[128];
-
-		sprintf(mapfile_path, "/proc/%d/maps", pid);
-		FILE *map_fp = fopen(mapfile_path, "r");
-
-		std::unordered_set<std::string> so_files;
-		while (fgets(mapfile_path, sizeof(mapfile_path), map_fp)) {
-			std::string path = mapfile_path;
-			int32_t idx;
-
-			if ((idx=path.find('/')) != std::string::npos) {
-				int32_t eidx = path.size()-1;
-				while (isspace(path.at(eidx))) {
-					eidx--;
-				}
-				path = path.substr(idx, (eidx-idx+1));
-
-				struct stat statbuf;
-
-				if (stat(path.c_str(), &statbuf) == -1) {
-					// Doesn't exist. Read another line to complete the path
-					if (fgets(mapfile_path, sizeof(mapfile_path), map_fp)) {
-						path.append(mapfile_path);
-
-						int32_t eidx = path.size()-1;
-						while (isspace(path.at(eidx))) {
-							eidx--;
-						}
-
-						if (eidx < path.size()-1) {
-							path = path.substr(0, eidx+1);
-						}
-					}
-				}
-
-				if (path.find(".so") != std::string::npos) {
-					so_files.insert(path);
-				}
-			}
-		}
-		fclose(map_fp);
-
-		// Now, open each library and check for the 'tblink' function
-		for (std::unordered_set<std::string>::const_iterator
-				it=so_files.begin();
-				it!=so_files.end(); it++) {
-			void *dlh = dlopen(it->c_str(), RTLD_LAZY);
-			if (dlh) {
-				void *tblink_h = dlsym(dlh, "tblink");
-
-				if (tblink_h) {
-					m_libpath = *it;
-				}
-				dlclose(dlh);
-			}
-
-			if (m_libpath.size() > 0) {
-				break;
-			}
-		}
-#endif
-
 		m_sym_finder.init();
 		std::pair<void *, std::string> path = m_sym_finder.findSymLib("tblink");
 
@@ -127,6 +63,17 @@ const std::string &TbLink::getLibPath() {
 ISymFinder *TbLink::sym_finder() {
 	m_sym_finder.init();
 	return &m_sym_finder;
+}
+
+ISymFinder::result_t TbLink::load_library(
+			const std::string &path) {
+	void *hndl = dlopen(path.c_str(), RTLD_LAZY);
+
+	if (hndl) {
+		return {ISymFinderUP(new DynLibSymFinder(hndl)), ""};
+	} else {
+		return {ISymFinderUP(), dlerror()};
+	}
 }
 
 TbLink *TbLink::inst() {

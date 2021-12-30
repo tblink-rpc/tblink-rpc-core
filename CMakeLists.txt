@@ -38,6 +38,17 @@ if (NOT PACKAGES_DIR)
   add_subdirectory(tests)
 endif()
 
+execute_process(
+	COMMAND python3-config --includes
+	OUTPUT_VARIABLE PYTHON_PATH
+	)
+
+message("PYTHON_PATH: ${PYTHON_PATH}")
+string(REPLACE "-I" "" PYTHON_PATH ${PYTHON_PATH})
+string(REPLACE " " ";" PYTHON_INCDIRS ${PYTHON_PATH})
+list(GET PYTHON_INCDIRS 0 PYTHON_INCDIR)
+message("PYTHON_INCDIRS: ${PYTHON_INCDIRS}")
+
 
 #******************************************************************** 
 #* Static Library
@@ -46,7 +57,8 @@ add_library(tblink_rpc_core_static ${tblink_rpc_core_SRC})
 
 target_include_directories(tblink_rpc_core_static PRIVATE
 	${PACKAGES_DIR}/json/include
-	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
+	${PYTHON_INCDIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include 
 	)
 
 install(TARGETS tblink_rpc_core_static
@@ -60,8 +72,9 @@ install(TARGETS tblink_rpc_core_static
 add_library(tblink_rpc_core SHARED ${tblink_rpc_core_SRC})
 
 target_include_directories(tblink_rpc_core PRIVATE
-	${PACKAGES_DIR}/json/include
-	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include
+	${PACKAGES_DIR}/json/include 
+	${PYTHON_INCDIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include 
 	)
 
 #target_link_directories(

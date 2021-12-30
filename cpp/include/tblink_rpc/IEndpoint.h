@@ -55,33 +55,11 @@ public:
 
 	virtual void removeListener(IEndpointListener *l) = 0;
 
-	/**
-	 * Process messages until a run-until-event
-	 * request is received
-	 */
-	virtual int32_t await_run_until_event() = 0;
-
 	virtual bool shutdown() = 0;
 
 	virtual comm_state_e comm_state() = 0;
 
 	virtual void update_comm_mode(comm_mode_e m, comm_state_e s) = 0;
-
-	/**
-	 * Yield control to enable message processing.
-	 * Returns 'true' if activity was processed and
-	 * false when idle.
-	 */
-	virtual int32_t yield() = 0;
-
-	virtual int32_t run_until_event() = 0;
-
-	virtual int32_t await_req() = 0;
-
-	/**
-	 * Process messages until the environment has blocking work to do
-	 */
-	virtual int32_t yield_blocking() = 0;
 
 	virtual intptr_t add_time_callback(
 			uint64_t						time,

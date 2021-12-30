@@ -30,10 +30,6 @@ public:
 
 	virtual ~InterfaceInstMsgTransport();
 
-	virtual IParamVal *invoke(
-			IMethodType									*method,
-			IParamValVec								*params) override;
-
 	virtual int32_t invoke_nb(
 			IMethodType									*method,
 			IParamValVec								*params,

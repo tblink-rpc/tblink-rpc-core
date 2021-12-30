@@ -6,12 +6,17 @@
  */
 
 #pragma once
+#include <memory>
 #include <string>
 
 namespace tblink_rpc_core {
 
+class ISymFinder;
+using ISymFinderUP=std::unique_ptr<ISymFinder>;
 class ISymFinder {
 public:
+
+	using result_t=std::pair<ISymFinderUP,std::string>;
 
 	virtual ~ISymFinder() { }
 

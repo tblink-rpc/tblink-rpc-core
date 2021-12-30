@@ -48,6 +48,9 @@ public:
 
 	virtual ISymFinder *sym_finder() override;
 
+	virtual ISymFinder::result_t load_library(
+			const std::string &path) override;
+
 	static TbLink *inst();
 
 private:

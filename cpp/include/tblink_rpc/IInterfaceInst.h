@@ -44,13 +44,6 @@ public:
 	virtual void set_invoke_req_f(const invoke_req_f &req_f) = 0;
 
 	/**
-	 * Invokes a method and returns a response directly.
-	 */
-	virtual IParamVal *invoke(
-			IMethodType									*method,
-			IParamValVec								*params) = 0;
-
-	/**
 	 * Invokes a method and delivers the response via a callback.
 	 * Note that the response may be delivered while within the `invoke_nb`
 	 * call or after it returns.

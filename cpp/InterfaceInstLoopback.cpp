@@ -49,12 +49,6 @@ void InterfaceInstLoopback::peer(InterfaceInstLoopback *p) {
 	}
 }
 
-IParamVal *InterfaceInstLoopback::invoke(
-		IMethodType									*method,
-		IParamValVec								*params) {
-	return 0;
-}
-
 int32_t InterfaceInstLoopback::invoke_nb(
 		IMethodType									*method,
 		IParamValVec								*params,

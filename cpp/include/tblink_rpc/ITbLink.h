@@ -40,6 +40,9 @@ public:
 
 	virtual ISymFinder *sym_finder() = 0;
 
+	virtual ISymFinder::result_t load_library(
+			const std::string &path);
+
 };
 
 }

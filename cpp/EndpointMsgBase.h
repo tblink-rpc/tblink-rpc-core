@@ -44,8 +44,6 @@ public:
 
 	virtual int32_t is_connect_complete() override;
 
-	virtual int32_t await_run_until_event() override;
-
 	virtual bool shutdown() override;
 
 	virtual IEndpoint::comm_state_e comm_state() override;
@@ -61,14 +59,6 @@ public:
 	void sendEvent(IEndpointEvent::kind_t kind);
 
 	void sendEvent(const IEndpointEvent *ev);
-
-	virtual int32_t yield() override;
-
-	virtual int32_t run_until_event() override;
-
-	virtual int32_t await_req() override;
-
-	virtual int32_t yield_blocking() override;
 
 	virtual intptr_t add_time_callback(
 			uint64_t						time,
