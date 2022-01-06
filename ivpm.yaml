@@ -2,6 +2,9 @@
 package:
    name: tblink-rpc-core
    version: 0.0.1
+
+   setup-deps:
+   - cython
    
    deps:
    - name: cython
