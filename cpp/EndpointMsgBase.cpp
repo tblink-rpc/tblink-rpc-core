@@ -148,6 +148,7 @@ int32_t EndpointMsgBase::init(IEndpointServices *services) {
 }
 
 int32_t EndpointMsgBase::is_init() {
+	DEBUG("is_init m_init=%d m_peer_init=%d", m_init, m_peer_init);
 	if (m_init == -1 || m_peer_init == -1) {
 		return -1;
 	} else {
@@ -533,6 +534,7 @@ const std::vector<IInterfaceInst *> &EndpointMsgBase::getPeerInterfaceInsts() {
 EndpointMsgBase::rsp_t EndpointMsgBase::req_init(
 			intptr_t		id,
 			IParamValMap 	*params) {
+	DEBUG_ENTER("req_init");
 	m_peer_init = 1;
 
 	if (!m_services) {
@@ -544,6 +546,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_init(
 		}
 	}
 
+	DEBUG_LEAVE("req_init");
 	return {IParamValMapUP(mkValMap()), IParamValMapUP()};
 }
 

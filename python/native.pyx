@@ -428,8 +428,8 @@ cdef class EndpointListener(object):
     def __init__(self, ev_f):
         self.ev_f = ev_f
         
-    def __dealloc__(self):
-        del self._hndl
+#    def __dealloc__(self):
+#        del self._hndl
         
     @staticmethod
     cdef _mk(ev_f, native_decl.IEndpointListener *hndl):

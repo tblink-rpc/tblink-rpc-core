@@ -48,28 +48,40 @@ int32_t EndpointLoopback::send_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMap			*params) {
-	return m_peer->peer_recv_req(method, id, params);
+	DEBUG_ENTER("send_req");
+	int32_t ret = m_peer->peer_recv_req(method, id, params);
+	DEBUG_LEAVE("send_req %d", ret);
+	return ret;
 }
 
 int32_t EndpointLoopback::peer_recv_req(
 		const std::string		&method,
 		intptr_t				id,
 		IParamValMap			*params) {
-	return recv_req(method, id, params);
+	DEBUG_ENTER("peer_recv_req");
+	int32_t ret = recv_req(method, id, params);
+	DEBUG_LEAVE("peer_recv_req %d", ret);
+	return ret;
 }
 
 int32_t EndpointLoopback::send_rsp(
 		intptr_t				id,
 		IParamValMap			*result,
 		IParamValMap			*error) {
-	return m_peer->peer_recv_rsp(id, result, error);
+	DEBUG_ENTER("send_rsp");
+	int32_t ret = m_peer->peer_recv_rsp(id, result, error);
+	DEBUG_LEAVE("send_rsp %d", ret);
+	return ret;
 }
 
 int32_t EndpointLoopback::peer_recv_rsp(
 		intptr_t				id,
 		IParamValMap			*result,
 		IParamValMap			*error) {
-	return recv_rsp(id, result, error);
+	DEBUG_ENTER("peer_recv_rsp");
+	int32_t ret = recv_rsp(id, result, error);
+	DEBUG_LEAVE("peer_recv_rsp %d", ret);
+	return ret;
 }
 
 } /* namespace tblink_rpc_core */

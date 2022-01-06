@@ -41,11 +41,13 @@ ILaunchType::result_t LaunchTypeNativeLoopback::launch(
 
 	delete params;
 
+	/*
 	if (!services) {
 		services = TbLink::inst()->getDefaultServicesFactory()->create();
 	}
 
 	ep->init(services);
+	 */
 
 	return {ep, msg};
 }
