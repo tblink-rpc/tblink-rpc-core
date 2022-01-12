@@ -70,20 +70,24 @@ cdef class ParamVal(object):
         return dynamic_cast[native_decl.IParamValBoolP](self._hndl)
     cdef native_decl.IParamValInt *asInt(self):
         return dynamic_cast[native_decl.IParamValIntP](self._hndl)
-    cdef native_decl.IParamValVec *asStr(self):
-        return dynamic_cast[native_decl.IParamValVecP](self._hndl)
+    cdef native_decl.IParamValStr *asStr(self):
+        return dynamic_cast[native_decl.IParamValStrP](self._hndl)
     
 #********************************************************************
 #* ParamValBool
 #********************************************************************
 cdef class ParamValBool(ParamVal):
-    pass
+    cpdef val(self):
+        return self.asBool().val()
 
 #********************************************************************
 #* ParamValInt
 #********************************************************************
 cdef class ParamValInt(ParamVal):
-    pass
+    cpdef val_s(self):
+        return self.asInt().val_s()
+    cpdef val_u(self):
+        return self.asInt().val_u()
 
 #********************************************************************
 #* ParamValMap
@@ -95,7 +99,8 @@ cdef class ParamValMap(ParamVal):
 #* ParamValStr
 #********************************************************************
 cdef class ParamValStr(ParamVal):
-    pass
+    cpdef val(self):
+        return self.asStr().val()
 
 #********************************************************************
 #* ParamValVec
@@ -126,11 +131,7 @@ cdef class ParamValVec(ParamVal):
 #* Callback method for invocation responses
 #********************************************************************
 cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with gil:
-    print("--> interface_inst_rsp_f")
-    sys.stdout.flush()
     obj(ParamVal._mk(params))
-    print("<-- interface_inst_rsp_f")
-    sys.stdout.flush()
     
 #********************************************************************
 #* invoke_rsp_closure
