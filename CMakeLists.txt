@@ -32,8 +32,6 @@ file(GLOB tblink_rpc_core_SRC
 if (NOT PACKAGES_DIR)
   set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
 
-  set (GLOG_DIR "${PACKAGES_DIR}/glog")
-
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
   enable_testing()
 
@@ -41,28 +39,10 @@ if (NOT PACKAGES_DIR)
 endif()
 
 
-if (GLOG_DIR)
-  ExternalProject_Add(GLOG
-    PREFIX glog
-    SOURCE_DIR "${GLOG_DIR}"
-    CMAKE_CACHE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/glog
-      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-      -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
-      -DBUILD_SHARED_LIBS:BOOL=OFF
-      -DCMAKE_DEBUG_POSTFIX:STRING=""
-  )  
-endif()
-
 #******************************************************************** 
 #* Static Library
 #******************************************************************** 
 add_library(tblink_rpc_core_static ${tblink_rpc_core_SRC})
-
-add_dependencies(
-	tblink_rpc_core_static
-	GLOG
-	)
 
 target_include_directories(tblink_rpc_core_static PRIVATE
 	${PACKAGES_DIR}/json/include
@@ -85,11 +65,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
 	set(libglog glog)
 endif()    
-
-add_dependencies(
-	tblink_rpc_core
-	GLOG
-	)
 
 target_include_directories(tblink_rpc_core PRIVATE
 	${PACKAGES_DIR}/json/include
