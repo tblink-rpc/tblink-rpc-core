@@ -28,8 +28,20 @@ public:
 	 * Launches a peer endpoint and returns the appropriate
 	 * endpoint. In the case of an error, the string will
 	 * contain an error message
+	 *
+	 * If the launcher wishes to specify the endpoint services,
+	 * then that must be done now. Otherwise, the environment
+	 * implementing the launcher will specify the default
+	 * services for that environment
 	 */
-	virtual result_t launch(ILaunchParams *params) = 0;
+	virtual result_t launch(
+			ILaunchParams 		*params,
+			IEndpointServices	*services) = 0;
+
+	/**
+	 *
+	 */
+	virtual ILaunchParams *newLaunchParams() = 0;
 
 };
 

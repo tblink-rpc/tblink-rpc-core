@@ -129,4 +129,8 @@ dmypy.json
 .pyre/
 
 packages/
+rundir/
+cache/
 
+python/native.cpp
+python/native.h

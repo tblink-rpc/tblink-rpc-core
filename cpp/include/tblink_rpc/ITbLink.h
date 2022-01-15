@@ -9,6 +9,7 @@
 #include <vector>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IEndpointServices.h"
+#include "tblink_rpc/IEndpointServicesFactory.h"
 #include "tblink_rpc/ILaunchParams.h"
 #include "tblink_rpc/ILaunchType.h"
 #include "tblink_rpc/ISymFinder.h"
@@ -21,13 +22,13 @@ public:
 
 	virtual ~ITbLink() { }
 
-	virtual IEndpoint *mkJsonRpcEndpoint(
-			IEndpoint::Type		type,
-			IEndpointServices	*services) = 0;
+	virtual IEndpoint *getDefaultEP() const = 0;
 
-	virtual ITransport *mkSocketTransport(
-			pid_t			pid,
-			int32_t 		socket) = 0;
+	virtual void setDefaultEP(IEndpoint *) = 0;
+
+	virtual IEndpointServicesFactory *getDefaultServicesFactory() = 0;
+
+	virtual void setDefaultServicesFactory(IEndpointServicesFactory *f) = 0;
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
 
@@ -35,11 +36,12 @@ public:
 
 	virtual ILaunchType *findLaunchType(const std::string &id) = 0;
 
-	virtual ILaunchParams *newLaunchParams() = 0;
-
 	virtual const std::string &getLibPath() = 0;
 
 	virtual ISymFinder *sym_finder() = 0;
+
+	virtual ISymFinder::result_t load_library(
+			const std::string &path) = 0;
 
 };
 

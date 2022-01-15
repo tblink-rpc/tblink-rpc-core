@@ -20,6 +20,7 @@
 #endif
 #include "nlohmann/json.hpp"
 
+#include "Debug.h"
 #include "JsonParamValFactory.h"
 #include "ParamValBool.h"
 #include "ParamValInt.h"
@@ -27,24 +28,16 @@
 #include "ParamValStr.h"
 #include "ParamValVec.h"
 
-#undef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
+#undef EN_DEBUG_TRANSPORT_JSON_SOCKET
 
-#ifdef EN_DEBUG_SOCKET_MESSAGE_TRANSPORT
-/*
+#ifdef EN_DEBUG_TRANSPORT_JSON_SOCKET
+DEBUG_SCOPE(TransportJsonSocket)
 #define DEBUG_ENTER(fmt, ...) \
-	VLOG(1) << "--> SocketMessageTransport::" << fmt
+	DEBUG_ENTER_BASE(TransportJsonSocket, fmt, ##__VA_ARGS__)
 #define DEBUG_LEAVE(fmt, ...) \
-	VLOG(1) << "<-- SocketMessageTransport::" << fmt
+	DEBUG_LEAVE_BASE(TransportJsonSocket, fmt, ##__VA_ARGS__)
 #define DEBUG(fmt, ...) \
-	VLOG(1) << "SocketMessageTransport: " << fmt
-	 */
-#define DEBUG_ENTER(fmt, ...) \
-	fprintf(stdout, "--> SocketMessageTransport::" fmt, ##__VA_ARGS__)
-#define DEBUG_LEAVE(fmt, ...) \
-	fprintf(stdout, "<-- SocketMessageTransport::" fmt, ##__VA_ARGS__)
-#define DEBUG(fmt, ...) \
-	fprintf(stdout, "SocketMessageTransport: "); \
-	fprintf(stdout, fmt, ##__VA_ARGS__)
+	DEBUG_BASE(TransportJsonSocket, fmt, ##__VA_ARGS__)
 #else
 #define DEBUG(fmt, ...)
 #define DEBUG_ENTER(fmt, ...)
@@ -536,7 +529,7 @@ int32_t TransportJsonSocket::process_data(char *data, uint32_t sz) {
 				msgbuf_append(data[i]);
 				if (m_msgbuf_idx >= m_msg_length) {
 					msgbuf_append(0);
-//					DEBUG("Received message: \"") << m_msgbuf << "\"";
+					DEBUG("Received message %s", m_msgbuf);
 					nlohmann::json msg;
 					try {
 						msg = nlohmann::json::parse(m_msgbuf);

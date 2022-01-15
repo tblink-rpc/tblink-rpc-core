@@ -28,6 +28,12 @@ public:
 			const std::string		&key,
 			const std::string		&val) override;
 
+	virtual bool has_param(
+			const std::string		&key) override;
+
+	virtual std::string get_param(
+			const std::string		&key) override;
+
 	virtual const std::map<std::string,std::string> &params() const {
 		return m_params;
 	}

@@ -36,6 +36,9 @@ cwd = os.getcwd()
 if not os.path.isdir(os.path.join(cwd, "build")):
     os.makedirs(os.path.join(cwd, "build"))
 
+if not os.path.isdir(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc")):
+    os.makedirs(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc"))
+
 # Run configure...
 result = subprocess.run(
     ["cmake", 
@@ -219,19 +222,29 @@ setup(
       'tblink-rpc = tblink_rpc.__main__:main'
     ]
   },
+  install_requires=[
+      'pyyaml'
+  ],
   setup_requires=[
     'setuptools_scm',
+    'cython'
   ],
   cmdclass={'build_ext': build_ext},
   ext_modules=[
-        Extension("tblink_rpc.tblink_rpc_stub",
+        Extension("tblink_rpc_core.native",
             extra_compile_args=extra_compile_args,
 #            include_dirs=[
 #                os.path.join(pybfms_root, 'ext/common'), 
 #                os.path.join(pybfms_root, 'ext/hdl_sim')],
             sources=[
-                os.path.join(tblink_rpc_core_dir, 'python', "tblink_rpc_stub.pyx"), 
+                os.path.join(tblink_rpc_core_dir, 'python', "native.pyx"), 
+                os.path.join(tblink_rpc_core_dir, 'python', 'invoke_req_closure.cpp')
             ],
+            language="c++",
+            include_dirs=[
+                os.path.join(tblink_rpc_core_dir, 'cpp'),
+                os.path.join(tblink_rpc_core_dir, 'cpp', 'include')
+            ]
 #            libraries=[
 #                "-Wl,--whole-archive",
 #                "tblink_rpc_hdl",

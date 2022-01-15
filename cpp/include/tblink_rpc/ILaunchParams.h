@@ -8,6 +8,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include <vector>
 
 namespace tblink_rpc_core {
 
@@ -23,6 +24,12 @@ public:
 	virtual void add_param(
 			const std::string		&key,
 			const std::string		&val) = 0;
+
+	virtual bool has_param(
+			const std::string		&key) = 0;
+
+	virtual std::string get_param(
+			const std::string		&key) = 0;
 
 	virtual const std::map<std::string,std::string> &params() const = 0;
 

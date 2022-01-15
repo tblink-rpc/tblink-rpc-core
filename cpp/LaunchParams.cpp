@@ -28,4 +28,18 @@ void LaunchParams::add_param(
 	m_params.insert({key, val});
 }
 
+bool LaunchParams::has_param(
+			const std::string		&key) {
+	return m_params.find(key) != m_params.end();
+}
+
+std::string LaunchParams::get_param(
+			const std::string		&key) {
+	if (m_params.find(key) != m_params.end()) {
+		return m_params.find(key)->second;
+	} else {
+		return "";
+	}
+}
+
 } /* namespace tblink_rpc_core */

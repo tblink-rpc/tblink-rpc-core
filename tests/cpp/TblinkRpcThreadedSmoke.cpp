@@ -22,7 +22,7 @@
 #include <winsock2.h>
 #endif
 #include "BfmReqRsp.h"
-#include "EndpointMsgTransport.h"
+#include "../../cpp/EndpointMsgBase.h"
 #include "TblinkRpcThreadedSmoke.h"
 #include "TransportJsonSocket.h"
 #include "TransportMessageFifo.h"
