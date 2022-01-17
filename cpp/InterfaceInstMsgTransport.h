@@ -26,11 +26,11 @@ public:
 			IInterfaceType				*type,
 			const std::string			&inst_name,
 			bool						is_mirror,
-			const invoke_req_f			&req_f);
+			IInterfaceImpl				*impl);
 
 	virtual ~InterfaceInstMsgTransport();
 
-	virtual int32_t invoke_nb(
+	virtual int32_t invoke(
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;

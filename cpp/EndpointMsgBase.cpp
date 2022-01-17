@@ -480,7 +480,8 @@ IInterfaceTypeBuilder *EndpointMsgBase::newInterfaceTypeBuilder(
 }
 
 IInterfaceType *EndpointMsgBase::defineInterfaceType(
-			IInterfaceTypeBuilder	*type) {
+			IInterfaceTypeBuilder	*type,
+			IInterfaceInstFactory	*factory) {
 	InterfaceTypeBuilder *builder =
 			static_cast<InterfaceTypeBuilder *>(type);
 	InterfaceType *if_type = builder->type();
@@ -497,7 +498,7 @@ IInterfaceInst *EndpointMsgBase::defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			bool					is_mirror,
-			const invoke_req_f		&req_f) {
+			IInterfaceImpl			*impl) {
 	DEBUG_ENTER("defineInterfaceInst: %s type=%s is_mirror=%d",
 			inst_name.c_str(), type->name().c_str(), is_mirror);
 
@@ -506,7 +507,7 @@ IInterfaceInst *EndpointMsgBase::defineInterfaceInst(
 			static_cast<InterfaceType *>(type),
 			inst_name,
 			is_mirror,
-			req_f);
+			impl);
 	m_local_ifc_insts.insert({inst_name, InterfaceInstMsgTransportUP(ifinst)});
 	m_local_ifc_insts_pl.push_back(ifinst);
 
@@ -1119,12 +1120,12 @@ EndpointMsgBase::rsp_t EndpointMsgBase::wait_rsp(intptr_t id) {
 #endif
 }
 
-int32_t EndpointMsgBase::invoke_nb(
+int32_t EndpointMsgBase::invoke(
 		InterfaceInstBase		*ifinst,
 		IMethodType 			*method,
 		IParamValVec 			*params,
 		const invoke_rsp_f		&completion_f) {
-	DEBUG_ENTER("invoke_nb");
+	DEBUG_ENTER("invoke");
 	int ret = 0;
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
@@ -1163,6 +1164,8 @@ int32_t EndpointMsgBase::invoke_nb(
 						std::placeholders::_2,
 						std::placeholders::_3));
 	}
+
+	DEBUG_LEAVE("invoke");
 
 	return ret;
 }

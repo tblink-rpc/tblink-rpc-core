@@ -28,7 +28,7 @@ public:
 			IInterfaceType					*type,
 			const std::string				&inst_name,
 			bool							is_mirror,
-			const invoke_req_f				&req_f);
+			IInterfaceImpl					*impl);
 
 	virtual ~InterfaceInstBase();
 
@@ -40,9 +40,7 @@ public:
 
 	virtual bool is_mirror() { return m_is_mirror; }
 
-	virtual void set_invoke_req_f(const invoke_req_f &req_f) override {
-		m_req_f = req_f;
-	}
+	virtual void setImpl(IInterfaceImpl *impl) override;
 
 	virtual const std::string &name() override {
 		return m_inst_name;
@@ -54,11 +52,7 @@ public:
 			const invoke_rsp_f		&response_f);
 
 	/** Must be implemented by sub-types
-	virtual IParamVal *invoke(
-			IMethodType									*method,
-			IParamValVec								*params) override;
-
-	virtual int32_t invoke_nb(
+	virtual int32_t invoke(
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) override;
@@ -98,7 +92,7 @@ protected:
 	IInterfaceType								*m_type;
 	std::string									m_inst_name;
 	bool										m_is_mirror;
-	invoke_req_f								m_req_f;
+	IInterfaceImplUP							m_impl;
 	intptr_t									m_call_id;
 
 	std::unordered_map<intptr_t,invoke_rsp_f>	m_outbound_invoke_m;

@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <stdint.h>
+#include "tblink_rpc/IInterfaceImpl.h"
 #include "IInterfaceType.h"
 #include "IMethodType.h"
 #include "IParamValFactory.h"
@@ -41,14 +42,14 @@ public:
 
 	virtual bool is_mirror() = 0;
 
-	virtual void set_invoke_req_f(const invoke_req_f &req_f) = 0;
+	virtual void setImpl(IInterfaceImpl *impl) = 0;
 
 	/**
 	 * Invokes a method and delivers the response via a callback.
-	 * Note that the response may be delivered while within the `invoke_nb`
+	 * Note that the response may be delivered while within the `invoke`
 	 * call or after it returns.
 	 */
-	virtual int32_t invoke_nb(
+	virtual int32_t invoke(
 			IMethodType									*method,
 			IParamValVec								*params,
 			const invoke_rsp_f							&completion_f) = 0;

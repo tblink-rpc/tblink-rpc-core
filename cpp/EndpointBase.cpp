@@ -154,7 +154,8 @@ IInterfaceTypeBuilder *EndpointBase::newInterfaceTypeBuilder(
 }
 
 IInterfaceType *EndpointBase::defineInterfaceType(
-		IInterfaceTypeBuilder	*type) {
+		IInterfaceTypeBuilder	*type,
+		IInterfaceInstFactory	*factory) {
 	InterfaceTypeBuilder *builder =
 			static_cast<InterfaceTypeBuilder *>(type);
 	InterfaceType *iftype = builder->type();

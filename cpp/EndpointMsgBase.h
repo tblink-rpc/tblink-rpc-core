@@ -93,13 +93,14 @@ public:
 			const std::string		&name) override;
 
 	virtual IInterfaceType *defineInterfaceType(
-			IInterfaceTypeBuilder	*type) override;
+			IInterfaceTypeBuilder	*type,
+			IInterfaceInstFactory	*factory) override;
 
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			bool					is_mirror,
-			const invoke_req_f		&req_f) override;
+			IInterfaceImpl			*impl) override;
 
 
 	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
@@ -168,7 +169,7 @@ public:
 //private:
 	// Methods used by InterfaceInst
 
-	int32_t invoke_nb(
+	int32_t invoke(
 			InterfaceInstBase	*ifinst,
 			IMethodType 		*method,
 			IParamValVec 		*params,

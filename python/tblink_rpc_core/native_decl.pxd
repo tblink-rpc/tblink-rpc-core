@@ -127,6 +127,31 @@ cdef extern from "tblink_rpc/IInterfaceType.h" namespace "tblink_rpc_core":
 ctypedef IInterfaceType *IInterfaceTypeP
                 
 #********************************************************************
+#* IInterfaceInstFactory
+#********************************************************************
+cdef extern from "tblink_rpc/IInterfaceInstFactory.h" namespace "tblink_rpc_core":
+    cdef cppclass IInterfaceInstFactory:
+        IInterfaceInst *createInterfaceInst(
+            IEndpoint       *ep,
+            IInterfaceType  *type,
+            const cpp_string    &inst_name,
+            bool                is_mirror)
+        IInterfaceInstFactory *clone()
+        
+#********************************************************************
+#* IInterfaceImpl
+#********************************************************************
+cdef extern from "tblink_rpc/IInterfaceImpl.h" namespace "tblink_rpc_core":
+    cdef cppclass IInterfaceImpl:
+        void invoke(
+            IInterfaceInst *,
+            IMethodType *,
+            intptr_t,
+            IParamValVec *
+            )
+        
+
+#********************************************************************
 #* IInterfaceInst
 #********************************************************************
 cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
@@ -141,7 +166,7 @@ cdef extern from "tblink_rpc/IInterfaceInst.h" namespace "tblink_rpc_core":
         
         bool is_mirror()
         
-        int invoke_nb(
+        int invoke(
             IMethodType *, IParamValVec *, const invoke_rsp_f &)
         
         void invoke_rsp(intptr_t, IParamVal *)
@@ -304,13 +329,14 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
             const cpp_string &)
         
         IInterfaceType *defineInterfaceType(
-            IInterfaceTypeBuilder *)
+            IInterfaceTypeBuilder   *,
+            IInterfaceInstFactory   *)
         
         IInterfaceInst *defineInterfaceInst(
             IInterfaceType *,
             const cpp_string &,
             bool,
-            const invoke_req_f &
+            IInterfaceImpl *
             )
 
         const cpp_vector[IInterfaceTypeP] &getInterfaceTypes()

@@ -12,7 +12,9 @@
 //#include "ITypeBuilder.h"
 #include "tblink_rpc/IEndpointListener.h"
 #include "tblink_rpc/IEndpointServices.h"
+#include "tblink_rpc/IInterfaceImpl.h"
 #include "tblink_rpc/IInterfaceInst.h"
+#include "tblink_rpc/IInterfaceInstFactory.h"
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IInterfaceTypeBuilder.h"
 
@@ -87,13 +89,14 @@ public:
 			const std::string		&name) = 0;
 
 	virtual IInterfaceType *defineInterfaceType(
-			IInterfaceTypeBuilder	*type) = 0;
+			IInterfaceTypeBuilder	*type,
+			IInterfaceInstFactory	*factory) = 0;
 
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
 			bool					is_mirror,
-			const invoke_req_f		&req_f) = 0;
+			IInterfaceImpl			*impl) = 0;
 
 	/**
 	 * Poll, waiting for a message to be received.

@@ -54,7 +54,8 @@ public:
 			const std::string		&name) override;
 
 	virtual IInterfaceType *defineInterfaceType(
-			IInterfaceTypeBuilder	*type) override;
+			IInterfaceTypeBuilder	*type,
+			IInterfaceInstFactory	*factory) override;
 
 	/**
 	 * Returns the available interface types registered by the

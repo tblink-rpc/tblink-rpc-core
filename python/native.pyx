@@ -139,6 +139,12 @@ cdef public void interface_inst_rsp_f(obj, native_decl.IParamVal *params) with g
 cdef extern native_decl.invoke_rsp_f invoke_rsp_closure(cpy_ref.PyObject *)
 
 #********************************************************************
+#* InterfaceImpl
+#********************************************************************
+cdef class InterfaceImpl(object):
+    cdef native_decl.IInterfaceImpl *_hndl
+
+#********************************************************************
 #* InterfaceInst
 #********************************************************************
 cdef class InterfaceInst(object):
@@ -158,12 +164,12 @@ cdef class InterfaceInst(object):
     cpdef is_mirror(self):
         return self._hndl.is_mirror()
     
-    cpdef invoke_nb(
+    cpdef invoke(
         self,
         MethodType  method,
         ParamValVec params,
         completion_f):
-        self._hndl.invoke_nb(
+        self._hndl.invoke(
             method._hndl,
             params.asVec(),
             invoke_rsp_closure(<cpy_ref.PyObject *>(completion_f)))
@@ -233,6 +239,19 @@ cdef class InterfaceType(object):
         ret = InterfaceType()
         ret._hndl = hndl
         return ret
+    
+#********************************************************************
+#* InterfaceInstFactory
+#********************************************************************
+cdef class InterfaceInstFactory(object):
+    cdef native_decl.IInterfaceInstFactory *_hndl
+    
+    cpdef createInterfaceInst(self,
+        Endpoint        ep,
+        InterfaceType   type,
+        inst_name,
+        is_mirror):
+        pass
     
 #********************************************************************
 #* Type
@@ -542,9 +561,14 @@ cdef class Endpoint(object):
             name.encode())
         return ret
     
-    cpdef defineInterfaceType(self, InterfaceTypeBuilder iftype_b):
+    cpdef defineInterfaceType(self, 
+                              InterfaceTypeBuilder iftype_b,
+                              InterfaceInstFactory factory):
+        cdef native_decl.IInterfaceInstFactory *factory_h = NULL
         return InterfaceType._mk(
-            self._hndl.defineInterfaceType(iftype_b._hndl))
+            self._hndl.defineInterfaceType(
+                iftype_b._hndl,
+                factory_h))
         
     cpdef defineInterfaceInst(
             self, 
@@ -554,6 +578,9 @@ cdef class Endpoint(object):
             req_f):
         # Create a class instance that binds interface_inst_req_f and
         # req_f together
+        
+        # TODO: complete
+        cdef native_decl.IInterfaceImpl *impl_h = NULL
         
         if t is None:
             raise Exception("Null type defined for interface %s" % name)
@@ -565,7 +592,7 @@ cdef class Endpoint(object):
             t._hndl,
             name.encode(),
             is_mirror,
-            invoke_req_closure(<cpy_ref.PyObject *>(req_f)))
+            impl_h)
         
         if ret_h != NULL:
             return InterfaceInst._mk(ret_h)

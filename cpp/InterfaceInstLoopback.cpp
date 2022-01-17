@@ -25,8 +25,8 @@ InterfaceInstLoopback::InterfaceInstLoopback(
 		IInterfaceType			*type,
 		const std::string		&inst_name,
 		bool					is_mirror,
-		const invoke_req_f		&req_f) : InterfaceInstBase(
-				endpoint, type, inst_name, is_mirror, req_f),
+		IInterfaceImpl			*impl) : InterfaceInstBase(
+				endpoint, type, inst_name, is_mirror, impl),
 				m_peer(0), m_call_id(1) {
 
 }
@@ -49,7 +49,7 @@ void InterfaceInstLoopback::peer(InterfaceInstLoopback *p) {
 	}
 }
 
-int32_t InterfaceInstLoopback::invoke_nb(
+int32_t InterfaceInstLoopback::invoke(
 		IMethodType									*method,
 		IParamValVec								*params,
 		const invoke_rsp_f							&completion_f) {
@@ -71,7 +71,7 @@ int32_t InterfaceInstLoopback::req_invoke_nb(
 	auto it = m_method_m.find(method);
 
 	if (it != m_method_m.end()) {
-		m_req_f(
+		m_impl->invoke(
 				this,
 				it->second,
 				call_id,

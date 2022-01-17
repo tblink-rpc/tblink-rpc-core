@@ -43,17 +43,21 @@ InterfaceInstBase::InterfaceInstBase(
 		IInterfaceType					*type,
 		const std::string				&inst_name,
 		bool							is_mirror,
-		const invoke_req_f				&req_f) {
+		IInterfaceImpl					*impl) {
 	m_endpoint = endpoint;
 	m_type = type;
 	m_inst_name = inst_name;
 	m_is_mirror = is_mirror;
-	m_req_f = req_f;
+	m_impl = IInterfaceImplUP(impl);
 	m_call_id = 0;
 }
 
 InterfaceInstBase::~InterfaceInstBase() {
 	// TODO Auto-generated destructor stub
+}
+
+void InterfaceInstBase::setImpl(IInterfaceImpl *impl) {
+	m_impl = IInterfaceImplUP(impl);
 }
 
 /**
@@ -67,7 +71,7 @@ void InterfaceInstBase::invoke_req(
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
 	m_invoke_m.insert({call_id, response_f});
-	m_req_f(this, method, call_id, params);
+	m_impl->invoke(this, method, call_id, params);
 	DEBUG_LEAVE("invoke_req");
 }
 
