@@ -17,6 +17,7 @@
 #include "DynLibSymFinder.h"
 #include "EndpointMsgBase.h"
 #include "LaunchParams.h"
+#include "TbLinkEvent.h"
 #include "TransportJsonSocket.h"
 
 namespace tblink_rpc_core {
@@ -28,6 +29,43 @@ TbLink::TbLink() : m_default_ep(0) {
 
 TbLink::~TbLink() {
 	// TODO Auto-generated destructor stub
+}
+
+void TbLink::addListener(ITbLinkListener *l) {
+	m_listeners.push_back(ITbLinkListenerUP(l));
+}
+
+void TbLink::removeListener(ITbLinkListener *l) {
+	for (std::vector<ITbLinkListenerUP>::iterator
+			it=m_listeners.begin();
+			it!=m_listeners.end(); it++) {
+		if (it->get() == l) {
+			it->release();
+			m_listeners.erase(it);
+			break;
+		}
+	}
+}
+
+void TbLink::addEndpoint(IEndpoint *ep, bool is_default=false) {
+	m_endpoints.push_back(IEndpointUP(ep));
+	if (is_default) {
+		m_default_ep = ep;
+	}
+	sendEvent(TbLinkEventKind::AddEndpoint, ep);
+}
+
+void TbLink::removeEndpoint(IEndpoint *ep) {
+	for (std::vector<IEndpointUP>::iterator
+			it=m_endpoints.begin();
+			it!=m_endpoints.end(); it++) {
+		if (it->get() == ep) {
+			it->release();
+			m_endpoints.erase(it);
+			break;
+		}
+	}
+	sendEvent(TbLinkEventKind::RemEndpoint, ep);
 }
 
 void TbLink::addLaunchType(ILaunchType *launch_t) {
@@ -81,6 +119,14 @@ TbLink *TbLink::inst() {
 		m_inst = new TbLink();
 	}
 	return m_inst;
+}
+
+void TbLink::sendEvent(TbLinkEventKind kind, void *hndl) {
+	TbLinkEvent ev(kind, hndl);
+
+	for (auto it=m_listeners.begin(); it!=m_listeners.end(); it++) {
+		(*it)->event(&ev);
+	}
 }
 
 TbLink *TbLink::m_inst = 0;

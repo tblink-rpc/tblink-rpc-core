@@ -8,7 +8,6 @@
 #include <Python.h>
 #include <functional>
 #include "tblink_rpc/IEndpoint.h"
-#include "EndpointListenerBase.h"
 #include "tblink_rpc/IInterfaceInst.h"
 #include "native.h"
 

@@ -13,7 +13,7 @@
 #include "tblink_rpc/ILaunchParams.h"
 #include "tblink_rpc/ILaunchType.h"
 #include "tblink_rpc/ISymFinder.h"
-#include "tblink_rpc/ITransport.h"
+#include "tblink_rpc/ITbLinkListener.h"
 
 namespace tblink_rpc_core {
 
@@ -29,6 +29,14 @@ public:
 	virtual IEndpointServicesFactory *getDefaultServicesFactory() = 0;
 
 	virtual void setDefaultServicesFactory(IEndpointServicesFactory *f) = 0;
+
+	virtual void addListener(ITbLinkListener *l) = 0;
+
+	virtual void removeListener(ITbLinkListener *l) = 0;
+
+	virtual void addEndpoint(IEndpoint *ep, bool is_default=false) = 0;
+
+	virtual void removeEndpoint(IEndpoint *ep) = 0;
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
 

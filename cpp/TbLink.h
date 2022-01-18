@@ -28,6 +28,14 @@ public:
 		m_default_ep = ep;
 	}
 
+	virtual void addListener(ITbLinkListener *l) override;
+
+	virtual void removeListener(ITbLinkListener *l) override;
+
+	virtual void addEndpoint(IEndpoint *ep, bool is_default=false) override;
+
+	virtual void removeEndpoint(IEndpoint *ep) override;
+
 	virtual IEndpointServicesFactory *getDefaultServicesFactory() override {
 		return m_default_services_f.get();
 	}
@@ -54,10 +62,18 @@ public:
 	static TbLink *inst();
 
 private:
+
+	void sendEvent(TbLinkEventKind kind, void *hndl);
+
+private:
 	IEndpoint								*m_default_ep;
 	IEndpointServicesFactoryUP				m_default_services_f;
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
+
+	std::vector<IEndpointUP>				m_endpoints;
+	std::vector<ITbLinkListenerUP>			m_listeners;
+
 	std::string								m_libpath;
 	DynSymFinder							m_sym_finder;
 	static TbLink							*m_inst;

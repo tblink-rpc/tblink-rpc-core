@@ -377,6 +377,25 @@ cdef extern from "tblink_rpc/ILaunchType.h" namespace "tblink_rpc_core":
 ctypedef ILaunchType *ILaunchTypeP        
 
 #********************************************************************
+#* ITbLinkEvent
+#********************************************************************
+cdef extern from "tblink_rpc/ITbLinkEvent.h" namespace "tblink_rpc_core":
+    cdef enum TbLinkEventKind "tblink_rpc_core::TbLinkEventKind":
+        AddEndpoint "tblink_rpc_core::TbLinkEventKind::AddEndpoint",
+        RemEndpoint  "tblink_rpc_core::TbLinkEventKind::RemEndpoint"
+        
+    cdef cppclass ITbLinkEvent:
+        TbLinkEventKind kind()
+
+
+#********************************************************************
+#* ITbLinkListener
+#********************************************************************
+cdef extern from "tblink_rpc/ITbLinkListener.h" namespace "tblink_rpc_core":
+    cdef cppclass ITbLinkListener:
+        
+
+#********************************************************************
 #* ITbLink
 #********************************************************************
 cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
@@ -385,6 +404,8 @@ cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
         IEndpoint *getDefaultEP()
     
         const cpp_vector[ILaunchTypeP] &launchTypes()
+        
+        
     
         ILaunchType *findLaunchType(const cpp_string &id)
         
