@@ -238,7 +238,8 @@ setup(
 #                os.path.join(pybfms_root, 'ext/hdl_sim')],
             sources=[
                 os.path.join(tblink_rpc_core_dir, 'python', "native.pyx"), 
-                os.path.join(tblink_rpc_core_dir, 'python', 'invoke_req_closure.cpp')
+                os.path.join(tblink_rpc_core_dir, 'python', 'invoke_req_closure.cpp'),
+                os.path.join(tblink_rpc_core_dir, 'python', 'TbLinkListenerClosure.cpp')
             ],
             language="c++",
             include_dirs=[

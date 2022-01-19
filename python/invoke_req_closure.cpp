@@ -9,6 +9,7 @@
 #include <functional>
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IInterfaceInst.h"
+#include "tblink_rpc/ITbLinkEvent.h"
 #include "native.h"
 
 using namespace tblink_rpc_core;

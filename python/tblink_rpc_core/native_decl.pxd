@@ -393,6 +393,11 @@ cdef extern from "tblink_rpc/ITbLinkEvent.h" namespace "tblink_rpc_core":
 #********************************************************************
 cdef extern from "tblink_rpc/ITbLinkListener.h" namespace "tblink_rpc_core":
     cdef cppclass ITbLinkListener:
+        pass
+
+cdef extern from "TbLinkListenerClosure.h":
+    cdef cppclass TbLinkListenerClosure(ITbLinkListener):
+        TbLinkListenerClosure(cpy_ref.PyObject *)
         
 
 #********************************************************************
@@ -402,6 +407,10 @@ cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
     cdef cppclass ITbLink:
     
         IEndpoint *getDefaultEP()
+        
+        void addListener(ITbLinkListener *)
+        
+        void removeListener(ITbLinkListener *)
     
         const cpp_vector[ILaunchTypeP] &launchTypes()
         

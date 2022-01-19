@@ -47,11 +47,14 @@ void TbLink::removeListener(ITbLinkListener *l) {
 	}
 }
 
-void TbLink::addEndpoint(IEndpoint *ep, bool is_default=false) {
+void TbLink::addEndpoint(IEndpoint *ep, bool is_default) {
 	m_endpoints.push_back(IEndpointUP(ep));
 	if (is_default) {
 		m_default_ep = ep;
 	}
+	fprintf(stdout, "addEndpoint: %d listeners\n",
+			m_listeners.size());
+	fflush(stdout);
 	sendEvent(TbLinkEventKind::AddEndpoint, ep);
 }
 

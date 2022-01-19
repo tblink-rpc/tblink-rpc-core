@@ -16,8 +16,9 @@ class TbLink(object):
     def __init__(self):
         self.launchtype_m = {}
         self.launchtypes = []
-        self.native_tblink = None
+        self._native_tblink = None
         self._setup_native()
+        self._listeners = []
         
         def dflt_mk_ev():
             return asyncio.Event()
@@ -33,11 +34,25 @@ class TbLink(object):
         return cls._inst
     
     def getDefaultEP(self):
-        return self.native_tblink.getDefaultEP()
+        return self._native_tblink.getDefaultEP()
+    
+    def addListener(self, l):
+        self._listeners.append(l)
+        self._native_tblink.addListener(l)
+        pass
+    
+    def removeListener(self, l):
+        idx = self._listeners.index(l)
+        
+        if idx != -1:
+            self._listeners.pop(idx)
+            
+        self._native_tblink.removeListener(l)
+        pass
     
     def launchTypes(self):
         ret = self.launchtypes.copy()
-        ret.extend(self.native_tblink.launchTypes())
+        ret.extend(self._native_tblink.launchTypes())
         return ret
     
     def addLaunchType(self, lt):
@@ -48,7 +63,7 @@ class TbLink(object):
         if name in self.launchtype_m.keys():
             return self.launchtype_m[name]
         else:
-            return self.native_tblink.findLaunchType(name)
+            return self._native_tblink.findLaunchType(name)
     
     def _setup_native(self):
         # First, check all the loaded libraries to see if they contain
@@ -133,6 +148,6 @@ class TbLink(object):
             lib_path = os.path.join(lib_dir, "libtblink_rpc_core.so")
             
         print("lib_path: %s" % lib_path)
-        self.native_tblink = native.TbLink(lib_path)        
+        self._native_tblink = native.TbLink(lib_path)        
     
     pass

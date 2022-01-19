@@ -6,6 +6,7 @@
 from libc.stdint cimport intptr_t
 from libcpp.cast cimport dynamic_cast
 from libcpp.pair cimport pair as cpp_pair
+from libcpp.map cimport map as cpp_map
 from libcpp.string cimport string as cpp_string
 from libcpp.vector cimport vector as cpp_vector
 from cython.operator cimport dereference as deref, preincrement as inc
@@ -13,6 +14,7 @@ import asyncio
 import sys
 from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e
 from tblink_rpc_core.event_type_e import EventTypeE
+from tblink_rpc_core.tblink_event import TbLinkEventKind
 cimport cpython.ref as cpy_ref
 
 import tblink_rpc_core
@@ -725,15 +727,60 @@ cdef class LaunchType(object):
         ret = LaunchParams()
         ret._hndl = self._hndl.newLaunchParams()
         return ret
+    
+_TbLinkEventKind_n2p_m = {
+    native_decl.TbLinkEventKind.AddEndpoint : TbLinkEventKind.AddEndpoint,
+    native_decl.TbLinkEventKind.RemEndpoint : TbLinkEventKind.RemEndpoint
+    }
+    
+#********************************************************************
+#* TbLinkEvent
+#********************************************************************
+cdef class TbLinkEvent(object):
+    cdef native_decl.ITbLinkEvent *_hndl
+    
+    cpdef kind(self):
+        return _TbLinkEventKind_n2p_m[self._hndl.kind()]
+    
+    cpdef hndl(self):
+        # TODO: can we guess from the kind?
+        return None
+
+    @staticmethod
+    cdef mk(native_decl.ITbLinkEvent *hndl):
+        ret = TbLinkEvent()
+        ret._hndl = hndl
+        return ret
+    
+
+#********************************************************************
+#* TbLinkListenerClosure
+#********************************************************************
+cdef class TbLinkListenerClosure(object):
+    cdef native_decl.TbLinkListenerClosure *_hndl
+    cdef object _listener
+    
+    def __init__(self, listener):
+        self._hndl = new native_decl.TbLinkListenerClosure(<cpy_ref.PyObject *>(self))
+        self._listener = listener
+    
+    cpdef event(self, TbLinkEvent ev):
+        self._listener.event(ev)
+        
+cdef public void tblink_listener_event(obj, native_decl.ITbLinkEvent *ev) with gil:
+    obj.event(TbLinkEvent.mk(ev))
 
 #********************************************************************
 #* TbLink
 #********************************************************************
 cdef class TbLink(object):
     cdef native_decl.ITbLink *_hndl
+    cdef dict _ep_listener_m
+#    cdef cpp_map[object, TbLinkListenerClosure] _ep_listener_m
     
     def __init__(self, lib_path):
         self._hndl = native_decl.get_tblink(lib_path.encode())
+        self._ep_listener_m = {}
         
     cpdef Endpoint getDefaultEP(self):
         cdef IEndpointP ep = self._hndl.getDefaultEP()
@@ -743,6 +790,18 @@ cdef class TbLink(object):
             return ret
         else:
             return None
+        
+    cpdef addListener(self, l):
+        cdef TbLinkListenerClosure c = TbLinkListenerClosure(l)
+        self._hndl.addListener(c._hndl)
+        self._ep_listener_m[l] = c
+        pass
+    
+    cpdef removeListener(self, l):
+        cdef TbLinkListenerClosure c = <TbLinkListenerClosure>self._ep_listener_m[l]
+        self._hndl.removeListener(c._hndl)
+        self._ep_listener_m.pop(l)
+        pass
     
     cpdef findLaunchType(self, id):
         ret = LaunchType()

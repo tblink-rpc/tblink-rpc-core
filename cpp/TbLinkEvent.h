@@ -23,7 +23,7 @@ public:
 	virtual void *hndl() override { return m_hndl; }
 
 private:
-	TbLinkEventKind				*m_kind;
+	TbLinkEventKind				m_kind;
 	void						*m_hndl;
 };
 
