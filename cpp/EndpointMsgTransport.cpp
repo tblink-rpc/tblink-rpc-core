@@ -11,6 +11,8 @@ namespace tblink_rpc_core {
 
 EndpointMsgTransport::EndpointMsgTransport(
 		ITransport *transport) : m_transport(transport) {
+	// We already know that this endpoint is claimed
+	setFlag(IEndpointFlags::Claimed);
 
 	m_transport->init(
 			std::bind(

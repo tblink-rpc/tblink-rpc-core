@@ -26,10 +26,9 @@ ILaunchType::result_t LaunchTypeNativeLoopback::launch(
 		ILaunchParams 			*params,
 		IEndpointServices		*services) {
 	ITbLink *tblink = TbLink::inst();
-	IEndpoint *ep = 0;
 	std::string msg;
 
-	ep = new EndpointLoopback();
+	EndpointLoopback *ep = new EndpointLoopback();
 
 	std::map<std::string,std::string>::const_iterator it;
 
@@ -45,7 +44,8 @@ ILaunchType::result_t LaunchTypeNativeLoopback::launch(
 	fprintf(stdout, "LaunchTypeNativeLoopback::launch\n");
 	fflush(stdout);
 
-	tblink->addEndpoint(ep, is_default);
+	tblink->addEndpoint(ep);
+	tblink->addEndpoint(ep->peer());
 
 	/*
 	if (!services) {

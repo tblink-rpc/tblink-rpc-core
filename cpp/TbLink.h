@@ -32,9 +32,11 @@ public:
 
 	virtual void removeListener(ITbLinkListener *l) override;
 
-	virtual void addEndpoint(IEndpoint *ep, bool is_default=false) override;
+	virtual void addEndpoint(IEndpoint *ep) override;
 
 	virtual void removeEndpoint(IEndpoint *ep) override;
+
+	virtual const std::vector<IEndpoint *> &getEndpoints() const override;
 
 	virtual IEndpointServicesFactory *getDefaultServicesFactory() override {
 		return m_default_services_f.get();
@@ -71,7 +73,7 @@ private:
 	std::map<std::string,ILaunchType *>		m_launch_type_m;
 	std::vector<ILaunchType *>				m_launch_types;
 
-	std::vector<IEndpointUP>				m_endpoints;
+	std::vector<IEndpoint *>				m_endpoints;
 	std::vector<ITbLinkListenerUP>			m_listeners;
 
 	std::string								m_libpath;

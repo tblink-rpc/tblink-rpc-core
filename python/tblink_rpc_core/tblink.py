@@ -50,6 +50,11 @@ class TbLink(object):
         self._native_tblink.removeListener(l)
         pass
     
+    def getEndpoints(self): 
+        ret = []
+        ret.extend(self._native_tblink.getEndpoints())
+        return ret
+    
     def launchTypes(self):
         ret = self.launchtypes.copy()
         ret.extend(self._native_tblink.launchTypes())

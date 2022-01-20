@@ -31,14 +31,20 @@ ILaunchType::result_t LaunchTypeConnectNativeLoopback::launch(
 
 	ITbLink *tblink = TbLink::inst();
 
-	if (!tblink->getDefaultEP()) {
+	for (auto it=tblink->getEndpoints().begin();
+			it!=tblink->getEndpoints().end(); it++) {
+		if (((*it)->getFlags() & IEndpointFlags::LoopbackSec) &&
+				!((*it)->getFlags() & IEndpointFlags::Claimed)) {
+			ep = *it;
+			break;
+		}
+	}
+
+	if (!ep) {
 		msg = "No default endpoint registered";
 	} else {
-		IEndpointLoopback *lb_ep = dynamic_cast<IEndpointLoopback *>(tblink->getDefaultEP());
-		fprintf(stdout, "Default EP: %p\n", tblink->getDefaultEP());
-		fprintf(stdout, "lb_ep=%p\n", lb_ep);
-		ep = lb_ep->peer();
-		fprintf(stdout, "Peer EP: %p\n", ep);
+		// Claim the endpoint
+		ep->setFlag(IEndpointFlags::Claimed);
 	}
 
 	delete params;

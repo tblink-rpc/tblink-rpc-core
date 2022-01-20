@@ -3,7 +3,7 @@ Created on Jul 2, 2021
 
 @author: mballance
 '''
-from enum import IntEnum, Enum, auto
+from enum import IntEnum, Enum, auto, Flag, IntFlag
 from typing import List, Callable
 
 from tblink_rpc_core.interface_inst import InterfaceInst
@@ -30,9 +30,21 @@ class comm_state_e(Enum):
 class comm_mode_e(Enum):
     Automatic = auto()
     Explicit = auto()
+    
+class EndpointFlags(IntFlag):
+    Empty = 0
+    Claimed = (1 << 0)
+    LoopbackPri = (1 << 1)
+    LoopbackSec = (1 << 2)
 
 class Endpoint(object):
     DEBUG_EN = False
+    
+    def getFlags(self) -> EndpointFlags:
+        raise NotImplementedError("getFlags for class %s" % str(type(self)))
+        
+    def setFlag(self, f) -> EndpointFlags:
+        raise NotImplementedError("setFlag for class %s" % str(type(self)))
     
     def init(self, 
              ep_services : 'EndpointServices',

@@ -47,11 +47,8 @@ void TbLink::removeListener(ITbLinkListener *l) {
 	}
 }
 
-void TbLink::addEndpoint(IEndpoint *ep, bool is_default) {
-	m_endpoints.push_back(IEndpointUP(ep));
-	if (is_default) {
-		m_default_ep = ep;
-	}
+void TbLink::addEndpoint(IEndpoint *ep) {
+	m_endpoints.push_back(ep);
 	fprintf(stdout, "addEndpoint: %d listeners\n",
 			m_listeners.size());
 	fflush(stdout);
@@ -59,16 +56,19 @@ void TbLink::addEndpoint(IEndpoint *ep, bool is_default) {
 }
 
 void TbLink::removeEndpoint(IEndpoint *ep) {
-	for (std::vector<IEndpointUP>::iterator
+	for (std::vector<IEndpoint *>::iterator
 			it=m_endpoints.begin();
 			it!=m_endpoints.end(); it++) {
-		if (it->get() == ep) {
-			it->release();
+		if (*it == ep) {
 			m_endpoints.erase(it);
 			break;
 		}
 	}
 	sendEvent(TbLinkEventKind::RemEndpoint, ep);
+}
+
+const std::vector<IEndpoint *> &TbLink::getEndpoints() const {
+	return m_endpoints;
 }
 
 void TbLink::addLaunchType(ILaunchType *launch_t) {

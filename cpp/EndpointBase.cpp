@@ -36,13 +36,21 @@
 
 namespace tblink_rpc_core {
 
-EndpointBase::EndpointBase() : m_services(0), m_listener(0) {
-	// TODO Auto-generated constructor stub
+EndpointBase::EndpointBase() :
+		m_flags(IEndpointFlags::Empty), m_services(0), m_listener(0) {
 
 }
 
 EndpointBase::~EndpointBase() {
 	// TODO Auto-generated destructor stub
+}
+
+IEndpointFlags EndpointBase::getFlags() {
+	return m_flags;
+}
+
+void EndpointBase::setFlag(IEndpointFlags f) {
+	m_flags |= f;
 }
 
 int32_t EndpointBase::init(IEndpointServices *services) {

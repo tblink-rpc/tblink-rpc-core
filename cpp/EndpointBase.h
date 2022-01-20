@@ -21,6 +21,10 @@ public:
 
 	virtual ~EndpointBase();
 
+	virtual IEndpointFlags getFlags() override;
+
+	virtual void setFlag(IEndpointFlags f) override;
+
 	virtual int32_t init(IEndpointServices *services) override;
 
 	virtual IEndpoint::comm_state_e comm_state() override;
@@ -86,6 +90,7 @@ public:
 	virtual IParamValVec *mkValVec() override;
 
 protected:
+	IEndpointFlags										m_flags;
 	IEndpointServices									*m_services;
 	IEndpointListener									*m_listener;
 

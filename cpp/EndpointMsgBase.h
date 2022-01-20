@@ -32,6 +32,10 @@ public:
 
 	virtual ~EndpointMsgBase();
 
+	virtual IEndpointFlags getFlags() override;
+
+	virtual void setFlag(IEndpointFlags f) override;
+
 	virtual int32_t init(IEndpointServices *services) override;
 
 	virtual int32_t is_init() override;
@@ -277,6 +281,7 @@ protected:
 	IEndpointServicesUP												m_services;
 
 private:
+	IEndpointFlags													m_flags;
 	intptr_t														m_id;
 	intptr_t														m_call_id;
 	std::unordered_map<intptr_t,invoke_rsp_f>						m_outbound_invoke_m;

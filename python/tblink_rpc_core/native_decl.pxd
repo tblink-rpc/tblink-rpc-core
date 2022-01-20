@@ -288,6 +288,12 @@ cdef extern from "tblink_rpc/IEndpointServices.h" namespace "tblink_rpc_core":
 #* IEndpoint
 #********************************************************************
 cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
+    cdef enum IEndpointFlags "tblink_rpc_core::IEndpointFlags":
+        Empty "tblink_rpc_core::IEndpointFlags::Empty"
+        Claimed "tblink_rpc_core::IEndpointFlags::Claimed"
+        LoopbackPri "tblink_rpc_core::IEndpointFlags::LoopbackPri"
+        LoopbackSec "tblink_rpc_core::IEndpointFlags::LoopbackSec"
+
     cdef cppclass time_cb_f:
         pass
     cdef enum comm_state_e "tblink_rpc_core::IEndpoint::comm_state_e":
@@ -298,6 +304,10 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         Explicit  "tblink_rpc_core::IEndpoint::Explicit"
         
     cdef cppclass IEndpoint:
+    
+        IEndpointFlags getFlags()
+        
+        void setFlag(IEndpointFlags)
     
         int init(IEndpointServices *)
         
@@ -411,6 +421,8 @@ cdef extern from "tblink_rpc/ITbLink.h" namespace "tblink_rpc_core":
         void addListener(ITbLinkListener *)
         
         void removeListener(ITbLinkListener *)
+    
+        const cpp_vector[IEndpointP] &getEndpoints() const
     
         const cpp_vector[ILaunchTypeP] &launchTypes()
         

@@ -5,6 +5,7 @@
 #****************************************************************************
 from libc.stdint cimport intptr_t
 from libcpp.cast cimport dynamic_cast
+from libcpp.cast cimport static_cast
 from libcpp.pair cimport pair as cpp_pair
 from libcpp.map cimport map as cpp_map
 from libcpp.string cimport string as cpp_string
@@ -12,7 +13,7 @@ from libcpp.vector cimport vector as cpp_vector
 from cython.operator cimport dereference as deref, preincrement as inc
 import asyncio
 import sys
-from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e
+from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e, EndpointFlags
 from tblink_rpc_core.event_type_e import EventTypeE
 from tblink_rpc_core.tblink_event import TbLinkEventKind
 cimport cpython.ref as cpy_ref
@@ -464,7 +465,19 @@ cdef class EndpointListener(object):
 #********************************************************************
 cdef class EndpointServices(object):
     cdef native_decl.IEndpointServices *_hndl
-
+    
+# _EndpointFlags_n2p_m = {
+#     native_decl.IEndpointFlags.Claimed : EndpointFlags.Claimed,
+#     native_decl.IEndpointFlags.LoopbackPri : EndpointFlags.LoopbackPri,
+#     native_decl.IEndpointFlags.LoopbackSec : EndpointFlags.LoopbackSec
+#     }
+#
+# _EndpointFlags_p2n_m = {
+#     EndpointFlags.Claimed : native_decl.IEndpointFlags.Claimed,
+#     EndpointFlags.LoopbackPri : native_decl.IEndpointFlags.LoopbackPri,
+#     EndpointFlags.LoopbackSec : native_decl.IEndpointFlags.LoopbackSec
+#     }
+    
 #********************************************************************
 #* Endpoint
 #********************************************************************
@@ -478,6 +491,31 @@ cdef class Endpoint(object):
 #        self.cb_m = {}
         self.ev_listener_m = {}
         pass
+    
+    cpdef getFlags(self):
+        flags = EndpointFlags.Empty
+        cdef int flags_n = <int>self._hndl.getFlags()
+        
+        if flags_n & <int>native_decl.IEndpointFlags.Claimed:
+            flags |= EndpointFlags.Claimed
+        if flags_n & <int>native_decl.IEndpointFlags.LoopbackPri:
+            flags |= EndpointFlags.LoopbackPri
+        if flags_n & <int>native_decl.IEndpointFlags.LoopbackSec:
+            flags |= EndpointFlags.LoopbackSec
+
+        return flags
+    
+    cpdef setFlag(self, f):
+        cdef int flags_n = 0
+#        cdef native_decl.IEndpointFlags flags_n = native_decl.IEndpointFlags.Empty
+        if f & EndpointFlags.Claimed:
+            flags_n |= <int>native_decl.IEndpointFlags.Claimed
+        if f & EndpointFlags.LoopbackPri:
+            flags_n |= <int>native_decl.IEndpointFlags.LoopbackPri
+        if f & EndpointFlags.LoopbackSec:
+            flags_n |= <int>native_decl.IEndpointFlags.LoopbackSec
+
+        self._hndl.setFlag(<native_decl.IEndpointFlags>flags_n)
     
     cpdef init(self, EndpointServices services):
         cdef native_decl.IEndpointServices *services_h = NULL
@@ -659,6 +697,12 @@ cdef class Endpoint(object):
     
     cpdef mkValVec(self):
         return ParamValVec._mk(self._hndl.mkValVec())
+    
+    @staticmethod
+    cdef Endpoint _mk(native_decl.IEndpoint *hndl):
+        ret = Endpoint()
+        ret._hndl = hndl
+        return ret
 
 #********************************************************************
 #* endpoint_ev_f
@@ -802,6 +846,16 @@ cdef class TbLink(object):
         self._hndl.removeListener(c._hndl)
         self._ep_listener_m.pop(l)
         pass
+    
+    cpdef getEndpoints(self):
+        cdef const cpp_vector[IEndpointP] *ep_l = &self._hndl.getEndpoints()
+        ret = []
+        
+        for i in range(ep_l.size()):
+            ret.append(Endpoint._mk(ep_l.at(i)))
+        
+        return ret
+        
     
     cpdef findLaunchType(self, id):
         ret = LaunchType()

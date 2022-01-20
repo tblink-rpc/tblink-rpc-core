@@ -37,6 +37,7 @@
 namespace tblink_rpc_core {
 
 EndpointMsgBase::EndpointMsgBase() {
+	m_flags = IEndpointFlags::Empty;
 	m_id = 1;
 
 	m_call_id = 0;
@@ -112,6 +113,14 @@ EndpointMsgBase::EndpointMsgBase() {
 
 EndpointMsgBase::~EndpointMsgBase() {
 	// TODO Auto-generated destructor stub
+}
+
+IEndpointFlags EndpointMsgBase::getFlags() {
+	return m_flags;
+}
+
+void EndpointMsgBase::setFlag(IEndpointFlags f) {
+	m_flags |= f;
 }
 
 int32_t EndpointMsgBase::init(IEndpointServices *services) {

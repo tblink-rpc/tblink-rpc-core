@@ -34,9 +34,11 @@ public:
 
 	virtual void removeListener(ITbLinkListener *l) = 0;
 
-	virtual void addEndpoint(IEndpoint *ep, bool is_default=false) = 0;
+	virtual void addEndpoint(IEndpoint *ep) = 0;
 
 	virtual void removeEndpoint(IEndpoint *ep) = 0;
+
+	virtual const std::vector<IEndpoint *> &getEndpoints() const = 0;
 
 	virtual const std::vector<ILaunchType *> &launchTypes() const = 0;
 
