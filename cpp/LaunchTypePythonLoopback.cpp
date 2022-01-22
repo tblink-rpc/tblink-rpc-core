@@ -115,7 +115,7 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 	}
 
 	DEBUG_LEAVE("launch");
-	return {0, "Launch failure"};
+	return {ep, "Launch failure"};
 }
 
 /**

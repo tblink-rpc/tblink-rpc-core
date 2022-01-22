@@ -124,6 +124,8 @@ void EndpointMsgBase::setFlag(IEndpointFlags f) {
 }
 
 int32_t EndpointMsgBase::init(IEndpointServices *services) {
+	DEBUG_ENTER("EndpointMsgBase::init services=%p", services);
+
 	m_services = IEndpointServicesUP(services);
 	if (m_services) {
 		m_services->init(this);
@@ -153,6 +155,7 @@ int32_t EndpointMsgBase::init(IEndpointServices *services) {
 
 	// TODO: send init message
 
+	DEBUG_LEAVE("EndpointMsgBase::init services=%p", services);
 	return 0;
 }
 
@@ -544,10 +547,10 @@ const std::vector<IInterfaceInst *> &EndpointMsgBase::getPeerInterfaceInsts() {
 EndpointMsgBase::rsp_t EndpointMsgBase::req_init(
 			intptr_t		id,
 			IParamValMap 	*params) {
-	DEBUG_ENTER("req_init");
+	DEBUG_ENTER("req_init (m_services=%p)", m_services.get());
 	m_peer_init = 1;
 
-	if (!m_services) {
+	if (params->hasKey("time-units")) {
 		m_time_precision = params->getValT<IParamValInt>("time-units")->val_s();
 		IParamValVec *args_p = params->getValT<IParamValVec>("args");
 
