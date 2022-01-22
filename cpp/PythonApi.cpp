@@ -26,14 +26,29 @@ int32_t PythonApi::init(const std::string &pylib) {
 	ISymFinder::result_t lib_r = tblink->load_library(pylib);
 	ISymFinder *lib = lib_r.first.get();
 
-	Py_Initialize_f = lib->findSymT<void (*)()>("Py_Initialize");
-	if (!Py_Initialize_f) {
-		return -1;
-	}
+	struct fm_t {
+		void **fp_p;
+		const char *fn;
+	};
 
-	PyImport_ImportModule_f = lib->findSymT<void *(*)(const char *)>("PyImport_ImportModule");
-	if (!PyImport_ImportModule_f) {
-		return -1;
+	fm_t func_t[] = {
+			{(void **)&Py_Initialize_f, "Py_Initialize"},
+			{(void **)&PyImport_ImportModule_f, "PyImport_ImportModule"},
+			{(void **)&PyList_New_f, "PyList_New"},
+			{(void **)&PyObject_CallObject_f, "PyObject_CallObject"},
+			{(void **)&PyObject_GetAttrString_f, "PyObject_GetAttrString"},
+			{(void **)&PyTuple_New_f, "PyTuple_New"},
+			{(void **)&PyTuple_SetItem_f, "PyTuple_SetItem"},
+			{(void **)&PyUnicode_FromString_f, "PyUnicode_FromString"},
+	};
+
+	for (uint32_t i=0; i<sizeof(func_t)/sizeof(fm_t); i++) {
+		*(func_t[i].fp_p) = lib->findSym(func_t[i].fn);
+
+		if (!*func_t[i].fp_p) {
+			fprintf(stdout, "Error: Failed to find %s\n", func_t[i].fn);
+			return -1;
+		}
 	}
 
 	return 0;

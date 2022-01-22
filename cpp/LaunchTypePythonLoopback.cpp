@@ -16,6 +16,7 @@
 #include "LaunchParams.h"
 #include "LaunchTypePythonLoopback.h"
 #include "LaunchTypeRegistration.h"
+#include "EndpointLoopback.h"
 #include "PythonApi.h"
 //#include <Python.h>
 #include "StringUtil.h"
@@ -64,7 +65,17 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 		return {0, "Failed to probe Python interpreter"};
 	}
 
+	const char *env_pythonpath = getenv("PYTHONPATH");
+
+	if (env_pythonpath && env_pythonpath[0]) {
+		// Append
+		pythonpath = std::string(env_pythonpath) + ":" + pythonpath;
+	}
+
+	fprintf(stdout, "Final pythonpath: %s\n", pythonpath.c_str());
 	setenv("PYTHONPATH", pythonpath.c_str(), 1);
+
+
 
 	PythonApi pyapi;
 
@@ -79,6 +90,28 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 
 	if (!module_p) {
 		return {0, "Failed to load entry module"};
+	}
+
+	void *run_module = pyapi.PyObject_GetAttrString(runpy_p, "run_module");
+
+	if (!run_module) {
+		return {0, "Failed to find run_module"};
+	}
+
+	void *args = pyapi.PyTuple_New(1);
+	pyapi.PyTuple_SetItem(args, 0, pyapi.PyUnicode_FromString(
+			params->get_param("module")));
+
+	// Setup the endpoint
+	EndpointLoopback *ep = new EndpointLoopback();
+
+	tblink->addEndpoint(ep);
+	tblink->addEndpoint(ep->peer());
+
+	void *call_ret = pyapi.PyObject_CallObject(run_module, args);
+
+	if (!call_ret) {
+		fprintf(stdout, "Error: Call failed\n");
 	}
 
 	DEBUG_LEAVE("launch");

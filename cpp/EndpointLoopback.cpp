@@ -30,10 +30,14 @@ namespace tblink_rpc_core {
 EndpointLoopback::EndpointLoopback() : m_primary(true) {
 	m_peer = new EndpointLoopback(this);
 	m_peer_u = EndpointLoopbackUP(m_peer);
+
+	setFlag(IEndpointFlags::Claimed);
+	setFlag(IEndpointFlags::LoopbackPri);
 }
 
 EndpointLoopback::EndpointLoopback(EndpointLoopback *peer) :
 		m_primary(false), m_peer(peer) {
+	setFlag(IEndpointFlags::LoopbackSec);
 }
 
 EndpointLoopback::~EndpointLoopback() {
