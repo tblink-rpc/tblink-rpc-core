@@ -33,9 +33,9 @@ if (NOT PACKAGES_DIR)
   set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
 
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
-  enable_testing()
+#  enable_testing()
 
-  add_subdirectory(tests)
+#  add_subdirectory(tests)
 endif()
 
 execute_process(

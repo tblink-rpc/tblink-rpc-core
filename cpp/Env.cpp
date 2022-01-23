@@ -6,6 +6,7 @@
  */
 
 #include "Env.h"
+#include <string>
 #include <string.h>
 
 extern char **environ;

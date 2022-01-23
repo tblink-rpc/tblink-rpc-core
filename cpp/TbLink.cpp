@@ -49,7 +49,7 @@ void TbLink::removeListener(ITbLinkListener *l) {
 
 void TbLink::addEndpoint(IEndpoint *ep) {
 	m_endpoints.push_back(ep);
-	fprintf(stdout, "addEndpoint: %d listeners\n",
+	fprintf(stdout, "addEndpoint: %u listeners\n",
 			m_listeners.size());
 	fflush(stdout);
 	sendEvent(TbLinkEventKind::AddEndpoint, ep);

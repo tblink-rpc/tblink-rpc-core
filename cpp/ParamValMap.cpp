@@ -64,7 +64,7 @@ IParamValMap *ParamValMap::clone() {
 		ret->setVal(it->first, it->second->clone());
 	}
 
-	return ret;
+	return dynamic_cast<IParamValMap *>(ret);
 }
 
 ParamValMapUP ParamValMap::mk() {

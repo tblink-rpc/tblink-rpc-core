@@ -38,7 +38,7 @@ public:
 
 	virtual IInterfaceType *type() override { return m_type; }
 
-	virtual bool is_mirror() { return m_is_mirror; }
+	virtual bool is_mirror() override { return m_is_mirror; }
 
 	virtual void setImpl(IInterfaceImpl *impl) override;
 

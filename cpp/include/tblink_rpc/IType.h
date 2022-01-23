@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <functional>
 #include <memory>
 #include <stdint.h>
 
@@ -19,6 +20,7 @@ enum class TypeE {
 	Vec
 };
 
+
 class IType;
 typedef std::unique_ptr<IType> ITypeUP;
 class IType {
@@ -31,4 +33,12 @@ public:
 };
 
 
+}
+
+namespace std {
+template <> struct hash<tblink_rpc_core::TypeE> {
+    size_t operator()(tblink_rpc_core::TypeE x) const {
+        return std::hash<int>()(static_cast<int>(x));
+    }
+};
 }

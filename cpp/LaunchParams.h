@@ -20,7 +20,7 @@ public:
 
 	virtual void add_arg(const std::string &arg) override;
 
-	virtual const std::vector<std::string> &args() const {
+	virtual const std::vector<std::string> &args() const override {
 		return m_args;
 	}
 
@@ -34,7 +34,7 @@ public:
 	virtual std::string get_param(
 			const std::string		&key) override;
 
-	virtual const std::map<std::string,std::string> &params() const {
+	virtual const std::map<std::string,std::string> &params() const override {
 		return m_params;
 	}
 
