@@ -43,11 +43,11 @@ execute_process(
 	OUTPUT_VARIABLE PYTHON_PATH
 	)
 
-message("PYTHON_PATH: ${PYTHON_PATH}")
-string(REPLACE "-I" "" PYTHON_PATH ${PYTHON_PATH})
-string(REPLACE " " ";" PYTHON_INCDIRS ${PYTHON_PATH})
-list(GET PYTHON_INCDIRS 0 PYTHON_INCDIR)
-message("PYTHON_INCDIRS: ${PYTHON_INCDIRS}")
+#message("PYTHON_PATH: ${PYTHON_PATH}")
+#string(REPLACE "-I" "" PYTHON_PATH ${PYTHON_PATH})
+#string(REPLACE " " ";" PYTHON_INCDIRS ${PYTHON_PATH})
+#list(GET PYTHON_INCDIRS 0 PYTHON_INCDIR)
+#message("PYTHON_INCDIRS: ${PYTHON_INCDIRS}")
 
 #******************************************************************** 
 #* Static Library

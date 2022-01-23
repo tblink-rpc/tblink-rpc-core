@@ -5,7 +5,12 @@
  *      Author: mballance
  */
 
+#ifndef _WIN32
 #include <dlfcn.h>
+#else
+#include <Windows.h>
+#endif
+
 #include "DynLibSymFinder.h"
 
 namespace tblink_rpc_core {
@@ -19,13 +24,24 @@ DynLibSymFinder::~DynLibSymFinder() {
 }
 
 void *DynLibSymFinder::findSym(const std::string &sym) {
+#ifndef _WIN32
 	void *sym_h = dlsym(m_hndl, sym.c_str());
 
 	if (!sym_h) {
 		m_error = dlerror();
 	}
-
 	return sym_h;
+#else
+	FARPROC sym_h = GetProcAddress(m_hndl, sym.c_str());
+
+	if (!sym_h) {
+		// TODO: Likely better diagnostics available
+		m_error = "Failed to find symbol ";
+		m_error += sym;
+	}
+	return reinterpret_cast<void *>(sym_h);
+#endif
+
 }
 
 std::pair<void *,std::string> DynLibSymFinder::findSymLib(
