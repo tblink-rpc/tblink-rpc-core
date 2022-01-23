@@ -29,11 +29,6 @@ extern "C" invoke_rsp_f invoke_rsp_closure(PyObject *obj) {
 			std::placeholders::_1);
 }
 
-extern "C" time_cb_f time_callback_closure(PyObject *obj) {
-//	PyInit_native();
-	return std::bind(&time_callback_f, obj);
-}
-
 extern "C" endpoint_ev_f endpoint_ev_closure(PyObject *obj) {
 //	PyInit_native();
 //        Py_XINCREF(obj);

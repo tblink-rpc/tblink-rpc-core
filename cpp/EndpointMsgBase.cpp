@@ -659,6 +659,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_get_interface_types(
 EndpointMsgBase::rsp_t EndpointMsgBase::req_add_time_callback(
 		intptr_t				id,
 		IParamValMap 			*params) {
+	DEBUG_ENTER("req_add_time_callback");
 	intptr_t callback_id = params->getValT<IParamValInt>("callback-id")->val_u();
 
 	m_services->add_time_cb(
@@ -673,6 +674,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_add_time_callback(
 	IParamValMap *result = mkValMap();
 	IParamValMap *error = 0;
 
+	DEBUG_LEAVE("req_add_time_callback");
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 

@@ -51,12 +51,12 @@ class Endpoint(object):
              ep_listener : 'EndpointListener') -> bool:
         pass
     
-    def is_init_complete(self) -> int:
+    def is_init(self) -> int:
         """
         Returns True when init has been signaled by this EP,
         and init has been signaled by the peer EP
         """
-        raise NotImplementedError("is_init_complete for class %s" % str(type(self)))
+        raise NotImplementedError("is_init for class %s" % str(type(self)))
     
     def build_complete(self) -> bool:
         """
@@ -158,6 +158,12 @@ class Endpoint(object):
         Adds a time callback to be satisfied by the peer EP
         """
         raise NotImplementedError("add_time_callback for class %s" % str(type(self)))
+    
+    def cancel_callback(self, cb_id):
+        """
+        Removes a previously-registered callback
+        """
+        raise NotImplementedError("cancel_callback for class %s" % str(type(self)))
     
     def mkValBool(self, v) -> ParamValBool:
         """Creates a boolean param object"""

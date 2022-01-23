@@ -239,7 +239,8 @@ setup(
             sources=[
                 os.path.join(tblink_rpc_core_dir, 'python', "native.pyx"), 
                 os.path.join(tblink_rpc_core_dir, 'python', 'invoke_req_closure.cpp'),
-                os.path.join(tblink_rpc_core_dir, 'python', 'TbLinkListenerClosure.cpp')
+                os.path.join(tblink_rpc_core_dir, 'python', 'TbLinkListenerClosure.cpp'),
+                os.path.join(tblink_rpc_core_dir, 'python', 'TimeCallbackClosure.cpp')
             ],
             language="c++",
             include_dirs=[

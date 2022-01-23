@@ -8,6 +8,7 @@ from libcpp.set cimport set as cpp_set
 from libcpp.string cimport string as cpp_string
 from libcpp.vector cimport vector as cpp_vector
 from libc.stdint cimport intptr_t
+from libc.stdint cimport int32_t
 from libc.stdint cimport uint32_t
 from libc.stdint cimport uint64_t
 from libc.stdint cimport int64_t
@@ -328,6 +329,10 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         void removeListener(IEndpointListener *)
         
         const cpp_vector[cpp_string] &args()
+        
+        uint64_t time()
+        
+        int32_t time_precision()
         
         intptr_t add_time_callback(uint64_t, const time_cb_f &)
         

@@ -13,7 +13,8 @@ from libcpp.vector cimport vector as cpp_vector
 from cython.operator cimport dereference as deref, preincrement as inc
 import asyncio
 import sys
-from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e, EndpointFlags
+from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e, EndpointFlags,\
+    TimeUnit
 from tblink_rpc_core.event_type_e import EventTypeE
 from tblink_rpc_core.tblink_event import TbLinkEventKind
 cimport cpython.ref as cpy_ref
@@ -576,6 +577,18 @@ cdef class Endpoint(object):
             ret.append(_args.at(i).decode())
         return ret
     
+    cpdef time(self):
+        return self._hndl.time()
+    
+    cpdef time_precision(self):
+        return {
+            0   : TimeUnit.ns, # Return a sensible default pre-initialization
+            -12 : TimeUnit.ps,
+            -9  : TimeUnit.ns,
+            -6  : TimeUnit.us,
+            -3  : TimeUnit.ms,
+            1   : TimeUnit.s}[self._hndl.time_precision()]
+    
     cpdef add_time_callback(self, time, cb):
         cdef intptr_t ret;
 
@@ -587,6 +600,10 @@ cdef class Endpoint(object):
 #        self.cb_m[ret] = cb
         
         return ret
+    
+    cpdef cancel_callback(self, cb_id):
+        self._hndl.cancel_callback(cb_id)
+        pass
     
     cpdef findInterfaceType(self, name):
         cdef native_decl.IInterfaceType *iftype = self._hndl.findInterfaceType(name.encode())
@@ -722,9 +739,11 @@ cdef public void endpoint_ev_callback_f(
 #* time_callback_f
 #********************************************************************
 cdef public void time_callback_f(obj) with gil:
-    print("time_callback_f")
+    print("time_callback_f: obj=%s" % str(obj))
     # TODO: Must deal with 
+    print("--> Calling")
     obj()
+    print("<-- Calling")
 
 #********************************************************************
 #* interface_inst_req_f()
