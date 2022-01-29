@@ -15,7 +15,7 @@ public:
 
 	virtual ~TbLinkListenerClosure();
 
-	virtual void event(const tblink_rpc_core::ITbLinkEvent *) override;
+	virtual void notify(const tblink_rpc_core::ITbLinkEvent *) override;
 
 private:
 	PyObject					*m_hndl;

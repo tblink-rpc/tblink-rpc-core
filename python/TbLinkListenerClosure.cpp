@@ -22,7 +22,7 @@ TbLinkListenerClosure::~TbLinkListenerClosure() {
 	// TODO Auto-generated destructor stub
 }
 
-void TbLinkListenerClosure::event(const ITbLinkEvent *ev) {
+void TbLinkListenerClosure::notify(const ITbLinkEvent *ev) {
 	tblink_listener_event(m_hndl, const_cast<ITbLinkEvent *>(ev));
 }
 

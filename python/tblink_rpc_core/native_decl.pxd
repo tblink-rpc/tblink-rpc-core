@@ -328,6 +328,8 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         
         void removeListener(IEndpointListener *)
         
+        bool shutdown()
+        
         const cpp_vector[cpp_string] &args()
         
         uint64_t time()

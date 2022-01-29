@@ -570,6 +570,9 @@ cdef class Endpoint(object):
     cpdef removeListener(self, EndpointListener l):
         self._hndl.removeListener(l._hndl)
         
+    cpdef shutdown(self):
+        self._hndl.shutdown()
+        
     cpdef args(self):
         cdef cpp_vector[cpp_string] _args = self._hndl.args()
         ret = []
@@ -865,6 +868,7 @@ cdef class TbLink(object):
         self._hndl.removeListener(c._hndl)
         self._ep_listener_m.pop(l)
         pass
+    
     
     cpdef getEndpoints(self):
         cdef const cpp_vector[IEndpointP] *ep_l = &self._hndl.getEndpoints()

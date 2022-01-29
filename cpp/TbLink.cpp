@@ -128,7 +128,7 @@ void TbLink::sendEvent(TbLinkEventKind kind, void *hndl) {
 	TbLinkEvent ev(kind, hndl);
 
 	for (auto it=m_listeners.begin(); it!=m_listeners.end(); it++) {
-		(*it)->event(&ev);
+		(*it)->notify(&ev);
 	}
 }
 

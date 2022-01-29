@@ -18,7 +18,7 @@ public:
 
 	virtual ~ITbLinkListener() { }
 
-	virtual void event(const ITbLinkEvent *) = 0;
+	virtual void notify(const ITbLinkEvent *) = 0;
 
 };
 
