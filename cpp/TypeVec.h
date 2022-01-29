@@ -18,7 +18,7 @@ public:
 
 	virtual TypeE kind() const override { return TypeE::Vec; }
 
-	IType *elem_t() const { return m_elem_t.get(); }
+	IType *elem_t() const override { return m_elem_t.get(); }
 
 private:
 	ITypeUP				m_elem_t;

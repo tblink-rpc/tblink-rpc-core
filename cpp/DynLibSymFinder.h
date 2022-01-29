@@ -7,7 +7,6 @@
 
 #pragma once
 #include "tblink_rpc/ISymFinder.h"
-#include <dlfcn.h>
 
 namespace tblink_rpc_core {
 

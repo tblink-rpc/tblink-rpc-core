@@ -25,13 +25,13 @@ public:
 		return m_name;
 	}
 
-	virtual const std::vector<IMethodType *> &methods() {
+	virtual const std::vector<IMethodType *> &methods() override {
 		return m_methods_p;
 	}
 
 	void addMethod(IMethodType *method);
 
-	IMethodType *findMethod(const std::string &name);
+	IMethodType *findMethod(const std::string &name) override;
 
 //	virtual IMethodType *getMethodById(int32_t id) = 0;
 

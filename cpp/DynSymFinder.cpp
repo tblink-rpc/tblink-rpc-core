@@ -7,12 +7,16 @@
 
 #include "DynSymFinder.h"
 #include <stdio.h>
+#ifndef _WIN32
 #include <unistd.h>
+#include <dlfcn.h>
+#else
+#include <windows.h>
+#endif
 #include <string>
 #include <unordered_set>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dlfcn.h>
 
 namespace tblink_rpc_core {
 

@@ -33,9 +33,9 @@ if (NOT PACKAGES_DIR)
   set(PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
 
   # TODO: this should only be if tblink-rpc-core is a toplevel project 
-  enable_testing()
+#  enable_testing()
 
-  add_subdirectory(tests)
+#  add_subdirectory(tests)
 endif()
 
 execute_process(
@@ -43,11 +43,11 @@ execute_process(
 	OUTPUT_VARIABLE PYTHON_PATH
 	)
 
-message("PYTHON_PATH: ${PYTHON_PATH}")
-string(REPLACE "-I" "" PYTHON_PATH ${PYTHON_PATH})
-string(REPLACE " " ";" PYTHON_INCDIRS ${PYTHON_PATH})
-list(GET PYTHON_INCDIRS 0 PYTHON_INCDIR)
-message("PYTHON_INCDIRS: ${PYTHON_INCDIRS}")
+#message("PYTHON_PATH: ${PYTHON_PATH}")
+#string(REPLACE "-I" "" PYTHON_PATH ${PYTHON_PATH})
+#string(REPLACE " " ";" PYTHON_INCDIRS ${PYTHON_PATH})
+#list(GET PYTHON_INCDIRS 0 PYTHON_INCDIR)
+#message("PYTHON_INCDIRS: ${PYTHON_INCDIRS}")
 
 #******************************************************************** 
 #* Static Library

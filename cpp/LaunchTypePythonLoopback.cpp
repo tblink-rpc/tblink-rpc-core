@@ -5,12 +5,16 @@
  *      Author: mballance
  */
 
-#include <poll.h>
 #include <spawn.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _WIN32
+#include <poll.h>
 #include <unistd.h>
+#else
+#include <windows.h>
+#endif
 #include <sys/wait.h>
 #include "Debug.h"
 #include "LaunchParams.h"
@@ -18,7 +22,6 @@
 #include "LaunchTypeRegistration.h"
 #include "EndpointLoopback.h"
 #include "PythonApi.h"
-//#include <Python.h>
 #include "StringUtil.h"
 
 #define EN_DEBUG_LAUNCH_TYPE_PYTHON_LOOPBACK
