@@ -88,11 +88,21 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 
 	pyapi.Py_Initialize();
 	void *runpy_p = pyapi.PyImport_ImportModule("runpy");
+	/*
+	void *sys_p = pyapi.PyImport_ImportModule("sys");
+
+	if (!sys_p) {
+		return {0, "Failed to load 'sys'"};
+	}
+	 */
 
 	void *module_p = pyapi.PyImport_ImportModule(params->get_param("module"));
 
 	if (!module_p) {
-		return {0, "Failed to load entry module"};
+		char tmp[256];
+		sprintf(tmp, "Failed to load entry module %s", params->get_param("module").c_str());
+		pyapi.PyErr_Print();
+		return {0, tmp};
 	}
 
 	void *run_module = pyapi.PyObject_GetAttrString(runpy_p, "run_module");

@@ -640,7 +640,8 @@ cdef class Endpoint(object):
         # req_f together
         
         # TODO: complete
-        cdef native_decl.IInterfaceImpl *impl_h = NULL
+        cdef native_decl.IInterfaceImpl *impl_h = new native_decl.InterfaceImplClosure(
+            <cpy_ref.PyObject *>(req_f))
         
         if t is None:
             raise Exception("Null type defined for interface %s" % name)
@@ -759,11 +760,13 @@ cdef public void interface_inst_req_f(
     native_decl.IMethodType     *method,
     intptr_t                    call_id,
     native_decl.IParamValVec    *params) with gil:
+    print("--> interface_inst_req_f")
     obj(
         InterfaceInst._mk(inst),
         MethodType._mk(method),
         call_id,
         ParamValVec._mk(params))
+    print("<-- interface_inst_req_f")
         
 #********************************************************************
 #* LaunchType

@@ -33,6 +33,7 @@ int32_t PythonApi::init(const std::string &pylib) {
 
 	fm_t func_t[] = {
 			{(void **)&Py_Initialize_f, "Py_Initialize"},
+			{(void **)&PyErr_Print_f, "PyErr_Print"},
 			{(void **)&PyImport_ImportModule_f, "PyImport_ImportModule"},
 			{(void **)&PyList_New_f, "PyList_New"},
 			{(void **)&PyObject_CallObject_f, "PyObject_CallObject"},

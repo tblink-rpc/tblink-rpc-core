@@ -21,6 +21,8 @@ public:
 
 	void Py_Initialize() { Py_Initialize_f(); }
 
+	void PyErr_Print() { PyErr_Print_f(); }
+
 	void *PyImport_ImportModule(const std::string &name) {
 		return PyImport_ImportModule_f(name.c_str());
 	}
@@ -51,6 +53,7 @@ public:
 
 private:
 	void (*Py_Initialize_f)();
+	void (*PyErr_Print_f)();
 	void *(*PyImport_ImportModule_f)(const char *name);
 	void *(*PyList_New_f)(int);
 	int (*PyList_Append_f)(void *, void*);

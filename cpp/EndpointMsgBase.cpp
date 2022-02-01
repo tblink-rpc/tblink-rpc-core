@@ -989,6 +989,9 @@ int32_t EndpointMsgBase::recv_req(
 		IParamValMap			*params) {
 	DEBUG_ENTER("recv_req method=%s", method.c_str());
 
+	if (params->hasKey("time")) {
+		m_time = params->getValT<IParamValInt>("time")->val_u();
+	}
 
 	if (id != -1) {
 		std::map<std::string,req_func_t>::const_iterator it;
@@ -1052,6 +1055,12 @@ intptr_t EndpointMsgBase::send_req(
 	intptr_t id = m_id;
 	m_id += 1;
 
+	if (m_services) {
+		DEBUG("Pack time %lld", m_services->time());
+		params->setVal("time", mkValIntU(
+				m_services->time(), 64));
+	}
+
 	intptr_t ret = send_req(method, id, params);
 	DEBUG_LEAVE("send_req: %s", method.c_str());
 	return ret;
@@ -1065,6 +1074,12 @@ intptr_t EndpointMsgBase::send_req(
 	// Insert a placeholder for the response we will receive
 	intptr_t id = m_id;
 	m_id += 1;
+
+	if (m_services) {
+		DEBUG("Pack time %lld", m_services->time());
+		params->setVal("time", mkValIntU(
+				m_services->time(), 64));
+	}
 
 	m_rsp_m.insert({id, rsp_f});
 

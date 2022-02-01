@@ -151,7 +151,10 @@ cdef extern from "tblink_rpc/IInterfaceImpl.h" namespace "tblink_rpc_core":
             IParamValVec *
             )
         
-
+cdef extern from "InterfaceImplClosure.h":
+    cdef cppclass InterfaceImplClosure(IInterfaceImpl):
+        InterfaceImplClosure(cpy_ref.PyObject *)
+        
 #********************************************************************
 #* IInterfaceInst
 #********************************************************************
