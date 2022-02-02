@@ -8,13 +8,14 @@
 #pragma once
 #include <functional>
 #include <string>
+
 //#include "IType.h"
 //#include "ITypeBuilder.h"
 #include "tblink_rpc/IEndpointListener.h"
 #include "tblink_rpc/IEndpointServices.h"
 #include "tblink_rpc/IInterfaceImpl.h"
+#include "tblink_rpc/IInterfaceImplFactory.h"
 #include "tblink_rpc/IInterfaceInst.h"
-#include "tblink_rpc/IInterfaceInstFactory.h"
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IInterfaceTypeBuilder.h"
 
@@ -114,7 +115,8 @@ public:
 
 	virtual IInterfaceType *defineInterfaceType(
 			IInterfaceTypeBuilder	*type,
-			IInterfaceInstFactory	*factory) = 0;
+			IInterfaceImplFactory	*impl_factory,
+			IInterfaceImplFactory	*impl_mirror_factory) = 0;
 
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,

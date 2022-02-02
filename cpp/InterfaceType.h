@@ -10,6 +10,7 @@
 #include <vector>
 #include "tblink_rpc/IInterfaceType.h"
 #include "tblink_rpc/IMethodType.h"
+#include "tblink_rpc/IInterfaceImplFactory.h"
 
 namespace tblink_rpc_core {
 
@@ -33,6 +34,20 @@ public:
 
 	IMethodType *findMethod(const std::string &name) override;
 
+	IInterfaceImplFactory *impl_f() const { return m_impl_f.get(); }
+
+	void impl_f(IInterfaceImplFactory *i) {
+		m_impl_f = IInterfaceImplFactoryUP(i);
+	}
+
+	IInterfaceImplFactory *impl_mirror_f() const {
+		return m_impl_mirror_f.get();
+	}
+
+	void impl_mirror_f(IInterfaceImplFactory *i) {
+		m_impl_mirror_f = IInterfaceImplFactoryUP(i);
+	}
+
 //	virtual IMethodType *getMethodById(int32_t id) = 0;
 
 private:
@@ -40,6 +55,8 @@ private:
 	std::vector<IMethodTypeUP>			m_methods;
 	std::vector<IMethodType *>			m_methods_p;
 	std::map<std::string,IMethodType*>	m_methods_m;
+	IInterfaceImplFactoryUP				m_impl_f;
+	IInterfaceImplFactoryUP				m_impl_mirror_f;
 
 };
 

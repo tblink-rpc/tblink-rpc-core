@@ -21,6 +21,8 @@ public:
 
 	virtual ~IInterfaceImpl() { }
 
+	virtual void init(IInterfaceInst *ifinst) = 0;
+
 	virtual void invoke(
 			IInterfaceInst		*ifinst,
 			IMethodType			*method,

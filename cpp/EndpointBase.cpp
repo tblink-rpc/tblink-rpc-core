@@ -5,6 +5,7 @@
  *      Author: mballance
  */
 
+#include <stdarg.h>
 #include "Debug.h"
 #include "EndpointBase.h"
 #include "EndpointEventBase.h"
@@ -36,9 +37,20 @@
 
 namespace tblink_rpc_core {
 
-EndpointBase::EndpointBase() :
-		m_flags(IEndpointFlags::Empty), m_services(0), m_listener(0) {
+EndpointBase::EndpointBase() : m_flags(IEndpointFlags::Empty) {
+	m_time = 0;
+	m_time_precision = 0;
 
+	m_init = 0;
+	m_peer_init = 0;
+	m_build_complete = 0;
+	m_peer_build_complete = 0;
+	m_connect_complete = 0;
+	m_peer_connect_complete = 0;
+	m_peer_local_check_complete = 0;
+
+	m_comm_state = IEndpoint::Waiting;
+	m_comm_mode = IEndpoint::Automatic;
 }
 
 EndpointBase::~EndpointBase() {
@@ -54,7 +66,7 @@ void EndpointBase::setFlag(IEndpointFlags f) {
 }
 
 int32_t EndpointBase::init(IEndpointServices *services) {
-	m_services = services;
+	m_services = IEndpointServicesUP(services);
 
 	if (m_services) {
 		m_services->init(this);
@@ -64,14 +76,18 @@ int32_t EndpointBase::init(IEndpointServices *services) {
 }
 
 IEndpoint::comm_state_e EndpointBase::comm_state() {
-	// TODO:
-	return Released;
+	return m_comm_state;
 }
 
 void EndpointBase::update_comm_mode(
 		IEndpoint::comm_mode_e m,
 		IEndpoint::comm_state_e s) {
-	// TODO:
+	DEBUG_ENTER("update_comm_mode");
+
+	m_comm_mode = m;
+	m_comm_state = s;
+
+	DEBUG_LEAVE("update_comm_mode");
 }
 
 IEndpointListener *EndpointBase::addListener(const endpoint_ev_f &ev_f) {
@@ -129,7 +145,7 @@ std::vector<std::string> EndpointBase::args() {
 		return m_services->args();
 	} else {
 		// TODO:
-		return {};
+		return m_args;
 	}
 }
 
@@ -137,19 +153,23 @@ uint64_t EndpointBase::time() {
 	if (m_services) {
 		return m_services->time();
 	} else {
-		return 0;
+		return m_time;
 	}
 }
 
 int32_t EndpointBase::time_precision() {
-	return m_services->time_precision();
+	if (m_services) {
+		return m_services->time_precision();
+	} else {
+		return m_time_precision;
+	}
 }
 
 IInterfaceType *EndpointBase::findInterfaceType(
 		const std::string		&name) {
-	std::unordered_map<std::string,IInterfaceTypeUP>::const_iterator it;
+	std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
 
-	if ((it=m_iftype_m.find(name)) != m_iftype_m.end()) {
+	if ((it=m_local_ifc_types.find(name)) != m_local_ifc_types.end()) {
 		return it->second.get();
 	} else {
 		return 0;
@@ -163,14 +183,36 @@ IInterfaceTypeBuilder *EndpointBase::newInterfaceTypeBuilder(
 
 IInterfaceType *EndpointBase::defineInterfaceType(
 		IInterfaceTypeBuilder	*type,
-		IInterfaceInstFactory	*factory) {
-	InterfaceTypeBuilder *builder =
-			static_cast<InterfaceTypeBuilder *>(type);
+		IInterfaceImplFactory	*impl_factory,
+		IInterfaceImplFactory	*impl_mirror_factory) {
+	InterfaceTypeBuilder *builder = static_cast<InterfaceTypeBuilder *>(type);
 	InterfaceType *iftype = builder->type();
-	m_iftype_m.insert({iftype->name(), IInterfaceTypeUP(iftype)});
-	m_iftypes.push_back(iftype);
 
+	iftype->impl_f(impl_factory);
+	iftype->impl_mirror_f(impl_mirror_factory);
+
+	DEBUG_ENTER("defineInterfaceType %s", iftype->name().c_str());
+	m_local_ifc_types.insert({iftype->name(), InterfaceTypeUP(iftype)});
+	m_local_ifc_type_pl.push_back(iftype);
+
+	DEBUG_LEAVE("defineInterfaceType %s", iftype->name().c_str());
 	return iftype;
+}
+
+const std::vector<IInterfaceType *> &EndpointBase::getInterfaceTypes() {
+	return m_local_ifc_type_pl;
+}
+
+const std::vector<IInterfaceType *> &EndpointBase::getPeerInterfaceTypes() {
+	return m_peer_ifc_types_pl;
+}
+
+const std::vector<IInterfaceInst *> &EndpointBase::getInterfaceInsts() {
+	return m_local_ifc_insts_pl;
+}
+
+const std::vector<IInterfaceInst *> &EndpointBase::getPeerInterfaceInsts() {
+	return m_peer_ifc_insts_pl;
 }
 
 IParamValBool *EndpointBase::mkValBool(bool val) {
@@ -195,6 +237,34 @@ IParamValStr *EndpointBase::mkValStr(const std::string &val) {
 
 IParamValVec *EndpointBase::mkValVec() {
 	return new ParamValVec();
+}
+
+int EndpointBase::peer_init(
+		int32_t								time_precision,
+		const std::vector<std::string>		&args) {
+	m_peer_init = 1;
+	m_time_precision = time_precision;
+	for (auto it=args.begin(); it!=args.end(); it++) {
+		m_args.push_back(*it);
+	}
+
+	return 0;
+}
+
+int EndpointBase::peer_build_complete() {
+	m_peer_build_complete = 1;
+
+	return 0;
+}
+
+void EndpointBase::last_error(const char *fmt, ...) {
+	va_list ap;
+	char tmp[256];
+
+	va_start(ap, fmt);
+	vsnprintf(tmp, sizeof(tmp), fmt, ap);
+	m_last_error = fmt;
+	va_end(ap);
 }
 
 } /* namespace tblink_rpc_core */

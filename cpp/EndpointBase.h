@@ -12,6 +12,8 @@
 #include "tblink_rpc/IEndpoint.h"
 #include "tblink_rpc/IInterfaceInst.h"
 #include "tblink_rpc/IInterfaceType.h"
+#include "InterfaceInstBase.h"
+#include "InterfaceType.h"
 
 namespace tblink_rpc_core {
 
@@ -59,23 +61,40 @@ public:
 
 	virtual IInterfaceType *defineInterfaceType(
 			IInterfaceTypeBuilder	*type,
-			IInterfaceInstFactory	*factory) override;
+			IInterfaceImplFactory	*impl_factory,
+			IInterfaceImplFactory	*impl_mirror_factory) override;
+
+	/* Implementation must provide
+	virtual IInterfaceInst *defineInterfaceInst(
+			IInterfaceType			*type,
+			const std::string		&inst_name,
+			bool					is_mirror,
+			IInterfaceImpl			*impl) override;
+	 */
 
 	/**
 	 * Returns the available interface types registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override {
-		return m_iftypes;
-	}
+	virtual const std::vector<IInterfaceType *> &getInterfaceTypes() override;
+
+	/**
+	 * Returns the available interface types registered by the
+	 * endpoint peer. Only valid after 'build' is complete
+	 */
+	virtual const std::vector<IInterfaceType *> &getPeerInterfaceTypes() override;
 
 	/**
 	 * Returns the available interface instances registered by the
 	 * endpoint peer. Only valid after 'build' is complete
 	 */
-	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override {
-		return m_ifinsts;
-	}
+	virtual const std::vector<IInterfaceInst *> &getInterfaceInsts() override;
+
+	/**
+	 * Returns the available interface instances registered by the
+	 * endpoint peer. Only valid after 'build' is complete
+	 */
+	virtual const std::vector<IInterfaceInst *> &getPeerInterfaceInsts() override;
 
 	virtual IParamValBool *mkValBool(bool val) override;
 
@@ -90,18 +109,56 @@ public:
 	virtual IParamValVec *mkValVec() override;
 
 protected:
-	IEndpointFlags										m_flags;
-	IEndpointServices									*m_services;
-	IEndpointListener									*m_listener;
+	using iftype_m_t=std::unordered_map<std::string,InterfaceTypeUP>;
+	using iftype_l_t=std::vector<IInterfaceType *>;
+	using ifinst_m_t=std::unordered_map<std::string,InterfaceInstUP>;
+	using ifinst_l_t=std::vector<IInterfaceInst *>;
 
-	std::vector<IInterfaceType *>						m_iftypes;
-	std::unordered_map<std::string, IInterfaceTypeUP>	m_iftype_m;
-	std::vector<IInterfaceInst *>						m_ifinsts;
-	std::unordered_map<std::string, IInterfaceInstUP>	m_ifinst_m;
+protected:
+
+	int peer_init(
+			int32_t								time_precision,
+			const std::vector<std::string>		&args);
+
+	int peer_build_complete();
+
+	int peer_connect_complete();
+
+	virtual void last_error(const char *fmt, ...);
+
+protected:
+	IEndpointFlags										m_flags;
+	IEndpointServicesUP									m_services;
+	IEndpoint::comm_state_e								m_comm_state;
+	IEndpoint::comm_mode_e								m_comm_mode;
+
+	int32_t												m_init;
+	int32_t												m_peer_init;
+	int32_t												m_build_complete;
+	int32_t												m_peer_build_complete;
+	int32_t												m_connect_complete;
+	int32_t												m_peer_connect_complete;
+	int32_t												m_peer_local_check_complete;
+
+	// Cached data for endpoints with remote services
+	uint64_t											m_time;
+	std::vector<std::string>							m_args;
+	int32_t												m_time_precision;
+
 	std::vector<IEndpointListenerUP>					m_listeners;
 	std::vector<IEndpointListener *>					m_listeners_p;
 
 	std::string											m_last_error;
+
+	iftype_m_t											m_peer_ifc_types;
+	std::vector<IInterfaceType*>						m_peer_ifc_types_pl;
+	iftype_m_t											m_local_ifc_types;
+	std::vector<IInterfaceType*>						m_local_ifc_type_pl;
+
+	ifinst_m_t											m_peer_ifc_insts;
+	std::vector<IInterfaceInst*>						m_peer_ifc_insts_pl;
+	ifinst_m_t											m_local_ifc_insts;
+	std::vector<IInterfaceInst*>						m_local_ifc_insts_pl;
 };
 
 } /* namespace tblink_rpc_core */
