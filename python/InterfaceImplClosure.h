@@ -16,6 +16,8 @@ public:
 
 	virtual ~InterfaceImplClosure();
 
+	virtual void init(tblink_rpc_core::IInterfaceInst *ifinst) override;
+
 	virtual void invoke(
 			tblink_rpc_core::IInterfaceInst	*ifinst,
 			tblink_rpc_core::IMethodType	*method,

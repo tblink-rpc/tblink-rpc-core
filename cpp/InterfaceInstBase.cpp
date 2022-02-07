@@ -35,6 +35,8 @@ InterfaceInstBase::InterfaceInstBase(
 	m_type = type;
 	m_inst_name = inst_name;
 	m_is_mirror = is_mirror;
+	m_local_id = -1;
+	m_remote_id = -1;
 	m_call_id = 0;
 }
 
@@ -49,6 +51,8 @@ InterfaceInstBase::InterfaceInstBase(
 	m_inst_name = inst_name;
 	m_is_mirror = is_mirror;
 	m_impl = IInterfaceImplUP(impl);
+	m_local_id = -1;
+	m_remote_id = -1;
 	m_call_id = 0;
 }
 
@@ -67,7 +71,7 @@ void InterfaceInstBase::invoke_req(
 			IMethodType				*method,
 			IParamValVec			*params,
 			const invoke_rsp_f		&response_f) {
-	DEBUG_ENTER("invoke_req");
+	DEBUG_ENTER("invoke_req (impl=%p)", m_impl.get());
 	intptr_t call_id = m_call_id;
 	m_call_id += 1;
 	m_invoke_m.insert({call_id, response_f});

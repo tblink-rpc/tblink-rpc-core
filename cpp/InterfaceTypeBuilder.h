@@ -34,6 +34,10 @@ public:
 
 	virtual IType *mkTypeBool() override;
 
+	virtual ITypeIfc *mkTypeIfc(
+			const std::string	&name,
+			bool				is_mirror) override;
+
 	virtual ITypeInt *mkTypeInt(
 			bool		is_signed,
 			int32_t		width) override;

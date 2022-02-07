@@ -128,17 +128,16 @@ cdef extern from "tblink_rpc/IInterfaceType.h" namespace "tblink_rpc_core":
 ctypedef IInterfaceType *IInterfaceTypeP
                 
 #********************************************************************
-#* IInterfaceInstFactory
+#* IInterfaceImplFactory
 #********************************************************************
-cdef extern from "tblink_rpc/IInterfaceInstFactory.h" namespace "tblink_rpc_core":
-    cdef cppclass IInterfaceInstFactory:
-        IInterfaceInst *createInterfaceInst(
-            IEndpoint       *ep,
-            IInterfaceType  *type,
-            const cpp_string    &inst_name,
-            bool                is_mirror)
-        IInterfaceInstFactory *clone()
+cdef extern from "tblink_rpc/IInterfaceImplFactory.h" namespace "tblink_rpc_core":
+    cdef cppclass IInterfaceImplFactory:
+        IInterfaceImpl *createImpl()
         
+cdef extern from "InterfaceImplFactoryProxy.h":
+    cdef cppclass InterfaceImplFactoryProxy(IInterfaceImplFactory):
+        InterfaceImplFactoryProxy(cpy_ref.PyObject *)
+
 #********************************************************************
 #* IInterfaceImpl
 #********************************************************************
@@ -350,7 +349,8 @@ cdef extern from "tblink_rpc/IEndpoint.h" namespace "tblink_rpc_core":
         
         IInterfaceType *defineInterfaceType(
             IInterfaceTypeBuilder   *,
-            IInterfaceInstFactory   *)
+            IInterfaceImplFactory   *,
+            IInterfaceImplFactory   *)
         
         IInterfaceInst *defineInterfaceInst(
             IInterfaceType *,

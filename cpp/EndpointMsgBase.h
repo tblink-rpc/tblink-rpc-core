@@ -35,15 +35,9 @@ public:
 
 	virtual int32_t init(IEndpointServices *services) override;
 
-	virtual int32_t is_init() override;
-
 	virtual int32_t build_complete() override;
 
-	virtual int32_t is_build_complete() override;
-
 	virtual int32_t connect_complete() override;
-
-	virtual int32_t is_connect_complete() override;
 
 	virtual bool shutdown() override;
 
@@ -60,6 +54,13 @@ public:
 	 */
 	virtual void notify_callback(intptr_t   id) override;
 
+	virtual IInterfaceInst *createInterfaceObj(
+			IInterfaceType			*type,
+			bool					is_mirror,
+			IInterfaceImpl			*impl) override;
+
+	virtual void destroyInterfaceObj(
+			IInterfaceInst			*ifinst) override;
 
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,
@@ -143,6 +144,10 @@ private:
 			intptr_t		id,
 			IParamValMap	*params);
 
+	rsp_t req_create_ifc_obj(
+			intptr_t		id,
+			IParamValMap	*params);
+
 	rsp_t req_shutdown(
 			intptr_t		id,
 			IParamValMap 	*params);
@@ -193,12 +198,10 @@ private:
 	IParamValMap *pack_type(IType *t);
 
 	void unpack_iftypes(
-			iftype_m_t							&iftypes,
 			std::vector<IInterfaceType *>		&iftypes_l,
 			IParamValMap 						*iftypes_p);
 
 	void unpack_ifinsts(
-			ifinst_m_t							&ifinsts,
 			std::vector<IInterfaceInst*>		&ifinsts_l,
 			IParamValMap  						*ifinsts_p);
 

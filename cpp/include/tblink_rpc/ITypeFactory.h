@@ -5,9 +5,10 @@
  *      Author: mballance
  */
 #pragma once
-#include "ITypeInt.h"
-#include "ITypeMap.h"
-#include "ITypeVec.h"
+#include "tblink_rpc/ITypeIfc.h"
+#include "tblink_rpc/ITypeInt.h"
+#include "tblink_rpc/ITypeMap.h"
+#include "tblink_rpc/ITypeVec.h"
 
 namespace tblink_rpc_core {
 
@@ -17,6 +18,10 @@ public:
 	virtual ~ITypeFactory() { }
 
 	virtual IType *mkTypeBool() = 0;
+
+	virtual ITypeIfc *mkTypeIfc(
+			const std::string	&name,
+			bool				is_mirror) = 0;
 
 	virtual ITypeInt *mkTypeInt(
 			bool		is_signed,

@@ -20,6 +20,11 @@ InterfaceImplClosure::~InterfaceImplClosure() {
 	Py_DECREF(m_req_f);
 }
 
+void InterfaceImplClosure::init(
+		tblink_rpc_core::IInterfaceInst *ifinst) {
+	// NOP
+}
+
 void InterfaceImplClosure::invoke(
 			tblink_rpc_core::IInterfaceInst	*ifinst,
 			tblink_rpc_core::IMethodType	*method,

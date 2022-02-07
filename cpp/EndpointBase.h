@@ -29,6 +29,16 @@ public:
 
 	virtual int32_t init(IEndpointServices *services) override;
 
+	virtual int32_t is_init() override;
+
+	virtual int32_t build_complete() override;
+
+	virtual int32_t is_build_complete() override;
+
+	virtual int32_t connect_complete() override;
+
+	virtual int32_t is_connect_complete() override;
+
 	virtual IEndpoint::comm_state_e comm_state() override;
 
 	virtual void update_comm_mode(comm_mode_e m, comm_state_e s) override;
@@ -109,10 +119,12 @@ public:
 	virtual IParamValVec *mkValVec() override;
 
 protected:
-	using iftype_m_t=std::unordered_map<std::string,InterfaceTypeUP>;
+	using iftype_m_t=std::unordered_map<std::string,IInterfaceTypeUP>;
 	using iftype_l_t=std::vector<IInterfaceType *>;
-	using ifinst_m_t=std::unordered_map<std::string,InterfaceInstUP>;
+	using ifinst_m_t=std::unordered_map<std::string,IInterfaceInstUP>;
 	using ifinst_l_t=std::vector<IInterfaceInst *>;
+	using ifobj_m_t=std::unordered_map<intptr_t, IInterfaceInstUP>;
+	using id2ifinst_m_t=std::unordered_map<intptr_t, IInterfaceInst *>;
 
 protected:
 
@@ -122,7 +134,11 @@ protected:
 
 	int peer_build_complete();
 
+	int32_t build_complete_check();
+
 	int peer_connect_complete();
+
+	int32_t connect_complete_check();
 
 	virtual void last_error(const char *fmt, ...);
 
@@ -136,9 +152,10 @@ protected:
 	int32_t												m_peer_init;
 	int32_t												m_build_complete;
 	int32_t												m_peer_build_complete;
+	int32_t												m_build_check_complete;
 	int32_t												m_connect_complete;
 	int32_t												m_peer_connect_complete;
-	int32_t												m_peer_local_check_complete;
+	int32_t												m_connect_check_complete;
 
 	// Cached data for endpoints with remote services
 	uint64_t											m_time;
@@ -150,6 +167,7 @@ protected:
 
 	std::string											m_last_error;
 
+	intptr_t											m_ifinst_id;
 	iftype_m_t											m_peer_ifc_types;
 	std::vector<IInterfaceType*>						m_peer_ifc_types_pl;
 	iftype_m_t											m_local_ifc_types;
@@ -159,6 +177,10 @@ protected:
 	std::vector<IInterfaceInst*>						m_peer_ifc_insts_pl;
 	ifinst_m_t											m_local_ifc_insts;
 	std::vector<IInterfaceInst*>						m_local_ifc_insts_pl;
+
+	id2ifinst_m_t										m_id2ifinst_m;
+
+	ifobj_m_t											m_obj_m;
 };
 
 } /* namespace tblink_rpc_core */

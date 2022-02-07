@@ -138,15 +138,6 @@ int32_t EndpointMsgBase::init(IEndpointServices *services) {
 	return 0;
 }
 
-int32_t EndpointMsgBase::is_init() {
-	DEBUG("is_init m_init=%d m_peer_init=%d", m_init, m_peer_init);
-	if (m_init == -1 || m_peer_init == -1) {
-		return -1;
-	} else {
-		return m_init && m_peer_init;
-	}
-}
-
 void EndpointMsgBase::update_comm_mode(
 		comm_mode_e 		m,
 		comm_state_e 		s) {
@@ -180,35 +171,16 @@ int32_t EndpointMsgBase::build_complete() {
 		params->setVal("time-precision", mkValIntS(-9, 32));
 	}
 
-	m_build_complete = 1;
 	if (send_req("tblink.build-complete", params) == -1) {
 		return -1;
 	}
 
-	if (m_peer_build_complete == -1) {
-		return -1;
-	}
-
 	DEBUG_LEAVE("build_complete");
-	return 0;
-}
-
-int32_t EndpointMsgBase::is_build_complete() {
-	DEBUG("is_build_complete local=%d peer=%d",
-			m_build_complete, m_peer_build_complete);
-	if (m_build_complete == -1 || m_peer_build_complete == -1) {
-		return -1;
-	} else {
-		return m_build_complete && m_peer_build_complete;
-	}
+	return EndpointBase::build_complete();
 }
 
 int32_t EndpointMsgBase::connect_complete() {
 	IParamValMap *params = mkValMap();
-
-	// TODO: should bail if build has failed?
-
-	m_connect_complete = 1;
 
 	// Pack the current set of instances present in the client
 	params->setVal("ifinsts", pack_ifinsts(m_local_ifc_insts));
@@ -218,79 +190,7 @@ int32_t EndpointMsgBase::connect_complete() {
 		return -1;
 	}
 
-	if (m_peer_connect_complete == -1) {
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-int32_t EndpointMsgBase::is_connect_complete() {
-	if (m_peer_local_check_complete == 0 &&
-			m_connect_complete && m_peer_connect_complete) {
-
-		// Check results
-		m_peer_local_check_complete = 1;
-		for (auto it=m_local_ifc_insts.begin();
-				it!=m_local_ifc_insts.end(); it++) {
-			ifinst_m_t::iterator peer_it;
-			if ((peer_it=m_peer_ifc_insts.find(it->first)) != m_peer_ifc_insts.end()) {
-				// Compare types
-				InterfaceInstBase *local_ifinst = it->second.get();
-				InterfaceInstBase *peer_ifinst = peer_it->second.get();
-
-				if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
-					fprintf(stdout, "local_ifinst::type=%p peer_ifinst::type=%p\n",
-							local_ifinst->type(), peer_ifinst->type());
-					fflush(stdout);
-					fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
-							local_ifinst->name().c_str(),
-							local_ifinst->type()->name().c_str(),
-							peer_ifinst->type()->name().c_str());
-					m_peer_local_check_complete = -1;
-					break;
-				}
-			} else {
-				// Instance doesn't exist
-				fprintf(stdout, "Error: Local interface %s does not have remote peer\n",
-						it->second->name().c_str());
-				m_peer_local_check_complete = -1;
-				break;
-			}
-		}
-
-		// Check the opposite way
-		if (m_peer_local_check_complete == 1) {
-			for (auto it=m_peer_ifc_insts.begin();
-					it!=m_peer_ifc_insts.end(); it++) {
-				ifinst_m_t::iterator local_it;
-				if ((local_it=m_local_ifc_insts.find(it->first)) != m_local_ifc_insts.end()) {
-					// Compare types
-					InterfaceInstBase *peer_ifinst = it->second.get();
-					InterfaceInstBase *local_ifinst = local_it->second.get();
-
-					if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
-						fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
-								local_ifinst->name().c_str(),
-								local_ifinst->type()->name().c_str(),
-								peer_ifinst->type()->name().c_str());
-						m_peer_local_check_complete = -1;
-						break;
-					}
-				} else {
-					// Instance doesn't exist
-					fprintf(stdout, "Error: Local interface %s does not have remote peer\n",
-							it->second->name().c_str());
-					m_peer_local_check_complete = -1;
-					break;
-				}
-			}
-		}
-
-		// TODO: notify listener if present
-	}
-
-	return m_peer_local_check_complete;
+	return EndpointBase::connect_complete();
 }
 
 bool EndpointMsgBase::shutdown() {
@@ -347,6 +247,58 @@ void EndpointMsgBase::notify_callback(intptr_t   callback_id) {
 	intptr_t id = send_req("tblink.notify-callback", params);
 }
 
+IInterfaceInst *EndpointMsgBase::createInterfaceObj(
+		IInterfaceType				*type,
+		bool						is_mirror,
+		IInterfaceImpl				*impl) {
+	IParamValMap *params = mkValMap();
+
+	intptr_t local_id = m_id;
+	m_id++;
+
+	params->setVal("id", mkValIntS(local_id, 64));
+	params->setVal("iftype", mkValStr(type->name()));
+	params->setVal("is-mirror", mkValBool(is_mirror));
+
+	bool have_rsp = false;
+	intptr_t remote_id = -1;
+
+	send_req(
+			"tblink.create-ifc-obj",
+			params,
+			[&](intptr_t msg_id, IParamValMap *result, IParamValMap *error) {
+				have_rsp = true;
+				if (!error && result) {
+					remote_id = result->getValT<IParamValInt>("id")->val_s();
+				}
+			});
+
+	while (!have_rsp) {
+		if (process_one_message() == -1) {
+			break;
+		}
+	}
+
+	InterfaceInstMsgTransport *ifinst = 0;
+	if (remote_id != -1) {
+		ifinst = new InterfaceInstMsgTransport(
+			this,
+			static_cast<InterfaceType *>(type),
+			"",
+			is_mirror,
+			impl);
+		ifinst->setLocalId(local_id);
+		m_id2ifinst_m.insert({local_id, ifinst});
+	}
+
+	return ifinst;
+}
+
+void EndpointMsgBase::destroyInterfaceObj(
+		IInterfaceInst				*ifinst) {
+
+}
+
 IInterfaceInst *EndpointMsgBase::defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,
@@ -355,12 +307,16 @@ IInterfaceInst *EndpointMsgBase::defineInterfaceInst(
 	DEBUG_ENTER("defineInterfaceInst: %s type=%s is_mirror=%d",
 			inst_name.c_str(), type->name().c_str(), is_mirror);
 
+	intptr_t id = m_ifinst_id;
+	m_ifinst_id++;
+
 	InterfaceInstMsgTransport *ifinst = new InterfaceInstMsgTransport(
 			this,
 			static_cast<InterfaceType *>(type),
 			inst_name,
 			is_mirror,
 			impl);
+	ifinst->setLocalId(id);
 	m_local_ifc_insts.insert({inst_name, InterfaceInstMsgTransportUP(ifinst)});
 	m_local_ifc_insts_pl.push_back(ifinst);
 
@@ -397,31 +353,37 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_build_complete(
 	DEBUG_ENTER("req_build_complete");
 	IParamValMap *result = 0;
 	IParamValMap *error = 0;
-	iftype_m_t iftypes_m;
-	std::unordered_map<std::string,InterfaceTypeUP> iftypes;
+//	iftype_m_t iftypes_m;
+//	std::unordered_map<std::string,InterfaceTypeUP> iftypes;
+
+	std::vector<IInterfaceType *> iftypes;
 
 	unpack_iftypes(
-			m_peer_ifc_types,
-			m_peer_ifc_types_pl,
+			iftypes,
 			params->getValT<IParamValMap>("iftypes"));
+
+	m_peer_ifc_types_pl.clear();
+	m_peer_ifc_types.clear();
+
+	// Insert into the map
+	for (auto it=iftypes.begin(); it!=iftypes.end(); it++) {
+		m_peer_ifc_types_pl.push_back(*it);
+		m_peer_ifc_types.insert({(*it)->name(), IInterfaceTypeUP(*it)});
+	}
 
 	// Now, unpack ifinsts. We need to have a consistent
 	// type system prior to doing so
-	std::unordered_map<std::string,InterfaceInstUP> ifinsts;
+	std::vector<IInterfaceInst *> ifinsts;
 	unpack_ifinsts(
-			m_peer_ifc_insts,
-			m_peer_ifc_insts_pl,
+			ifinsts,
 			params->getValT<IParamValMap>("ifinsts"));
 
-	for (auto ifinst_it=m_peer_ifc_insts_pl.begin();
-			ifinst_it!=m_peer_ifc_insts_pl.end(); ifinst_it++) {
-		// Find the appropriate iftype
+	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
+		m_peer_ifc_insts_pl.push_back(*it);
+		m_peer_ifc_insts.insert({(*it)->name(), IInterfaceInstUP(*it)});
 	}
 
 	peer_build_complete();
-
-//	m_time_precision = params->getValT<IParamValInt>("time-precision")->val_s();
-
 
 	if (!error) {
 		result = mkValMap();
@@ -437,12 +399,22 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_connect_complete(
 
 	// The connect request conveys an updated set of interface instances
 
+	ifinst_l_t ifinsts;
+
+	unpack_ifinsts(
+			ifinsts,
+			params->getValT<IParamValMap>("ifinsts"));
+
 	m_peer_ifc_insts.clear();
 	m_peer_ifc_insts_pl.clear();
-	unpack_ifinsts(
-			m_peer_ifc_insts,
-			m_peer_ifc_insts_pl,
-			params->getValT<IParamValMap>("ifinsts"));
+
+	// Now, insert the newly-registered interface instances
+	// into the appropriate maps
+	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
+		m_peer_ifc_insts_pl.push_back(*it);
+		m_peer_ifc_insts.insert({(*it)->name(), IInterfaceInstUP(*it)});
+	}
+
 
 	IParamValMap *result = mkValMap();
 	IParamValMap *error = 0;
@@ -519,6 +491,32 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_notify_callback(
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
+EndpointMsgBase::rsp_t EndpointMsgBase::req_create_ifc_obj(
+		intptr_t				id,
+		IParamValMap 			*params) {
+	intptr_t remote_id = params->getValT<IParamValInt>("id")->val_s();
+	std::string iftype_s = params->getValT<IParamValStr>("iftype")->val();
+	bool is_mirror = params->getValT<IParamValBool>("is-mirror")->val();
+
+	intptr_t local_id = m_id;
+	m_id++;
+
+	auto iftype_it = m_local_ifc_types.find(iftype_s);
+
+	IParamValMap *result = 0;
+	IParamValMap *error = 0;
+
+	if (iftype_it != m_local_ifc_types.end()) {
+		result = mkValMap();
+
+		result->setVal("id", mkValIntS(local_id, 64));
+	} else {
+		error = mkValMap();
+	}
+
+	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
+}
+
 EndpointMsgBase::rsp_t EndpointMsgBase::req_shutdown(
 		intptr_t				id,
 		IParamValMap 			*params) {
@@ -536,18 +534,22 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_shutdown(
 EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_nb(
 		intptr_t				id,
 		IParamValMap 			*params) {
-	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
+	intptr_t ifinst_id = params->getValT<IParamValInt>("ifinst-id")->val_s();
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	intptr_t call_id = params->getValT<IParamValInt>("call-id")->val_s();
 
-	ifinst_m_t::const_iterator i_it;
+	auto ifinst_it = m_id2ifinst_m.find(ifinst_id);
 
-	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
-		IMethodType *method_t = i_it->second->type()->findMethod(method);
+	if (ifinst_it != m_id2ifinst_m.end()) {
+		InterfaceInstBase *ifinst =
+				dynamic_cast<InterfaceInstBase *>(ifinst_it->second);
+		InterfaceType *iftype =
+				dynamic_cast<InterfaceType *>(ifinst->type());
+		IMethodType *method_t = iftype->findMethod(method);
 
 		if (method_t) {
 			IParamValVec *m_params = params->getValT<IParamValVec>("params");
-			i_it->second->invoke_req(
+			ifinst->invoke_req(
 					method_t,
 					m_params,
 					std::bind(&EndpointMsgBase::call_completion_nb,
@@ -577,14 +579,18 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_nb(
 EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 		intptr_t				id,
 		IParamValMap 			*params) {
-	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
+	intptr_t ifinst_id = params->getValT<IParamValInt>("ifinst-id")->val_s();
 	std::string method = params->getValT<IParamValStr>("method")->val();
 	uint64_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 
-	ifinst_m_t::const_iterator i_it;
+	auto ifinst_it = m_id2ifinst_m.find(ifinst_id);
 
-	if ((i_it=m_local_ifc_insts.find(ifinst)) != m_local_ifc_insts.end()) {
-		IMethodType *method_t = i_it->second->type()->findMethod(method);
+	if (ifinst_it != m_id2ifinst_m.end()) {
+		InterfaceInstBase *ifinst =
+				dynamic_cast<InterfaceInstBase *>(ifinst_it->second);
+		InterfaceType *iftype =
+				dynamic_cast<InterfaceType *>(ifinst->type());
+		IMethodType *method_t = iftype->findMethod(method);
 
 		if (method_t) {
 			IParamValVec *m_params = params->getValT<IParamValVec>("params");
@@ -595,12 +601,12 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 			}
 			sendEvent(IEndpointEvent::InInvokeReqB);
 
-			i_it->second->invoke_req(
+			ifinst->invoke_req(
 					method_t,
 					m_params,
 					std::bind(&EndpointMsgBase::call_completion_b,
 							this,
-							i_it->second.get(),
+							ifinst,
 							call_id,
 							std::placeholders::_1));
 		} else {
@@ -625,7 +631,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_rsp_b(
 		intptr_t				id,
 		IParamValMap 			*params) {
 	DEBUG_ENTER("req_invoke_rsp_b");
-	std::string ifinst = params->getValT<IParamValStr>("ifinst")->val();
+	intptr_t ifinst_id = params->getValT<IParamValInt>("ifinst-id")->val_s();
 	intptr_t call_id = params->getValT<IParamValInt>("call-id")->val_u();
 	IParamVal *retval = 0;
 
@@ -723,7 +729,8 @@ void EndpointMsgBase::call_completion_b(
 	DEBUG_ENTER("call_completion_b");
 	IParamValMap *params = mkValMap();
 
-	params->setVal("ifinst", mkValStr(ifinst->name()));
+	params->setVal("ifinst-id", mkValIntS(
+			ifinst->getRemoteId(), 64));
 	params->setVal("call-id", mkValIntU(call_id, 64));
 
 	if (retval) {
@@ -896,7 +903,8 @@ int32_t EndpointMsgBase::invoke(
 	m_call_id += 1;
 
 	IParamValMap *r_params = mkValMap();
-	r_params->setVal("ifinst", mkValStr(ifinst->name()));
+	r_params->setVal("ifinst-id", mkValIntS(
+			ifinst->getRemoteId(), 64));
 	r_params->setVal("method", mkValStr(method->name()));
 	r_params->setVal("call-id", mkValIntU(call_id, 64));
 	r_params->setVal("params", params);
@@ -962,9 +970,7 @@ IParamValMap *EndpointMsgBase::pack_iftypes(const iftype_m_t &iftypes) {
 	DEBUG_ENTER("pack_iftypes");
 	IParamValMap *ret = mkValMap();
 
-	for (std::unordered_map<std::string,InterfaceTypeUP>::const_iterator
-			it=iftypes.begin();
-			it!=iftypes.end(); it++) {
+	for (auto it=iftypes.begin(); it!=iftypes.end(); it++) {
 		DEBUG("Type: %s", it->first.c_str());
 		IParamValMap *iftype = mkValMap();
 		iftype->setVal("name", mkValStr(it->second->name()));
@@ -1013,9 +1019,11 @@ IParamValMap *EndpointMsgBase::pack_ifinsts(const ifinst_m_t &ifinsts) {
 	IParamValMap *ret = mkValMap();
 
 	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
+		InterfaceInstBase *ifinst_p = dynamic_cast<InterfaceInstBase *>(it->second.get());
 		IParamValMap *ifinst = mkValMap();
 		ifinst->setVal("type", mkValStr(it->second->type()->name()));
 		ifinst->setVal("is-mirror", mkValBool(it->second->is_mirror()));
+		ifinst->setVal("id", mkValIntS(ifinst_p->getLocalId(), 64));
 		ret->setVal(it->second->name(), ifinst);
 	}
 
@@ -1059,7 +1067,6 @@ IParamValMap *EndpointMsgBase::pack_type(IType *t) {
 }
 
 void EndpointMsgBase::unpack_iftypes(
-		iftype_m_t						&iftypes,
 		std::vector<IInterfaceType *>	&iftypes_l,
 		IParamValMap 					*iftypes_p) {
 	DEBUG_ENTER("unpack_iftypes");
@@ -1089,7 +1096,6 @@ void EndpointMsgBase::unpack_iftypes(
 			iftype->addMethod(method);
 		}
 
-		iftypes.insert({*k_it, InterfaceTypeUP(iftype)});
 		iftypes_l.push_back(iftype);
 	}
 
@@ -1097,7 +1103,6 @@ void EndpointMsgBase::unpack_iftypes(
 }
 
 void EndpointMsgBase::unpack_ifinsts(
-		ifinst_m_t							&ifinsts,
 		std::vector<IInterfaceInst*>		&ifinsts_l,
 		IParamValMap 						*ifinsts_p) {
 	std::vector<InterfaceInstUP> ret;
@@ -1108,11 +1113,12 @@ void EndpointMsgBase::unpack_ifinsts(
 				k_it=ifinsts_p->keys().begin();
 				k_it!=ifinsts_p->keys().end(); k_it++) {
 			IParamValMap *ifinst_v = ifinsts_p->getValT<IParamValMap>(*k_it);
-			std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
 			std::string tname = ifinst_v->getValT<IParamValStr>("type")->val();
 			bool is_mirror = ifinst_v->getValT<IParamValBool>("is-mirror")->val();
-			InterfaceType *type = 0;
-			if ((it=m_peer_ifc_types.find(tname)) != m_peer_ifc_types.end()) {
+			intptr_t id = ifinst_v->getValT<IParamValInt>("id")->val_s();
+			IInterfaceType *type = 0;
+			auto it = m_peer_ifc_types.find(tname);
+			if (it != m_peer_ifc_types.end()) {
 				type = it->second.get();
 			} else {
 				fprintf(stdout, "Error: failed to find type %s\n", tname.c_str());
@@ -1132,7 +1138,7 @@ void EndpointMsgBase::unpack_ifinsts(
 					type,
 					*k_it,
 					is_mirror);
-			ifinsts.insert({*k_it, InterfaceInstUP(ifinst)});
+			ifinst->setLocalId(id);
 			ifinsts_l.push_back(ifinst);
 		}
 	} else {

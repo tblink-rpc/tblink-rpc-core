@@ -17,6 +17,7 @@ from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e, EndpointFlags,\
     TimeUnit
 from tblink_rpc_core.event_type_e import EventTypeE
 from tblink_rpc_core.tblink_event import TbLinkEventKind
+from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
 cimport cpython.ref as cpy_ref
 
 import tblink_rpc_core
@@ -245,18 +246,14 @@ cdef class InterfaceType(object):
         return ret
     
 #********************************************************************
-#* InterfaceInstFactory
+#* InterfaceImplFactory
 #********************************************************************
-cdef class InterfaceInstFactory(object):
-    cdef native_decl.IInterfaceInstFactory *_hndl
-    
-    cpdef createInterfaceInst(self,
-        Endpoint        ep,
-        InterfaceType   type,
-        inst_name,
-        is_mirror):
-        pass
-    
+#cdef class InterfaceImplFactory(object):
+#    cdef native_decl.IInterfaceImplFactory *_hndl
+#    
+#    cpdef createImpl(self):
+#        pass
+
 #********************************************************************
 #* Type
 #********************************************************************
@@ -623,12 +620,25 @@ cdef class Endpoint(object):
     
     cpdef defineInterfaceType(self, 
                               InterfaceTypeBuilder iftype_b,
-                              InterfaceInstFactory factory):
-        cdef native_decl.IInterfaceInstFactory *factory_h = NULL
+                              impl_f,
+                              impl_mirror_f):
+        cdef native_decl.InterfaceImplFactoryProxy *impl_f_h = NULL
+        cdef native_decl.InterfaceImplFactoryProxy *impl_mirror_f_h = NULL
+        
+        if impl_f is not None:
+            impl_f_h = new native_decl.InterfaceImplFactoryProxy(
+                <cpy_ref.PyObject *>(impl_f))
+        
+        if impl_mirror_f is not None:
+            impl_mirror_f_h = new native_decl.InterfaceImplFactoryProxy(
+                <cpy_ref.PyObject *>(impl_mirror_f))
+            pass
+        
         return InterfaceType._mk(
             self._hndl.defineInterfaceType(
                 iftype_b._hndl,
-                factory_h))
+                impl_f_h,
+                impl_mirror_f_h))
         
     cpdef defineInterfaceInst(
             self, 
@@ -724,6 +734,26 @@ cdef class Endpoint(object):
         ret = Endpoint()
         ret._hndl = hndl
         return ret
+
+#********************************************************************
+#*
+#********************************************************************
+cdef public native_decl.IInterfaceImpl *interface_impl_factory_proxy_createImpl(
+    obj_f
+    ) with gil:
+    cdef native_decl.InterfaceImplClosure *ret
+    impl_o = None
+    if callable(obj_f):
+        # Call
+        impl_o = obj_f()
+    elif hasattr(obj_f, "createImpl"):
+        impl_o = obj_f.createImpl()
+    else:
+        print("Error: interface impl factory is not usable")
+        
+    ret = new native_decl.InterfaceImplClosure(<cpy_ref.PyObject *>(impl_o))
+    
+    return ret
 
 #********************************************************************
 #* endpoint_ev_f

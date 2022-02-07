@@ -46,6 +46,14 @@ public:
 		return m_inst_name;
 	}
 
+	intptr_t getLocalId() const { return m_local_id; }
+
+	void setLocalId(intptr_t i) { m_local_id = i; }
+
+	intptr_t getRemoteId() const { return m_remote_id; }
+
+	void setRemoteId(intptr_t i) { m_remote_id = i; }
+
 	void invoke_req(
 			IMethodType				*method,
 			IParamValVec			*params,
@@ -91,6 +99,8 @@ protected:
 	IEndpoint									*m_endpoint;
 	IInterfaceType								*m_type;
 	std::string									m_inst_name;
+	intptr_t									m_local_id;
+	intptr_t									m_remote_id;
 	bool										m_is_mirror;
 	IInterfaceImplUP							m_impl;
 	intptr_t									m_call_id;

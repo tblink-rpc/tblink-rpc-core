@@ -118,6 +118,14 @@ public:
 			IInterfaceImplFactory	*impl_factory,
 			IInterfaceImplFactory	*impl_mirror_factory) = 0;
 
+	virtual IInterfaceInst *createInterfaceObj(
+			IInterfaceType			*type,
+			bool					is_mirror,
+			IInterfaceImpl			*impl) = 0;
+
+	virtual void destroyInterfaceObj(
+			IInterfaceInst			*ifinst) = 0;
+
 	virtual IInterfaceInst *defineInterfaceInst(
 			IInterfaceType			*type,
 			const std::string		&inst_name,

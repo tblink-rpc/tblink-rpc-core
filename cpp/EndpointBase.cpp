@@ -45,12 +45,15 @@ EndpointBase::EndpointBase() : m_flags(IEndpointFlags::Empty) {
 	m_peer_init = 0;
 	m_build_complete = 0;
 	m_peer_build_complete = 0;
+	m_build_check_complete = 0;
 	m_connect_complete = 0;
 	m_peer_connect_complete = 0;
-	m_peer_local_check_complete = 0;
+	m_connect_check_complete = 0;
 
 	m_comm_state = IEndpoint::Waiting;
 	m_comm_mode = IEndpoint::Automatic;
+
+	m_ifinst_id = 0;
 }
 
 EndpointBase::~EndpointBase() {
@@ -75,6 +78,15 @@ int32_t EndpointBase::init(IEndpointServices *services) {
 	return 0;
 }
 
+int32_t EndpointBase::is_init() {
+	DEBUG("is_init m_init=%d m_peer_init=%d", m_init, m_peer_init);
+	if (m_init == -1 || m_peer_init == -1) {
+		return -1;
+	} else {
+		return m_init && m_peer_init;
+	}
+}
+
 IEndpoint::comm_state_e EndpointBase::comm_state() {
 	return m_comm_state;
 }
@@ -88,6 +100,36 @@ void EndpointBase::update_comm_mode(
 	m_comm_state = s;
 
 	DEBUG_LEAVE("update_comm_mode");
+}
+
+int32_t EndpointBase::build_complete() {
+	m_build_complete = 1;
+	return 0;
+}
+
+int32_t EndpointBase::is_build_complete() {
+	DEBUG("is_build_complete local=%d peer=%d",
+			m_build_complete, m_peer_build_complete);
+	if (!m_build_check_complete) {
+		if (m_build_complete && m_peer_build_complete) {
+			m_build_check_complete = build_complete_check();
+		}
+	}
+	return m_build_check_complete;
+}
+
+int32_t EndpointBase::connect_complete() {
+	m_connect_complete = 1;
+	return 0;
+}
+
+int32_t EndpointBase::is_connect_complete() {
+	if (!m_connect_check_complete) {
+		if (m_connect_complete && m_peer_connect_complete) {
+			m_connect_check_complete = connect_complete_check();
+		}
+	}
+	return m_connect_check_complete;
 }
 
 IEndpointListener *EndpointBase::addListener(const endpoint_ev_f &ev_f) {
@@ -167,9 +209,9 @@ int32_t EndpointBase::time_precision() {
 
 IInterfaceType *EndpointBase::findInterfaceType(
 		const std::string		&name) {
-	std::unordered_map<std::string,InterfaceTypeUP>::const_iterator it;
+	auto it = m_local_ifc_types.find(name);
 
-	if ((it=m_local_ifc_types.find(name)) != m_local_ifc_types.end()) {
+	if (it != m_local_ifc_types.end()) {
 		return it->second.get();
 	} else {
 		return 0;
@@ -255,6 +297,94 @@ int EndpointBase::peer_build_complete() {
 	m_peer_build_complete = 1;
 
 	return 0;
+}
+
+int32_t EndpointBase::build_complete_check() {
+	int32_t ret = 1;
+
+	// Ensure that both sides have the same types?
+	return 1;
+}
+
+int EndpointBase::peer_connect_complete() {
+	m_peer_connect_complete = 1;
+	return 0;
+}
+
+int32_t EndpointBase::connect_complete_check() {
+	int32_t ret = 1;
+
+	// Check results
+	for (auto it=m_local_ifc_insts.begin();
+			it!=m_local_ifc_insts.end(); it++) {
+		ifinst_m_t::iterator peer_it;
+		if ((peer_it=m_peer_ifc_insts.find(it->first)) != m_peer_ifc_insts.end()) {
+			// Compare types
+			IInterfaceInst *local_ifinst = it->second.get();
+			IInterfaceInst *peer_ifinst = peer_it->second.get();
+
+			if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
+				fprintf(stdout, "local_ifinst::type=%p peer_ifinst::type=%p\n",
+						local_ifinst->type(), peer_ifinst->type());
+				fflush(stdout);
+				last_error("Local interface %s is of type %s ; Peer is of type %s\n",
+						local_ifinst->name().c_str(),
+						local_ifinst->type()->name().c_str(),
+						peer_ifinst->type()->name().c_str());
+				ret = -1;
+				break;
+			}
+			// Configure the local interface so it knows how to
+			// talk to the peer.
+			dynamic_cast<InterfaceInstBase *>(local_ifinst)->setRemoteId(
+					dynamic_cast<InterfaceInstBase *>(peer_ifinst)->getLocalId());
+		} else {
+			// Instance doesn't exist
+			last_error("Local interface %s does not have remote peer\n",
+					it->second->name().c_str());
+			ret = -1;
+			break;
+		}
+	}
+
+	// Check the opposite way
+	if (ret == 1) {
+		for (auto it=m_peer_ifc_insts.begin();
+				it!=m_peer_ifc_insts.end(); it++) {
+			ifinst_m_t::iterator local_it;
+			if ((local_it=m_local_ifc_insts.find(it->first)) != m_local_ifc_insts.end()) {
+				// Compare types
+				IInterfaceInst *peer_ifinst = it->second.get();
+				IInterfaceInst *local_ifinst = local_it->second.get();
+
+				if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
+					fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",
+							local_ifinst->name().c_str(),
+							local_ifinst->type()->name().c_str(),
+							peer_ifinst->type()->name().c_str());
+					ret = -1;
+					break;
+				}
+			} else {
+				// Instance doesn't exist
+				fprintf(stdout, "Error: Local interface %s does not have remote peer\n",
+						it->second->name().c_str());
+				ret = -1;
+				break;
+			}
+		}
+	}
+
+	if (ret == 1) {
+		// Populate the local id->inst map
+		for (auto it=m_local_ifc_insts.begin();
+				it!=m_local_ifc_insts.end(); it++) {
+			InterfaceInstBase *ifinst =
+					dynamic_cast<InterfaceInstBase *>(it->second.get());
+			m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
+		}
+	}
+	return ret;
 }
 
 void EndpointBase::last_error(const char *fmt, ...) {

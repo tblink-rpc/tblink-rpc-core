@@ -14,6 +14,7 @@ from tblink_rpc_core.param_val_int import ParamValInt
 from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.param_val_str import ParamValStr
 from tblink_rpc_core.param_val_vec import ParamValVec
+from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
 
 
 class TimeUnit(IntEnum):
@@ -97,7 +98,10 @@ class Endpoint(object):
         """
         raise NotImplementedError("newInterfaceTypeBuilder for class %s" % str(type(self)))
     
-    def defineInterfaceType(self, iftype_b : InterfaceTypeBuilder) -> InterfaceType:
+    def defineInterfaceType(self, 
+                            iftype_b : InterfaceTypeBuilder,
+                            impl_f : InterfaceImplFactory,
+                            impl_mirror_f : InterfaceImplFactory) -> InterfaceType:
         """
         Defines a new interface type from the information collected
         in the iftype builder

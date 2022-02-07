@@ -14,6 +14,7 @@ namespace tblink_rpc_core {
 
 enum class TypeE {
 	Bool,
+	Ifc,
 	Int,
 	Map,
 	Str,
