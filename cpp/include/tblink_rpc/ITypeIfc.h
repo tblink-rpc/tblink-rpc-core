@@ -12,11 +12,10 @@ namespace tblink_rpc_core {
 
 class ITypeIfc : public IType {
 public:
-	ITypeIfc();
 
-	virtual ~ITypeIfc();
+	virtual ~ITypeIfc() { }
 
-	virtual const std::string name() const = 0;
+	virtual const std::string &name() const = 0;
 
 	virtual bool is_mirror() const = 0;
 

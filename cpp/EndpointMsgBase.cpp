@@ -171,6 +171,13 @@ int32_t EndpointMsgBase::build_complete() {
 		params->setVal("time-precision", mkValIntS(-9, 32));
 	}
 
+	m_id2ifinst_m.clear();
+	for (auto it=m_local_ifc_insts.begin(); it!=m_local_ifc_insts.end(); it++) {
+		InterfaceInstBase *ifinst =
+				dynamic_cast<InterfaceInstBase *>(it->second.get());
+		m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
+	}
+
 	if (send_req("tblink.build-complete", params) == -1) {
 		return -1;
 	}
@@ -251,6 +258,7 @@ IInterfaceInst *EndpointMsgBase::createInterfaceObj(
 		IInterfaceType				*type,
 		bool						is_mirror,
 		IInterfaceImpl				*impl) {
+	DEBUG_ENTER("createInterfaceObj");
 	IParamValMap *params = mkValMap();
 
 	intptr_t local_id = m_id;
@@ -291,6 +299,7 @@ IInterfaceInst *EndpointMsgBase::createInterfaceObj(
 		m_id2ifinst_m.insert({local_id, ifinst});
 	}
 
+	DEBUG_LEAVE("createInterfaceObj");
 	return ifinst;
 }
 
@@ -420,6 +429,10 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_connect_complete(
 	IParamValMap *error = 0;
 
 	m_peer_connect_complete = 1;
+
+	if (m_connect_complete) {
+		m_connect_check_complete = connect_complete_check();
+	}
 
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
@@ -565,7 +578,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_nb(
 		}
 	} else {
 		// TODO: error signaling
-		fprintf(stdout, "Error: failed to find interface\n");
+		fprintf(stdout, "Error: failed to find interface %lld\n", ifinst_id);
 		fflush(stdout);
 	}
 
@@ -616,7 +629,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_invoke_b(
 		}
 	} else {
 		// TODO: error signaling
-		fprintf(stdout, "Error: failed to find interface\n");
+		fprintf(stdout, "Error: failed to find interface %lld\n", ifinst_id);
 		fflush(stdout);
 	}
 

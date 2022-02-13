@@ -57,6 +57,13 @@ IType *InterfaceTypeBuilder::mkTypeBool() {
 	return new Type(TypeE::Bool);
 }
 
+ITypeIfc *InterfaceTypeBuilder::mkTypeIfc(
+			const std::string	&name,
+			bool				is_mirror) {
+	fprintf(stdout, "TODO: InterfaceTypeBuilder::mkTypeIfc\n");
+	return 0;
+}
+
 ITypeInt *InterfaceTypeBuilder::mkTypeInt(
 		bool		is_signed,
 		int32_t		width) {

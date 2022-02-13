@@ -120,6 +120,10 @@ int32_t EndpointBase::is_build_complete() {
 
 int32_t EndpointBase::connect_complete() {
 	m_connect_complete = 1;
+
+	if (m_peer_connect_complete) {
+		m_connect_check_complete = connect_complete_check();
+	}
 	return 0;
 }
 
@@ -313,6 +317,7 @@ int EndpointBase::peer_connect_complete() {
 
 int32_t EndpointBase::connect_complete_check() {
 	int32_t ret = 1;
+	DEBUG_ENTER("connect_complete_check");
 
 	// Check results
 	for (auto it=m_local_ifc_insts.begin();
@@ -375,15 +380,19 @@ int32_t EndpointBase::connect_complete_check() {
 		}
 	}
 
-	if (ret == 1) {
-		// Populate the local id->inst map
-		for (auto it=m_local_ifc_insts.begin();
-				it!=m_local_ifc_insts.end(); it++) {
-			InterfaceInstBase *ifinst =
-					dynamic_cast<InterfaceInstBase *>(it->second.get());
-			m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
-		}
-	}
+//	if (ret == 1) {
+//		// Populate the local id->inst map
+//		for (auto it=m_local_ifc_insts.begin();
+//				it!=m_local_ifc_insts.end(); it++) {
+//			InterfaceInstBase *ifinst =
+//					dynamic_cast<InterfaceInstBase *>(it->second.get());
+//			DEBUG("Add interface-id %lld", ifinst->getLocalId());
+//			m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
+//		}
+//	}
+
+	DEBUG_LEAVE("connect_complete_check %d", ret);
+
 	return ret;
 }
 

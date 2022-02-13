@@ -125,6 +125,7 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 
 	if (!call_ret) {
 		fprintf(stdout, "Error: Call failed\n");
+		return {0, "Failure while running Python code"};
 	}
 
 	DEBUG_LEAVE("launch");
