@@ -1,4 +1,5 @@
 /*
+ *
  * Endpoint.cpp
  *
  *  Created on: Jul 2, 2021
@@ -191,6 +192,13 @@ int32_t EndpointMsgBase::connect_complete() {
 
 	// Pack the current set of instances present in the client
 	params->setVal("ifinsts", pack_ifinsts(m_local_ifc_insts));
+
+	m_id2ifinst_m.clear();
+	for (auto it=m_local_ifc_insts.begin(); it!=m_local_ifc_insts.end(); it++) {
+		InterfaceInstBase *ifinst =
+				dynamic_cast<InterfaceInstBase *>(it->second.get());
+		m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
+	}
 
 	if (send_req("tblink.connect-complete", params) == -1) {
 		last_error("Failed to send connect-complete message");
