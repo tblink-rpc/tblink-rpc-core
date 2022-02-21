@@ -174,8 +174,7 @@ int32_t EndpointMsgBase::build_complete() {
 
 	m_id2ifinst_m.clear();
 	for (auto it=m_local_ifc_insts.begin(); it!=m_local_ifc_insts.end(); it++) {
-		InterfaceInstBase *ifinst =
-				dynamic_cast<InterfaceInstBase *>(it->second.get());
+		InterfaceInstBase *ifinst = dynamic_cast<InterfaceInstBase *>(it->second);
 		m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
 	}
 
@@ -196,7 +195,7 @@ int32_t EndpointMsgBase::connect_complete() {
 	m_id2ifinst_m.clear();
 	for (auto it=m_local_ifc_insts.begin(); it!=m_local_ifc_insts.end(); it++) {
 		InterfaceInstBase *ifinst =
-				dynamic_cast<InterfaceInstBase *>(it->second.get());
+				dynamic_cast<InterfaceInstBase *>(it->second);
 		m_id2ifinst_m.insert({ifinst->getLocalId(), ifinst});
 	}
 
@@ -334,8 +333,9 @@ IInterfaceInst *EndpointMsgBase::defineInterfaceInst(
 			is_mirror,
 			impl);
 	ifinst->setLocalId(id);
-	m_local_ifc_insts.insert({inst_name, InterfaceInstMsgTransportUP(ifinst)});
+	m_local_ifc_insts.insert({inst_name, ifinst});
 	m_local_ifc_insts_pl.push_back(ifinst);
+	m_local_ifc_insts_l.push_back(IInterfaceInstUP(ifinst));
 
 	DEBUG_LEAVE("defineInterfaceInst: %s type=%s is_mirror=%d",
 			inst_name.c_str(), type->name().c_str(), is_mirror);
@@ -380,12 +380,14 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_build_complete(
 			params->getValT<IParamValMap>("iftypes"));
 
 	m_peer_ifc_types_pl.clear();
+	m_peer_ifc_types_l.clear();
 	m_peer_ifc_types.clear();
 
 	// Insert into the map
 	for (auto it=iftypes.begin(); it!=iftypes.end(); it++) {
 		m_peer_ifc_types_pl.push_back(*it);
-		m_peer_ifc_types.insert({(*it)->name(), IInterfaceTypeUP(*it)});
+		m_peer_ifc_types_l.push_back(IInterfaceTypeUP(*it));
+		m_peer_ifc_types.insert({(*it)->name(), *it});
 	}
 
 	// Now, unpack ifinsts. We need to have a consistent
@@ -397,7 +399,8 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_build_complete(
 
 	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
 		m_peer_ifc_insts_pl.push_back(*it);
-		m_peer_ifc_insts.insert({(*it)->name(), IInterfaceInstUP(*it)});
+		m_peer_ifc_insts_l.push_back(IInterfaceInstUP(*it));
+		m_peer_ifc_insts.insert({(*it)->name(), *it});
 	}
 
 	peer_build_complete();
@@ -416,7 +419,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_connect_complete(
 
 	// The connect request conveys an updated set of interface instances
 
-	ifinst_l_t ifinsts;
+	ifinst_l_pt ifinsts;
 
 	unpack_ifinsts(
 			ifinsts,
@@ -424,12 +427,14 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_connect_complete(
 
 	m_peer_ifc_insts.clear();
 	m_peer_ifc_insts_pl.clear();
+	m_peer_ifc_insts_l.clear();
 
 	// Now, insert the newly-registered interface instances
 	// into the appropriate maps
 	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
 		m_peer_ifc_insts_pl.push_back(*it);
-		m_peer_ifc_insts.insert({(*it)->name(), IInterfaceInstUP(*it)});
+		m_peer_ifc_insts_l.push_back(IInterfaceInstUP(*it));
+		m_peer_ifc_insts.insert({(*it)->name(), *it});
 	}
 
 
@@ -1040,7 +1045,7 @@ IParamValMap *EndpointMsgBase::pack_ifinsts(const ifinst_m_t &ifinsts) {
 	IParamValMap *ret = mkValMap();
 
 	for (auto it=ifinsts.begin(); it!=ifinsts.end(); it++) {
-		InterfaceInstBase *ifinst_p = dynamic_cast<InterfaceInstBase *>(it->second.get());
+		InterfaceInstBase *ifinst_p = dynamic_cast<InterfaceInstBase *>(it->second);
 		IParamValMap *ifinst = mkValMap();
 		ifinst->setVal("type", mkValStr(it->second->type()->name()));
 		ifinst->setVal("is-mirror", mkValBool(it->second->is_mirror()));
@@ -1140,7 +1145,7 @@ void EndpointMsgBase::unpack_ifinsts(
 			IInterfaceType *type = 0;
 			auto it = m_peer_ifc_types.find(tname);
 			if (it != m_peer_ifc_types.end()) {
-				type = it->second.get();
+				type = it->second;
 			} else {
 				fprintf(stdout, "Error: failed to find type %s\n", tname.c_str());
 				fflush(stdout);

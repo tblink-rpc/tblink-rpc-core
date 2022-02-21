@@ -216,7 +216,7 @@ IInterfaceType *EndpointBase::findInterfaceType(
 	auto it = m_local_ifc_types.find(name);
 
 	if (it != m_local_ifc_types.end()) {
-		return it->second.get();
+		return it->second;
 	} else {
 		return 0;
 	}
@@ -237,9 +237,22 @@ IInterfaceType *EndpointBase::defineInterfaceType(
 	iftype->impl_f(impl_factory);
 	iftype->impl_mirror_f(impl_mirror_factory);
 
+
+
+
+
+
+
+
+	auto it = m_local_ifc_types.find(iftype->name());
+	if (it != m_local_ifc_types.end()) {
+		DEBUG("IfType %s exists", iftype->name().c_str());
+	}
+
 	DEBUG_ENTER("defineInterfaceType %s", iftype->name().c_str());
-	m_local_ifc_types.insert({iftype->name(), InterfaceTypeUP(iftype)});
+	m_local_ifc_types.insert({iftype->name(), iftype});
 	m_local_ifc_type_pl.push_back(iftype);
+	m_local_ifc_type_l.push_back(InterfaceTypeUP(iftype));
 
 	DEBUG_LEAVE("defineInterfaceType %s", iftype->name().c_str());
 	return iftype;
@@ -325,8 +338,8 @@ int32_t EndpointBase::connect_complete_check() {
 		ifinst_m_t::iterator peer_it;
 		if ((peer_it=m_peer_ifc_insts.find(it->first)) != m_peer_ifc_insts.end()) {
 			// Compare types
-			IInterfaceInst *local_ifinst = it->second.get();
-			IInterfaceInst *peer_ifinst = peer_it->second.get();
+			IInterfaceInst *local_ifinst = it->second;
+			IInterfaceInst *peer_ifinst = peer_it->second;
 
 			if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
 				fprintf(stdout, "local_ifinst::type=%p peer_ifinst::type=%p\n",
@@ -359,8 +372,8 @@ int32_t EndpointBase::connect_complete_check() {
 			ifinst_m_t::iterator local_it;
 			if ((local_it=m_local_ifc_insts.find(it->first)) != m_local_ifc_insts.end()) {
 				// Compare types
-				IInterfaceInst *peer_ifinst = it->second.get();
-				IInterfaceInst *local_ifinst = local_it->second.get();
+				IInterfaceInst *peer_ifinst = it->second;
+				IInterfaceInst *local_ifinst = local_it->second;
 
 				if (local_ifinst->type()->name() != peer_ifinst->type()->name()) {
 					fprintf(stdout, "Error: Local interface %s is of type %s ; Peer is of type %s\n",

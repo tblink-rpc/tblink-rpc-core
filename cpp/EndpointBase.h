@@ -119,10 +119,12 @@ public:
 	virtual IParamValVec *mkValVec() override;
 
 protected:
-	using iftype_m_t=std::unordered_map<std::string,IInterfaceTypeUP>;
-	using iftype_l_t=std::vector<IInterfaceType *>;
-	using ifinst_m_t=std::unordered_map<std::string,IInterfaceInstUP>;
-	using ifinst_l_t=std::vector<IInterfaceInst *>;
+	using iftype_m_t=std::unordered_map<std::string,IInterfaceType *>;
+	using iftype_l_t=std::vector<IInterfaceTypeUP>;
+	using iftype_l_pt=std::vector<IInterfaceType *>;
+	using ifinst_m_t=std::unordered_map<std::string,IInterfaceInst *>;
+	using ifinst_l_pt=std::vector<IInterfaceInst *>;
+	using ifinst_l_t=std::vector<IInterfaceInstUP>;
 	using ifobj_m_t=std::unordered_map<intptr_t, IInterfaceInstUP>;
 	using id2ifinst_m_t=std::unordered_map<intptr_t, IInterfaceInst *>;
 
@@ -169,14 +171,18 @@ protected:
 
 	intptr_t											m_ifinst_id;
 	iftype_m_t											m_peer_ifc_types;
-	std::vector<IInterfaceType*>						m_peer_ifc_types_pl;
+	iftype_l_t											m_peer_ifc_types_l;
+	iftype_l_pt											m_peer_ifc_types_pl;
 	iftype_m_t											m_local_ifc_types;
-	std::vector<IInterfaceType*>						m_local_ifc_type_pl;
+	iftype_l_pt											m_local_ifc_type_pl;
+	iftype_l_t											m_local_ifc_type_l;
 
 	ifinst_m_t											m_peer_ifc_insts;
-	std::vector<IInterfaceInst*>						m_peer_ifc_insts_pl;
+	ifinst_l_pt											m_peer_ifc_insts_pl;
+	ifinst_l_t											m_peer_ifc_insts_l;
 	ifinst_m_t											m_local_ifc_insts;
-	std::vector<IInterfaceInst*>						m_local_ifc_insts_pl;
+	ifinst_l_pt											m_local_ifc_insts_pl;
+	ifinst_l_t											m_local_ifc_insts_l;
 
 	id2ifinst_m_t										m_id2ifinst_m;
 
