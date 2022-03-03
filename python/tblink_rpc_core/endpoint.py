@@ -47,10 +47,8 @@ class Endpoint(object):
     def setFlag(self, f) -> EndpointFlags:
         raise NotImplementedError("setFlag for class %s" % str(type(self)))
     
-    def init(self, 
-             ep_services : 'EndpointServices',
-             ep_listener : 'EndpointListener') -> bool:
-        pass
+    def init(self, ep_services : 'EndpointServices') -> bool:
+        raise NotImplementedError("init for class %s" % str(type(self)))
     
     def is_init(self) -> int:
         """
