@@ -4,12 +4,14 @@ Created on Feb 28, 2022
 @author: mballance
 '''
 from tblink_rpc_core.endpoint import Endpoint, EndpointFlags
+from tblink_rpc_core.endpoint_listener import EndpointListener
 
 class EndpointBase(Endpoint):
     
     def __init__(self):
         self._flags = EndpointFlags.Empty
         self._eps = None
+        self._endpoint_listener_m = {}
 
     def getFlags(self) -> EndpointFlags:
         return self._flags
@@ -41,7 +43,7 @@ class EndpointBase(Endpoint):
         """
         raise NotImplementedError("is_build_complete for class %s" % str(type(self)))
 
-    def connect_complete(self):
+    def connect_complete(self) -> bool:
         """
         Notifies the peer EP that connect activities are complete
         """
@@ -54,3 +56,10 @@ class EndpointBase(Endpoint):
         """
         raise NotImplementedError("is_connect_complete for class %s" % str(type(self)))
 
+    def addListener(self, listener_f) -> EndpointListener:
+        self._endpoint_listener_m[listener_f] = listener_f
+        return listener_f
+    
+    def removeListener(self, listener_h):
+        if listener_h in self._endpoint_listener_m.keys():
+            self._endpoint_listener_m.pop(listener_h)

@@ -15,6 +15,7 @@ from tblink_rpc_core.param_val_map import ParamValMap
 from tblink_rpc_core.param_val_str import ParamValStr
 from tblink_rpc_core.param_val_vec import ParamValVec
 from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
+from tblink_rpc_core.endpoint_listener import EndpointListener
 
 
 class TimeUnit(IntEnum):
@@ -82,6 +83,12 @@ class Endpoint(object):
         and connect_complete has been signaled by the peer EP
         """
         raise NotImplementedError("is_connect_complete for class %s" % str(type(self)))
+
+    def addListener(self, listener_f) -> EndpointListener:
+        raise NotImplementedError("addListener not implemented for class %s" % str(type(self)))
+    
+    def removeListener(self, listener_h):
+        raise NotImplementedError("removeListener not implemented for class %s" % str(type(self)))
     
     def findInterfaceType(self, name) -> InterfaceType:
         """

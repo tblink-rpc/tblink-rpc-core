@@ -3,11 +3,10 @@ Created on Sep 11, 2021
 
 @author: mballance
 '''
-from tblink_rpc_core.endpoint import Endpoint
 
 class EndpointListener(object):
     
-    def init(self, ep : Endpoint):
+    def init(self, ep : 'Endpoint'):
         pass
     
     def init_complete(self):
