@@ -3,15 +3,32 @@ Created on Feb 28, 2022
 
 @author: mballance
 '''
-from tblink_rpc_core.endpoint import Endpoint, EndpointFlags
+from tblink_rpc_core.endpoint import Endpoint, EndpointFlags, comm_mode_e,\
+    comm_state_e
 from tblink_rpc_core.endpoint_listener import EndpointListener
+from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
+from tblink_rpc_core.interface_type import InterfaceType
+from tblink_rpc_core.interface_type_builder import InterfaceTypeBuilder
+from tblink_rpc_core.endpoint_event import EndpointEvent
+from tblink_rpc_core.event_type_e import EventTypeE
+
 
 class EndpointBase(Endpoint):
     
     def __init__(self):
         self._flags = EndpointFlags.Empty
+        self._comm_mode = comm_mode_e.Automatic
+        self._comm_state = comm_state_e.Waiting
         self._eps = None
         self._endpoint_listener_m = {}
+        self._local_interface_type_l = []
+        self._local_interface_type_m = {}
+        self._peer_interface_type_l = []
+        self._peer_interface_type_m = {}
+        self._local_interface_inst_l = []
+        self._local_interface_inst_m = {}
+        self._peer_interface_inst_l = []
+        self._peer_interface_inst_m = {}
 
     def getFlags(self) -> EndpointFlags:
         return self._flags
@@ -63,3 +80,59 @@ class EndpointBase(Endpoint):
     def removeListener(self, listener_h):
         if listener_h in self._endpoint_listener_m.keys():
             self._endpoint_listener_m.pop(listener_h)
+            
+    def comm_state(self) -> comm_state_e:
+        return self._comm_state
+
+    def update_comm_mode(self, m : comm_mode_e, s : comm_state_e):
+        self._comm_mode = m 
+        self._comm_state = s
+        
+    def findInterfaceType(self, name) -> InterfaceType:
+        if name in self._local_interface_type_m.keys():
+            return self._local_interface_type_m[name]
+        else:
+            return None
+
+    def newInterfaceTypeBuilder(self, name) -> InterfaceTypeBuilder:
+        return InterfaceTypeBuilder(name)
+    
+    def defineInterfaceType(self, 
+                            iftype_b : InterfaceTypeBuilder,
+                            impl_f : InterfaceImplFactory,
+                            impl_mirror_f : InterfaceImplFactory) -> InterfaceType:
+        t = InterfaceType(iftype_b.name)
+        t.method_m.update(iftype_b.method_m)
+        t.methods.extend(iftype_b.methods)
+        
+        self._local_interface_type_l.append(t)
+        self._local_interface_type_m[iftype_b.name] = t
+        
+        return t
+
+    def getInterfaceTypes(self):
+        return self._local_interface_type_l
+    
+    def getPeerInterfaceTypes(self):
+        return self._peer_interface_type_l
+    
+    def getInterfaceInsts(self):
+        return self._local_interface_inst_l
+    
+    def getPeerInterfaceInsts(self):
+        return self._peer_interface_inst_l 
+
+    def shutdown(self):
+        """
+        Sends a shutdown-request message to the peer EP
+        """
+        print("Sending shutdown event")
+        self._sendEvent(EndpointEvent(EventTypeE.Terminate))
+
+
+    def _sendEvent(self, ev):
+        items = list(self._endpoint_listener_m.items())
+        
+        for it in items:
+            it[1](ev)
+            

@@ -90,6 +90,13 @@ class Endpoint(object):
     def removeListener(self, listener_h):
         raise NotImplementedError("removeListener not implemented for class %s" % str(type(self)))
     
+    def comm_state(self) -> comm_state_e:
+        raise NotImplementedError("comm_state not implemented for class %s" % str(type(self)))
+
+    def update_comm_mode(self, m : comm_mode_e, s : comm_state_e):
+        raise NotImplementedError("comm_state not implemented for class %s" % str(type(self)))
+        
+    
     def findInterfaceType(self, name) -> InterfaceType:
         """
         Finds the interface type named ''name'' and returns it
@@ -140,6 +147,18 @@ class Endpoint(object):
         to the underlying transport.
         """
         raise NotImplementedError("process_one_message for class %s" % str(type(self)))
+    
+    def getInterfaceTypes(self):
+        raise NotImplementedError("getInterfaceTypes not implemented for %s" % str(type(self)))
+    
+    def getPeerInterfaceTypes(self):
+        raise NotImplementedError("getPeerInterfaceTypes not implemented for %s" % str(type(self)))
+    
+    def getInterfaceInsts(self):
+        raise NotImplementedError("getInterfaceInsts not implemented for %s" % str(type(self)))
+    
+    def getPeerInterfaceInsts(self):
+        raise NotImplementedError("getPeerInterfaceInsts not implemented for %s" % str(type(self)))
             
     def args(self) -> List[str]:
         """Returns command-line arguments from the peer. Valid after 'init'"""

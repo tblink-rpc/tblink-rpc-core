@@ -13,51 +13,57 @@ class InterfaceInst(object):
                  iftype,
                  is_mirror,
                  req_f=None):
-        self.ep = ep
-        self.name = name
-        self.iftype = iftype
-        self.is_mirror = is_mirror
-        self.req_f = req_f
-        self.call_id  = 1
-        self.rsp_m = {}
-        self.pending_call_m = {}
+        self._ep = ep
+        self._name = name
+        self._iftype = iftype
+        self._is_mirror = is_mirror
+        self._req_f = req_f
+        self._call_id  = 1
+        self._rsp_m = {}
+        self._pending_call_m = {}
+        
+    def name(self):
+        return self._name
+    
+    def type(self):
+        return self._iftype
         
     def invoke(self,
                method_t : MethodType,
                params,
                completion_f):
-        call_id = self.call_id
-        self.call_id += 1
+        call_id = self._call_id
+        self._call_id += 1
         r_params = self.ep.mkValMap()
         r_params.setVal("ifinst", 
-                      self.ep.mkValStr(self.name))
+                      self.ep.mkValStr(self.name()))
         r_params.setVal("method",
-                      self.ep.mkValStr(method_t.name))
+                      self.ep.mkValStr(method_t.name()))
         r_params.setVal("call-id", 
                       self.ep.mkValIntU(call_id, 64))
         r_params.setVal("params", params)
         
-        self.rsp_m[call_id] = completion_f
+        self._rsp_m[call_id] = completion_f
 
         if method_t.is_blocking:
-            req_id = self.ep.send_req(
+            req_id = self._ep.send_req(
                 "tblink.invoke-b",
                 r_params)
         else:
-            req_id = self.ep.send_req(
+            req_id = self._ep.send_req(
                 "tblink.invoke-nb",
                 r_params,
                 self._invoke_rsp_nb)
     
     def invoke_rsp(self, call_id, ret):
         """Called by the client to notify call end"""
-        method_t, id = self.pending_call_m[call_id]
-        self.pending_call_m.pop(call_id)
+        method_t, id = self._pending_call_m[call_id]
+        self._pending_call_m.pop(call_id)
         
         if method_t.is_blocking:            
-            rsp_params = self.ep.mkValMap()
-            rsp_params.setVal("ifinst", self.ep.mkValStr(self.name))
-            rsp_params.setVal("call-id", self.ep.mkValIntS(call_id, 32))
+            rsp_params = self._ep.mkValMap()
+            rsp_params.setVal("ifinst", self._ep.mkValStr(self.name()))
+            rsp_params.setVal("call-id", self._ep.mkValIntS(call_id, 32))
             
             if ret is not None:
                 rsp_params.setVal("retval", ret)
@@ -67,10 +73,10 @@ class InterfaceInst(object):
                 rsp_params
                 )
         else:
-            result = self.ep.mkValMap()
+            result = self._ep.mkValMap()
             error = None
             
-            result.setVal("call-id", self.ep.mkValIntS(call_id, 32))
+            result.setVal("call-id", self._ep.mkValIntS(call_id, 32))
             if ret is not None:
                 rsp_params.setVal("return", ret)
                 
@@ -78,8 +84,8 @@ class InterfaceInst(object):
 
     def notify_remote_rsp(self, call_id, ret):
         """Called by the ep to notify completion of a remote call"""
-        self.rsp_m[call_id](ret)
-        self.rsp_m.pop(call_id)
+        self._rsp_m[call_id](ret)
+        self._rsp_m.pop(call_id)
     
     def _invoke_rsp_nb(self, id, result, error):
         call_id = result.getVal("call-id").val_s()
@@ -87,12 +93,12 @@ class InterfaceInst(object):
         if result.hasKey("retval"):
             retval = result.getVal("retval")
             
-        self.rsp_m[call_id](retval)
-        self.rsp_m.pop(call_id)
+        self._rsp_m[call_id](retval)
+        self._rsp_m.pop(call_id)
         
     def invoke_local(self, method_t, id, call_id, params):
-        self.pending_call_m[call_id] = (method_t, id)
-        self.req_f(self, method_t, call_id, params)
+        self._pending_call_m[call_id] = (method_t, id)
+        self._req_f(self, method_t, call_id, params)
 
 
 

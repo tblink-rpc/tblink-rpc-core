@@ -15,9 +15,12 @@ from tblink_rpc_core.method_type import MethodType
 class InterfaceType(object):
     
     def __init__(self, name):
-        self.name = name
+        self._name = name
         self.method_m = {}
         self.methods = []
+        
+    def name(self):
+        return self._name
         
     def add_method(self, mt : MethodType):
         if mt.name in self.method_m.keys():
