@@ -16,18 +16,27 @@ class InterfaceType(object):
     
     def __init__(self, name):
         self._name = name
-        self.method_m = {}
-        self.methods = []
+        self._method_m = {}
+        self._methods = []
         
     def name(self):
         return self._name
+    
+    def methods(self):
+        return self._methods
+    
+    def findMethod(self, name):
+        if name in self._method_m.keys():
+            return self._method_m[name]
+        else:
+            return None
         
     def add_method(self, mt : MethodType):
         if mt.name in self.method_m.keys():
             raise Exception("Duplicate method %s in interface-type %s" % (
                 mt.name, self.name))
-        self.method_m[mt.name] = mt
-        self.methods.append(mt)
+        self._method_m[mt.name] = mt
+        self._methods.append(mt)
         
 
         

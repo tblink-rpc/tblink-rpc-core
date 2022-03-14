@@ -3,14 +3,19 @@ Created on Feb 28, 2022
 
 @author: mballance
 '''
-from tblink_rpc_core.endpoint import Endpoint, EndpointFlags, comm_mode_e,\
+from tblink_rpc_core.endpoint import Endpoint, EndpointFlags, comm_mode_e, \
     comm_state_e
+from tblink_rpc_core.endpoint_event import EndpointEvent
 from tblink_rpc_core.endpoint_listener import EndpointListener
+from tblink_rpc_core.event_type_e import EventTypeE
 from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
 from tblink_rpc_core.interface_type import InterfaceType
 from tblink_rpc_core.interface_type_builder import InterfaceTypeBuilder
-from tblink_rpc_core.endpoint_event import EndpointEvent
-from tblink_rpc_core.event_type_e import EventTypeE
+from tblink_rpc_core.param_val_bool import ParamValBool
+from tblink_rpc_core.param_val_int import ParamValInt
+from tblink_rpc_core.param_val_map import ParamValMap
+from tblink_rpc_core.param_val_str import ParamValStr
+from tblink_rpc_core.param_val_vec import ParamValVec
 
 
 class EndpointBase(Endpoint):
@@ -102,8 +107,8 @@ class EndpointBase(Endpoint):
                             impl_f : InterfaceImplFactory,
                             impl_mirror_f : InterfaceImplFactory) -> InterfaceType:
         t = InterfaceType(iftype_b.name)
-        t.method_m.update(iftype_b.method_m)
-        t.methods.extend(iftype_b.methods)
+        t._method_m.update(iftype_b.method_m)
+        t._methods.extend(iftype_b.methods)
         
         self._local_interface_type_l.append(t)
         self._local_interface_type_m[iftype_b.name] = t
@@ -136,3 +141,20 @@ class EndpointBase(Endpoint):
         for it in items:
             it[1](ev)
             
+    def mkValBool(self, v) -> ParamValBool:
+        return ParamValBool(v)
+    
+    def mkValIntS(self, val, width) -> ParamValInt:
+        return ParamValInt(val)
+    
+    def mkValIntU(self, val, width) -> ParamValInt:
+        return ParamValInt(val)
+    
+    def mkValMap(self) -> ParamValMap:
+        return ParamValMap()
+    
+    def mkValVec(self) -> ParamValVec:
+        return ParamValVec()
+    
+    def mkValStr(self, v) -> ParamValStr:
+        return ParamValStr(v)

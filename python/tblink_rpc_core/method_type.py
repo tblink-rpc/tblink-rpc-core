@@ -25,6 +25,15 @@ class MethodType(object):
     
     def id(self):
         return self._id
+    
+    def is_export(self):
+        return self._is_export
+    
+    def is_blocking(self):
+        return self._is_blocking
+    
+    def rtype(self):
+        return self._rtype
         
     def params(self):
         return self._params
