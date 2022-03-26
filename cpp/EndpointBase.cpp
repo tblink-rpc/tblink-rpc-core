@@ -303,7 +303,9 @@ int EndpointBase::peer_init(
 		const std::vector<std::string>		&args) {
 	m_peer_init = 1;
 	m_time_precision = time_precision;
+	fprintf(stdout, "peer_init:\n");
 	for (auto it=args.begin(); it!=args.end(); it++) {
+		fprintf(stdout, "    arg: %s\n", it->c_str());
 		m_args.push_back(*it);
 	}
 

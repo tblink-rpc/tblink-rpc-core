@@ -353,7 +353,9 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_init(
 		time_precision = params->getValT<IParamValInt>("time-units")->val_s();
 		IParamValVec *args_p = params->getValT<IParamValVec>("args");
 
+		fprintf(stdout, "Arguments from Peer:\n");
 		for (uint32_t i=0; i<args_p->size(); i++) {
+			fprintf(stdout, "    %s\n", args_p->atT<IParamValStr>(i)->val().c_str());
 			args.push_back(args_p->atT<IParamValStr>(i)->val());
 		}
 	}
