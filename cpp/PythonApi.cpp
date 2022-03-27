@@ -33,6 +33,12 @@ int32_t PythonApi::init(const std::string &pylib) {
 
 	fm_t func_t[] = {
 			{(void **)&Py_Initialize_f, "Py_Initialize"},
+			{(void **)&Py_EndInterpreter_f, "Py_EndInterpreter"},
+			{(void **)&Py_NewInterpreter_f, "Py_NewInterpreter"},
+			{(void **)&PyEval_AcquireLock_f, "PyEval_AcquireLock"},
+			{(void **)&PyEval_AcquireThread_f, "PyEval_AcquireThread"},
+			{(void **)&PyEval_ReleaseThread_f, "PyEval_ReleaseThread"},
+			{(void **)&PyEval_ReleaseLock_f, "PyEval_ReleaseLock"},
 			{(void **)&PyErr_Print_f, "PyErr_Print"},
 			{(void **)&PyImport_ImportModule_f, "PyImport_ImportModule"},
 			{(void **)&PyList_New_f, "PyList_New"},

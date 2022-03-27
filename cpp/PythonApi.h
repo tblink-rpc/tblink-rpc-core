@@ -21,6 +21,18 @@ public:
 
 	void Py_Initialize() { Py_Initialize_f(); }
 
+	void Py_EndInterpreter(void *interp) { Py_EndInterpreter(interp); }
+
+	void *Py_NewInterpreter() { return Py_NewInterpreter(); }
+
+	void PyEval_AcquireLock() { PyEval_AcquireLock_f(); }
+
+	void PyEval_AcquireThread(void *t) { PyEval_AcquireThread_f(t); }
+
+	void PyEval_ReleaseThread(void *t) { PyEval_ReleaseThread_f(t); }
+
+	void PyEval_ReleaseLock() { PyEval_ReleaseLock_f(); }
+
 	void PyErr_Print() { PyErr_Print_f(); }
 
 	void *PyImport_ImportModule(const std::string &name) {
@@ -53,6 +65,12 @@ public:
 
 private:
 	void (*Py_Initialize_f)();
+	void (*Py_EndInterpreter_f)(void *);
+	void *(*Py_NewInterpreter_f)();
+	void (*PyEval_AcquireLock_f)();
+	void (*PyEval_AcquireThread_f)(void *);
+	void (*PyEval_ReleaseThread_f)(void *);
+	void (*PyEval_ReleaseLock_f)();
 	void (*PyErr_Print_f)();
 	void *(*PyImport_ImportModule_f)(const char *name);
 	void *(*PyList_New_f)(int);
