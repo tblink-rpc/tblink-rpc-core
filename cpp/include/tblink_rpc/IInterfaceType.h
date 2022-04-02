@@ -7,6 +7,7 @@
 #pragma once
 #include <vector>
 #include "IMethodType.h"
+#include "tblink_rpc/IInterfaceImplFactory.h"
 
 namespace tblink_rpc_core {
 
@@ -24,6 +25,10 @@ public:
 	virtual const std::vector<IMethodType *> &methods() = 0;
 
 	virtual IMethodType *findMethod(const std::string &name) = 0;
+
+	virtual IInterfaceImplFactory *getImplFactory() = 0;
+
+	virtual IInterfaceImplFactory *getMirrorImplFactory() = 0;
 
 //	virtual IMethodType *getMethodById(int32_t id) = 0;
 

@@ -119,6 +119,14 @@ public:
 	virtual IParamValVec *mkValVec() override;
 
 protected:
+
+	virtual InterfaceInstBase *mkInterfaceInst(
+			IInterfaceType		*iftype,
+			const std::string	&name,
+			bool				is_mirror,
+			IInterfaceImpl		*ifimpl) = 0;
+
+protected:
 	using iftype_m_t=std::unordered_map<std::string,IInterfaceType *>;
 	using iftype_l_t=std::vector<IInterfaceTypeUP>;
 	using iftype_l_pt=std::vector<IInterfaceType *>;

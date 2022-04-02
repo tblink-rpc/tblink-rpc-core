@@ -237,12 +237,8 @@ IInterfaceType *EndpointBase::defineInterfaceType(
 	iftype->impl_f(impl_factory);
 	iftype->impl_mirror_f(impl_mirror_factory);
 
-
-
-
-
-
-
+	fprintf(stdout, "EndpointBase::defineInterfaceType: impl_f=%p impl_f_mirror=%p\n",
+			impl_factory, impl_mirror_factory);
 
 	auto it = m_local_ifc_types.find(iftype->name());
 	if (it != m_local_ifc_types.end()) {
@@ -412,8 +408,8 @@ int32_t EndpointBase::connect_complete_check() {
 }
 
 void EndpointBase::last_error(const char *fmt, ...) {
-	va_list ap;
 	char tmp[256];
+	va_list ap;
 
 	va_start(ap, fmt);
 	vsnprintf(tmp, sizeof(tmp), fmt, ap);

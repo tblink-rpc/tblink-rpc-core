@@ -20,7 +20,8 @@
 #include "LaunchParams.h"
 #include "LaunchTypePythonLoopback.h"
 #include "LaunchTypeRegistration.h"
-#include "EndpointLoopback.h"
+#include "EndpointPythonLoopback.h"
+#include "PythonGlobal.h"
 #include "PythonApi.h"
 #include "StringUtil.h"
 
@@ -57,14 +58,22 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 		return {0, "No 'module' parameter specified"};
 	}
 
-	std::string python_path = "python3";
+	std::string python_path_hint = "python3";
 	if (params->has_param("python")	) {
-		python_path = params->get_param("python");
-	}  // TODO: honor environment variable
+		python_path_hint = params->get_param("python");
+	}
+
+	/*
+	PythonGlobal *python = PythonGlobal::inst();
+
+	if (!python->init(python_path_hint)) {
+		return {0, python->last_error()};
+	}
+	 */
 
 	std::string python_dll;
 	std::string pythonpath;
-	if (get_python_info(python_path, python_dll, pythonpath) != 0) {
+	if (get_python_info(python_path_hint, python_dll, pythonpath) != 0) {
 		return {0, "Failed to probe Python interpreter"};
 	}
 
@@ -79,10 +88,9 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 	setenv("PYTHONPATH", pythonpath.c_str(), 1);
 
 
-
 	PythonApi pyapi;
 
-	if (pyapi.init(python_dll) != 0) {
+	if (!pyapi.init(python_dll)) {
 		return {0, "Failed to load the Python API"};
 	}
 
@@ -116,7 +124,10 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 			params->get_param("module")));
 
 	// Setup the endpoint
+	std::string err;
 	EndpointLoopback *ep = new EndpointLoopback();
+
+	fprintf(stdout, "Starting EndpointPythonLoopback\n");
 
 	tblink->addEndpoint(ep);
 	tblink->addEndpoint(ep->peer());
@@ -128,8 +139,11 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 		return {0, "Failure while running Python code"};
 	}
 
+	fprintf(stdout, "Return: ep=%p\n", ep);
+	fflush(stdout);
+
 	DEBUG_LEAVE("launch");
-	return {ep, "Launch failure"};
+	return {ep, ""};
 }
 
 /**

@@ -5,6 +5,10 @@
  *      Author: mballance
  */
 
+#include "tblink_rpc/IEndpoint.h"
+#include "tblink_rpc/IInterfaceInst.h"
+#include "tblink_rpc/ITbLinkEvent.h"
+#include "native.h"
 #include "InterfaceImplFactoryProxy.h"
 
 InterfaceImplFactoryProxy::InterfaceImplFactoryProxy(
@@ -18,6 +22,10 @@ InterfaceImplFactoryProxy::~InterfaceImplFactoryProxy() {
 }
 
 tblink_rpc_core::IInterfaceImpl *InterfaceImplFactoryProxy::createImpl() {
+	tblink_rpc_core::IInterfaceImpl *ifimpl = interface_impl_factory_proxy_createImpl(
+			m_factory
+			);
 
+	return ifimpl;
 }
 

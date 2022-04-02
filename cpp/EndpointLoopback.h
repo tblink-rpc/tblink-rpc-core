@@ -48,7 +48,7 @@ public:
 
 	virtual IEndpoint *peer() override { return m_peer; }
 
-private:
+protected:
 	bool													m_primary;
 	EndpointLoopback										*m_peer;
 	EndpointLoopbackUP										m_peer_u;

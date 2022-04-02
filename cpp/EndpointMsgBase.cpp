@@ -100,6 +100,10 @@ EndpointMsgBase::EndpointMsgBase() {
 			&EndpointMsgBase::req_update_comm_mode, this,
 			std::placeholders::_1,
 			std::placeholders::_2)});
+	m_req_m.insert({"tblink.create-ifc-obj", std::bind(
+			&EndpointMsgBase::req_create_ifc_obj, this,
+			std::placeholders::_1,
+			std::placeholders::_2)});
 }
 
 EndpointMsgBase::~EndpointMsgBase() {
@@ -248,7 +252,7 @@ void EndpointMsgBase::cancel_callback(intptr_t	callback_id) {
 /** Called by the environment to notify that
  *  a callback has occurred
  */
-void EndpointMsgBase::notify_callback(intptr_t   callback_id) {
+void EndpointMsgBase::notify_callback(intptr_t callback_id) {
 	IParamValMap *params = mkValMap();
 
 	params->setVal("callback-id", mkValIntU(callback_id, 64));
@@ -294,15 +298,15 @@ IInterfaceInst *EndpointMsgBase::createInterfaceObj(
 		}
 	}
 
-	InterfaceInstMsgTransport *ifinst = 0;
+	InterfaceInstBase *ifinst = 0;
 	if (remote_id != -1) {
-		ifinst = new InterfaceInstMsgTransport(
-			this,
-			static_cast<InterfaceType *>(type),
+		ifinst = mkInterfaceInst(
+			type,
 			"",
 			is_mirror,
 			impl);
 		ifinst->setLocalId(local_id);
+		ifinst->setRemoteId(remote_id);
 		m_id2ifinst_m.insert({local_id, ifinst});
 	}
 
@@ -522,6 +526,7 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_notify_callback(
 EndpointMsgBase::rsp_t EndpointMsgBase::req_create_ifc_obj(
 		intptr_t				id,
 		IParamValMap 			*params) {
+	DEBUG_ENTER("req_create_ifc_obj");
 	intptr_t remote_id = params->getValT<IParamValInt>("id")->val_s();
 	std::string iftype_s = params->getValT<IParamValStr>("iftype")->val();
 	bool is_mirror = params->getValT<IParamValBool>("is-mirror")->val();
@@ -537,11 +542,28 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_create_ifc_obj(
 	if (iftype_it != m_local_ifc_types.end()) {
 		result = mkValMap();
 
+		// Inform the peer as to how we wish to be
+		// addressed
 		result->setVal("id", mkValIntS(local_id, 64));
+
+		IInterfaceImplFactory *impl_f = (is_mirror)?
+				iftype_it->second->getMirrorImplFactory():
+				iftype_it->second->getImplFactory();
+
+		IInterfaceImpl *impl = impl_f->createImpl();
+		InterfaceInstBase *ifinst = mkInterfaceInst(
+				iftype_it->second,
+				"", // anonymous
+				is_mirror,
+				impl);
+		ifinst->setLocalId(local_id);
+		ifinst->setRemoteId(remote_id);
+		m_id2ifinst_m.insert({local_id, ifinst});
 	} else {
 		error = mkValMap();
 	}
 
+	DEBUG_LEAVE("req_create_ifc_obj");
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
 
@@ -732,7 +754,6 @@ EndpointMsgBase::rsp_t EndpointMsgBase::req_update_comm_mode(
 	DEBUG_LEAVE("req_update_comm_mode");
 	return std::make_pair(IParamValMapUP(result), IParamValMapUP(error));
 }
-
 
 void EndpointMsgBase::call_completion_nb(
 			intptr_t		id,
@@ -992,6 +1013,22 @@ void EndpointMsgBase::invoke_nb_rsp(
 	} else {
 		fprintf(stdout, "TbLink Error: unexpected invoke response for %lld\n", call_id);
 	}
+}
+
+InterfaceInstBase *EndpointMsgBase::mkInterfaceInst(
+			IInterfaceType		*iftype,
+			const std::string	&name,
+			bool				is_mirror,
+			IInterfaceImpl		*ifimpl) {
+	InterfaceInstBase *ret = new InterfaceInstMsgTransport(
+			this,
+			iftype,
+			name,
+			is_mirror,
+			ifimpl);
+	ifimpl->init(ret);
+
+	return ret;
 }
 
 IParamValMap *EndpointMsgBase::pack_iftypes(const iftype_m_t &iftypes) {

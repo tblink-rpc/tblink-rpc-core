@@ -18,6 +18,7 @@ from tblink_rpc_core.endpoint import comm_state_e, comm_mode_e, EndpointFlags,\
 from tblink_rpc_core.event_type_e import EventTypeE
 from tblink_rpc_core.tblink_event import TbLinkEventKind
 from tblink_rpc_core.interface_impl_factory import InterfaceImplFactory
+import traceback
 cimport cpython.ref as cpy_ref
 
 import tblink_rpc_core
@@ -620,8 +621,8 @@ cdef class Endpoint(object):
     
     cpdef defineInterfaceType(self, 
                               InterfaceTypeBuilder iftype_b,
-                              impl_f,
-                              impl_mirror_f):
+                              impl_f : InterfaceImplFactory,
+                              impl_mirror_f : InterfaceImplFactory):
         cdef native_decl.InterfaceImplFactoryProxy *impl_f_h = NULL
         cdef native_decl.InterfaceImplFactoryProxy *impl_mirror_f_h = NULL
         
@@ -765,8 +766,11 @@ cdef public void endpoint_ev_callback_f(
 #    sys.stdout.flush()
 #    print("  obj=%s" % str(obj))
 #    sys.stdout.flush()
-    obj(
-        EndpointEvent._mk(ev))
+    try:
+        obj(EndpointEvent._mk(ev))
+    except Exception as e:
+        print("Exception: %s" % str(e))
+        traceback.print_exc()
 #    print("<-- endpoint_ev_f")
 
 #********************************************************************

@@ -32,6 +32,14 @@ public:
 
 	void addMethod(IMethodType *method);
 
+	virtual IInterfaceImplFactory *getImplFactory() override {
+		return m_impl_f.get();
+	}
+
+	virtual IInterfaceImplFactory *getMirrorImplFactory() override {
+		return m_impl_mirror_f.get();
+	}
+
 	IMethodType *findMethod(const std::string &name) override;
 
 	IInterfaceImplFactory *impl_f() const { return m_impl_f.get(); }

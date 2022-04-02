@@ -111,6 +111,14 @@ public:
 			IParamValMap		*result,
 			IParamValMap		*error);
 
+protected:
+
+	virtual InterfaceInstBase *mkInterfaceInst(
+			IInterfaceType		*iftype,
+			const std::string	&name,
+			bool				is_mirror,
+			IInterfaceImpl		*ifimpl) override;
+
 private:
 	typedef std::pair<IParamValMapUP,IParamValMapUP> rsp_t;
 	typedef std::function<rsp_t(intptr_t, IParamValMap *)> req_func_t;
