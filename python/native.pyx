@@ -744,6 +744,8 @@ cdef public native_decl.IInterfaceImpl *interface_impl_factory_proxy_createImpl(
     ) with gil:
     cdef native_decl.InterfaceImplClosure *ret
     impl_o = None
+    print("interface_impl_factory_proxy_createImpl: obj_f=%s" % str(obj_f))
+    sys.stdout.flush()
     if callable(obj_f):
         # Call
         impl_o = obj_f()
@@ -751,6 +753,9 @@ cdef public native_decl.IInterfaceImpl *interface_impl_factory_proxy_createImpl(
         impl_o = obj_f.createImpl()
     else:
         print("Error: interface impl factory is not usable")
+        
+    print("impl_o=%s" % str(impl_o))
+    sys.stdout.flush()
         
     ret = new native_decl.InterfaceImplClosure(<cpy_ref.PyObject *>(impl_o))
     
