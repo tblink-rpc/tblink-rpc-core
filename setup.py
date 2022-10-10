@@ -3,6 +3,7 @@
 #****************************************************************************
 import os
 import subprocess
+import sys
 import shutil
 import sysconfig
 from setuptools import setup
