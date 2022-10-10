@@ -39,6 +39,15 @@ if not os.path.isdir(os.path.join(cwd, "build")):
 if not os.path.isdir(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc")):
     os.makedirs(os.path.join(tblink_rpc_core_dir, "python/tblink_rpc"))
 
+env = os.environ.copy()
+python_bindir = os.path.dirname(sys.executable)
+print("python_bindir: %s" % str(python_bindir))
+
+if "PATH" in env.keys():
+    env["PATH"] = python_bindir + os.pathsep + env["PATH"]
+else:
+    env["PATH"] = python_bindir
+
 # Run configure...
 result = subprocess.run(
     ["cmake", 
@@ -48,7 +57,8 @@ result = subprocess.run(
      "-DPACKAGES_DIR=%s" % packages_dir,
      "-DGLOG_DIR=%s" % os.path.join(packages_dir, "glog")
      ],
-    cwd=os.path.join(cwd, "build"))
+    cwd=os.path.join(cwd, "build"),
+    env=env)
 
 if result.returncode != 0:
     raise Exception("cmake configure failed")
@@ -58,7 +68,8 @@ result = subprocess.run(
      "-j",
      "%d" % os.cpu_count()
      ],
-    cwd=os.path.join(cwd, "build"))
+    cwd=os.path.join(cwd, "build"),
+    env=env)
 if result.returncode != 0:
     raise Exception("build failed")
 
