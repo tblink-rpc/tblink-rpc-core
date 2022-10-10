@@ -225,6 +225,9 @@ setup(
   author = "Matthew Ballance",
   author_email = "matt.ballance@gmail.com",
   description = ("Provides the core TbLink-RPC library"),
+  long_description="""
+  Core library implementing local and socket RPC communication for simulation
+  """,
   license = "Apache 2.0",
   keywords = ["SystemVerilog", "Verilog", "RTL", "Python"],
   url = "https://github.com/tblink-rpc/tblink-rpc-core",
