@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <string>
 #include "tblink_rpc/ITypeIfc.h"
 
 namespace tblink_rpc_core {

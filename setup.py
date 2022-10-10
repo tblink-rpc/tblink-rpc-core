@@ -55,8 +55,7 @@ result = subprocess.run(
      tblink_rpc_core_dir,
      "-GNinja",
      "-DCMAKE_BUILD_TYPE=Debug",
-     "-DPACKAGES_DIR=%s" % packages_dir,
-     "-DGLOG_DIR=%s" % os.path.join(packages_dir, "glog")
+     "-DPACKAGES_DIR=%s" % packages_dir
      ],
     cwd=os.path.join(cwd, "build"),
     env=env)
