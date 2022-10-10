@@ -5,6 +5,7 @@ package:
 
    setup-deps:
    - cython
+   - ninja
    
    deps:
    - name: cython
@@ -16,6 +17,8 @@ package:
    
    dev-deps:
    - name: cython
+     src: pypi 
+   - name: ninja
      src: pypi 
    - name: json
      url: https://github.com/nlohmann/json/archive/v3.9.1.tar.gz
