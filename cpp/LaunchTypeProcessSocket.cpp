@@ -170,7 +170,7 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(
     	}
 
     	if (retval > 0) {
-    		int clilen = sizeof(serv_addr);
+    		socklen_t clilen = sizeof(serv_addr);
            	int flag = 1;
     		conn_socket = accept(srv_socket, (struct sockaddr *)&serv_addr, &clilen);
 
