@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <string>
 #include "IParamVal.h"
 
 namespace tblink_rpc_core {

@@ -7,6 +7,7 @@
 
 #pragma once
 #include <set>
+#include <string>
 #include "tblink_rpc/IParamVal.h"
 
 namespace tblink_rpc_core {

@@ -21,9 +21,9 @@ public:
 
 	virtual TypeE kind() const override { return TypeE::Ifc; }
 
-	virtual const std::string &name() const { return m_name; }
+	virtual const std::string &name() const override { return m_name; }
 
-	virtual bool is_mirror() const { return m_is_mirror; }
+	virtual bool is_mirror() const override { return m_is_mirror; }
 
 private:
 	std::string				m_name;

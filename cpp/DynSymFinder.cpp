@@ -34,6 +34,9 @@ int DynSymFinder::init() {
 		return 0;
 	}
 
+#ifdef _WIN32
+fprintf(stdout, "Error: WIN32 must find loaded DLLs\n");
+#else
 	/**
 	 * Find the libraries loaded by the process
 	 */
@@ -81,6 +84,7 @@ int DynSymFinder::init() {
 		}
 	}
 	fclose(map_fp);
+#endif
 
 	// Add global scope as an option
 	m_search_path.push_back({"<application>", 0});
@@ -100,7 +104,11 @@ std::pair<void *,std::string> DynSymFinder::findSymLib(
 
 	if (m_last_lib) {
 		// Search here first
+#ifdef _WIN32
+		FARPROC p = GetProcAddress((HMODULE)m_last_lib, sym.c_str());
+#else
 		void *p = dlsym(m_last_lib, sym.c_str());
+#endif
 
 		if (p) {
 			ret = {p, m_last_lib_path};
@@ -111,8 +119,12 @@ std::pair<void *,std::string> DynSymFinder::findSymLib(
 		// First, work through already-open libraries
 		for (auto l_it=m_search_path.begin();
 				l_it!=m_search_path.end(); l_it++) {
-			void *p;
-			if ((p=dlsym(l_it->second, sym.c_str()))) {
+#ifdef _WIN32
+			FARPROC p = GetProcAddress((HMODULE)l_it->second, sym.c_str());
+#else
+			void *p = dlsym(l_it->second, sym.c_str());
+#endif
+			if (p) {
 				m_last_lib = l_it->second;
 				m_last_lib_path = l_it->first;
 				ret = {p, m_last_lib_path};
@@ -126,13 +138,21 @@ std::pair<void *,std::string> DynSymFinder::findSymLib(
 		while (m_lib_paths.size()) {
 			std::string path = m_lib_paths.front();
 			m_lib_paths.erase(m_lib_paths.begin());
+#ifdef _WIN32
+			HMODULE lib = LoadLibraryA(path.c_str());
+#else
 			void *lib = dlopen(path.c_str(), RTLD_LAZY);
+#endif
 			m_search_path.insert(
 					m_search_path.begin(),
 					{path, lib});
-			void *p;
+#ifdef _WIN32
+			FARPROC p = GetProcAddress(lib, sym.c_str());
+#else
+			void *p = dlsym(lib, sym.c_str());
+#endif
 
-			if ((p=dlsym(lib, sym.c_str()))) {
+			if (p) {
 				m_last_lib = lib;
 				m_last_lib_path = path;
 				ret = {p, m_last_lib_path};
@@ -152,7 +172,11 @@ std::pair<void *,std::string> DynSymFinder::findSymLib(
 }
 
 std::string DynSymFinder::error() {
+#ifdef _WIN32
+	return "TODO: dlerror on WIN32";
+#else
 	return dlerror();
+#endif
 }
 
 } /* namespace tblink_rpc_core */

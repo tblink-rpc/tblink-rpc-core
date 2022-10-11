@@ -16,7 +16,12 @@ if(NOT WIN32)
 	add_compile_options(-fPIC)
 #  list(APPEND CMAKE_C_FLAGS -fPIC)
 #  list(APPEND CMAKE_CXX_FLAGS -fPIC)
+else()
+add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+add_compile_options(-Wno-deprecated-declarations)
+add_compile_options(-Wno-format)
 endif()
+
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -75,6 +80,10 @@ target_include_directories(tblink_rpc_core PRIVATE
 	${PYTHON_INCDIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/cpp/include 
 	)
+
+if (WIN32)
+target_link_libraries(tblink_rpc_core ws2_32)
+endif()
 
 #target_link_directories(
 #	tblink_rpc_core

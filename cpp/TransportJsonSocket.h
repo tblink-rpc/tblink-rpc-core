@@ -6,11 +6,17 @@
  */
 
 #pragma once
+#include <stdint.h>
 #include <string>
 #include "tblink_rpc/ITransport.h"
 #include "JsonParamValFactory.h"
 
+#ifdef _WIN32
+typedef intptr_t pid_t;
+#endif
+
 namespace tblink_rpc_core {
+
 
 class TransportJsonSocket : public virtual ITransport {
 public:

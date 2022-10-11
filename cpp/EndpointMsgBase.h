@@ -70,12 +70,12 @@ public:
 
 	virtual intptr_t send_req(
 			const std::string 	&method,
-			IParamValMap 		*params);
+			IParamValMap 		*params) override;
 
 	virtual intptr_t send_req(
 			const std::string 				&method,
 			IParamValMap 					*params,
-			const response_f				&rsp_f);
+			const response_f				&rsp_f) override;
 
 	int32_t recv_req(
 			const std::string		&method,

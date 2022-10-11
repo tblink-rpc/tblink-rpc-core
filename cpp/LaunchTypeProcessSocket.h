@@ -23,7 +23,7 @@ public:
 
 	virtual ~LaunchTypeProcessSocket();
 
-	virtual std::string name() { return "process.socket"; }
+	virtual std::string name() override { return "process.socket"; }
 
 	/**
 	 * Launches a peer endpoint and returns the appropriate

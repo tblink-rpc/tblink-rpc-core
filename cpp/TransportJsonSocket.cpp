@@ -11,9 +11,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#ifdef _WIN32
+#include <windows.h>
+#include <winsock.h>
+#define MSG_NOSIGNAL 0
+#else
 #include <sys/socket.h>
-#include <signal.h>
 #include <unistd.h>
+#include <signal.h>
+#endif
+
 #ifndef _WIN32
 #include <sys/select.h>
 #include <sys/wait.h>
@@ -76,6 +83,9 @@ void TransportJsonSocket::init(
 
 void TransportJsonSocket::shutdown() {
 	DEBUG_ENTER("shutdown");
+#ifdef _WIN32
+	fprintf(stdout, "TODO: support windows process shutdown\n");
+#else
 	if (m_pid > 0) {
 		int status = -1;
 		for (uint32_t i=0; i<5; i++) {
@@ -110,6 +120,7 @@ void TransportJsonSocket::shutdown() {
 			}
 		}
 	}
+#endif
 }
 
 int32_t TransportJsonSocket::process_one_message() {

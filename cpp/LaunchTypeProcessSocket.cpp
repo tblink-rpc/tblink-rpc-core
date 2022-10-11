@@ -13,23 +13,25 @@
 #include "EndpointMsgTransport.h"
 #include "LaunchTypeRegistration.h"
 
-#ifndef _WIN32
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#include <sys/types.h>
+static const char PS = ';';
+typedef int socklen_t;
+#else
 #include <pthread.h>
 #include <sys/socket.h>
 #include <sys/select.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-static const char PS = ':';
-#else
-#include <winsock2.h>
-static const char PS = ';';
-#endif
 #include <spawn.h>
+static const char PS = ':';
+#endif
 #include <string.h>
 
 
@@ -104,6 +106,10 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(
     	argv[args.size()] = 0;
 
     	// TODO: need proper propagation of hostname/port
+#ifdef _WIN32
+		int status = -1;
+		fprintf(stdout, "TODO: implement Windows spawnp\n");
+#else
     	int status = posix_spawnp(
     			&pid,
 				argv[0],
@@ -111,6 +117,7 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(
 				0,
 				(char *const *)argv,
 				env.environ_p());
+#endif
 
     	// Now, clean up the arguments
     	for (uint32_t i=0; i<params->args().size(); i++) {
@@ -148,7 +155,11 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(
     		} else {
     			// Check that the process is still alive
     			int status;
+#ifdef _WIN32
+				fprintf(stdout, "TODO: support windows waitpid\n");
+#else
     			retval = ::waitpid(pid, &status, WNOHANG);
+#endif
 
     			// If the process either doesn't exist
     			// or has terminated, then bail out early
@@ -159,7 +170,7 @@ ILaunchType::result_t LaunchTypeProcessSocket::launch(
     	}
 
     	if (retval > 0) {
-    		unsigned int clilen = sizeof(serv_addr);
+    		int clilen = sizeof(serv_addr);
            	int flag = 1;
     		conn_socket = accept(srv_socket, (struct sockaddr *)&serv_addr, &clilen);
 

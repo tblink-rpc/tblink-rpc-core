@@ -20,7 +20,7 @@ public:
 
 	virtual ~TbLink();
 
-	virtual IEndpoint *getDefaultEP() const {
+	virtual IEndpoint *getDefaultEP() const override {
 		return m_default_ep;
 	}
 

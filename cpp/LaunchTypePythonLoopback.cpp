@@ -5,17 +5,18 @@
  *      Author: mballance
  */
 
-#include <spawn.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef _WIN32
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <spawn.h>
 #include <poll.h>
 #include <unistd.h>
-#else
-#include <windows.h>
-#endif
 #include <sys/wait.h>
+#endif
+
 #include "Debug.h"
 #include "LaunchParams.h"
 #include "LaunchTypePythonLoopback.h"
@@ -85,7 +86,11 @@ ILaunchType::result_t LaunchTypePythonLoopback::launch(
 	}
 
 	fprintf(stdout, "Final pythonpath: %s\n", pythonpath.c_str());
+#ifdef _WIN32
+	SetEnvironmentVariableA("PYTHONPATH", pythonpath.c_str());
+#else
 	setenv("PYTHONPATH", pythonpath.c_str(), 1);
+#endif
 
 
 	PythonApi pyapi;
@@ -172,6 +177,9 @@ int32_t LaunchTypePythonLoopback::get_python_info(
 	cmdline.push_back("-c");
 	cmdline.push_back(pycmd);
 
+#ifdef _WIN32
+	fprintf(stdout, "TODO: support Windows launch\n");
+#else
 	{
 		int cout_pipe[2];
 
@@ -234,6 +242,7 @@ int32_t LaunchTypePythonLoopback::get_python_info(
 		int32_t exit_code;
 		waitpid(pid, &exit_code, 0);
 	}
+#endif
 
 	return 0;
 }

@@ -9,6 +9,9 @@
 #include <string>
 #include <string.h>
 
+#ifdef _WIN32
+__declspec(dllimport)
+#endif
 extern char **environ;
 
 namespace tblink_rpc_core {

@@ -41,6 +41,24 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+  ci-win32:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ilammy/mscvc-dev-cmd@v1
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install Packages
+      run: |
+        python -m pip install ivpm twine cython ninja wheel
+        python -m ivpm update -a
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        make .. -GNinja
+        ninja
 #  ci-macos-arm64:
 #    runs-on: [self-hosted, macOS, ARM64]
 #    steps:

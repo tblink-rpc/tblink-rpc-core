@@ -7,7 +7,6 @@
 
 #include "PythonGlobal.h"
 #include "Debug.h"
-#include <spawn.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -16,6 +15,7 @@
 #include <windows.h>
 #else
 #include <poll.h>
+#include <spawn.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #endif
@@ -81,7 +81,11 @@ bool PythonGlobal::init(const std::string &python_path_hint) {
 		pythonpath = std::string(env_pythonpath) + ":" + pythonpath;
 	}
 
+#ifdef _WIN32
+	SetEnvironmentVariable((LPCTSTR)"PYTHONPATH", (LPCTSTR)pythonpath.c_str());
+#else
 	setenv("PYTHONPATH", pythonpath.c_str(), 1);
+#endif
 
 	if (!m_api.init(python_dll)) {
 		last_error("Failed to load Python API");
@@ -135,6 +139,9 @@ bool PythonGlobal::get_python_info(
 	cmdline.push_back("-c");
 	cmdline.push_back(pycmd);
 
+#ifdef _WIN32
+fprintf(stdout, "Error: Windows not supported\n");
+#else
 	{
 		int cout_pipe[2];
 
@@ -197,6 +204,7 @@ bool PythonGlobal::get_python_info(
 		int32_t exit_code;
 		waitpid(pid, &exit_code, 0);
 	}
+#endif
 
 	return true;
 }

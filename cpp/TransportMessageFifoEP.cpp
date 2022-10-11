@@ -99,7 +99,7 @@ int32_t TransportMessageFifoEP::await_msg() {
 	int32_t ret = 0;
 
 	fprintf(stdout, "[%d] await_msg: %d %d\n",
-			m_id, m_req_q.size(), m_rsp_q.size());
+			m_id, (int)m_req_q.size(), (int)m_rsp_q.size());
 	fflush(stdout);
 
 	while (m_req_q.size() > 0) {

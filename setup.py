@@ -73,9 +73,11 @@ result = subprocess.run(
 if result.returncode != 0:
     raise Exception("build failed")
 
-extra_compile_args = sysconfig.get_config_var('CFLAGS').split()
 extra_compile_args = []
+if sysconfig.get_config_var('CFLAGS'):
+    extra_compile_args = sysconfig.get_config_var('CFLAGS').split()
 #extra_compile_args += ["-std=c++11", "-Wall", "-Wextra"]
+
 if _DEBUG:
     extra_compile_args += ["-g", "-O0", "-DDEBUG=%s" % _DEBUG_LEVEL, "-UNDEBUG"]
 else:

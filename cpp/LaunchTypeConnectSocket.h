@@ -16,7 +16,7 @@ public:
 
 	virtual ~LaunchTypeConnectSocket();
 
-	virtual std::string name() { return "connect.socket"; }
+	virtual std::string name() override { return "connect.socket"; }
 
 	virtual result_t launch(
 			ILaunchParams 			*params,

@@ -7,12 +7,16 @@
 
 #include "TbLink.h"
 #include <stdio.h>
-#include <unistd.h>
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <unistd.h>
+	#include <dlfcn.h>
+#endif
 #include <string>
 #include <unordered_set>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dlfcn.h>
 
 #include "DynLibSymFinder.h"
 #include "EndpointMsgBase.h"
@@ -49,8 +53,7 @@ void TbLink::removeListener(ITbLinkListener *l) {
 
 void TbLink::addEndpoint(IEndpoint *ep) {
 	m_endpoints.push_back(ep);
-	fprintf(stdout, "addEndpoint: %u listeners\n",
-			m_listeners.size());
+	fprintf(stdout, "addEndpoint: %u listeners\n", (unsigned int)m_listeners.size());
 	fflush(stdout);
 	sendEvent(TbLinkEventKind::AddEndpoint, ep);
 }
@@ -108,12 +111,20 @@ ISymFinder *TbLink::sym_finder() {
 
 ISymFinder::result_t TbLink::load_library(
 			const std::string &path) {
+#ifdef _WIN32
+	HMODULE hndl = LoadLibraryA(path.c_str());
+#else
 	void *hndl = dlopen(path.c_str(), RTLD_LAZY);
+#endif
 
 	if (hndl) {
 		return {ISymFinderUP(new DynLibSymFinder(hndl)), ""};
 	} else {
+#ifdef _WIN32
+		return {ISymFinderUP(), "TODO: Win32 Error"};
+#else
 		return {ISymFinderUP(), dlerror()};
+#endif
 	}
 }
 

@@ -73,9 +73,13 @@ ILaunchType::result_t LaunchTypeConnectSocket::launch(
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	addr.sin_port = htons(port);
 
-     if (connect(sock, (struct sockaddr*) &addr, sizeof(addr)) == -1) {
-         fprintf(stdout, "Error: Connection error\n");
-         ::close(sock);
+    if (connect(sock, (struct sockaddr*) &addr, sizeof(addr)) == -1) {
+        fprintf(stdout, "Error: Connection error\n");
+#ifdef _WIN32
+		::closesocket(sock);
+#else
+        ::close(sock);
+#endif
          delete params;
          return {0, "connection error"};
      }

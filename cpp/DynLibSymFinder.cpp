@@ -8,7 +8,7 @@
 #ifndef _WIN32
 #include <dlfcn.h>
 #else
-#include <Windows.h>
+#include <windows.h>
 #endif
 
 #include "DynLibSymFinder.h"
@@ -32,7 +32,7 @@ void *DynLibSymFinder::findSym(const std::string &sym) {
 	}
 	return sym_h;
 #else
-	FARPROC sym_h = GetProcAddress(m_hndl, sym.c_str());
+	FARPROC sym_h = GetProcAddress((HMODULE)m_hndl, sym.c_str());
 
 	if (!sym_h) {
 		// TODO: Likely better diagnostics available
