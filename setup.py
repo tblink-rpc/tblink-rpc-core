@@ -17,6 +17,12 @@ from distutils.file_util import copy_file
 _DEBUG = False
 _DEBUG_LEVEL = 0
 
+version="0.0.1"
+
+
+if "BUILD_NUM" in os.environ.keys():
+    version += ".%s" % os.environ["BUILD_NUM"]
+
 # First need to establish where things are
 tblink_rpc_core_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -222,6 +228,7 @@ print("extra_compile_args=" + str(extra_compile_args))
 
 setup(
   name = "tblink-rpc-core",
+  version=version,
   packages=['tblink_rpc_core','tblink_rpc'],
   package_dir = {'' : 'python'},
   author = "Matthew Ballance",
