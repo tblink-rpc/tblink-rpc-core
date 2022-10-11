@@ -46,6 +46,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: ilammy/msvc-dev-cmd@v1
+    - uses: KyleMayes/install-llvm-action@v1
+      with:
+        version: "13.0"
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
