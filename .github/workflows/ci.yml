@@ -57,7 +57,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        make .. -GNinja
+        cmake .. -GNinja
         ninja
 #  ci-macos-arm64:
 #    runs-on: [self-hosted, macOS, ARM64]
